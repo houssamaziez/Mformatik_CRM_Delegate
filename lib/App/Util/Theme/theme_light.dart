@@ -2,16 +2,60 @@ import 'package:flutter/material.dart';
 
 import '../size/size_text.dart';
 
+const int _primaryValue = 0xFF1791C8; // Your color in ARGB
+
 ThemeData themeLight = ThemeData(
-  primarySwatch: Colors.blue,
+  primarySwatch: MaterialColor(
+    _primaryValue,
+    <int, Color>{
+      50: Color(0xFFE1F5FE), // 10% shade
+      100: Color(0xFFB3E5FC), // 20% shade
+      200: Color(0xFF81D4FA), // 30% shade
+      300: Color(0xFF4FC3F7), // 40% shade
+      400: Color(0xFF29B6F6), // 50% shade
+      500: Color(_primaryValue), // 60% shade (base color)
+      600: Color(0xFF0288D1), // 70% shade
+      700: Color(0xFF0277BD), // 80% shade
+      800: Color(0xFF01579B), // 90% shade
+      900: Color(_primaryValue), // 100% shade
+    },
+  ),
   fontFamily: 'Tajawal',
-  primaryColor: const Color(0xff1073BA),
+  primaryColor: MaterialColor(
+    _primaryValue,
+    <int, Color>{
+      50: Color(0xFFE1F5FE), // 10% shade
+      100: Color(0xFFB3E5FC), // 20% shade
+      200: Color(0xFF81D4FA), // 30% shade
+      300: Color(0xFF4FC3F7), // 40% shade
+      400: Color(0xFF29B6F6), // 50% shade
+      500: Color(_primaryValue), // 60% shade (base color)
+      600: Color(0xFF0288D1), // 70% shade
+      700: Color(0xFF0277BD), // 80% shade
+      800: Color(0xFF01579B), // 90% shade
+      900: Color(_primaryValue), // 100% shade
+    },
+  ),
   scaffoldBackgroundColor: Colors.white,
   cardColor: const Color(0xffF5F6FA),
   textTheme: customTextTheme,
   appBarTheme: const AppBarTheme(
     iconTheme: IconThemeData(color: Colors.white),
-    backgroundColor: Color(0xff1073BA),
+    backgroundColor: MaterialColor(
+      _primaryValue,
+      <int, Color>{
+        50: Color(0xFFE1F5FE), // 10% shade
+        100: Color(0xFFB3E5FC), // 20% shade
+        200: Color(0xFF81D4FA), // 30% shade
+        300: Color(0xFF4FC3F7), // 40% shade
+        400: Color(0xFF29B6F6), // 50% shade
+        500: Color(_primaryValue), // 60% shade (base color)
+        600: Color(0xFF0288D1), // 70% shade
+        700: Color(0xFF0277BD), // 80% shade
+        800: Color(0xFF01579B), // 90% shade
+        900: Color(_primaryValue), // 100% shade
+      },
+    ),
     elevation: 0,
     centerTitle: true,
     toolbarHeight: 50,
@@ -22,7 +66,21 @@ ThemeData themeLight = ThemeData(
     ),
   ),
   buttonTheme: const ButtonThemeData(
-    buttonColor: Color(0xff1073BA), // Custom button color
+    buttonColor: MaterialColor(
+      _primaryValue,
+      <int, Color>{
+        50: Color(0xFFE1F5FE), // 10% shade
+        100: Color(0xFFB3E5FC), // 20% shade
+        200: Color(0xFF81D4FA), // 30% shade
+        300: Color(0xFF4FC3F7), // 40% shade
+        400: Color(0xFF29B6F6), // 50% shade
+        500: Color(_primaryValue), // 60% shade (base color)
+        600: Color(0xFF0288D1), // 70% shade
+        700: Color(0xFF0277BD), // 80% shade
+        800: Color(0xFF01579B), // 90% shade
+        900: Color(_primaryValue), // 100% shade
+      },
+    ), // Custom button color
     textTheme: ButtonTextTheme.primary,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8.0)),
@@ -47,10 +105,40 @@ ThemeData themeLight = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(8.0)),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Color(0xff1073BA)),
+      borderSide: BorderSide(
+          color: MaterialColor(
+        _primaryValue,
+        <int, Color>{
+          50: Color(0xFFE1F5FE), // 10% shade
+          100: Color(0xFFB3E5FC), // 20% shade
+          200: Color(0xFF81D4FA), // 30% shade
+          300: Color(0xFF4FC3F7), // 40% shade
+          400: Color(0xFF29B6F6), // 50% shade
+          500: Color(_primaryValue), // 60% shade (base color)
+          600: Color(0xFF0288D1), // 70% shade
+          700: Color(0xFF0277BD), // 80% shade
+          800: Color(0xFF01579B), // 90% shade
+          900: Color(_primaryValue), // 100% shade
+        },
+      )),
       borderRadius: BorderRadius.all(Radius.circular(8.0)),
     ),
-    labelStyle: TextStyle(color: Color(0xff1073BA)),
+    labelStyle: TextStyle(
+        color: MaterialColor(
+      _primaryValue,
+      <int, Color>{
+        50: Color(0xFFE1F5FE), // 10% shade
+        100: Color(0xFFB3E5FC), // 20% shade
+        200: Color(0xFF81D4FA), // 30% shade
+        300: Color(0xFF4FC3F7), // 40% shade
+        400: Color(0xFF29B6F6), // 50% shade
+        500: Color(_primaryValue), // 60% shade (base color)
+        600: Color(0xFF0288D1), // 70% shade
+        700: Color(0xFF0277BD), // 80% shade
+        800: Color(0xFF01579B), // 90% shade
+        900: Color(_primaryValue), // 100% shade
+      },
+    )),
     hintStyle: TextStyle(color: Color(0xffA0A0A0)),
   ),
 );

@@ -34,6 +34,13 @@ class ScreenAuth extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Center(
+              child: Image.asset(
+                fit: BoxFit.cover,
+                "assets/icons/logo.png",
+                height: 180,
+              ),
+            ),
             GetBuilder<AuthController>(
                 init: AuthController(),
                 builder: (_controller) {

@@ -18,4 +18,9 @@ const Map<String, String> ar = {
       "حدث خطأ ما. يرجى المحاولة مرة أخرى أو الاتصال بالدعم إذا استمر المشكلة.",
   'username is invalid': "اسم المستخدم غير صالح",
   'the password is wrong': "كلمة المرور خاطئة",
+  'Please check your internet connection.': "يرجى التحقق من اتصالك بالإنترنت.",
+  'No internet connection': "لا يوجد اتصال بالإنترنت.",
+  'Cancel': "إلغاء",
+  'Connection problem': "مشكلة في الاتصال",
+  'Verifying...': "جاري التحقق...",
 };

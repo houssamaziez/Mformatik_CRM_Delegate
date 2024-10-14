@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/widget_extensions.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
+import 'package:mformatic_crm_delegate/App/myapp.dart';
 
 class ButtonAll extends StatelessWidget {
   const ButtonAll(
@@ -38,7 +40,7 @@ class ButtonAll extends StatelessWidget {
                 width: islogin == true ? 10 : 0,
               ),
               Text(
-                islogin == true ? 'جاري التحقق ...' : title,
+                islogin == true ? 'Verifying...'.tr : title,
                 style: const TextStyle(color: Colors.white),
               ),
               const Spacer(),

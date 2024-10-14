@@ -66,7 +66,7 @@ class ConnectivityController extends GetxController {
     _isDialogShowing = true;
     Get.dialog(
       AlertDialog(
-        title: const Text('لا يوجد اتصال بالإنترنت'),
+        title: Text('No internet connection'.tr),
         content: SizedBox(
           height: 160,
           child: Column(
@@ -75,7 +75,8 @@ class ConnectivityController extends GetxController {
                 'assets/icons/wi-fi.png',
                 height: 110,
               ),
-              const Text('Please check your internet connection.'),
+              Expanded(
+                  child: Text('Please check your internet connection.'.tr)),
             ],
           ),
         ),
@@ -85,16 +86,17 @@ class ConnectivityController extends GetxController {
               Get.back(); // Close the dialog
               _isDialogShowing = false;
             },
-            child: const Text('Cancl'),
+            child: Text('Cancel'.tr,
+                style: TextStyle(color: const Color.fromARGB(255, 0, 96, 174))),
           ),
-          TextButton(
-            onPressed: () {
-              _stopInternetCheck();
-              Get.back(); // Close the dialog
-              _isDialogShowing = false;
-            },
-            child: const Text('Complete in offline mode'),
-          ),
+          // TextButton(
+          //   onPressed: () {
+          //     _stopInternetCheck();
+          //     Get.back(); // Close the dialog
+          //     _isDialogShowing = false;
+          //   },
+          //   child: const Text('Complete in offline mode'),
+          // ),
         ],
       ),
       barrierDismissible: false, // Prevent dialog dismissal by tapping outside

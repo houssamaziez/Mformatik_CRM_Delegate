@@ -1,6 +1,6 @@
 const Map<String, String> fr = {
-  'Login Screen': 'connectez-vous à votre compte',
-  "Username": "nom d'utilisateur",
+  'Login Screen': 'Connectez-vous à votre compte',
+  "Username": "Nom d'utilisateur",
   'Write Username': "Entrez le nom d'utilisateur",
   'Password': "Mot de passe",
   'Write Password': "Entrez le mot de passe",
@@ -17,5 +17,11 @@ const Map<String, String> fr = {
   'Something went wrong. Please try again or contact support if the issue persists.':
       "Un problème est survenu. Veuillez réessayer ou contacter le support si le problème persiste.",
   'username is invalid': "Le nom d'utilisateur est invalide",
-  'the password is wrong': "Le mot de passe est incorrect"
+  'the password is wrong': "Le mot de passe est incorrect",
+  'Please check your internet connection.':
+      "Veuillez vérifier votre connexion Internet.",
+  'No internet connection': "Pas de connexion Internet.",
+  'Cancel': "Annuler",
+  'Connection problem': "Problème de connexion",
+  'Verifying...': "Vérification..."
 };

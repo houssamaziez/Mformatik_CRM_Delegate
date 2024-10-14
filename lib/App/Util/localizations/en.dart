@@ -16,5 +16,11 @@ const Map<String, String> en = {
   "Something went wrong. Please try again or contact support if the issue persists.":
       "Something went wrong. Please try again or contact support if the issue persists.",
   "username is invalid": "username is invalid",
-  "the password is wrong": "the password is wrong"
+  "the password is wrong": "the password is wrong",
+  'Please check your internet connection.':
+      'Please check your internet connection.' 'No internet connection',
+  'No internet connection': 'No internet connection',
+  'Cancel': 'Cancel',
+  'Connection problem': 'Connection problem',
+  'Verifying...': 'Verifying...'
 };
