@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import '../../Model/user.dart';
 import '../../Util/app_exceptions/global_expcetion_handler.dart';
 import '../../Util/app_exceptions/response_handler.dart';
@@ -16,12 +17,15 @@ class AuthController extends GetxController {
   bool isPasswordVisible = false; // Variable to toggle password visibility
 
   // Login method with improved structure and feedback for UI
-  Future<void> login(
+  Future<void> login(context,
       {required String username, required String password}) async {
+    Uri url = Uri.parse(Endpoint.apiLogin);
+    if (namecontroller.text == '' || passwordcontroller.text == '') {
+      showMessage(context, title: "Please fill in the blank fields.");
+      return;
+    }
     isLoading = true; // Set loading state
     update();
-    Uri url = Uri.parse(Endpoint.apiLogin);
-    if (namecontroller.text == null || passwordcontroller.text == null) {}
     try {
       final response = await http.post(url, body: {
         "username": username,
@@ -30,13 +34,10 @@ class AuthController extends GetxController {
 
       // Handle response and parse user data
       final responseData = ResponseHandler.processResponse(response);
-      if (responseData != null ||
-          passwordcontroller.text == null && responseData.containsKey('user')) {
+      if (responseData != null && responseData.containsKey('user')) {
         user = User.fromJson(responseData['user']);
         print('Logged in as: ${user?.username}');
-      } else {
-        print('Failed to login. Invalid response.');
-      }
+      } else {}
     } catch (e) {
       // Handle exceptions
       GlobalExceptionHandler.handle(e);

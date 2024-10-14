@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 
 import 'package:http/http.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 
 import 'exceptions.dart';
 
@@ -19,7 +21,7 @@ class GlobalExceptionHandler {
 
       case Exception:
       default:
-        Fluttertoast.showToast(msg: e.toString());
+        showMessage(Get.context, title: e.toString());
     }
   }
 }
