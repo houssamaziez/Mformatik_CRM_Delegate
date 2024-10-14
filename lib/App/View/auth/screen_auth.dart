@@ -1,36 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_utils/src/extensions/widget_extensions.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
+import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 
 import '../../Controller/auth/auth_controller.dart';
 import '../../Util/Theme/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../widgets/TextField.dart';
 
+// ignore: must_be_immutable
 class ScreenAuth extends StatelessWidget {
   ScreenAuth({super.key});
-  TextEditingController namecontroller = TextEditingController();
-  TextEditingController passwordcontroller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: "Login Screen".tr.style(color: ColorsApp.white),
-      ),
+          title: "Login Screen".tr.style(
+                color: ColorsApp.white,
+                fontSize: Theme.of(context).textTheme.titleLarge!.fontSize,
+              )),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MyTextfield(
-              controller: namecontroller,
-              label: 'Username',
-              hint: '',
-              isPassword: false,
-            ),
+            GetBuilder<AuthController>(
+                init: AuthController(),
+                builder: (_controller) {
+                  return MyTextfield(
+                    controller: _controller.namecontroller,
+                    label: 'Username',
+                    hint: 'Write Username',
+                  );
+                }),
             const SizedBox(
               height: 10,
             ),
@@ -38,10 +41,12 @@ class ScreenAuth extends StatelessWidget {
                 init: AuthController(),
                 builder: (_controller) {
                   return MyTextfield(
-                    controller: passwordcontroller,
+                    controller: _controller.passwordcontroller,
                     label: 'Password',
-                    hint: '******',
+                    hint: 'Write Password',
                     isPassword: true,
+                    isPasswordVisible: _controller.isPasswordVisible,
+                    passwordVisibleupdate: _controller.passwordVisibleupdate,
                   );
                 }),
             const SizedBox(
@@ -57,9 +62,9 @@ class ScreenAuth extends StatelessWidget {
                     title: "Login",
                     islogin: _controller.isLoading,
                   );
-                }),
+                }).paddingAll()
           ],
-        ).paddingAll(10),
+        ),
       ),
     );
   }

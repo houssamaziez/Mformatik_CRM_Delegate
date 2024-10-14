@@ -9,20 +9,21 @@ class MyTextfield extends StatefulWidget {
     required this.label,
     required this.hint,
     this.isPassword = false,
+    this.isPasswordVisible = false,
+    this.passwordVisibleupdate,
   }) : super(key: key);
 
   final TextEditingController controller;
   final String label;
   final String hint;
   final bool isPassword;
-
+  final bool isPasswordVisible;
+  final void Function()? passwordVisibleupdate;
   @override
   _MyTextfieldState createState() => _MyTextfieldState();
 }
 
 class _MyTextfieldState extends State<MyTextfield> {
-  bool _isPasswordVisible = false; // Variable to toggle password visibility
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -42,15 +43,15 @@ class _MyTextfieldState extends State<MyTextfield> {
               child: TextField(
                 controller: widget.controller,
                 style: TextStyle(color: Colors.black),
-                obscureText: widget.isPassword && !_isPasswordVisible,
+                obscureText: widget.isPassword && !widget.isPasswordVisible,
                 decoration: InputDecoration(
                   suffix: widget.isPassword
                       ? InkWell(
-                          onTap: () {},
+                          onTap: widget.passwordVisibleupdate,
                           child: Padding(
                             padding: const EdgeInsets.only(top: 5.0, bottom: 4),
                             child: Icon(
-                              _isPasswordVisible
+                              widget.isPasswordVisible
                                   ? Icons.visibility
                                   : Icons.visibility_off,
                               color: Theme.of(context)

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
@@ -6,9 +7,13 @@ import '../../Util/app_exceptions/global_expcetion_handler.dart';
 import '../../Util/app_exceptions/response_handler.dart';
 
 class AuthController extends GetxController {
+  TextEditingController namecontroller = TextEditingController(text: "admin");
+  TextEditingController passwordcontroller =
+      TextEditingController(text: "123456");
   // Observable state management using GetX's Rx types
   var isLoading = false;
   User? user;
+  bool isPasswordVisible = false; // Variable to toggle password visibility
 
   // Login method with improved structure and feedback for UI
   Future<void> login(
@@ -16,7 +21,7 @@ class AuthController extends GetxController {
     isLoading = true; // Set loading state
     update();
     Uri url = Uri.parse(Endpoint.apiLogin);
-
+    if (namecontroller.text == null || passwordcontroller.text == null) {}
     try {
       final response = await http.post(url, body: {
         "username": username,
@@ -25,7 +30,8 @@ class AuthController extends GetxController {
 
       // Handle response and parse user data
       final responseData = ResponseHandler.processResponse(response);
-      if (responseData != null && responseData.containsKey('user')) {
+      if (responseData != null ||
+          passwordcontroller.text == null && responseData.containsKey('user')) {
         user = User.fromJson(responseData['user']);
         print('Logged in as: ${user?.username}');
       } else {
@@ -40,5 +46,8 @@ class AuthController extends GetxController {
     }
   }
 
-  isPasswordVisible() {}
+  passwordVisibleupdate() {
+    isPasswordVisible = !isPasswordVisible;
+    update();
+  }
 }
