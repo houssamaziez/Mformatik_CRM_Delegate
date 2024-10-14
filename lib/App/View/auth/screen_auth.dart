@@ -14,6 +14,7 @@ import '../widgets/TextField.dart';
 class ScreenAuth extends StatelessWidget {
   ScreenAuth({super.key});
   TextEditingController namecontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,12 +34,16 @@ class ScreenAuth extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            MyTextfield(
-              controller: namecontroller,
-              label: 'Password',
-              hint: '******',
-              isPassword: true,
-            ),
+            GetBuilder<AuthController>(
+                init: AuthController(),
+                builder: (_controller) {
+                  return MyTextfield(
+                    controller: passwordcontroller,
+                    label: 'Password',
+                    hint: '******',
+                    isPassword: true,
+                  );
+                }),
             const SizedBox(
               height: 10,
             ),

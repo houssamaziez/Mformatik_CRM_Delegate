@@ -39,4 +39,6 @@ class AuthController extends GetxController {
       update();
     }
   }
+
+  isPasswordVisible() {}
 }

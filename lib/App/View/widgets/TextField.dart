@@ -40,6 +40,7 @@ class _MyTextfieldState extends State<MyTextfield> {
           children: [
             Expanded(
               child: TextField(
+                controller: widget.controller,
                 style: TextStyle(color: Colors.black),
                 obscureText: widget.isPassword && !_isPasswordVisible,
                 decoration: InputDecoration(
