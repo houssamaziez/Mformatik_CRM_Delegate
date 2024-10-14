@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 
 import '../../Controller/auth/auth_controller.dart';
 
@@ -14,7 +17,9 @@ class _SpalshScreenState extends State<SpalshScreen> {
   @override
   void initState() {
     Get.put(AuthController()).getme(Get.context);
-
+    Timer(Duration(seconds: 10), () {
+      Go.replace(context, SpalshScreen());
+    });
     super.initState();
   }
 
