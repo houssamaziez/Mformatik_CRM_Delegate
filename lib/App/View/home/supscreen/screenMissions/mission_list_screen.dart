@@ -82,18 +82,27 @@ class _MissionListScreenState extends State<MissionListScreen> {
                       }),
                 ),
                 Expanded(
-                  child: ListView.builder(
+                  child: ListView(
                     controller: _scrollController,
                     shrinkWrap: true,
-                    itemCount: controller.missions!.length,
-                    itemBuilder: (context, index) {
-                      final mission = controller.missions![index];
-                      return MissionCard(mission: mission);
-                    },
+                    children: [
+                      ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: controller.missions!.length,
+                        itemBuilder: (context, index) {
+                          final mission = controller.missions![index];
+                          return MissionCard(mission: mission);
+                        },
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      if (controller.isLoadingMore) spinkit
+                    ],
                   ).addRefreshIndicator(
                       onRefresh: () => controller.getAllMission(context)),
                 ),
-                if (controller.isLoadingMore) spinkit
               ],
             );
           }

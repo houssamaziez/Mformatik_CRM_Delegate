@@ -8,17 +8,20 @@ import '../../View/widgets/showsnack.dart';
 import '../auth/auth_controller.dart';
 
 class MissionsController extends GetxController {
-  List<Mission>? missions;
+  List<Mission>? missions = [];
   bool isLoading = false;
   bool isLoadingMore = false;
   int offset = 0;
-  final int limit = 5;
+  int limit = 6;
+
   Future<void> getAllMission(
     context,
   ) async {
     offset = 0;
     final uri =
         Uri.parse('${Endpoint.apiMissions}?offset=$offset&limit=$limit');
+    offset = limit + offset;
+    update();
 
     isLoading = true; // Set loading state
     update();
@@ -35,6 +38,8 @@ class MissionsController extends GetxController {
         // user = User.fromJson(responseData['user']);
       } else {}
     } catch (e) {
+      offset = limit - offset;
+      update();
       // Handle exceptions
       showMessage(context, title: 'Connection problem'.tr);
     } finally {
@@ -47,10 +52,17 @@ class MissionsController extends GetxController {
     context,
   ) async {
     isLoadingMore = true;
-    offset = limit + offset;
+    update();
 
-    final uri =
-        Uri.parse('${Endpoint.apiMissions}?offset=$offset&limit=$limit');
+    offset = limit + offset;
+    update();
+
+    final uri = Uri.parse('${Endpoint.apiMissions}').replace(
+      queryParameters: {
+        'offset': offset.toString(),
+        'limit': limit.toString(),
+      },
+    );
     update();
     try {
       final response = await http.get(
@@ -62,8 +74,6 @@ class MissionsController extends GetxController {
       final responseData = ResponseHandler.processResponse(response);
       if (response.statusCode == 200) {
         missions!.addAll(MissionResponse.fromJson(responseData).rows);
-        print(missions!.first
-            .creatorUsername); // user = User.fromJson(responseData['user']);
       }
     } catch (e) {
       offset = limit - offset;

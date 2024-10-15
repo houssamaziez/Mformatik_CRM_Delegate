@@ -7,4 +7,5 @@ class Endpoint {
   static String apiLogin = '$url/v1/auth';
   static String apIme = '$url/v1/persons/me';
   static String apiMissions = '$url/v1/missions';
+  static String apiAnnexes = '$url/v1/annexes';
 }

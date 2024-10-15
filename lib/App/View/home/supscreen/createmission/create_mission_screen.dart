@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../Controller/home/annex_controller.dart';
 import '../../../../Model/annex_model.dart';
 
@@ -15,9 +17,16 @@ class AnnexScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (annexController.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: spinkit);
         } else if (annexController.annexList.isEmpty) {
-          return Center(child: Text('No annexes available'));
+          return ListView(
+            children: [
+              SizedBox(
+                  height: MediaQuery.of(context).size.height - 200,
+                  child: Center(child: Text('Annexes'))),
+            ],
+          ).addRefreshIndicator(
+              onRefresh: () => annexController.fetchAnnexes());
         } else {
           return ListView.builder(
             itemCount: annexController.annexList.length,
@@ -44,7 +53,8 @@ class AnnexScreen extends StatelessWidget {
                 ),
               );
             },
-          );
+          ).addRefreshIndicator(
+              onRefresh: () => annexController.fetchAnnexes());
         }
       }),
     );
