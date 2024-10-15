@@ -58,6 +58,17 @@ class AuthController extends GetxController {
   }
 
 // Login method with improved structure and feedback for UI
+  /// Makes a GET request to the API's "me" endpoint to retrieve the current
+  /// user's information and log them in.
+  ///
+  /// If the request is successful, the user is navigated to the home screen.
+  /// If the request fails with a 401 status code, the user is navigated to the
+  /// login screen.
+  ///
+  /// The user is shown a snackbar with an error message if there is a problem
+  /// with the request or if the response is invalid.
+  ///
+  /// The loading state is updated while the request is in progress.
   Future<void> getme(
     context,
   ) async {

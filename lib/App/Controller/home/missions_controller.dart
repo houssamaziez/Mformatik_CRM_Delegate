@@ -9,13 +9,13 @@ import '../auth/auth_controller.dart';
 
 class MissionsController extends GetxController {
   Uri url = Uri.parse(Endpoint.apiMissions);
-  List<Mission>? rows;
+  List<Mission>? missions;
   bool isLoading = false;
 
   Future<void> getAllMission(
     context,
   ) async {
-    Uri url = Uri.parse(Endpoint.apIme);
+    Uri url = Uri.parse(Endpoint.apiMissions);
 
     isLoading = true; // Set loading state
     update();
@@ -26,8 +26,8 @@ class MissionsController extends GetxController {
       // Handle response and parse user data
       final responseData = ResponseHandler.processResponse(response);
       if (response.statusCode == 200) {
-        rows = MissionResponse.fromJson(responseData).rows;
-        print(rows!.first
+        missions = MissionResponse.fromJson(responseData).rows;
+        print(missions!.first
             .creatorUsername); // user = User.fromJson(responseData['user']);
       } else {}
     } catch (e) {
