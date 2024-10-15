@@ -13,7 +13,7 @@ buttonnavigationbar(context) {
           context,
           0,
           Icons.home,
-          'Home',
+          'Missions',
         ),
         _buildNavItem(
           context,

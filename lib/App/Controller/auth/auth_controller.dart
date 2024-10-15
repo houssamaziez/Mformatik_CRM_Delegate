@@ -61,7 +61,7 @@ class AuthController extends GetxController {
   Future<void> getme(
     context,
   ) async {
-    Uri url = Uri.parse(Endpoint.apime);
+    Uri url = Uri.parse(Endpoint.apIme);
     if (namecontroller.text == '' || passwordcontroller.text == '') {
       showMessage(context, title: "Please fill in the blank fields.");
       return;

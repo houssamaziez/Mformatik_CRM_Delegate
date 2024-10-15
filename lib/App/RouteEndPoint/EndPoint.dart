@@ -5,5 +5,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class Endpoint {
   static String url = dotenv.get('urlHost');
   static String apiLogin = '$url/v1/auth';
-  static String apime = '$url/v1/persons/me';
+  static String apIme = '$url/v1/persons/me';
+  static String apiMissions = '$url/v1/missions';
 }
