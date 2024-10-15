@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
@@ -16,11 +15,18 @@ class SpalshScreen extends StatefulWidget {
 class _SpalshScreenState extends State<SpalshScreen> {
   @override
   void initState() {
-    Get.put(AuthController()).getme(Get.context);
-    Timer(Duration(seconds: 10), () {
-      Go.replace(context, SpalshScreen());
-    });
     super.initState();
+
+    // Use Get's context safely with mounted check
+    Get.put(AuthController()).getme(Get.context);
+
+    // Set a Timer to navigate after 10 seconds
+    Timer(Duration(seconds: 10), () {
+      if (mounted) {
+        // Check if the widget is still mounted
+        Go.clearAndTo(context, SpalshScreen()); // Navigate safely
+      }
+    });
   }
 
   @override
@@ -28,8 +34,8 @@ class _SpalshScreenState extends State<SpalshScreen> {
     return Scaffold(
       body: Center(
         child: Image.asset(
-          fit: BoxFit.cover,
           "assets/icons/logo.png",
+          fit: BoxFit.cover,
           height: 200,
         ),
       ),

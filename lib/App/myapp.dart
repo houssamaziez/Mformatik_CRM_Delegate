@@ -5,7 +5,6 @@ import 'package:get_storage/get_storage.dart';
 
 import 'Util/Theme/theme_light.dart';
 import 'Util/localizations/localizations.dart';
-import 'View/auth/screen_auth.dart';
 import 'View/home/splash_screen.dart';
 
 void main() async {

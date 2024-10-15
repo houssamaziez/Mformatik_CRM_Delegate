@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
@@ -9,11 +10,9 @@ import 'package:mformatic_crm_delegate/App/View/auth/screen_auth.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import '../../Model/user.dart';
-import '../../Util/app_exceptions/global_expcetion_handler.dart';
 import '../../Util/app_exceptions/response_handler.dart';
 
-String key =
-    "seyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsInVzZXJuYW1lIjoiYWRtaW4iLCJpc0FjdGl2ZSI6dHJ1ZSwicm9sZUlkIjoyLCJhbm5leElkIjpudWxsLCJjb21wYW55SWQiOm51bGwsInBlcnNvbiI6eyJpZCI6MjcsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBY2NvdW50IiwiaW1nIjpudWxsLCJ1c2VySWQiOjUzLCJjcmVhdGVkQXQiOiIyMDI0LTEwLTAyVDA4OjMyOjAyLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDI0LTEwLTA5VDA4OjAwOjU2LjAwMFoifSwiaWF0IjoxNzI4OTIyNTcyfQ.OulMvLjEqEfua-eNlIoiSgSicRxTjyuQsVHr9F6b5pY";
+GetStorage token = GetStorage();
 
 class AuthController extends GetxController {
   TextEditingController namecontroller = TextEditingController(text: "admin");
@@ -44,6 +43,9 @@ class AuthController extends GetxController {
       final responseData = ResponseHandler.processResponse(response);
       if (responseData != null && responseData.containsKey('user')) {
         user = User.fromJson(responseData['user']);
+        token.write("token", responseData['token']);
+        Go.clearAndTo(context, HomeScreen());
+
         print('Logged in as: ${user?.username}');
       } else {}
     } catch (e) {
@@ -67,11 +69,12 @@ class AuthController extends GetxController {
     isLoading = true; // Set loading state
     update();
     try {
-      final response = await http.get(url, headers: {"x-auth-token": key});
+      final response = await http
+          .get(url, headers: {"x-auth-token": token.read("token").toString()});
       print(response.body);
       // Handle response and parse user data
       final responseData = ResponseHandler.processResponse(response);
-      if (jsonDecode(response.body)[0]["message"] != "invalid token") {
+      if (response.statusCode == 200) {
         // user = User.fromJson(responseData['user']);
         print('Logged in as: ${user?.username}');
         Go.clearAndTo(context, HomeScreen());

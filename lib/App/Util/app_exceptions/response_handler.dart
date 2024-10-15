@@ -15,8 +15,7 @@ class ResponseHandler {
       // Client errors
       case 400: // Bad request
 
-        if (decodeResponseBody(response)[0]["message"] ==
-            "username is invalid") {
+        if (decodeResponseBody(response)[0]["statecode "] == "105") {
           showMessage(Get.context, title: "username is invalid".tr);
         } else {
           if (decodeResponseBody(response)[0]["message"] ==

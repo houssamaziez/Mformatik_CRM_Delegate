@@ -1,5 +1,5 @@
 const Map<String, String> ar = {
-  "Username": "اسم المستخدم",
+  "Username": "اسم المستخدم %s",
   'Login Screen': "شاشة تسجيل الدخول",
   'Write Username': "أدخل اسم المستخدم",
   'Password': "كلمة المرور",
