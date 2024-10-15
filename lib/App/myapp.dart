@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     final GetStorage storage = GetStorage();
     String? storedLanguage = storage.read<String>('selected_language');
     Locale initialLocale =
-        storedLanguage != null ? Locale(storedLanguage) : Locale('en');
+        storedLanguage != null ? Locale(storedLanguage) : const Locale('en');
 
     return GetMaterialApp(
       title: 'Multi-Language App',
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: SpalshScreen(),
+      home: const SpalshScreen(),
     );
   }
 }

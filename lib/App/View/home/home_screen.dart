@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 
 import '../widgets/Bottombar/widgetbottombar.dart';
-import 'supscreen/mission_list_screen.dart';
+import 'supscreen/screenMissions/mission_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

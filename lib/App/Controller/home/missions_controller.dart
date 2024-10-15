@@ -8,33 +8,71 @@ import '../../View/widgets/showsnack.dart';
 import '../auth/auth_controller.dart';
 
 class MissionsController extends GetxController {
-  Uri url = Uri.parse(Endpoint.apiMissions);
   List<Mission>? missions;
   bool isLoading = false;
-
+  bool isLoadingMore = false;
+  int offset = 0;
+  final int limit = 5;
   Future<void> getAllMission(
     context,
   ) async {
-    Uri url = Uri.parse(Endpoint.apiMissions);
+    offset = 0;
+    final uri =
+        Uri.parse('${Endpoint.apiMissions}?offset=$offset&limit=$limit');
 
     isLoading = true; // Set loading state
     update();
     try {
-      final response = await http
-          .get(url, headers: {"x-auth-token": token.read("token").toString()});
+      final response = await http.get(
+        uri,
+        headers: {"x-auth-token": token.read("token").toString()},
+      ).timeout(const Duration(seconds: 50));
       print(response.body);
       // Handle response and parse user data
       final responseData = ResponseHandler.processResponse(response);
       if (response.statusCode == 200) {
         missions = MissionResponse.fromJson(responseData).rows;
-        print(missions!.first
-            .creatorUsername); // user = User.fromJson(responseData['user']);
+        // user = User.fromJson(responseData['user']);
       } else {}
     } catch (e) {
       // Handle exceptions
       showMessage(context, title: 'Connection problem'.tr);
     } finally {
       isLoading = false; // Reset loading state
+      update();
+    }
+  }
+
+  Future<void> loadingMoreMission(
+    context,
+  ) async {
+    isLoadingMore = true;
+    offset = limit + offset;
+
+    final uri =
+        Uri.parse('${Endpoint.apiMissions}?offset=$offset&limit=$limit');
+    update();
+    try {
+      final response = await http.get(
+        uri,
+        headers: {"x-auth-token": token.read("token").toString()},
+      ).timeout(const Duration(seconds: 50));
+      print(response.body);
+      // Handle response and parse user data
+      final responseData = ResponseHandler.processResponse(response);
+      if (response.statusCode == 200) {
+        missions!.addAll(MissionResponse.fromJson(responseData).rows);
+        print(missions!.first
+            .creatorUsername); // user = User.fromJson(responseData['user']);
+      }
+    } catch (e) {
+      offset = limit - offset;
+      isLoadingMore = false; // Reset loading state
+      update();
+      // Handle exceptions
+      // showMessage(context, title: 'Connection problem'.tr);
+    } finally {
+      isLoadingMore = false; // Reset loading state
       update();
     }
   }
