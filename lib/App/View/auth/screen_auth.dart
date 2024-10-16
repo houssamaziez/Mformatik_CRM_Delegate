@@ -8,7 +8,7 @@ import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import '../../Controller/auth/auth_controller.dart';
 import '../../Util/Theme/colors.dart';
 
-import '../home/language_screen.dart';
+import '../home/Home screen/supscreen/settingScreen/language_screen.dart';
 import '../widgets/TextField.dart';
 
 // ignore: must_be_immutable

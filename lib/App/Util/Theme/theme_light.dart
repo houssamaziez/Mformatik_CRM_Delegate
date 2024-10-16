@@ -98,7 +98,7 @@ ThemeData themeLight = ThemeData(
   ),
   inputDecorationTheme: const InputDecorationTheme(
     filled: true,
-    fillColor: Color(0xffF5F6FA),
+    fillColor: Color.fromARGB(255, 255, 255, 255),
     contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
     border: OutlineInputBorder(
       borderSide: BorderSide.none,

@@ -4,8 +4,8 @@ import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
-import '../../../../Controller/home/annex_controller.dart';
-import '../../../../Model/annex_model.dart';
+import '../../../../../Controller/home/annex_controller.dart';
+import '../../../../../Model/annex_model.dart';
 import 'company_list_screen.dart';
 
 class AnnexScreen extends StatelessWidget {

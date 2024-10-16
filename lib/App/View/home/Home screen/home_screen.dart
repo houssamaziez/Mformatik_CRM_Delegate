@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/come_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/home_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 
-import '../widgets/Bottombar/widgetbottombar.dart';
-import 'supscreen/createmission/create_mission_screen.dart';
+import '../../widgets/Bottombar/widgetbottombar.dart';
+import '../../widgets/bolck_screen.dart';
+import 'supscreen/createmission/annex_list_screen.dart';
+import 'supscreen/profileUser/profile_user_screen.dart';
 import 'supscreen/screenMissions/mission_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,13 +24,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  List<Widget> _screen = [
-    MissionListScreen(),
+  final List<Widget> _screen = [
+    const MissionListScreen(),
     AnnexScreen(),
-    MissionListScreen(),
+    const ProfileUserScreen(),
     AnnexScreen(),
   ];
-
   Widget build(BuildContext context) {
     //TODO: add bottom bar in this scaffold
     return GetBuilder<HomeController>(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../Model/mission.dart';
+import '../../../../../Model/mission.dart';
 
 class MissionProfileScreen extends StatelessWidget {
   final Mission mission;

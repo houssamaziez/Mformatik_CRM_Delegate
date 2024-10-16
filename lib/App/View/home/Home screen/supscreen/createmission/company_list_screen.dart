@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
-import '../../../../Controller/home/company_controller.dart';
-import '../../../../Util/Style/stylecontainer.dart';
+import '../../../../../Controller/home/company_controller.dart';
+import '../../../../../Util/Route/Go.dart';
+import '../../../../../Util/Style/stylecontainer.dart';
+import 'clientview/client_list_screen.dart';
 
 class CompanyListScreen extends StatefulWidget {
   final String annexId;
@@ -57,11 +59,11 @@ class _CompanyListScreenState extends State<CompanyListScreen> {
                   ),
                   trailing: Icon(Icons.arrow_forward_ios),
                   onTap: () {
-                    // Go.to(
-                    //     context,
-                    //     CompanyListScreen(
-                    //       annexId: annex.id.toString(),
-                    //     ));
+                    Go.to(
+                        context,
+                        ClientListScreen(
+                          companyid: company.id.toString(),
+                        ));
                   },
                 ),
               ),

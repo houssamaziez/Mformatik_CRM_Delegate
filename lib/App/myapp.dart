@@ -5,7 +5,7 @@ import 'package:get_storage/get_storage.dart';
 
 import 'Util/Theme/theme_light.dart';
 import 'Util/localizations/localizations.dart';
-import 'View/home/splash_screen.dart';
+import 'View/home/splashScreen/splash_screen.dart';
 
 void main() async {
   await GetStorage.init(); // Initialize GetStorage

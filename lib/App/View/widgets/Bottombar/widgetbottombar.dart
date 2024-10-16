@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/come_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/home_controller.dart';
 
 buttonnavigationbar(context) {
   return GetBuilder<HomeController>(

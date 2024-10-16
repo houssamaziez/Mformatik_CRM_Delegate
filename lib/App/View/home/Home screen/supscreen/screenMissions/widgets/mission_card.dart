@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 
-import '../../../../../Model/mission.dart';
-import '../../../../../Util/Style/stylecontainer.dart';
+import '../../../../../../Model/mission.dart';
+import '../../../../../../Util/Style/stylecontainer.dart';
 import '../profile_mission.dart';
 
 class MissionCard extends StatelessWidget {
@@ -27,49 +27,57 @@ class MissionCard extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
             children: [
-              Text(
-                mission.label,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+              Image.asset(
+                "assets/icons/mission.png",
+                height: 50,
               ),
-              const SizedBox(height: 8),
-              if (mission.desc != null && mission.desc!.isNotEmpty)
-                Text(
-                  mission.desc!,
-                  style: const TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              const SizedBox(height: 12),
-              Text(
-                'Created by: ${mission.creatorUsername}',
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(height: 4),
-              // Display status with updated design
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Status: ${_getStatusLabel(mission.statusId)}',
-                    style: TextStyle(
-                      fontSize: 14,
+                    mission.label,
+                    style: const TextStyle(
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: _getStatusColor(mission.statusId),
                     ),
                   ),
-                  Text(
-                    'Created at: ${_formatDate(mission.createdAt.toString())}',
-                    style: const TextStyle(
-                      fontSize: 12,
+                  const SizedBox(height: 8),
+                  if (mission.desc != null && mission.desc!.isNotEmpty)
+                    Text(
+                      mission.desc!,
+                      style: const TextStyle(
+                        fontSize: 14,
+                      ),
                     ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Created by: ${mission.creatorUsername}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  // Display status with updated design
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Status: ${_getStatusLabel(mission.statusId)}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: _getStatusColor(mission.statusId),
+                        ),
+                      ),
+                      Text(
+                        '${_formatDate(mission.createdAt.toString())}',
+                        style: const TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

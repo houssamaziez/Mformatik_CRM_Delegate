@@ -10,6 +10,6 @@ void main() async {
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
   Get.put(ConnectivityController());
-  print(token.read("token"));
+  token.write("token", null);
   runApp(const MyApp());
 }

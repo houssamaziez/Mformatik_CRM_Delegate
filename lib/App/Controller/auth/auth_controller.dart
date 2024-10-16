@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/auth/screen_auth.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/home_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import '../../Model/user.dart';
 import '../../Util/app_exceptions/response_handler.dart';
@@ -18,12 +18,11 @@ class AuthController extends GetxController {
   TextEditingController namecontroller = TextEditingController(text: "admin");
   TextEditingController passwordcontroller =
       TextEditingController(text: "123456");
-  // Observable state management using GetX's Rx types
   var isLoading = false;
   User? user;
-  bool isPasswordVisible = false; // Variable to toggle password visibility
+  Person? person;
+  bool isPasswordVisible = false;
 
-  // Login method with improved structure and feedback for UI
   Future<void> login(context,
       {required String username, required String password}) async {
     Uri url = Uri.parse(Endpoint.apiLogin);
@@ -43,10 +42,16 @@ class AuthController extends GetxController {
       final responseData = ResponseHandler.processResponse(response);
       if (responseData != null && responseData.containsKey('user')) {
         user = User.fromJson(responseData['user']);
+        person = Person.fromJson(responseData['user']["person"]);
         token.write("token", responseData['token']);
-        Go.clearAndTo(context, HomeScreen());
+        if (user!.roleId != 4) {
+          Go.clearAndTo(context, HomeScreen());
+        } else {
+          showMessage(context, title: "You are not allowed to enter.");
+        }
 
-        print('Logged in as: ${user?.username}');
+        print('person in as: ${person?.firstName}');
+        print('user in as: ${user?.username}');
       } else {}
     } catch (e) {
       // Handle exceptions
@@ -57,38 +62,28 @@ class AuthController extends GetxController {
     }
   }
 
-// Login method with improved structure and feedback for UI
-  /// Makes a GET request to the API's "me" endpoint to retrieve the current
-  /// user's information and log them in.
-  ///
-  /// If the request is successful, the user is navigated to the home screen.
-  /// If the request fails with a 401 status code, the user is navigated to the
-  /// login screen.
-  ///
-  /// The user is shown a snackbar with an error message if there is a problem
-  /// with the request or if the response is invalid.
-  ///
-  /// The loading state is updated while the request is in progress.
   Future<void> getme(
     context,
   ) async {
     Uri url = Uri.parse(Endpoint.apIme);
-    if (namecontroller.text == '' || passwordcontroller.text == '') {
-      showMessage(context, title: "Please fill in the blank fields.");
-      return;
-    }
-    isLoading = true; // Set loading state
+
+    isLoading = true;
     update();
     try {
       final response = await http
           .get(url, headers: {"x-auth-token": token.read("token").toString()});
       print(response.body);
-      // Handle response and parse user data
       final responseData = ResponseHandler.processResponse(response);
       if (response.statusCode == 200) {
-        // user = User.fromJson(responseData['user']);
-        print('Logged in as: ${user?.username}');
-        Go.clearAndTo(context, HomeScreen());
+        user = User.fromJson(responseData['user']);
+        person = Person.fromJson(responseData);
+        print('person in as: ${person?.firstName}');
+        print('user in as: ${user?.username}');
+        if (user!.roleId == 4) {
+          Go.clearAndTo(context, HomeScreen());
+        } else {
+          showMessage(context, title: "You are not allowed to enter.");
+        }
       } else {
         if (response.statusCode == 401) {
           Go.clearAndTo(context, ScreenAuth());

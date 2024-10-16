@@ -7,7 +7,7 @@ class User {
   final int? annexId;
   final String createdAt;
   final String updatedAt;
-  final Person person;
+  final Person? person;
 
   User({
     required this.id,
@@ -32,7 +32,7 @@ class User {
       annexId: json['annexId'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
-      person: Person.fromJson(json['person']),
+      person: json['person'] != null ? Person.fromJson(json['person']) : null,
     );
   }
 
@@ -47,8 +47,33 @@ class User {
       'annexId': annexId,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
-      'person': person.toJson(),
+      'person': person?.toJson(),
     };
+  }
+
+  // CopyWith method
+  User copyWith({
+    int? id,
+    String? username,
+    bool? isActive,
+    int? roleId,
+    int? companyId,
+    int? annexId,
+    String? createdAt,
+    String? updatedAt,
+    Person? person,
+  }) {
+    return User(
+      id: id ?? this.id,
+      username: username ?? this.username,
+      isActive: isActive ?? this.isActive,
+      roleId: roleId ?? this.roleId,
+      companyId: companyId ?? this.companyId,
+      annexId: annexId ?? this.annexId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      person: person ?? this.person,
+    );
   }
 }
 
@@ -60,6 +85,7 @@ class Person {
   final int userId;
   final String createdAt;
   final String updatedAt;
+  final User? user;
 
   Person({
     required this.id,
@@ -69,6 +95,7 @@ class Person {
     required this.userId,
     required this.createdAt,
     required this.updatedAt,
+    required this.user,
   });
 
   // Factory method to create a Person from JSON
@@ -81,6 +108,7 @@ class Person {
       userId: json['userId'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
+      user: json['user'] != null ? User.fromJson(json['user']) : null,
     );
   }
 
@@ -95,5 +123,28 @@ class Person {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
     };
+  }
+
+  // CopyWith method
+  Person copyWith({
+    int? id,
+    String? firstName,
+    String? lastName,
+    String? img,
+    int? userId,
+    String? createdAt,
+    String? updatedAt,
+    User? user,
+  }) {
+    return Person(
+      id: id ?? this.id,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      img: img ?? this.img,
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      user: user ?? this.user,
+    );
   }
 }
