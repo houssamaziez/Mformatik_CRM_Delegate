@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../Controller/home/annex_controller.dart';
 import '../../../../Model/annex_model.dart';
+import 'company_list_screen.dart';
 
 class AnnexScreen extends StatelessWidget {
   final AnnexController annexController = Get.put(AnnexController());
@@ -32,24 +35,31 @@ class AnnexScreen extends StatelessWidget {
             itemCount: annexController.annexList.length,
             itemBuilder: (context, index) {
               final AnnexModel annex = annexController.annexList[index];
-              return Card(
-                margin: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text(annex.label),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('User: ${annex.user.username}'),
-                      Text('Created: ${annex.createdAt}'),
-                      Text('Updated: ${annex.updatedAt}'),
-                      Text(
-                          'User Active: ${annex.user.isActive ? "Yes" : "No"}'),
-                    ],
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: StyleContainer.style1,
+                  child: ListTile(
+                    title: Text(annex.label),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('User: ${annex.user.username}'),
+                        Text('Created: ${annex.createdAt}'),
+                        Text('Updated: ${annex.updatedAt}'),
+                        Text(
+                            'User Active: ${annex.user.isActive ? "Yes" : "No"}'),
+                      ],
+                    ),
+                    trailing: Icon(Icons.arrow_forward_ios),
+                    onTap: () {
+                      Go.to(
+                          context,
+                          CompanyListScreen(
+                            annexId: annex.id.toString(),
+                          ));
+                    },
                   ),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    // Handle tap
-                  },
                 ),
               );
             },
