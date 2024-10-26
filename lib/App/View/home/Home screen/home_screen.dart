@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
             appBar: appbarHome(
               context,
             ),
-            // bottomNavigationBar: buttonnavigationbar(context),
+            bottomNavigationBar: buttonnavigationbar(context),
             body: isactive == true
                 ? Column(
                     children: [

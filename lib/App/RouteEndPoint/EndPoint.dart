@@ -11,4 +11,5 @@ class Endpoint {
   static String apiCompanies = '$url/v1/companies';
   static String apiCients = '$url/v1/clients';
   static String apiMissionsReasons = '$url/v1/missions/reasons';
+  static String apiFeedbacks = '$url/v1/feedbacks';
 }
