@@ -31,11 +31,11 @@ class ResponseHandler {
 
         break;
       case 401: // Unauthorized
-      case 403: // Forbidden
+
         showMessage(Get.context,
-            title:
-                "Access Denied! You don't have permission to view this content."
-                    .tr);
+            title: decodeResponseBody(response)[0]["message"]);
+      case 403: // Forbidden
+        print("Access Denied! You don't have permission to view this content.");
         break;
       case 404: // Resource Not Found
         showMessage(Get.context,

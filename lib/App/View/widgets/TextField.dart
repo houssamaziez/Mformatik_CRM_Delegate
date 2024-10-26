@@ -65,7 +65,13 @@ class _MyTextfieldState extends State<MyTextfield> {
                           height: 15,
                         ),
                   hintText: widget.hint,
-                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor)),
+                  border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor)),
                 ),
               ),
             ),

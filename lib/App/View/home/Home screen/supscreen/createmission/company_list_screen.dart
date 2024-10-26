@@ -63,6 +63,7 @@ class _CompanyListScreenState extends State<CompanyListScreen> {
                         context,
                         ClientListScreen(
                           companyid: company.id.toString(),
+                          isback: true,
                         ));
                   },
                 ),

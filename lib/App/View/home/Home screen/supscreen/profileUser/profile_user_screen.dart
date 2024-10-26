@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Containers/container_blue.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/Dialog/showExitConfirmationDialog.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 class ProfileUserScreen extends StatelessWidget {
@@ -52,6 +53,7 @@ class ProfileUserScreen extends StatelessWidget {
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       )),
+                  Spacer(),
                   SizedBox(
                     height: 16,
                   ),
@@ -77,10 +79,11 @@ class ProfileUserScreen extends StatelessWidget {
                     height: 16,
                   ),
                   containerwithblue(context,
+                      color: user.isActive ? Colors.green : Colors.orange,
                       widget: ListTile(
                         leading: Icon(
                           Icons.check_circle,
-                          color: Theme.of(context).primaryColor,
+                          color: user.isActive ? Colors.green : Colors.orange,
                         ),
                         title: Text(
                           "Status",
@@ -97,6 +100,36 @@ class ProfileUserScreen extends StatelessWidget {
                           ),
                         ),
                       )),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showExitConfirmationDialog(context);
+                    },
+                    child: containerwithblue(context,
+                        widget: ListTile(
+                          leading: Icon(
+                            Icons.logout,
+                            color: Colors.red,
+                          ),
+                          title: Text(
+                            "Logout",
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          ),
+                          subtitle: Text(
+                            "Log out of the account",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14,
+                            ),
+                          ),
+                        )),
+                  ),
+                  Spacer(),
                 ],
               ),
             );

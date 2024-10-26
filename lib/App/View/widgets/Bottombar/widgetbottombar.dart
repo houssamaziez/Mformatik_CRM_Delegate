@@ -13,10 +13,12 @@ buttonnavigationbar(context) {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(context, 0, Icons.home, 'Missions', controller),
-              _buildNavItem(context, 1, Icons.search, "Search", controller),
-              _buildNavItem(context, 2, Icons.person, 'Profile', controller),
-              _buildNavItem(context, 3, Icons.settings, "Setting", controller),
+              _buildNavItem(context, 0, Icons.home, 'Home', controller),
+              _buildNavItem(
+                  context, 1, Icons.assessment, 'Missions', controller),
+              _buildNavItem(
+                  context, 2, Icons.assignment_add, "Add Mission", controller),
+              _buildNavItem(context, 3, Icons.person, 'Profile', controller),
             ],
           ),
         );
@@ -25,7 +27,6 @@ buttonnavigationbar(context) {
 
 Widget _buildNavItem(context, int index, IconData icon, String label,
     HomeController controller) {
-  bool isSelected = true;
   return InkWell(
     onTap: () {
       controller.updateindexBottomBar(index);

@@ -33,53 +33,60 @@ class MissionCard extends StatelessWidget {
                 "assets/icons/mission.png",
                 height: 50,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    mission.label,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  if (mission.desc != null && mission.desc!.isNotEmpty)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      mission.desc!,
+                      mission.label,
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'Created by: ${mission.creatorUsername}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  // Display status with updated design
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Status: ${_getStatusLabel(mission.statusId)}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: _getStatusColor(mission.statusId),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 8),
+                        if (mission.desc != null && mission.desc!.isNotEmpty)
+                          Text(
+                            mission.desc!,
+                            style: const TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        const SizedBox(height: 12),
+                        Text(
+                          'Created by: ${mission.creatorUsername}',
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
                         ),
-                      ),
-                      Text(
-                        '${_formatDate(mission.createdAt.toString())}',
-                        style: const TextStyle(
-                          fontSize: 12,
+                        const SizedBox(height: 4),
+                        // Display status with updated design
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Status: ${_getStatusLabel(mission.statusId)}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: _getStatusColor(mission.statusId),
+                              ),
+                            ),
+                            Text(
+                              '${_formatDate(mission.createdAt.toString())}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             ],
           ),
@@ -91,7 +98,7 @@ class MissionCard extends StatelessWidget {
   // Helper method to get card background color based on isSuccessful
   Color _getCardColor(bool? isSuccessful) {
     if (isSuccessful == true) {
-      return const Color.fromARGB(255, 121, 255, 125); // Color for Successful
+      return const Color.fromARGB(255, 196, 196, 196); // Color for Successful
     } else if (isSuccessful == false) {
       return Colors.orange; // Color for Pending
     }

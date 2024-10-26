@@ -16,17 +16,12 @@ class CreateMissionScreen extends StatefulWidget {
 class _CreateMissionScreenState extends State<CreateMissionScreen> {
   final _formKey = GlobalKey<FormState>();
   final MissionsController missionsController = Get.put(MissionsController());
-
+  TextEditingController? controller = TextEditingController();
   // Form fields
   String label = '';
   String desc = '';
   int reasonId = 0;
-  List<String> items = [
-    "item 1",
-    "item 2",
-    "item 3",
-    "item 4",
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +42,7 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
 
               // Description field
               TextFormField(
+                controller: controller,
                 decoration: const InputDecoration(
                   labelText: 'Description',
                   border: OutlineInputBorder(),
@@ -81,10 +77,10 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
                                 controllercreateMission.createMission(
-                                  desc: desc,
-                                  clientId: widget.clientID,
-                                  context: context,
-                                );
+                                    desc: desc,
+                                    clientId: widget.clientID,
+                                    context: context,
+                                    text: controller!.text);
                               }
                             },
                       child: controllercreateMission.isLoading

@@ -7,7 +7,7 @@ const spinkit = SpinKitSpinningLines(
 );
 const spinkitwhite = SpinKitSpinningLines(
   color: Colors.white,
-  size: 20.0,
+  size: 50.0,
 );
 
 var spinkwithtitle = const SizedBox(

@@ -15,7 +15,7 @@ import '../../Util/app_exceptions/response_handler.dart';
 GetStorage token = GetStorage();
 
 class AuthController extends GetxController {
-  TextEditingController namecontroller = TextEditingController(text: "admin");
+  TextEditingController namecontroller = TextEditingController(text: "flutter");
   TextEditingController passwordcontroller =
       TextEditingController(text: "123456");
   var isLoading = false;
@@ -43,8 +43,9 @@ class AuthController extends GetxController {
       if (responseData != null && responseData.containsKey('user')) {
         user = User.fromJson(responseData['user']);
         person = Person.fromJson(responseData['user']["person"]);
-        token.write("token", responseData['token']);
-        if (user!.roleId != 4) {
+        if (user!.roleId == 4) {
+          token.write("token", responseData['token']);
+
           Go.clearAndTo(context, HomeScreen());
         } else {
           showMessage(context, title: "You are not allowed to enter.");
@@ -53,6 +54,12 @@ class AuthController extends GetxController {
         print('person in as: ${person?.firstName}');
         print('user in as: ${user?.username}');
       } else {}
+
+      // if (response.statusCode == 401) {
+      //   showMessage(context,
+      //       title:
+      //           "Access Denied! You don't have permission to view this content.");
+      // }
     } catch (e) {
       // Handle exceptions
       showMessage(context, title: 'Connection problem'.tr);
@@ -82,6 +89,8 @@ class AuthController extends GetxController {
         if (user!.roleId == 4) {
           Go.clearAndTo(context, HomeScreen());
         } else {
+          Go.clearAndTo(context, ScreenAuth());
+
           showMessage(context, title: "You are not allowed to enter.");
         }
       } else {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/Containers/container_blue.dart';
 import '../../../../../../Model/client.dart';
 import '../createscreenview/cretate_screen.dart';
 
@@ -16,16 +16,23 @@ class ClientProfileScreen extends StatelessWidget {
         title: Text(client.fullName ?? 'Client Profile'),
         centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Go.to(
-            context,
-            CreateMissionScreen(
-              clientID: client.id,
-            ));
-      }),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Theme.of(context).primaryColor,
+        onPressed: () {
+          Go.to(
+              context,
+              CreateMissionScreen(
+                clientID: client.id,
+              ));
+        },
+        label: const Text(
+          "Add Mission",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -36,12 +43,12 @@ class ClientProfileScreen extends StatelessWidget {
               _buildContactSection(client),
               const SizedBox(height: 20),
               // Business Information
-              _buildBusinessDetailsSection(client),
+              _buildBusinessDetailsSection(context, client),
               const SizedBox(height: 20),
               // Additional Client Info
               _buildOtherDetails(client),
-              SizedBox(
-                height: 20,
+              const SizedBox(
+                height: 80,
               )
             ],
           ),
@@ -53,7 +60,7 @@ class ClientProfileScreen extends StatelessWidget {
   Widget _buildProfileHeader(Client client) {
     return Row(
       children: [
-        CircleAvatar(
+        const CircleAvatar(
           radius: 40,
           backgroundColor: Colors.blueAccent,
           child: Icon(Icons.person, size: 40, color: Colors.white),
@@ -65,7 +72,7 @@ class ClientProfileScreen extends StatelessWidget {
             children: [
               Text(
                 client.fullName ?? 'N/A',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -91,7 +98,7 @@ class ClientProfileScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Contact Details',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
@@ -114,7 +121,7 @@ class ClientProfileScreen extends StatelessWidget {
           const SizedBox(width: 12),
           Text(
             '$label:',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -128,16 +135,18 @@ class ClientProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBusinessDetailsSection(Client client) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Padding(
+  Widget _buildBusinessDetailsSection(
+    context,
+    Client client,
+  ) {
+    return containerwithblue(
+      context,
+      widget: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Business Information',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
@@ -160,7 +169,7 @@ class ClientProfileScreen extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           Text(
             value.isNotEmpty ? value : 'N/A',
@@ -172,26 +181,22 @@ class ClientProfileScreen extends StatelessWidget {
   }
 
   Widget _buildOtherDetails(Client client) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Other Details',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Text('Region: ${client.region ?? 'N/A'}',
-                style: TextStyle(fontSize: 16)),
-            const SizedBox(height: 10),
-            Text('Client Since: ${client.createdAt}',
-                style: TextStyle(fontSize: 16)),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Other Details',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          Text('Region: ${client.region ?? 'N/A'}',
+              style: const TextStyle(fontSize: 16)),
+          const SizedBox(height: 10),
+          Text('Client Since: ${client.createdAt}',
+              style: const TextStyle(fontSize: 16)),
+        ],
       ),
     );
   }

@@ -28,7 +28,7 @@ class MissionProfileScreen extends StatelessWidget {
             const SizedBox(height: 16),
             _buildMissionInfoSection('Mission Label'.tr, mission.label,
                 Icons.label, theme.primaryColor),
-            _buildMissionStatusSection(theme),
+            _buildMissionStatusSection(theme, mission.statusId),
             _buildMissionInfoSection(
                 'Mission Description'.tr,
                 mission.desc ?? 'No description available'.tr,
@@ -130,11 +130,10 @@ class MissionProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMissionStatusSection(ThemeData theme) {
+  Widget _buildMissionStatusSection(ThemeData theme, statusId) {
     // Set the statusId to 1 for the example (CREATED)
-    int statusId = 1;
-    String statusLabel = _getStatusLabel(statusId);
-    Color statusColor = _getStatusColor(statusId);
+    String statusLabel = getStatusLabel(statusId);
+    Color statusColor = getStatusColor(statusId);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -164,34 +163,34 @@ class MissionProfileScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  String _getStatusLabel(int statusId) {
-    switch (statusId) {
-      case 1:
-        return 'Created'.tr; // Translates to "Created"
-      case 2:
-        return 'In Progress'.tr; // Translates to "In Progress"
-      case 3:
-        return 'Completed'.tr; // Translates to "Completed"
-      case 4:
-        return 'Canceled'.tr; // Translates to "Canceled"
-      default:
-        return 'Unknown Status'.tr; // Fallback for unknown status
-    }
+String getStatusLabel(int statusId) {
+  switch (statusId) {
+    case 1:
+      return 'Created'.tr; // Translates to "Created"
+    case 2:
+      return 'In Progress'.tr; // Translates to "In Progress"
+    case 3:
+      return 'Completed'.tr; // Translates to "Completed"
+    case 4:
+      return 'Canceled'.tr; // Translates to "Canceled"
+    default:
+      return 'Unknown Status'.tr; // Fallback for unknown status
   }
+}
 
-  Color _getStatusColor(int statusId) {
-    switch (statusId) {
-      case 1: // CREATED
-        return Colors.blue; // Color for created status
-      case 2: // IN_PROGRESS
-        return Colors.orange; // Color for in progress
-      case 3: // COMPLETED
-        return Colors.green; // Color for completed
-      case 4: // CANCELED
-        return Colors.red; // Color for canceled
-      default:
-        return Colors.grey; // Fallback color for unknown status
-    }
+Color getStatusColor(int statusId) {
+  switch (statusId) {
+    case 1: // CREATED
+      return Colors.blue; // Color for created status
+    case 2: // IN_PROGRESS
+      return Colors.orange; // Color for in progress
+    case 3: // COMPLETED
+      return Colors.green; // Color for completed
+    case 4: // CANCELED
+      return Colors.red; // Color for canceled
+    default:
+      return Colors.grey; // Fallback color for unknown status
   }
 }

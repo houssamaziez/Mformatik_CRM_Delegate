@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
+import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Theme/colors.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../../Controller/auth/auth_controller.dart';
+import '../../../../../Controller/home/annex_controller.dart';
 import '../../../../../Controller/home/missions_controller.dart';
+import '../../../../widgets/Buttons/meneuSelectTow.dart';
 import '../../../../widgets/Containers/container_blue.dart';
 import '../../../../widgets/bolck_screen.dart';
+import '../createmission/clientview/client_list_screen.dart';
 import 'widgets/mission_card.dart';
 
 class MissionListScreen extends StatefulWidget {
@@ -24,8 +30,8 @@ class _MissionListScreenState extends State<MissionListScreen> {
 
   @override
   void initState() {
-    controller.getAllMission(context);
-    _scrollController.addListener(_scrollListener);
+    // controller.getAllMission(context);
+    // _scrollController.addListener(_scrollListener);
     super.initState();
   }
 
@@ -40,82 +46,98 @@ class _MissionListScreenState extends State<MissionListScreen> {
   }
 
   AuthController controllers = Get.put(AuthController());
-
+  bool _showContainers = false;
+  final AnnexController annexController =
+      Get.put(AnnexController(), permanent: true);
+  final CompanyController companyController =
+      Get.put(CompanyController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     bool isactive = controllers.user!.isActive;
-
     return isactive == true
         ? Scaffold(
-            backgroundColor: ColorsApp.white,
             appBar: AppBar(
-              title: Text('Missions'.tr),
+              title: Text("All Missions"),
               centerTitle: true,
             ),
-            body: GetBuilder<MissionsController>(
-              builder: (_) {
-                if (controller.isLoading) {
-                  // Show a loading indicator while fetching data
-                  return const Center(
-                    child: spinkit,
-                  );
-                } else if (controller.missions == null ||
-                    controller.missions!.isEmpty) {
-                  // Show a message when there are no missions
-                  return Center(
-                    child: Text(
-                      'No missions available'.tr,
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                  );
-                } else {
-                  // Display the list of missions
-                  return Column(
-                    children: [
-                      // SizedBox(
-                      //   height: 50,
-                      //   child: ListView.builder(
-                      //       itemCount: 4,
-                      //       scrollDirection: Axis.horizontal,
-                      //       itemBuilder: (context, index) {
-                      //         return Padding(
-                      //           padding: const EdgeInsets.all(8.0),
-                      //           child: containerwithblue(
-                      //             context,
-                      //             height: 50,
-                      //             widget: "data",
-                      //           ),
-                      //         );
-                      //       }),
-                      // ),
-                      Expanded(
-                        child: ListView(
-                          controller: _scrollController,
-                          shrinkWrap: true,
+            backgroundColor: ColorsApp.white,
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: GetBuilder<MissionsController>(
+                    builder: (_) {
+                      if (controller.isLoading) {
+                        // Show a loading indicator while fetching data
+                        return const Center(
+                          child: spinkit,
+                        );
+                      } else if (controller.missionsfilter == null ||
+                          controller.missionsfilter!.isEmpty) {
+                        // Show a message when there are no missions
+                        return Column(
                           children: [
-                            ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: controller.missions!.length,
-                              itemBuilder: (context, index) {
-                                final mission = controller.missions![index];
-                                return MissionCard(mission: mission);
-                              },
-                            ),
                             SizedBox(
-                              height: 10,
+                                child: meneuSelectTow(context,
+                                    indexchos: controller.indexminu,
+                                    onIndexChanged: (p0) {
+                              controller.onIndexChanged(p0);
+                            }, titles: ["Platform", "By me"])),
+                            const Spacer(),
+                            Center(
+                              child: Text(
+                                'No missions available'.tr,
+                                style: const TextStyle(fontSize: 18),
+                              ),
                             ),
-                            if (controller.isLoadingMore) spinkit
+                            const Spacer(),
                           ],
-                        ).addRefreshIndicator(
-                            onRefresh: () => controller.getAllMission(context)),
-                      ),
-                    ],
-                  );
-                }
-              },
+                        );
+                      } else {
+                        // Display the list of missions
+                        return Column(
+                          children: [
+                            SizedBox(
+                                child: meneuSelectTow(context,
+                                    indexchos: controller.indexminu,
+                                    onIndexChanged: (p0) {
+                              controller.onIndexChanged(p0);
+                            }, titles: ["Platform", "By me"])),
+                            Expanded(
+                                child: ListView(
+                              controller: _scrollController,
+                              shrinkWrap: true,
+                              children: [
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: controller.missionsfilter!.length,
+                                  itemBuilder: (context, index) {
+                                    final mission =
+                                        controller.missionsfilter![index];
+                                    return MissionCard(mission: mission);
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                if (controller.isLoadingMore) spinkit
+                              ],
+                            )
+
+                                // .addRefreshIndicator(
+                                //     onRefresh: () =>
+                                //         controller.getAllMission(context)),
+                                ),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
           )
-        : screenBlock();
+        : const screenBlock();
   }
 }

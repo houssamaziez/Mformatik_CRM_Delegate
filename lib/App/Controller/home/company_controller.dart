@@ -1,6 +1,8 @@
 // company_controller.dart
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:mformatic_crm_delegate/App/Controller/home/client_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'dart:convert';
 import '../../Model/company.dart';
@@ -9,15 +11,16 @@ import '../auth/auth_controller.dart';
 class CompanyController extends GetxController {
   var companies = <Company>[].obs;
   var isLoading = true.obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  Company? selectCompany;
 
   Future<void> fetchCompanies(String id) async {
+    companies.clear();
+    selectCompany = null;
+    update();
     try {
       isLoading.value = true;
+      update();
+
       final response = await http.get(
         Uri.parse(Endpoint.apiCompanies).replace(
           queryParameters: {
@@ -33,13 +36,37 @@ class CompanyController extends GetxController {
             .map((item) => Company.fromJson(item))
             .toList()
             .cast<Company>();
-      } else {
-        throw Exception('Failed to load companies');
+        update();
       }
     } catch (e) {
       print("Error fetching companies: $e");
     } finally {
+      if (companies.isNotEmpty) {
+        updateannex(companies.value.first);
+      } else {
+        print("object");
+        clientController.search(0.toString(), fullName: '');
+
+        companyController.getAllMission(Get.context, 0);
+
+        print("No companies found.");
+      }
+
       isLoading.value = false;
+      update();
     }
+    await clientController.search(selectCompany!.id.toString(), fullName: '');
+  }
+
+  MissionsController companyController = Get.put(MissionsController());
+  ClientController clientController = Get.put(ClientController());
+
+  updateannex(Company? selectAnnexvule) async {
+    print(selectAnnexvule);
+    selectCompany = selectAnnexvule;
+    update();
+    print(selectCompany!.id);
+    companyController.getAllMission(Get.context, selectCompany!.id);
+    await clientController.search(selectCompany!.id.toString(), fullName: '');
   }
 }
