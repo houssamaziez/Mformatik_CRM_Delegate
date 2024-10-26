@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 
 import '../../../Controller/auth/auth_controller.dart';
 import '../../../Controller/home/home_controller.dart';
+import '../../../Util/Route/Go.dart';
+import '../Settings/screenSetting.dart';
 
 AppBar appbarHome(
   BuildContext context,
@@ -53,7 +55,7 @@ AppBar appbarHome(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
-          // Go.to(context, ScreenSetting());
+          Go.to(context, ScreenSetting());
         },
         child: Image.asset(
           "assets/icons/darhboard.png",

@@ -50,6 +50,7 @@ dependencies:
   geolocator: ^13.0.1
   flutter_svg: ^2.0.10+1
   flutter_xlider: ^3.5.0
+  image_picker: ^1.1.2
   
 
 dev_dependencies:

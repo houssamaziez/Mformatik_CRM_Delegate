@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
@@ -59,12 +60,15 @@ class MissionsController extends GetxController {
 
   // Fetch all missions
   Future<void> getAllMission(context, int companyId) async {
+    var controllerUser = Get.put(AuthController());
+
     offset = 0;
     // final uri =
     //     Uri.parse('${Endpoint.apiMissions}?offset=$offset&limit=$limit');
     final uri = Uri.parse('${Endpoint.apiMissions}').replace(
       queryParameters: {
         'companyId': companyId.toString(),
+        'responsibleId': controllerUser.user!.id.toString()
       },
     );
     offset = limit + offset;
@@ -96,7 +100,12 @@ class MissionsController extends GetxController {
   }
 
   // Load more missions
-  Future<void> loadingMoreMission(context) async {
+  Future<void> loadingMoreMission(
+    context,
+  ) async {
+    var controllerUser = Get.put(AuthController());
+    var controllercompany = Get.put(CompanyController());
+
     isLoadingMore = true;
     update();
     offset = limit + offset;
@@ -104,7 +113,8 @@ class MissionsController extends GetxController {
 
     final uri = Uri.parse('${Endpoint.apiMissions}').replace(
       queryParameters: {
-        'companyId': 6.toString(),
+        'companyId': controllercompany.selectCompany!.id.toString(),
+        'responsibleId': controllerUser.user!.id.toString()
       },
     );
     update();

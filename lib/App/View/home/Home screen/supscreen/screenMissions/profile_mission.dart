@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 
 import '../../../../../Model/mission.dart';
+import '../../feedback/add_feedback.dart';
 
 class MissionProfileScreen extends StatelessWidget {
   final Mission mission;
@@ -20,6 +22,21 @@ class MissionProfileScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: theme.primaryColor,
       ),
+      floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Theme.of(context).primaryColor,
+          onPressed: () {
+            Go.to(
+                context,
+                AddFeedbackScreen(
+                  clientID: mission.clientId,
+                  feedbackModelID: 16,
+                  missionID: mission.id,
+                ));
+          },
+          label: Text(
+            "Add Feedback",
+            style: TextStyle(color: Colors.white),
+          )),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
@@ -51,29 +68,29 @@ class MissionProfileScreen extends StatelessWidget {
                 mission.editorRoleId?.toString() ?? 'N/A',
                 Icons.account_circle,
                 theme.primaryColor),
-            _buildMissionInfoSection(
-                'Client ID'.tr,
-                mission.clientId.toString(),
-                Icons.business,
-                theme.primaryColor),
-            _buildMissionInfoSection(
-                'Responsible ID'.tr,
-                mission.responsibleId.toString(),
-                Icons.person,
-                theme.primaryColor),
-            _buildMissionInfoSection('Reason ID'.tr,
-                mission.reasonId.toString(), Icons.help, theme.primaryColor),
+            // _buildMissionInfoSection(
+            //     'Client ID'.tr,
+            //     mission.clientId.toString(),
+            //     Icons.business,
+            //     theme.primaryColor),
+            // _buildMissionInfoSection(
+            //     'Responsible ID'.tr,
+            //     mission.responsibleId.toString(),
+            //     Icons.person,
+            //     theme.primaryColor),
+            // _buildMissionInfoSection('Reason ID'.tr,
+            //     mission.reasonId.toString(), Icons.help, theme.primaryColor),
             _buildMissionInfoSection(
                 'Created At'.tr,
                 mission.createdAt.toString(),
                 Icons.date_range,
                 theme.primaryColor),
-            if (mission.updatedAt != null)
-              _buildMissionInfoSection(
-                  'Updated At'.tr,
-                  mission.updatedAt.toString(),
-                  Icons.update,
-                  theme.primaryColor),
+            // if (mission.updatedAt != null)
+            // _buildMissionInfoSection(
+            //     'Updated At'.tr,
+            //     mission.updatedAt.toString(),
+            //     Icons.update,
+            //     theme.primaryColor),
           ],
         ),
       ),

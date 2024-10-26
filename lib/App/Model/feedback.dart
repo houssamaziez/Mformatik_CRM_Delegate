@@ -19,6 +19,7 @@ class FeedbackMission {
   final String? createdAt;
   final String? updatedAt;
   final String? clientFullName;
+  final List<dynamic> gallery; // New field to hold gallery images
 
   FeedbackMission({
     required this.id,
@@ -40,29 +41,34 @@ class FeedbackMission {
     required this.createdAt,
     required this.updatedAt,
     required this.clientFullName,
+    required this.gallery, // Include gallery in constructor
   });
-
   factory FeedbackMission.fromJson(Map<String, dynamic> json) {
     return FeedbackMission(
-      id: json['id'],
-      label: json['label'],
-      desc: json['desc'],
-      requestDate: json['requestDate'],
-      lat: json['lat'],
-      lng: json['lng'],
-      creatorUsername: json['creatorUsername'],
-      creatorRoleId: json['creatorRoleId'],
-      editorUsername: json['editorUsername'],
-      editorRoleId: json['editorRoleId'],
-      creatorId: json['creatorId'],
-      editorId: json['editorId'],
-      clientId: json['clientId'],
-      missionId: json['missionId'],
-      feedbackModelId: json['feedbackModelId'],
-      decisionId: json['decisionId'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
-      clientFullName: json['client']['fullName'],
+      id: json['id'] ?? 0, // Provide a default value if null
+      label: json['label'] ?? '', // Default to an empty string if null
+      desc: json['desc'] ?? '', // Default to an empty string if null
+      requestDate: json['requestDate'], // Allow null
+      lat: json['lat'], // Allow null
+      lng: json['lng'], // Allow null
+      creatorUsername:
+          json['creatorUsername'] ?? '', // Default to an empty string
+      creatorRoleId: json['creatorRoleId'], // Allow null
+      editorUsername: json['editorUsername'], // Allow null
+      editorRoleId: json['editorRoleId'], // Allow null
+      creatorId: json['creatorId'] ?? 0, // Provide a default value if null
+      editorId: json['editorId'], // Allow null
+      clientId: json['clientId'] ?? 0, // Provide a default value if null
+      missionId: json['missionId'] ?? 0, // Provide a default value if null
+      feedbackModelId:
+          json['feedbackModelId'] ?? 0, // Provide a default value if null
+      decisionId: json['decisionId'], // Allow null
+      createdAt: json['createdAt'], // Allow null
+      updatedAt: json['updatedAt'], // Allow null
+      clientFullName:
+          json['client']?['fullName'] ?? '', // Use null-aware operator
+      gallery: List<dynamic>.from(
+          json['gallery'] ?? []), // Convert gallery JSON to List
     );
   }
 }

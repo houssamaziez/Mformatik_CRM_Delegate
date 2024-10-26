@@ -5,6 +5,7 @@ import 'package:mformatic_crm_delegate/App/Controller/home/home_controller.dart'
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/supscreen/createmission/clientview/client_list_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/Settings/screenSetting.dart';
 
 import '../../../Controller/auth/auth_controller.dart';
 import '../../../Controller/home/annex_controller.dart';
@@ -41,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
             isback: false,
           );
         }),
-    const ProfileUserScreen(),
+    ScreenSetting(),
   ];
   final MissionsController controller = Get.put(MissionsController());
 
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
             appBar: appbarHome(
               context,
             ),
-            bottomNavigationBar: buttonnavigationbar(context),
+            // bottomNavigationBar: buttonnavigationbar(context),
             body: isactive == true
                 ? Column(
                     children: [

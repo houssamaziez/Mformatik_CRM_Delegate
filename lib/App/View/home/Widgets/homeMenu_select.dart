@@ -27,7 +27,7 @@ List<HomeMenuSelect> listiconhomemeneu = [
         Go.to(context, const MissionListScreenByMe());
       }),
   HomeMenuSelect(
-    title: "طلب استئذان",
+    title: "",
     icon: 'log.png',
     function: (context) {
       // Go.to(context, CourseGridScreen(role: 'الملاحظات'));
