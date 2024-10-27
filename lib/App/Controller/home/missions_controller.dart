@@ -26,10 +26,8 @@ class MissionsController extends GetxController {
     print(controllerUser.user!.roleId);
     inProgress = 0;
     update();
-
     completed = 0;
     update();
-
     canceled = 0;
     update();
     missionsfilter!.clear();
@@ -68,7 +66,6 @@ class MissionsController extends GetxController {
     final uri = Uri.parse('${Endpoint.apiMissions}').replace(
       queryParameters: {
         'companyId': companyId.toString(),
-        'responsibleId': controllerUser.user!.id.toString()
       },
     );
     offset = limit + offset;
@@ -114,7 +111,6 @@ class MissionsController extends GetxController {
     final uri = Uri.parse('${Endpoint.apiMissions}').replace(
       queryParameters: {
         'companyId': controllercompany.selectCompany!.id.toString(),
-        'responsibleId': controllerUser.user!.id.toString()
       },
     );
     update();
@@ -209,7 +205,6 @@ class MissionsController extends GetxController {
         inProgress = inProgress + 1;
         // 'In Progress'.tr; // Translates to "In Progress"
         update();
-
       case 3:
         completed = completed + 1;
         update();

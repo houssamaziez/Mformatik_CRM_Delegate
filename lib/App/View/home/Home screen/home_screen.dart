@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
             isback: false,
           );
         }),
-    ScreenSetting(),
+    ProfileUserScreen(),
   ];
   final MissionsController controller = Get.put(MissionsController());
 
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
             appBar: appbarHome(
               context,
             ),
-            // bottomNavigationBar: buttonnavigationbar(context),
+            bottomNavigationBar: buttonnavigationbar(context),
             body: isactive == true
                 ? Column(
                     children: [

@@ -27,10 +27,27 @@ Expanded statuseAndLatenessButton(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "statistics Missions",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 12),
+                      Row(
+                        children: [
+                          const Text(
+                            "statistics Missions",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 12),
+                          ),
+                          Spacer(),
+                          Text(
+                            "(" +
+                                missionsController.missions!.length.toString() +
+                                ")",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12,
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          )
+                        ],
                       ),
                       const SizedBox(
                         height: 8,
@@ -134,12 +151,12 @@ Expanded statuseAndLatenessButton(
                             flutterSlider(
                                 getSliderColor,
                                 missionsController.missions!.length.toDouble(),
-                                missionsController.completed.toDouble(),
+                                missionsController.inProgress.toDouble(),
                                 Colors.orange),
                             const SizedBox(
                               width: 5,
                             ),
-                            missionsController.completed == 0
+                            missionsController.inProgress == 0
                                 ? 0.toString().style()
                                 : ((missionsController.inProgress * 100) /
                                         missionsController.missions!.length)
@@ -156,12 +173,12 @@ Expanded statuseAndLatenessButton(
                             flutterSlider(
                                 getSliderColor,
                                 missionsController.missions!.length.toDouble(),
-                                missionsController.completed.toDouble(),
+                                missionsController.canceled.toDouble(),
                                 Colors.red),
                             const SizedBox(
                               width: 5,
                             ),
-                            missionsController.completed == 0
+                            missionsController.canceled == 0
                                 ? 0.toString().style()
                                 : ((missionsController.canceled * 100) /
                                         missionsController.missions!.length)

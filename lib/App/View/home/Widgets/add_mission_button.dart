@@ -5,6 +5,7 @@ import '../../../Controller/home/company_controller.dart';
 import '../../../Util/Route/Go.dart';
 import '../../../Util/Style/stylecontainer.dart';
 import '../Home screen/supscreen/createmission/clientview/client_list_screen.dart';
+import '../Home screen/supscreen/createmission/clientview/client_list_screen_add_mission.dart';
 
 class AddMissionbutton extends StatelessWidget {
   const AddMissionbutton({
@@ -21,7 +22,7 @@ class AddMissionbutton extends StatelessWidget {
                 onTap: () {
                   Go.to(
                       context,
-                      ClientListScreen(
+                      ClientListScreenAddMission(
                         companyid:
                             companyController.selectCompany!.id.toString(),
                         isback: true,
