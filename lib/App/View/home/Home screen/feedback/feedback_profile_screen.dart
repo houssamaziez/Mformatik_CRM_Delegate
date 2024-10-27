@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../Controller/home/feedback_controller.dart';
 import '../../../../Model/feedback.dart';
+import 'update_feedback_screen.dart';
 
 class FeedbackDetailScreen extends StatefulWidget {
   final String feedbackId;
@@ -192,6 +194,11 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                       textStyle: TextStyle(fontSize: 16),
                     ),
                     onPressed: () {
+                      Go.to(
+                          context,
+                          UpdateFeedbackScreen(
+                            feedback: feedback,
+                          ));
                       // Navigate to EditFeedbackScreen
                       // Get.to(EditFeedbackScreen(feedbackId: feedback.id));
                     },

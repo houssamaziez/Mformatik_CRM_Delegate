@@ -213,4 +213,86 @@ class FeedbackController extends GetxController {
       update();
     }
   }
+
+  Future<void> updateFeedback({
+    required String feedbackId,
+    required String label,
+    required String desc,
+    String? lat,
+    String? lng,
+    String? requestDate,
+    required int clientId,
+    required int feedbackModelId,
+  }) async {
+    // Indicate loading state
+    isLoadingadd = true;
+    update();
+
+    try {
+      final url =
+          Uri.parse('${Endpoint.apiFeedbacks}/$feedbackId'); // Endpoint URL
+      Map<String, Object?> map = {
+        'label': label,
+        'desc': desc,
+        'lat': lat,
+        'lng': lng,
+        'requestDate': requestDate,
+        'clientId': clientId,
+        'feedbackModelId': feedbackModelId,
+      };
+
+      final response = await http.put(
+        url,
+        headers: {
+          'x-auth-token': token.read("token").toString(),
+        },
+        body: json.encode({
+          'label': label,
+          'desc': desc,
+          'lat': lat,
+          'lng': lng,
+          'requestDate': requestDate,
+          'clientId': clientId,
+          'feedbackModelId': feedbackModelId,
+        }),
+      );
+
+      // Handle response based on status code
+      if (response.statusCode == 200) {
+        showMessage(
+          Get.context,
+          title: 'Feedback updated successfully',
+          color: Colors.green,
+        );
+        print('Feedback updated successfully');
+      } else {
+        showMessage(
+          Get.context,
+          title: 'Failed to update feedback',
+          color: Colors.orange,
+        );
+        print('Failed to update feedback: ${response.body}');
+      }
+    } on SocketException catch (e) {
+      // Handle network-related errors
+      showMessage(
+        Get.context,
+        title: 'No Internet Connection',
+        color: Colors.red,
+      );
+      print('Network error: $e');
+    } catch (e) {
+      // Handle other types of errors
+      showMessage(
+        Get.context,
+        title: 'Unexpected Error',
+        color: Colors.red,
+      );
+      print('Unexpected error: $e');
+    } finally {
+      // Reset loading state
+      isLoadingadd = false;
+      update();
+    }
+  }
 }
