@@ -21,11 +21,13 @@ AppBar appbarHome(
           },
           child: Image.asset(
             "assets/icons/filter.png",
-            height: 25,
-            width: 32,
+            width: 25,
           ),
         ),
       ),
+      SizedBox(
+        width: 5,
+      )
     ],
     title: GetBuilder<AuthController>(
         init: AuthController(),
@@ -57,10 +59,10 @@ AppBar appbarHome(
         onTap: () {
           Go.to(context, ScreenSetting());
         },
-        child: Image.asset(
-          "assets/icons/darhboard.png",
-          height: 32,
-          width: 32,
+        child: SizedBox(
+          child: Image.asset(
+            "assets/icons/darhboard.png",
+          ),
         ),
       ),
     ),

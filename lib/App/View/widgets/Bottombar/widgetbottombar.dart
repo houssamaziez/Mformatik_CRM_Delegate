@@ -7,7 +7,7 @@ buttonnavigationbar(context) {
       init: HomeController(),
       builder: (controller) {
         return Container(
-          height: 90,
+          height: 75,
           color: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
@@ -32,7 +32,7 @@ Widget _buildNavItem(context, int index, IconData icon, String label,
       controller.updateindexBottomBar(index);
     },
     child: Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Icon(
           icon,

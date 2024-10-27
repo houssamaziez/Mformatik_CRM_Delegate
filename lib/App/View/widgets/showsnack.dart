@@ -4,6 +4,17 @@ import 'package:get/get.dart';
 showMessage(context, {required String title, Color color = Colors.red}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Text(title.tr),
+      backgroundColor: color,
+    ),
+  );
+}
+
+showMessagetop(context, {required String title, Color color = Colors.red}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      behavior: SnackBarBehavior.floating,
       content: Text(title.tr),
       backgroundColor: color,
     ),

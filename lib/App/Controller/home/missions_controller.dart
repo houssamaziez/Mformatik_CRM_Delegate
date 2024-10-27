@@ -184,6 +184,8 @@ class MissionsController extends GetxController {
             title: 'Mission created successfully!'.tr, color: Colors.green);
         // getAllMission(context); // Refresh the mission list after creation
         // Navigator.of(context).popUntil();
+        getAllMission(context, Get.put(CompanyController()).selectCompany!.id);
+
         Go.clearAndTo(context, HomeScreen());
       } else {
         showMessage(context, title: 'Failed to create mission'.tr);

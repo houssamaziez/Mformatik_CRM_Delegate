@@ -82,7 +82,7 @@ class _MissionListScreenState extends State<MissionListScreen> {
                                     indexchos: controller.indexminu,
                                     onIndexChanged: (p0) {
                               controller.onIndexChanged(p0);
-                            }, titles: ["Platform", "By me"])),
+                            }, titles: ["From Platform", "By me"])),
                             const Spacer(),
                             Center(
                               child: Text(

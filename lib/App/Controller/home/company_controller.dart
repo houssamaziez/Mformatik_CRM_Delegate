@@ -10,7 +10,7 @@ import '../auth/auth_controller.dart';
 
 class CompanyController extends GetxController {
   var companies = <Company>[].obs;
-  var isLoading = true.obs;
+  var isLoading = false.obs;
   Company? selectCompany;
 
   Future<void> fetchCompanies(String id) async {
@@ -40,6 +40,8 @@ class CompanyController extends GetxController {
       }
     } catch (e) {
       print("Error fetching companies: $e");
+      isLoading.value = false;
+      update();
     } finally {
       if (companies.isNotEmpty) {
         updateannex(companies.value.first);

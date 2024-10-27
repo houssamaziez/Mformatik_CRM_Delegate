@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
+import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import 'dart:convert';
 
 import '../../Model/feedback.dart';
@@ -109,6 +111,7 @@ class FeedbackController extends GetxController {
           feedbacks.addAll(responseData
               .map((data) => FeedbackMission.fromJson(data))
               .toList());
+          update();
           offset.value += limit;
         }
       } else {
@@ -182,18 +185,22 @@ class FeedbackController extends GetxController {
       request.fields['missionId'] = missionId.toString();
       request.fields['feedbackModelId'] = feedbackModelId.toString();
 
-      // // Add images if they are provided
-      // if (images != null) {
-      //   for (var image in images) {
-      //     request.files.add(await http.MultipartFile.fromPath(
-      //       'img', // Change to the correct field name expected by your API
-      //       image.path,
-      //     ));
-      //   }
-      // }
+      // Add images if they are provided
+      if (images != null) {
+        for (var image in images) {
+          request.files.add(await http.MultipartFile.fromPath(
+            'img', // Change to the correct field name expected by your API
+            image.path,
+          ));
+        }
+      }
       var response = await request.send();
       print(response.statusCode);
       if (response.statusCode == 200) {
+        Get.back();
+        showMessage(Get.context,
+            title: 'Feedback added successfully', color: Colors.green);
+
         print('Feedback added successfully');
         // Optionally refresh the feedbacks list or perform other actions
       } else {
@@ -205,11 +212,5 @@ class FeedbackController extends GetxController {
       isLoadingadd = false;
       update();
     }
-  }
-
-  @override
-  void onClose() {
-    scrollController.dispose();
-    super.onClose();
   }
 }

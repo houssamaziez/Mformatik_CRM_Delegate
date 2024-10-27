@@ -3,6 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 
 class ConnectivityController extends GetxController {
   var isConnected = true;
@@ -64,43 +65,46 @@ class ConnectivityController extends GetxController {
 
   void _showNoInternetDialog() {
     _isDialogShowing = true;
-    Get.dialog(
-      AlertDialog(
-        title: Text('No internet connection'.tr),
-        content: SizedBox(
-          height: 160,
-          child: Column(
-            children: [
-              Image.asset(
-                'assets/icons/wi-fi.png',
-                height: 110,
-              ),
-              Expanded(
-                  child: Text('Please check your internet connection.'.tr)),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Get.back(); // Close the dialog
-              _isDialogShowing = false;
-            },
-            child: Text('Cancel'.tr,
-                style: TextStyle(color: const Color.fromARGB(255, 0, 96, 174))),
-          ),
-          // TextButton(
-          //   onPressed: () {
-          //     _stopInternetCheck();
-          //     Get.back(); // Close the dialog
-          //     _isDialogShowing = false;
-          //   },
-          //   child: const Text('Complete in offline mode'),
-          // ),
-        ],
-      ),
-      barrierDismissible: false, // Prevent dialog dismissal by tapping outside
-    );
+    // Get.dialog(
+    //   AlertDialog(
+    //     title: Text('No internet connection'.tr),
+    //     content: SizedBox(
+    //       height: 160,
+    //       child: Column(
+    //         children: [
+    //           Image.asset(
+    //             'assets/icons/wi-fi.png',
+    //             height: 110,
+    //           ),
+    //           Expanded(
+    //               child: Text('Please check your internet connection.'.tr)),
+    //         ],
+    //       ),
+    //     ),
+    //     actions: [
+    //       TextButton(
+    //         onPressed: () {
+    //           Get.back(); // Close the dialog
+    //           _isDialogShowing = false;
+    //         },
+    //         child: Text('Cancel'.tr,
+    //             style: TextStyle(color: const Color.fromARGB(255, 0, 96, 174))),
+    //       ),
+    //       // TextButton(
+    //       //   onPressed: () {
+    //       //     _stopInternetCheck();
+    //       //     Get.back(); // Close the dialog
+    //       //     _isDialogShowing = false;
+    //       //   },
+    //       //   child: const Text('Complete in offline mode'),
+    //       // ),
+    //     ],
+    //   ),
+    //   barrierDismissible: false, // Prevent dialog dismissal by tapping outside
+    // );
+
+    showMessagetop(Get.context, title: "No internet connection");
+    _isDialogShowing = false;
   }
 
 //TODO:check this feature:

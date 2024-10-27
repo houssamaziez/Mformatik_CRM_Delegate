@@ -22,10 +22,10 @@ class ResponseHandler {
               "the password is wrong") {
             showMessage(Get.context, title: "the password is wrong".tr);
           } else {
-            showMessage(Get.context,
-                title:
-                    "Oops! It seems there was an issue with your request. Please try again."
-                        .tr);
+            // showMessage(Get.context,
+            //     title:
+            //         "Oops! It seems there was an issue with your request. Please try again."
+            //             .tr);
           }
         }
 

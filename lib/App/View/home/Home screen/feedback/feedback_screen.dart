@@ -19,16 +19,24 @@ class FeedbackScreen extends StatefulWidget {
 }
 
 class _FeedbackScreenState extends State<FeedbackScreen> {
-  final FeedbackController feedbackController =
-      Get.put(FeedbackController(), permanent: true);
+  final FeedbackController feedbackController = Get.put(
+    FeedbackController(),
+  );
   final CompanyController companyController = Get.put(CompanyController());
 
   @override
   void initState() {
-    feedbackController.fetchFeedbacks(
+    Get.put(FeedbackController()).fetchFeedbacks(
         companyController.selectCompany!.id.toString(),
         Get.put(AuthController()).user!.id.toString());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    Get.delete<FeedbackController>();
+
+    super.dispose();
   }
 
   @override
