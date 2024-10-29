@@ -81,11 +81,12 @@ class FeedbackController extends GetxController {
       );
 
       print('--------------------------');
-      print("fetchFeedbacks  function :$companyId  ");
+      print("fetchFeedbacks  function :  ");
       print('--------------------------');
 
       if (response.statusCode == 200) {
         update();
+        print("objecccct");
         update();
         List<dynamic> responseData = json.decode(response.body)['rows'];
         // feedbackslength = json.decode(response.body)['count'];
@@ -96,10 +97,11 @@ class FeedbackController extends GetxController {
               .toList());
           update();
           offset.value = 10;
-          var responseCounts = await http.get(
-            Uri.parse(Endpoint.apiFeedbacksCounts),
+          final responseCounts = await http.get(
+            Uri.parse("${Endpoint.apiFeedbacksCounts}?companyId=$companyId"),
             headers: {"x-auth-token": token.read("token").toString()},
           );
+          print(responseCounts.body);
           if (responseCounts.statusCode == 200) {
             feedbacksWithMission =
                 jsonDecode(responseCounts.body)["feedbacksWithMission"];
@@ -111,6 +113,10 @@ class FeedbackController extends GetxController {
             update();
           }
         }
+
+        print("objecccct");
+        print(feedbacks);
+        print("objecccct");
 
         throw Exception('Failed to load feedbacks');
       }
@@ -256,6 +262,7 @@ class FeedbackController extends GetxController {
     String? lat,
     String? lng,
     String? requestDate,
+    required int creatorId,
     required int clientId,
     required int feedbackModelId,
   }) async {
@@ -303,7 +310,7 @@ class FeedbackController extends GetxController {
           'desc': desc,
           // 'lat': lat,
           // 'lng': lng,
-          // 'requestDate': requestDate,
+          'requestDate': requestDate,
           // 'clientId': clientId,
           'feedbackModelId': feedbackModelFilter,
         },
@@ -312,6 +319,11 @@ class FeedbackController extends GetxController {
 
       // Handle response based on status code
       if (response.statusCode == 204) {
+        fetchFeedbacks(
+            Get.put(CompanyController()).selectCompany!.id.toString(),
+            creatorId.toString());
+        Go.back(Get.context);
+        Go.back(Get.context);
         showMessage(
           Get.context,
           title: 'Feedback updated successfully',

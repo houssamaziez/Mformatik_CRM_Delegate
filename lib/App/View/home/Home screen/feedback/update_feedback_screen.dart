@@ -60,18 +60,19 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Update Feedback')),
+      appBar: AppBar(title: const Text('Update Feedback')),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // // if (widget.feedback.feedbackModelId == 1)
             // ReasonsSelectorFeedbackupd(
             //     id: widget.feedback.feedbackModelId.toString()),
-            ReasonsSelectorFeedbackupd(id: 1.toString()),
+            ReasonsSelectorFeedbackupd(
+                id: widget.feedback.feedbackModelId.toString()),
 
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             _buildTextField(
@@ -128,7 +129,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                                       feedbacklocal!.gallery.remove(imagePath);
                                     });
                                   },
-                                  icon: Icon(Icons.delete))
+                                  icon: const Icon(Icons.delete))
                             ],
                           ),
                         );
@@ -139,12 +140,12 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                     'No Images available',
                     style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _handleUpdateFeedback,
-              child: Text('Update Feedback'),
+              child: const Text('Update Feedback'),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
+                minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
               ),
@@ -159,7 +160,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
       TextEditingController controller, String label, String placeholder,
       {int maxLines = 1, TextInputType keyboardType = TextInputType.text}) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(bottom: 16),
       child: TextField(
         controller: controller,
         maxLines: maxLines,
@@ -194,6 +195,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
         requestDate: requestDateController.text,
         clientId: int.parse(clientIdController.text),
         feedbackModelId: int.parse(widget.feedback.feedbackModelId.toString()),
+        creatorId: widget.feedback.creatorId!,
       )
           .then((success) {
         getCurrentLocation();
@@ -202,10 +204,24 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   }
 }
 
-class ReasonsSelectorFeedbackupd extends StatelessWidget {
+class ReasonsSelectorFeedbackupd extends StatefulWidget {
   final String id;
 
   const ReasonsSelectorFeedbackupd({super.key, required this.id});
+
+  @override
+  State<ReasonsSelectorFeedbackupd> createState() =>
+      _ReasonsSelectorFeedbackupdState();
+}
+
+class _ReasonsSelectorFeedbackupdState
+    extends State<ReasonsSelectorFeedbackupd> {
+  @override
+  void initState() {
+    Get.put(ExpandableControllerFeedback()).intiItme(int.parse(widget.id));
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +229,7 @@ class ReasonsSelectorFeedbackupd extends StatelessWidget {
       init: ReasonsFeedbackController(),
       builder: (controller) {
         if (controller.isLoading) {
-          return Center(child: spinkit);
+          return const Center(child: spinkit);
         } else if (controller.reasons.isEmpty) {
           return const Center(
             child: Text(
@@ -226,7 +242,7 @@ class ReasonsSelectorFeedbackupd extends StatelessWidget {
         return SelectReason(
           items: controller.reasons,
           title: 'Select Reasons',
-          id: id,
+          id: widget.id,
         );
       },
     );
@@ -276,7 +292,7 @@ class SelectReason extends StatelessWidget {
                 expandableController.selectedItem.value == null
                     ? 'Select Reasons'
                     : expandableController.selectedItem.value!.label!,
-                style: TextStyle(fontSize: 16, color: Colors.black87),
+                style: const TextStyle(fontSize: 16, color: Colors.black87),
               ),
               trailing: Icon(
                 expandableController.isExpanded.value
@@ -300,7 +316,8 @@ class SelectReason extends StatelessWidget {
                           vertical: 12.0, horizontal: 16.0),
                       child: Text(
                         item.label!,
-                        style: TextStyle(fontSize: 15, color: Colors.black),
+                        style:
+                            const TextStyle(fontSize: 15, color: Colors.black),
                       ),
                     ),
                   ),
@@ -318,14 +335,15 @@ class SelectReason extends StatelessWidget {
                 child: TextField(
                   controller:
                       expandableController.controllerTextEditingController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Please specify',
                     border: OutlineInputBorder(),
                   ),
                 ),
               );
             }
-            return SizedBox.shrink(); // Returns an empty widget if not needed
+            return const SizedBox
+                .shrink(); // Returns an empty widget if not needed
           }),
         ],
       ),

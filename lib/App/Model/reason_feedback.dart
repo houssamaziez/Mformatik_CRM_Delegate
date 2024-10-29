@@ -1,8 +1,8 @@
 class FeedbackReason {
   final int? id;
   final String? label;
-  final bool isDescRequired;
-  final bool isRequestDateRequired;
+  final bool? isDescRequired;
+  final bool? isRequestDateRequired;
   final DateTime createdAt;
   final DateTime updatedAt;
 

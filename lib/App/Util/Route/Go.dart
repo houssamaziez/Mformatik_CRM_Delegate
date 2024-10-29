@@ -27,7 +27,7 @@ class Go {
   }
 
   // Go back to the previous screen
-  static void back(BuildContext context) {
+  static void back(context) {
     Navigator.pop(context);
   }
 

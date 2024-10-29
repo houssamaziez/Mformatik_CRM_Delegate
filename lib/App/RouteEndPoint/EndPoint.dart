@@ -14,6 +14,5 @@ class Endpoint {
   static String apiFeedbacksReasons = '$url/v1/feedbacks/feedback-models';
   static String apiFeedbacks = '$url/v1/feedbacks';
   static String apiChangeStatus = '$url/v1/missions/change-status-to';
-  static String apiFeedbacksCounts =
-      '$url/v1/statistics/feedback-counts?companyId=6';
+  static String apiFeedbacksCounts = '$url/v1/statistics/feedbacks-counts';
 }
