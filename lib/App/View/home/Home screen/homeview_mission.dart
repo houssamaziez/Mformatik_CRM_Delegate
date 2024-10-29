@@ -131,7 +131,7 @@ class Home extends StatelessWidget {
                           height: 14,
                         ),
                         SizedBox(
-                            height: 180,
+                            height: 190,
                             child: Row(
                               children: [
                                 const SizedBox(
@@ -166,7 +166,7 @@ class Home extends StatelessWidget {
                                     child: "Last Missions".style(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black54,
-                                        fontSize: 16),
+                                        fontSize: 14),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),

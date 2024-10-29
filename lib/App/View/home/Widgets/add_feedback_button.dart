@@ -21,13 +21,14 @@ class AddMissionbuttonFeddback extends StatelessWidget {
             builder: (companyController) {
               return InkWell(
                 onTap: () {
-                  // Go.to(
-                  //     context,
-                  //     AddFeedbackScreen(
-                  //       companyid:
-                  //           companyController.selectCompany!.id.toString(),
-                  //       isback: true,
-                  //     ));
+                  Go.to(
+                      context,
+                      ClientListScreenAddMission(
+                        companyid:
+                            companyController.selectCompany!.id.toString(),
+                        isback: true,
+                        role: 'feedback',
+                      ));
                 },
                 child: Container(
                   decoration: StyleContainer.stylecontainer(

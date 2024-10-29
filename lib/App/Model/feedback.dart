@@ -1,4 +1,59 @@
-// feedback.dart
+class Clientfeedback {
+  final int id;
+  final int? localId;
+  final String? fullName;
+  final String? email;
+  final String? address;
+  final String? phone;
+  final String? tel;
+  final String? region;
+  final String? cashingIn;
+  final String? sold;
+  final String? potential;
+  final String? turnover;
+  final int? companyId;
+  final String? createdAt;
+  final String? updatedAt;
+
+  Clientfeedback({
+    required this.id,
+    this.localId,
+    this.fullName,
+    this.email,
+    this.address,
+    this.phone,
+    this.tel,
+    this.region,
+    this.cashingIn,
+    this.sold,
+    this.potential,
+    this.turnover,
+    this.companyId,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory Clientfeedback.fromJson(Map<String, dynamic> json) {
+    return Clientfeedback(
+      id: json['id'] ?? 0,
+      localId: json['localId'],
+      fullName: json['fullName'],
+      email: json['email'],
+      address: json['address'],
+      phone: json['phone'],
+      tel: json['tel'],
+      region: json['region'],
+      cashingIn: json['cashingIn'],
+      sold: json['sold'],
+      potential: json['potential'],
+      turnover: json['turnover'],
+      companyId: json['companyId'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+    );
+  }
+}
+
 class FeedbackMission {
   final int id;
   final String? label;
@@ -18,57 +73,56 @@ class FeedbackMission {
   final int? decisionId;
   final String? createdAt;
   final String? updatedAt;
-  final String? clientFullName;
-  final List<dynamic> gallery; // New field to hold gallery images
+  final Clientfeedback? client;
+  final List<dynamic> gallery;
 
   FeedbackMission({
     required this.id,
-    required this.label,
-    required this.desc,
+    this.label,
+    this.desc,
     this.requestDate,
     this.lat,
     this.lng,
-    required this.creatorUsername,
-    required this.creatorRoleId,
+    this.creatorUsername,
+    this.creatorRoleId,
     this.editorUsername,
     this.editorRoleId,
-    required this.creatorId,
+    this.creatorId,
     this.editorId,
-    required this.clientId,
-    required this.missionId,
-    required this.feedbackModelId,
+    this.clientId,
+    this.missionId,
+    this.feedbackModelId,
     this.decisionId,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.clientFullName,
-    required this.gallery, // Include gallery in constructor
+    this.createdAt,
+    this.updatedAt,
+    this.client,
+    required this.gallery,
   });
+
   factory FeedbackMission.fromJson(Map<String, dynamic> json) {
     return FeedbackMission(
-      id: json['id'] ?? 0, // Provide a default value if null
-      label: json['label'] ?? '', // Default to an empty string if null
-      desc: json['desc'] ?? '', // Default to an empty string if null
-      requestDate: json['requestDate'], // Allow null
-      lat: json['lat'], // Allow null
-      lng: json['lng'], // Allow null
-      creatorUsername:
-          json['creatorUsername'] ?? '', // Default to an empty string
-      creatorRoleId: json['creatorRoleId'], // Allow null
-      editorUsername: json['editorUsername'], // Allow null
-      editorRoleId: json['editorRoleId'], // Allow null
-      creatorId: json['creatorId'] ?? 0, // Provide a default value if null
-      editorId: json['editorId'], // Allow null
-      clientId: json['clientId'] ?? 0, // Provide a default value if null
-      missionId: json['missionId'] ?? 0, // Provide a default value if null
-      feedbackModelId:
-          json['feedbackModelId'] ?? 0, // Provide a default value if null
-      decisionId: json['decisionId'], // Allow null
-      createdAt: json['createdAt'], // Allow null
-      updatedAt: json['updatedAt'], // Allow null
-      clientFullName:
-          json['client']?['fullName'] ?? '', // Use null-aware operator
-      gallery: List<dynamic>.from(
-          json['gallery'] ?? []), // Convert gallery JSON to List
+      id: json['id'] ?? 0,
+      label: json['label'] ?? '',
+      desc: json['desc'] ?? '',
+      requestDate: json['requestDate'],
+      lat: json['lat'],
+      lng: json['lng'],
+      creatorUsername: json['creatorUsername'] ?? '',
+      creatorRoleId: json['creatorRoleId'],
+      editorUsername: json['editorUsername'],
+      editorRoleId: json['editorRoleId'],
+      creatorId: json['creatorId'] ?? 0,
+      editorId: json['editorId'],
+      clientId: json['clientId'] ?? 0,
+      missionId: json['missionId'],
+      feedbackModelId: json['feedbackModelId'] ?? 0,
+      decisionId: json['decisionId'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+      client: json['client'] != null
+          ? Clientfeedback.fromJson(json['client'])
+          : null,
+      gallery: List<dynamic>.from(json['gallery'] ?? []),
     );
   }
 }

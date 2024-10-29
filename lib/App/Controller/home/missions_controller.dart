@@ -30,6 +30,8 @@ class MissionsController extends GetxController {
     update();
     canceled = 0;
     update();
+    created = 0;
+    update();
     missionsfilter!.clear();
     missions!.forEach((action) {
       getStatusLabel(action.statusId);
@@ -199,10 +201,15 @@ class MissionsController extends GetxController {
   }
 
   int inProgress = 0;
+  int created = 0;
   int completed = 0;
   int canceled = 0;
   getStatusLabel(int statusId) {
     switch (statusId) {
+      case 1:
+        created = created + 1;
+        // 'In Progress'.tr; // Translates to "In Progress"
+        update();
       case 2:
         inProgress = inProgress + 1;
         // 'In Progress'.tr; // Translates to "In Progress"

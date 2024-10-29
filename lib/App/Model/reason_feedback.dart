@@ -10,7 +10,7 @@ class FeedbackReason {
     required this.id,
     required this.label,
     required this.isDescRequired,
-    required this.isRequestDateRequired,
+    this.isRequestDateRequired = false,
     required this.createdAt,
     required this.updatedAt,
   });

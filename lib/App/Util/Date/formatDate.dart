@@ -7,9 +7,9 @@ String formatDate(String dateString) {
     final DateTime dateTime = DateTime.parse(dateString);
 
     // Define the desired format
-    final DateFormat formatter = DateFormat('yyyy/MM/dd');
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
     // Format the date
-    return formatter.format(dateTime);
+    return formatter.format(dateTime.toLocal());
   } catch (e) {
     print('Error parsing date: $e');
     return '';

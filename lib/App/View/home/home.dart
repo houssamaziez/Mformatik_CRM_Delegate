@@ -31,14 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screen = [
     Home(),
     HomeFeedback(),
-    GetBuilder<CompanyController>(
-        init: CompanyController(),
-        builder: (cont) {
-          return ClientListScreen(
-            companyid: cont.selectCompany!.id.toString(),
-            isback: false,
-          );
-        }),
     ProfileUserScreen(),
   ];
   final MissionsController controller = Get.put(MissionsController());

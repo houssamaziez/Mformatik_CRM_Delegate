@@ -35,8 +35,9 @@ Expanded statuseAndLatenessButton(
                                 const Text(
                                   "Statistics Missions",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12),
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black54,
+                                      fontSize: 14),
                                 ),
                                 Spacer(),
                                 Text(
@@ -199,6 +200,30 @@ Expanded statuseAndLatenessButton(
                                   "%".style(),
                                 ],
                               ),
+                            ),
+                            SizedBox(
+                              height: 24,
+                              child: Row(
+                                children: [
+                                  flutterSlider(
+                                      getSliderColor,
+                                      missionsController.missions!.length
+                                          .toDouble(),
+                                      missionsController.created.toDouble(),
+                                      Colors.grey),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  missionsController.created == 0
+                                      ? 0.toString().style()
+                                      : ((missionsController.created * 100) /
+                                              missionsController
+                                                  .missions!.length)
+                                          .toStringAsFixed(2)
+                                          .style(),
+                                  "%".style(),
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -237,8 +262,9 @@ Expanded statuseFeddbackAndLatenessButton(
                                 const Text(
                                   "Statistics Feddback",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12),
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black54,
+                                      fontSize: 14),
                                 ),
                                 Spacer(),
                                 Text(

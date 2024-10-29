@@ -4,6 +4,7 @@ import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/feedback/add_feedback.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../Controller/home/client_controller.dart';
+import '../feedback/cretate_screen.dart';
 import 'profile_client_screen.dart';
 
 class ClientListScreenAddMission extends StatefulWidget {
@@ -55,7 +56,8 @@ class _ClientListScreenAddMissionState
     setState(() {
       isLoadingMore = true;
     });
-    await clientController.fetchClients(widget.companyid!, fullName: '');
+    await clientController.fetchClientsaddOffset(widget.companyid!,
+        fullName: '');
     setState(() {
       isLoadingMore = false;
     });
@@ -129,7 +131,11 @@ class _ClientListScreenAddMissionState
                         if (widget.role == "mission") {
                           Get.to(() => ClientProfileScreen(client: client));
                         } else {
-                          // Get.to(() => AddFeedbackScreen(clientID: ,));
+                          Get.to(() => CreateFeedBackScreen(
+                                clientID: client.id,
+                                missionID: null,
+                                feedbackModelID: 0,
+                              ));
                         }
                       },
                       child: Container(

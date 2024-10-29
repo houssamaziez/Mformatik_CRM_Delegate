@@ -28,11 +28,14 @@ class ExpandableControllerFeedback extends GetxController {
       TextEditingController();
   void toggleExpanded() {
     isExpanded.value = !isExpanded.value;
+    update();
   }
 
   void selectItem(FeedbackReason item) {
     selectedItem.value = item;
+    update();
     isExpanded.value = false; // Close the expansion when an item is selected
+    update();
   }
 
   intiItme(int id) {

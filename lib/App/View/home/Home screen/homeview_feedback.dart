@@ -152,7 +152,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                           height: 14,
                         ),
                         SizedBox(
-                            height: 140,
+                            height: 145,
                             child: Row(
                               children: [
                                 const SizedBox(
@@ -184,10 +184,10 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: "Last Missions".style(
+                                    child: "Last Feedbacks".style(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black54,
-                                        fontSize: 16),
+                                        fontSize: 14),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -321,7 +321,8 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                             Flexible(
                                                                 flex: 2,
                                                                 child: feedback
-                                                                    .clientFullName
+                                                                    .client!
+                                                                    .fullName!
                                                                     .toString()
                                                                     .style(
                                                                         textAlign:

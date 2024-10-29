@@ -7,12 +7,16 @@ import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.d
 import 'package:mformatic_crm_delegate/App/Controller/widgetsController/expandable_controller.dart';
 import 'package:mformatic_crm_delegate/App/Model/reason_feedback.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import '../../../../Controller/home/reasons_feedback_controller.dart';
+import '../../../../Controller/widgetsController/date_controller.dart';
 import '../../../../Service/Location/get_location.dart';
+import '../../../../Util/Date/formatDate.dart';
+import '../../../widgets/Date/date_picker.dart';
 
 class CreateFeedBackScreen extends StatefulWidget {
   final int clientID;
-  final int missionID;
+  final int? missionID;
   final int feedbackModelID;
 
   const CreateFeedBackScreen({
@@ -37,18 +41,14 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
   double? lat;
   double? lng;
   DateTime? requestDate;
-  double _compressionProgress = 0.0; // Track compression progress
+  double _compressionProgress = 0.0;
 
   Future<File> _compressImage(XFile file) async {
     final bytes = await file.readAsBytes();
     final img.Image? image = img.decodeImage(bytes);
 
-    // Resize the image with a clearer resolution and moderate dimensions
     final img.Image resized = img.copyResize(image!, width: 500);
-
-    // Compress the image to reduce the file size
-    final compressedBytes =
-        img.encodeJpg(resized, quality: 85); // Adjust quality as needed
+    final compressedBytes = img.encodeJpg(resized, quality: 85);
 
     final compressedImageFile = File('${file.path}_compressed.jpg');
     await compressedImageFile.writeAsBytes(compressedBytes);
@@ -64,26 +64,48 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
         File compressedImage = await _compressImage(pickedFiles[i]);
         compressedFiles.add(compressedImage);
 
-        // Update progress after each image is compressed
         setState(() {
           _compressionProgress = ((i + 1) / pickedFiles.length) * 100;
         });
       }
       setState(() {
         _compressedImages = compressedFiles;
-        _compressionProgress = 0.0; // Reset progress after completion
+        _compressionProgress = 0.0;
+      });
+    }
+  }
+
+  Future<void> _selectDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: requestDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        requestDate = pickedDate;
       });
     }
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
     Get.delete<ExpandableControllerFeedback>();
+    Get.delete<DateController>();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final controllerisreq = Get.put(ExpandableControllerFeedback());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Feedback'),
@@ -115,6 +137,22 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
+              GetBuilder<ExpandableControllerFeedback>(
+                  init: ExpandableControllerFeedback(),
+                  builder: (controllerexp) {
+                    return controllerexp.selectedItem.value != null
+                        ? controllerexp.selectedItem.value!
+                                    .isRequestDateRequired !=
+                                null
+                            ? controllerexp.selectedItem.value!
+                                        .isRequestDateRequired ==
+                                    true
+                                ? DatePickerWidget()
+                                : Container()
+                            : Container()
+                        : Container();
+                  }),
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: _selectAndCompressImages,
@@ -160,32 +198,23 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                     onPressed: controllercreateFeedback.isLoadingadd
                         ? null
                         : () async {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                              var location = await getCurrentLocation();
+                            var location = await getCurrentLocation();
 
-                              // Convert List<File> to List<XFile>
-                              final List<XFile> xFiles = _compressedImages!
-                                  .map((file) => XFile(file.path))
-                                  .toList();
-
-                              controllercreateFeedback.addFeedback(
-                                label: Get.put(ExpandableControllerFeedback())
-                                    .controllerTextEditingController!
-                                    .text,
-                                desc: desc,
-                                lat: location.latitude.toString(),
-                                lng: location.longitude.toString(),
-                                requestDate: '01/01/2022',
-                                clientId: widget.clientID,
-                                missionId: widget.missionID,
-                                feedbackModelId:
-                                    Get.put(ExpandableControllerFeedback())
-                                        .selectedItem
-                                        .value!
-                                        .id!,
-                                images: xFiles, // Pass the XFile list
-                              );
+                            if (controllerisreq.selectedItem.value == null) {
+                              showMessage(context, title: 'Select Reasons');
+                            } else if (controllerisreq
+                                    .selectedItem.value!.isDescRequired ==
+                                true) {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                post(controllercreateFeedback, location);
+                                return;
+                              } else {
+                                print("object");
+                              }
+                            } else {
+                              post(controllercreateFeedback, location);
+                              return;
                             }
                           },
                     child: controllercreateFeedback.isLoadingadd
@@ -198,6 +227,28 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  post(
+      FeedbackController controllercreateFeedback, LocationDataModel location) {
+    final List<XFile> xFiles =
+        _compressedImages!.map((file) => XFile(file.path)).toList();
+
+    controllercreateFeedback.addFeedback(
+      label: Get.put(ExpandableControllerFeedback())
+          .controllerTextEditingController!
+          .text,
+      desc: desc,
+      lat: location.latitude.toString(),
+      lng: location.longitude.toString(),
+      requestDate:
+          formatDate(Get.put(DateController()).selectedDate.value.toString()),
+      clientId: widget.clientID,
+      missionId: widget.missionID,
+      feedbackModelId:
+          Get.put(ExpandableControllerFeedback()).selectedItem.value!.id!,
+      images: xFiles,
     );
   }
 }

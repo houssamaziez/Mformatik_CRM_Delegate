@@ -9,10 +9,10 @@ class Client {
   final String? tel;
   final String? region;
   final String cashingIn;
-  final String sold;
-  final String potential;
-  final String turnover;
-  final int companyId;
+  final String? sold;
+  final String? potential;
+  final String? turnover;
+  final int? companyId;
   final DateTime createdAt;
   final DateTime updatedAt;
 

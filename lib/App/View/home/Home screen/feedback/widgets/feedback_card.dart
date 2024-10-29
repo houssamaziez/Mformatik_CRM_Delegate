@@ -82,7 +82,7 @@ class FeedbackCard extends StatelessWidget {
                           const SizedBox(width: 4),
                           Flexible(
                             child: Text(
-                              "Client: ${feedback.clientFullName}",
+                              "Client: ${feedback.client!.fullName}",
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 13,

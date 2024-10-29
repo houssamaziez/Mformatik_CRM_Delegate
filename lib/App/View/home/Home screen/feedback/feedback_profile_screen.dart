@@ -47,7 +47,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
         init: FeedbackController(),
         builder: (controller) {
           if (controller.isLoadingprofile) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: spinkit);
           }
           if (controller.feedbackprofile == null) {
             return const Center(child: Text('Feedback not found.'));
@@ -61,10 +61,10 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                 // Title and Description
                 Text(
                   feedback.label ?? 'No Title',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 26,
-                    color: Colors.blueGrey,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -79,10 +79,11 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                 // Date and Location
                 Row(
                   children: [
-                    const Icon(Icons.date_range, color: Colors.blueGrey),
+                    Icon(Icons.date_range,
+                        color: Theme.of(context).primaryColor),
                     const SizedBox(width: 8),
                     Text(
-                      'Date: ${formatDate(feedback.createdAt)}',
+                      'Request Date: ${formatDate(feedback.requestDate)}',
                       style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                     ),
                   ],
@@ -91,12 +92,12 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                 const SizedBox(height: 20),
                 // Creator Information
                 const Divider(),
-                const Text(
+                Text(
                   'Creator Information',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
-                    color: Colors.blueGrey,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -107,12 +108,12 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                 const SizedBox(height: 10),
                 // Gallery
                 const Divider(),
-                const Text(
+                Text(
                   'Gallery',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
-                    color: Colors.blueGrey,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -164,7 +165,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                     icon: const Icon(Icons.edit),
                     label: const Text('Edit Feedback'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueGrey,
+                      backgroundColor: Theme.of(context).primaryColor,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 12),
                       textStyle: const TextStyle(fontSize: 16),

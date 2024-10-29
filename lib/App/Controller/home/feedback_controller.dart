@@ -202,7 +202,7 @@ class FeedbackController extends GetxController {
     String? lng,
     String? requestDate,
     required int clientId,
-    required int missionId,
+    int? missionId,
     required int feedbackModelId,
     List<XFile>? images,
   }) async {
@@ -222,7 +222,9 @@ class FeedbackController extends GetxController {
       if (lng != null) request.fields['lng'] = lng;
       if (requestDate != null) request.fields['requestDate'] = requestDate;
       request.fields['clientId'] = clientId.toString();
-      request.fields['missionId'] = missionId.toString();
+      if (missionId != null) {
+        request.fields['missionId'] = missionId.toString();
+      }
       request.fields['feedbackModelId'] = feedbackModelId.toString();
 
       // Add images if they are provided

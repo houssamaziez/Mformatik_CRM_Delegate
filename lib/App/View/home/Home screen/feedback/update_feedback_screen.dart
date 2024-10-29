@@ -4,12 +4,16 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import '../../../../Controller/home/feedback_controller.dart';
 import '../../../../Controller/home/reasons_feedback_controller.dart';
+import '../../../../Controller/widgetsController/date_controller.dart';
 import '../../../../Controller/widgetsController/expandable_controller.dart';
 import '../../../../Model/feedback.dart';
 import '../../../../Model/reason_feedback.dart';
 import '../../../../Service/Location/get_location.dart';
+import '../../../../Util/Date/formatDate.dart';
 import '../../../../Util/Style/stylecontainer.dart';
+import '../../../widgets/Date/date_picker.dart';
 import '../../../widgets/flutter_spinkit.dart';
+import '../../../widgets/showsnack.dart';
 import 'feedback_profile_screen.dart';
 
 class UpdateFeedbackScreen extends StatefulWidget {
@@ -33,6 +37,8 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
       TextEditingController();
   final ExpandableControllerFeedback expandableController =
       Get.put(ExpandableControllerFeedback());
+  final _formKey = GlobalKey<FormState>();
+
   FeedbackMission? feedbacklocal;
   @override
   void initState() {
@@ -53,7 +59,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   @override
   void dispose() {
     Get.delete<ExpandableControllerFeedback>();
-
+    Get.delete<DateController>();
     super.dispose();
   }
 
@@ -61,96 +67,134 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Update Feedback')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // // if (widget.feedback.feedbackModelId == 1)
-            // ReasonsSelectorFeedbackupd(
-            //     id: widget.feedback.feedbackModelId.toString()),
-            ReasonsSelectorFeedbackupd(
-                id: widget.feedback.feedbackModelId.toString()),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // // if (widget.feedback.feedbackModelId == 1)
+              // ReasonsSelectorFeedbackupd(
+              //     id: widget.feedback.feedbackModelId.toString()),
+              ReasonsSelectorFeedbackupd(
+                  id: widget.feedback.feedbackModelId.toString()),
 
-            const SizedBox(
-              height: 20,
-            ),
-            _buildTextField(
-                descController, 'Description', 'Enter a description',
-                maxLines: 3),
-
-            _buildTextField(
-                requestDateController, 'Request Date', 'YYYY-MM-DD'),
-            const Text(
-              'Gallery',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Colors.blueGrey,
+              const SizedBox(
+                height: 20,
               ),
-            ),
-            const SizedBox(height: 10),
-            feedbacklocal!.gallery.isNotEmpty
-                ? SizedBox(
-                    height: 200,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: feedbacklocal!.gallery.length,
-                      itemBuilder: (context, index) {
-                        final imagePath = feedbacklocal!.gallery[index]['path'];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          child: Stack(
-                            children: [
-                              InkWell(
-                                onTap: () => showFullscreenImage(context,
-                                    '${dotenv.get('urlHost')}/uploads/$imagePath'),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        '${dotenv.get('urlHost')}/uploads/$imagePath',
-                                    placeholder: (context, url) => Center(
-                                        child: Container(
-                                      decoration: StyleContainer.style1,
-                                      width: 115,
-                                      child: const Center(
-                                        child: spinkit,
-                                      ),
-                                    )),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
+              // _buildTextField(
+              //     descController, 'Description', 'Enter a description',
+              //     maxLines: 3),
+              TextFormField(
+                controller: descController,
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 5,
+                onSaved: (value) {
+                  // desc = value!;
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a description';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              GetBuilder<ExpandableControllerFeedback>(
+                  init: ExpandableControllerFeedback(),
+                  builder: (controllerexp) {
+                    return controllerexp.selectedItem.value != null
+                        ? controllerexp.selectedItem.value!
+                                    .isRequestDateRequired !=
+                                null
+                            ? controllerexp.selectedItem.value!
+                                        .isRequestDateRequired ==
+                                    true
+                                ? DatePickerWidget()
+                                : Container()
+                            : Container()
+                        : Container();
+                  }),
+              const Text(
+                'Gallery',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.blueGrey,
+                ),
+              ),
+              const SizedBox(height: 10),
+              feedbacklocal!.gallery.isNotEmpty
+                  ? SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: feedbacklocal!.gallery.length,
+                        itemBuilder: (context, index) {
+                          final imagePath =
+                              feedbacklocal!.gallery[index]['path'];
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: Stack(
+                              children: [
+                                InkWell(
+                                  onTap: () => showFullscreenImage(context,
+                                      '${dotenv.get('urlHost')}/uploads/$imagePath'),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                      imageUrl:
+                                          '${dotenv.get('urlHost')}/uploads/$imagePath',
+                                      placeholder: (context, url) => Center(
+                                          child: Container(
+                                        decoration: StyleContainer.style1,
+                                        width: 115,
+                                        child: const Center(
+                                          child: spinkit,
+                                        ),
+                                      )),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      feedbacklocal!.gallery.remove(imagePath);
-                                    });
-                                  },
-                                  icon: const Icon(Icons.delete))
-                            ],
-                          ),
-                        );
-                      },
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        feedbacklocal!.gallery
+                                            .remove(imagePath);
+                                      });
+                                    },
+                                    icon: const Icon(Icons.delete))
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  : Text(
+                      'No Images available',
+                      style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                     ),
-                  )
-                : Text(
-                    'No Images available',
-                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                  ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _handleUpdateFeedback,
-              child: const Text('Update Feedback'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _handleUpdateFeedback,
+                child: const Text('Update Feedback'),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -177,12 +221,32 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   }
 
   void _handleUpdateFeedback() async {
-    if (labelController.text.isEmpty || descController.text.isEmpty) {
-      Get.snackbar('Error', 'Please fill in all required fields',
-          backgroundColor: Colors.red, colorText: Colors.white);
+    final controllerisreq = Get.put(ExpandableControllerFeedback());
+
+    // if (labelController.text.isEmpty || descController.text.isEmpty) {
+    //   Get.snackbar('Error', 'Please fill in all required fields',
+    //       backgroundColor: Colors.red, colorText: Colors.white);
+    //   return;
+    // }
+    var location = await getCurrentLocation();
+
+    if (controllerisreq.selectedItem.value == null) {
+      showMessage(context, title: 'Select Reasons');
+    } else if (controllerisreq.selectedItem.value!.isDescRequired == true) {
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
+        post(location);
+        return;
+      } else {
+        print("object");
+      }
+    } else {
+      post(location);
       return;
     }
-    var location = await getCurrentLocation();
+  }
+
+  post(LocationDataModel location) async {
     if (location.isPermissionGranted == true) {
       await feedbackController
           .updateFeedback(
@@ -192,7 +256,8 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
         desc: descController.text,
         lat: location.latitude.toString(),
         lng: location.longitude.toString(),
-        requestDate: requestDateController.text,
+        requestDate:
+            formatDate(Get.put(DateController()).selectedDate.value.toString()),
         clientId: int.parse(clientIdController.text),
         feedbackModelId: int.parse(widget.feedback.feedbackModelId.toString()),
         creatorId: widget.feedback.creatorId!,

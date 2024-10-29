@@ -8,7 +8,7 @@ import '../../../../Service/Location/get_location.dart';
 
 class AddFeedbackScreen extends StatefulWidget {
   final int clientID; // Client ID to associate with the feedback
-  final int missionID; // Mission ID to associate with the feedback
+  final int? missionID; // Mission ID to associate with the feedback
   final int feedbackModelID; // Feedback model ID
 
   const AddFeedbackScreen({
@@ -161,7 +161,7 @@ class _AddFeedbackScreenState extends State<AddFeedbackScreen> {
                                   lng: location.longitude.toString(),
                                   requestDate: '01/01/2022',
                                   clientId: widget.clientID,
-                                  missionId: widget.missionID,
+                                  missionId: widget.missionID!,
                                   feedbackModelId: widget.feedbackModelID,
                                   images:
                                       _imageFiles, // Pass the images to the controller
