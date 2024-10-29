@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 
-import '../../../../../../Model/mission.dart';
-import '../../../../../../Util/Style/stylecontainer.dart';
+import '../../../../../Model/mission.dart';
+import '../../../../../Util/Style/stylecontainer.dart';
 import '../profile_mission.dart';
 
 class MissionCard extends StatelessWidget {

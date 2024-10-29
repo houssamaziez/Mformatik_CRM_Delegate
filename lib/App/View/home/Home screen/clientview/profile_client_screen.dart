@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Containers/container_blue.dart';
-import '../../../../../../Model/client.dart';
-import '../createscreenview/cretate_screen.dart';
+import '../../../../Model/client.dart';
+import '../screenMissions/createmission/createscreenview/cretate_screen.dart';
 
 class ClientProfileScreen extends StatelessWidget {
   final Client client;

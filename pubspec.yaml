@@ -51,6 +51,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   flutter_xlider: ^3.5.0
   image_picker: ^1.1.2
+  image: ^4.3.0
   
 
 dev_dependencies:

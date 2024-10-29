@@ -24,7 +24,10 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
 
   @override
   void initState() {
-    feedbackController.getFeedbackById(widget.feedbackId);
+    // Delay the call to fetchFeedbacks until after the widget has been built.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      feedbackController.getFeedbackById(widget.feedbackId);
+    });
     super.initState();
   }
 
@@ -34,43 +37,21 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
     return DateFormat('yyyy-MM-dd – kk:mm').format(parsedDate);
   }
 
-  void showFullscreenImage(String imageUrl) {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        backgroundColor: Colors.black,
-        child: GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: InteractiveViewer(
-            child: CachedNetworkImage(
-              imageUrl: imageUrl,
-              fit: BoxFit.contain,
-              errorWidget: (context, url, error) =>
-                  Icon(Icons.error, color: Colors.white),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feedback Details'),
+        title: const Text('Feedback Details'),
       ),
       body: GetBuilder<FeedbackController>(
         init: FeedbackController(),
         builder: (controller) {
           if (controller.isLoadingprofile) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
-
           if (controller.feedbackprofile == null) {
-            return Center(child: Text('Feedback not found.'));
+            return const Center(child: Text('Feedback not found.'));
           }
-
           final feedback = controller.feedbackprofile!;
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
@@ -80,40 +61,37 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                 // Title and Description
                 Text(
                   feedback.label ?? 'No Title',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 26,
                     color: Colors.blueGrey,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   feedback.desc ?? 'No Description available',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     color: Colors.black87,
                   ),
                 ),
-                SizedBox(height: 20),
-
+                const SizedBox(height: 20),
                 // Date and Location
                 Row(
                   children: [
-                    Icon(Icons.date_range, color: Colors.blueGrey),
-                    SizedBox(width: 8),
+                    const Icon(Icons.date_range, color: Colors.blueGrey),
+                    const SizedBox(width: 8),
                     Text(
                       'Date: ${formatDate(feedback.createdAt)}',
                       style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
-
-                SizedBox(height: 20),
-
+                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 // Creator Information
-                Divider(),
-                Text(
+                const Divider(),
+                const Text(
                   'Creator Information',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -121,17 +99,15 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                     color: Colors.blueGrey,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   'Username: ${feedback.creatorUsername ?? 'No Username'}',
-                  style: TextStyle(fontSize: 16, color: Colors.black87),
+                  style: const TextStyle(fontSize: 16, color: Colors.black87),
                 ),
-
-                SizedBox(height: 10),
-
+                const SizedBox(height: 10),
                 // Gallery
-                Divider(),
-                Text(
+                const Divider(),
+                const Text(
                   'Gallery',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -139,7 +115,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                     color: Colors.blueGrey,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 feedback.gallery.isNotEmpty
                     ? SizedBox(
                         height: 200,
@@ -152,7 +128,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 4.0),
                               child: InkWell(
-                                onTap: () => showFullscreenImage(
+                                onTap: () => showFullscreenImage(context,
                                     '${dotenv.get('urlHost')}/uploads/$imagePath'),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
@@ -162,13 +138,13 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                                     placeholder: (context, url) => Center(
                                         child: Container(
                                       decoration: StyleContainer.style1,
-                                      child: Center(
+                                      width: 115,
+                                      child: const Center(
                                         child: spinkit,
                                       ),
-                                      width: 115,
                                     )),
                                     errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
+                                        const Icon(Icons.error),
                                   ),
                                 ),
                               ),
@@ -180,18 +156,18 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                         'No Images available',
                         style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                       ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 // Edit Button
                 Center(
                   child: ElevatedButton.icon(
-                    icon: Icon(Icons.edit),
-                    label: Text('Edit Feedback'),
+                    icon: const Icon(Icons.edit),
+                    label: const Text('Edit Feedback'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blueGrey,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                      textStyle: TextStyle(fontSize: 16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 12),
+                      textStyle: const TextStyle(fontSize: 16),
                     ),
                     onPressed: () {
                       Go.to(
@@ -211,4 +187,24 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
       ),
     );
   }
+}
+
+void showFullscreenImage(context, String imageUrl) {
+  showDialog(
+    context: context,
+    builder: (context) => Dialog(
+      backgroundColor: Colors.black,
+      child: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: InteractiveViewer(
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
+            fit: BoxFit.contain,
+            errorWidget: (context, url, error) =>
+                const Icon(Icons.error, color: Colors.white),
+          ),
+        ),
+      ),
+    ),
+  );
 }

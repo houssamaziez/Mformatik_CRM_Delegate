@@ -20,6 +20,8 @@ class ClientController extends GetxController {
   Future<void> fetchClients(String id,
       {int? offsetValue, required String fullName}) async {
     try {
+      clients.clear();
+      offset.value = 0;
       isLoading(true);
       update();
       final currentOffset = offsetValue ?? offset.value;
@@ -49,6 +51,53 @@ class ClientController extends GetxController {
           update();
 
           // Update the offset for the next request
+          offset.value += limit;
+        }
+      } else {
+        clients.clear();
+        update();
+        throw Exception('Failed to load clients');
+      }
+    } catch (e) {
+      clients.clear();
+      update();
+      print('Error: $e');
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<void> fetchClientsaddOffset(String id,
+      {int? offsetValue, required String fullName}) async {
+    try {
+      isLoading(true);
+      update();
+      final currentOffset = offsetValue ?? offset.value;
+      update();
+
+      final response = await http.get(
+        Uri.parse(Endpoint.apiCients).replace(
+          queryParameters: {
+            'companyId': id.toString(),
+            'offset': currentOffset.toString(), // Add offset
+            'limit': limit.toString(), // Add limit
+          },
+        ),
+        headers: {"x-auth-token": token.read("token").toString()},
+      );
+      print(json.decode(response.body)['rows']);
+      if (response.statusCode == 200) {
+        List<dynamic> responseData = json.decode(response.body)['rows'];
+
+        // Check if there are more clients to fetch
+        if (responseData.isNotEmpty) {
+          // Append the new clients to the existing list
+
+          clients.addAll(
+              responseData.map((client) => Client.fromJson(client)).toList());
+          update();
+          update();
+
           offset.value += limit;
         }
       } else {

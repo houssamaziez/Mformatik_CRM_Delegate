@@ -12,6 +12,9 @@ import 'dart:convert';
 import '../../Model/feedback.dart';
 import '../../RouteEndPoint/EndPoint.dart';
 import '../auth/auth_controller.dart';
+import '../widgetsController/expandable_controller.dart';
+import 'reasons_feedback_controller.dart';
+import 'reasons_mission_controller.dart';
 
 class FeedbackController extends GetxController {
   RxList<FeedbackMission> feedbacks = <FeedbackMission>[].obs;
@@ -21,7 +24,9 @@ class FeedbackController extends GetxController {
   var isLoadingadd = false;
   var offset = 0.obs;
   final int limit = 10;
-
+  int feedbacksWithMission = 0;
+  int feedbacksWithOutMission = 0;
+  int feedbackslength = 0;
   late ScrollController scrollController;
 
   @override
@@ -48,10 +53,16 @@ class FeedbackController extends GetxController {
   }
 
   Future<void> fetchFeedbacks(String companyId, String creatorId,
-      {bool isreafrach = false}) async {
+      {bool isreafrach = true}) async {
+    feedbacksWithMission = 0;
+    feedbacksWithOutMission = 0;
+    feedbackslength = 0;
+    feedbacks.clear();
+    print(companyId);
     // if (isLoading.value && feedbacks.isNotEmpty) return;
     isLoading(true);
-    print("object");
+    update();
+
     if (isreafrach) {
       offset.value = 0;
       feedbacks.clear();
@@ -63,28 +74,51 @@ class FeedbackController extends GetxController {
             'companyId': companyId,
             'offset': offset.value.toString(),
             'limit': limit.toString(),
-            'creatorId': creatorId
+            'creatorId': Get.put(AuthController()).user!.id.toString()
           },
         ),
         headers: {"x-auth-token": token.read("token").toString()},
       );
-      print(response.body);
+
+      print('--------------------------');
+      print("fetchFeedbacks  function :$companyId  ");
+      print('--------------------------');
+
       if (response.statusCode == 200) {
+        update();
+        update();
         List<dynamic> responseData = json.decode(response.body)['rows'];
+        // feedbackslength = json.decode(response.body)['count'];
+        update();
         if (responseData.isNotEmpty) {
           feedbacks.addAll(responseData
               .map((data) => FeedbackMission.fromJson(data))
               .toList());
           update();
-          offset.value += limit;
+          offset.value = 10;
+          var responseCounts = await http.get(
+            Uri.parse(Endpoint.apiFeedbacksCounts),
+            headers: {"x-auth-token": token.read("token").toString()},
+          );
+          if (responseCounts.statusCode == 200) {
+            feedbacksWithMission =
+                jsonDecode(responseCounts.body)["feedbacksWithMission"];
+            update();
+
+            feedbacksWithOutMission =
+                jsonDecode(responseCounts.body)["feedbacksWithOutMission"];
+            feedbackslength = feedbacksWithOutMission + feedbacksWithMission;
+            update();
+          }
         }
-      } else {
+
         throw Exception('Failed to load feedbacks');
       }
     } catch (e) {
       print('Error: $e');
     } finally {
       isLoading(false);
+      update();
     }
   }
 
@@ -216,7 +250,8 @@ class FeedbackController extends GetxController {
 
   Future<void> updateFeedback({
     required String feedbackId,
-    required String label,
+    required String lastLabel,
+    required String Label,
     required String desc,
     String? lat,
     String? lng,
@@ -224,41 +259,59 @@ class FeedbackController extends GetxController {
     required int clientId,
     required int feedbackModelId,
   }) async {
+    ExpandableControllerFeedback expandableControllerFeedback =
+        Get.put(ExpandableControllerFeedback());
     // Indicate loading state
     isLoadingadd = true;
     update();
 
     try {
+      print(feedbackModelId);
       final url =
           Uri.parse('${Endpoint.apiFeedbacks}/$feedbackId'); // Endpoint URL
-      Map<String, Object?> map = {
-        'label': label,
-        'desc': desc,
-        'lat': lat,
-        'lng': lng,
-        'requestDate': requestDate,
-        'clientId': clientId,
-        'feedbackModelId': feedbackModelId,
-      };
+      // Map<String, Object?> map = {
+      //   'label': label,
+      //   'desc': desc,
+      //   'lat': lat,
+      //   'lng': lng,
+      //   'requestDate': requestDate,
+      //   'clientId': clientId,
+      //   'feedbackModelId':
+      //       Get.put(ExpandableControllerFeedback()).selectedItem.value!.id!,
+      // };
+      String feedbackModelFilter = '0';
 
+      if (expandableControllerFeedback.selectedItem.value.isNull == true) {
+        if (lastLabel == Label) {
+          feedbackModelFilter = feedbackModelId.toString();
+        } else {
+          feedbackModelFilter = "1".toString();
+        }
+        update();
+      } else {
+        feedbackModelFilter =
+            expandableControllerFeedback.selectedItem.value!.id.toString();
+        update();
+      }
       final response = await http.put(
         url,
         headers: {
           'x-auth-token': token.read("token").toString(),
         },
-        body: json.encode({
-          'label': label,
+        body: {
+          'label': lastLabel,
           'desc': desc,
-          'lat': lat,
-          'lng': lng,
-          'requestDate': requestDate,
-          'clientId': clientId,
-          'feedbackModelId': feedbackModelId,
-        }),
+          // 'lat': lat,
+          // 'lng': lng,
+          // 'requestDate': requestDate,
+          // 'clientId': clientId,
+          'feedbackModelId': feedbackModelFilter,
+        },
       );
+      print(response.body);
 
       // Handle response based on status code
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
         showMessage(
           Get.context,
           title: 'Feedback updated successfully',

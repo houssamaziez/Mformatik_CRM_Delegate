@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Model/reason.dart';
+import 'package:mformatic_crm_delegate/App/Model/reason_mission.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 
 import '../../Controller/widgetsController/expandable_controller.dart';
@@ -85,16 +85,12 @@ import '../../Controller/widgetsController/expandable_controller.dart';
 //     );
 //   }
 // }
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-class SelectReason extends StatelessWidget {
-  final List<Reason> items;
+class SelectReasdon extends StatelessWidget {
+  final List<ReasonMission> items;
   final String title;
 
-  SelectReason({
+  SelectReasdon({
     Key? key,
     required this.items,
     required this.title,
@@ -102,8 +98,8 @@ class SelectReason extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ExpandableController expandableController =
-        Get.put(ExpandableController());
+    final ExpandableControllerd expandableController =
+        Get.put(ExpandableControllerd());
 
     return Container(
       decoration: BoxDecoration(

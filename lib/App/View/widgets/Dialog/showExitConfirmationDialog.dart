@@ -3,7 +3,7 @@ import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 
 import '../../../Controller/auth/auth_controller.dart';
 import '../../auth/screen_auth.dart';
-import '../../home/splashScreen/splash_screen.dart';
+import '../../splashScreen/splash_screen.dart';
 
 Future<bool> showExitConfirmationDialog(BuildContext context) async {
   return await showDialog(

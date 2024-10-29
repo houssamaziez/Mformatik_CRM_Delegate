@@ -8,18 +8,18 @@ import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/supscreen/screenMissions/mission_list_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/screenMissions/mission_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
-import '../../Controller/home/company_controller.dart';
-import '../../Controller/home/home_controller.dart';
-import 'Home screen/supscreen/screenMissions/profile_mission.dart';
-import 'Widgets/absence_and_lateness_button.dart';
-import 'Widgets/add_mission_button.dart';
-import 'Widgets/filter_annex_company.dart';
-import 'Widgets/getSliderColor.dart';
-import 'Widgets/homeMenuSelectScreens.dart';
-import 'Widgets/homeMenu_select.dart';
+import '../../../Controller/home/company_controller.dart';
+import '../../../Controller/home/home_controller.dart';
+import 'screenMissions/profile_mission.dart';
+import '../Widgets/absence_and_lateness_button.dart';
+import '../Widgets/add_mission_button.dart';
+import '../Widgets/filter_annex_company.dart';
+import '../Widgets/getSliderColor.dart';
+import '../Widgets/homeMenuSelectScreens.dart';
+import '../Widgets/homeMenu_select.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -49,7 +49,7 @@ class Home extends StatelessWidget {
                   );
                 });
           }
-          if (companyController.selectCompany == null) {
+          if (companyController.companies == null) {
             return GetBuilder<HomeController>(
                 init: HomeController(),
                 builder: (controller) {

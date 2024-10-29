@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
+import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/feedback/add_feedback.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
-import '../../../../../../Controller/home/client_controller.dart';
+import '../../../../Controller/home/client_controller.dart';
 import 'profile_client_screen.dart';
 
-class ClientListScreen extends StatefulWidget {
+class ClientListScreenAddMission extends StatefulWidget {
   final String? companyid;
   final bool isback;
-  ClientListScreen({super.key, this.companyid = "", required this.isback});
+  final String role;
+  ClientListScreenAddMission(
+      {super.key,
+      this.companyid = "",
+      required this.isback,
+      required this.role});
 
   @override
-  State<ClientListScreen> createState() => _ClientListScreenState();
+  State<ClientListScreenAddMission> createState() =>
+      _ClientListScreenAddMissionState();
 }
 
-class _ClientListScreenState extends State<ClientListScreen> {
+class _ClientListScreenAddMissionState
+    extends State<ClientListScreenAddMission> {
   final ClientController clientController = Get.put(ClientController());
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
@@ -59,7 +67,7 @@ class _ClientListScreenState extends State<ClientListScreen> {
     return Scaffold(
       appBar: widget.isback
           ? AppBar(
-              title: Text("All Clinets"),
+              title: Text("Select the client"),
               centerTitle: true,
             )
           : null,
@@ -118,7 +126,11 @@ class _ClientListScreenState extends State<ClientListScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: () {
-                        Get.to(() => ClientProfileScreen(client: client));
+                        if (widget.role == "mission") {
+                          Get.to(() => ClientProfileScreen(client: client));
+                        } else {
+                          // Get.to(() => AddFeedbackScreen(clientID: ,));
+                        }
                       },
                       child: Container(
                         decoration: StyleContainer.style1,
@@ -138,49 +150,6 @@ class _ClientListScreenState extends State<ClientListScreen> {
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Icon(Icons.phone, color: Colors.green),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    client.phone ?? 'N/A',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Icon(Icons.email, color: Colors.redAccent),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    client.email ?? 'No Email',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Sold: ${client.sold}',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Potential: ${client.potential}',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.blueGrey,
                                     ),
                                   ),
                                 ],

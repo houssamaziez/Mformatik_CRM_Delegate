@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 
-import '../../Model/reason.dart';
+import '../../Model/reason_mission.dart';
 import '../auth/auth_controller.dart';
 
-class ReasonsController extends GetxController {
-  var reasons = <Reason>[]; // Observable list of reasons
+class ReasonsMissionController extends GetxController {
+  var reasons = <ReasonMission>[]; // Observable list of reasons
   var isLoading = false; // Loading state
 
   Future<void> fetchReasons() async {

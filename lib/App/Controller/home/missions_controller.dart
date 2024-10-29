@@ -4,7 +4,7 @@ import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.da
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/home_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home.dart';
 import 'dart:convert';
 
 import '../../Model/mission.dart';
@@ -144,7 +144,7 @@ class MissionsController extends GetxController {
     var reasonId;
     final uri = Uri.parse('${Endpoint.apiMissions}');
     final cilentID = Get.put(AuthController()).user!.id;
-    ExpandableController controller = Get.put(ExpandableController());
+    ExpandableControllerd controller = Get.put(ExpandableControllerd());
     reasonId = controller.selectedItem.value!.id;
 
     String label = text;
@@ -216,5 +216,11 @@ class MissionsController extends GetxController {
         update();
       // 'Canceled'.tr; // Translates to "Canceled"
     }
+  }
+
+  upadtestatus(int nex) async {
+    try {
+      final respons = await http.put(Uri.parse(Endpoint.apiChangeStatus));
+    } catch (e) {}
   }
 }

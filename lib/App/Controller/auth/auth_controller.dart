@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/auth/screen_auth.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/home_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import '../../Model/user.dart';
 import '../../Util/app_exceptions/response_handler.dart';
@@ -37,7 +37,7 @@ class AuthController extends GetxController {
         "username": username,
         "password": password,
       });
-
+      print(response.statusCode);
       // Handle response and parse user data
       final responseData = ResponseHandler.processResponse(response);
       if (responseData != null && responseData.containsKey('user')) {
@@ -55,11 +55,14 @@ class AuthController extends GetxController {
         print('user in as: ${user?.username}');
       } else {}
 
-      // if (response.statusCode == 401) {
-      //   showMessage(context,
-      //       title:
-      //           "Access Denied! You don't have permission to view this content.");
-      // }
+      if (response.statusCode == 401) {
+        showMessage(context,
+            title:
+                "Access Denied! You don't have permission to view this content.");
+      }
+      if (response.statusCode == 400) {
+        showMessage(context, title: decodeResponseBody(response)[0]["message"]);
+      }
     } catch (e) {
       // Handle exceptions
       showMessage(context, title: 'Connection problem'.tr);
@@ -90,7 +93,6 @@ class AuthController extends GetxController {
           Go.clearAndTo(context, HomeScreen());
         } else {
           Go.clearAndTo(context, ScreenAuth());
-
           showMessage(context, title: "You are not allowed to enter.");
         }
       } else {
@@ -110,5 +112,9 @@ class AuthController extends GetxController {
   passwordVisibleupdate() {
     isPasswordVisible = !isPasswordVisible;
     update();
+  }
+
+  static dynamic decodeResponseBody(http.Response response) {
+    return jsonDecode(response.body);
   }
 }

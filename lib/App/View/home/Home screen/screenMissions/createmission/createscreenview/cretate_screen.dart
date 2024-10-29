@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/reasons_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/reasons_mission_controller.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Item_selector.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../../../Controller/home/missions_controller.dart';
+import '../../../../../../Controller/home/reasons_feedback_controller.dart';
+import '../../../../../../Controller/widgetsController/expandable_controller.dart';
 
 class CreateMissionScreen extends StatefulWidget {
   final int clientID;
@@ -21,6 +23,11 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
   String label = '';
   String desc = '';
   int reasonId = 0;
+  @override
+  void dispose() {
+    Get.delete<ExpandableControllerd>();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +106,8 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
 class ReasonsSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ReasonsController>(
-      init: ReasonsController(),
+    return GetBuilder<ReasonsMissionController>(
+      init: ReasonsMissionController(),
       builder: (controller) {
         // Check if loading is in progress
         if (controller.isLoading) {
@@ -116,7 +123,7 @@ class ReasonsSelector extends StatelessWidget {
             );
           }
 
-          return SelectReason(
+          return SelectReasdon(
             items: controller.reasons,
             title: 'Select Reasons',
           );

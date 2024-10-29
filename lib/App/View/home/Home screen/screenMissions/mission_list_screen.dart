@@ -7,40 +7,43 @@ import 'package:mformatic_crm_delegate/App/Util/Theme/colors.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
-import '../../../../../Controller/auth/auth_controller.dart';
-import '../../../../../Controller/home/annex_controller.dart';
-import '../../../../../Controller/home/missions_controller.dart';
-import '../../../../widgets/Buttons/meneuSelectTow.dart';
-import '../../../../widgets/Containers/container_blue.dart';
-import '../../../../widgets/bolck_screen.dart';
-import '../createmission/clientview/client_list_screen.dart';
+import '../../../../Controller/auth/auth_controller.dart';
+import '../../../../Controller/home/annex_controller.dart';
+import '../../../../Controller/home/missions_controller.dart';
+import '../../../widgets/Buttons/meneuSelectTow.dart';
+import '../../../widgets/Containers/container_blue.dart';
+import '../../../widgets/bolck_screen.dart';
+import '../clientview/client_list_screen.dart';
 import 'widgets/mission_card.dart';
 
-class MissionListScreenByMe extends StatefulWidget {
-  const MissionListScreenByMe({Key? key}) : super(key: key);
+class MissionListScreen extends StatefulWidget {
+  const MissionListScreen({Key? key}) : super(key: key);
 
   @override
-  State<MissionListScreenByMe> createState() => _MissionListScreenByMeState();
+  State<MissionListScreen> createState() => _MissionListScreenState();
 }
 
-class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
+class _MissionListScreenState extends State<MissionListScreen> {
   // Initialize the MissionsController
-  final MissionsController controller = Get.put(
-    MissionsController(),
-  );
+  final MissionsController controller = Get.put(MissionsController());
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.onIndexChanged(1);
-      // controller.getAllMission(context);
-    });
     // controller.getAllMission(context);
     // _scrollController.addListener(_scrollListener);
     super.initState();
   }
 
-  void _scrollListener() {}
+  void _scrollListener() {
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent &&
+        !controller.isLoadingMore) {
+      controller.loadingMoreMission(
+        context,
+      );
+    }
+  }
 
   AuthController controllers = Get.put(AuthController());
   bool _showContainers = false;
@@ -54,7 +57,8 @@ class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
     return isactive == true
         ? Scaffold(
             appBar: AppBar(
-              title: Text("My Missions"),
+              title: Text("All Missions"),
+              centerTitle: true,
             ),
             backgroundColor: ColorsApp.white,
             body: Column(
@@ -73,6 +77,12 @@ class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
                         // Show a message when there are no missions
                         return Column(
                           children: [
+                            SizedBox(
+                                child: meneuSelectTow(context,
+                                    indexchos: controller.indexminu,
+                                    onIndexChanged: (p0) {
+                              controller.onIndexChanged(p0);
+                            }, titles: ["From Platform", "By me"])),
                             const Spacer(),
                             Center(
                               child: Text(
@@ -87,8 +97,15 @@ class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
                         // Display the list of missions
                         return Column(
                           children: [
+                            SizedBox(
+                                child: meneuSelectTow(context,
+                                    indexchos: controller.indexminu,
+                                    onIndexChanged: (p0) {
+                              controller.onIndexChanged(p0);
+                            }, titles: ["Platform", "By me"])),
                             Expanded(
                                 child: ListView(
+                              controller: _scrollController,
                               shrinkWrap: true,
                               children: [
                                 ListView.builder(

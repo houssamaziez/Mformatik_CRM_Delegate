@@ -5,7 +5,7 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../../Controller/home/company_controller.dart';
 import '../../../../../Util/Route/Go.dart';
 import '../../../../../Util/Style/stylecontainer.dart';
-import 'clientview/client_list_screen.dart';
+import '../../clientview/client_list_screen.dart';
 
 class CompanyListScreen extends StatefulWidget {
   final String annexId;

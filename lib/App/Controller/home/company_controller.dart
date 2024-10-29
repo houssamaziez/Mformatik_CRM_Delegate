@@ -2,6 +2,7 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/Controller/home/client_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'dart:convert';
@@ -61,6 +62,9 @@ class CompanyController extends GetxController {
   }
 
   MissionsController companyController = Get.put(MissionsController());
+  FeedbackController feedbackController = Get.put(
+    FeedbackController(),
+  );
   ClientController clientController = Get.put(ClientController());
 
   updateannex(Company? selectAnnexvule) async {
@@ -69,6 +73,10 @@ class CompanyController extends GetxController {
     update();
     print(selectCompany!.id);
     companyController.getAllMission(Get.context, selectCompany!.id);
+    Get.put(
+      FeedbackController(),
+    ).fetchFeedbacks(selectCompany!.id.toString(),
+        Get.put(AuthController()).user!.id.toString());
     await clientController.search(selectCompany!.id.toString(), fullName: '');
   }
 }

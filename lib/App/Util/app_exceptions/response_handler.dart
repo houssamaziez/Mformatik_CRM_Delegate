@@ -32,11 +32,12 @@ class ResponseHandler {
         break;
       case 401: // Unauthorized
 
-        showMessage(Get.context,
-            title: decodeResponseBody(response)[0]["message"]);
+      // showMessage(Get.context,
+      //     title: decodeResponseBody(response)[0]["message"]);
       case 403: // Forbidden
         print("Access Denied! You don't have permission to view this content.");
         break;
+
       case 404: // Resource Not Found
         showMessage(Get.context,
             title:
@@ -46,10 +47,10 @@ class ResponseHandler {
 
       // Server errors
       case 500: // Internal Server Error
-        showMessage(Get.context,
-            title:
-                "We're experiencing some issues on our end. Please try again later."
-                    .tr);
+        // showMessage(Get.context,
+        //     title:
+        //         "We're experiencing some issues on our end. Please try again later."
+        //             .tr);
         break;
 
       // Default case for unexpected status codes

@@ -3,16 +3,17 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/home_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/supscreen/createmission/clientview/client_list_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/clientview/client_list_screen.dart';
 
-import '../../../Controller/auth/auth_controller.dart';
-import '../../../Controller/home/annex_controller.dart';
-import '../../widgets/Bottombar/widgetbottombar.dart';
-import '../../widgets/bolck_screen.dart';
-import '../Widgets/appbar_home.dart';
-import '../homeview.dart';
-import 'supscreen/profileUser/profile_user_screen.dart';
-import 'supscreen/screenMissions/mission_list_screen.dart';
+import '../../Controller/auth/auth_controller.dart';
+import '../../Controller/home/annex_controller.dart';
+import '../widgets/Bottombar/widgetbottombar.dart';
+import '../widgets/bolck_screen.dart';
+import 'Widgets/appbar_home.dart';
+import 'Home screen/homeview_feedback.dart';
+import 'Home screen/homeview_mission.dart';
+import 'Home screen/profileUser/profile_user_screen.dart';
+import 'Home screen/screenMissions/mission_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _screen = [
     Home(),
-    const MissionListScreen(),
+    HomeFeedback(),
     GetBuilder<CompanyController>(
         init: CompanyController(),
         builder: (cont) {
@@ -43,6 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final MissionsController controller = Get.put(MissionsController());
 
   AuthController controllers = Get.put(AuthController());
+  HomeController homeController = Get.put(HomeController(), permanent: true);
+
   final AnnexController annexController =
       Get.put(AnnexController(), permanent: true);
   final CompanyController companyController =

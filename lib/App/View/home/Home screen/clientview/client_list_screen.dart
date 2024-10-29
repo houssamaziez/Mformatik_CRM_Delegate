@@ -2,22 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
-import '../../../../../../Controller/home/client_controller.dart';
+import '../../../../Controller/home/client_controller.dart';
 import 'profile_client_screen.dart';
 
-class ClientListScreenAddMission extends StatefulWidget {
+class ClientListScreen extends StatefulWidget {
   final String? companyid;
   final bool isback;
-  ClientListScreenAddMission(
-      {super.key, this.companyid = "", required this.isback});
+  ClientListScreen({super.key, this.companyid = "", required this.isback});
 
   @override
-  State<ClientListScreenAddMission> createState() =>
-      _ClientListScreenAddMissionState();
+  State<ClientListScreen> createState() => _ClientListScreenState();
 }
 
-class _ClientListScreenAddMissionState
-    extends State<ClientListScreenAddMission> {
+class _ClientListScreenState extends State<ClientListScreen> {
   final ClientController clientController = Get.put(ClientController());
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
@@ -62,7 +59,7 @@ class _ClientListScreenAddMissionState
     return Scaffold(
       appBar: widget.isback
           ? AppBar(
-              title: Text("Select the client"),
+              title: Text("All Clinets"),
               centerTitle: true,
             )
           : null,
@@ -141,6 +138,49 @@ class _ClientListScreenAddMissionState
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Icon(Icons.phone, color: Colors.green),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    client.phone ?? 'N/A',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Icon(Icons.email, color: Colors.redAccent),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    client.email ?? 'No Email',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Sold: ${client.sold}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Potential: ${client.potential}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.blueGrey,
                                     ),
                                   ),
                                 ],

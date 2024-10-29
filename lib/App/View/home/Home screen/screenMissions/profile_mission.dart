@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 
-import '../../../../../Model/mission.dart';
-import '../../feedback/add_feedback.dart';
+import '../../../../Model/mission.dart';
+import '../feedback/add_feedback.dart';
+import '../feedback/cretate_screen.dart';
 
 class MissionProfileScreen extends StatelessWidget {
   final Mission mission;
@@ -27,7 +28,7 @@ class MissionProfileScreen extends StatelessWidget {
           onPressed: () {
             Go.to(
                 context,
-                AddFeedbackScreen(
+                CreateFeedBackScreen(
                   clientID: mission.clientId,
                   feedbackModelID: 16,
                   missionID: mission.id,
@@ -147,8 +148,8 @@ class MissionProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMissionStatusSection(ThemeData theme, statusId) {
-    // Set the statusId to 1 for the example (CREATED)
+  Widget _buildMissionStatusSection(ThemeData theme, int statusId) {
+    // Define the current status label and color
     String statusLabel = getStatusLabel(statusId);
     Color statusColor = getStatusColor(statusId);
 
@@ -167,14 +168,47 @@ class MissionProfileScreen extends StatelessWidget {
           title: Text(
             'Status'.tr,
             style: TextStyle(
-                fontWeight: FontWeight.bold, color: theme.primaryColor),
-          ),
-          subtitle: Text(
-            statusLabel,
-            style: TextStyle(
-              color: statusColor,
               fontWeight: FontWeight.bold,
+              color: theme.primaryColor,
             ),
+          ),
+          subtitle: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  statusLabel,
+                  style: TextStyle(
+                    color: statusColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              PopupMenuButton<int>(
+                icon: Icon(Icons.more_vert, color: theme.primaryColor),
+                onSelected: (selectedStatus) {
+                  // Handle the status change here
+                  // For example, update the statusId and refresh UI (if needed)
+                  Get.snackbar(
+                      'Status Updated', getStatusLabel(selectedStatus));
+                  // Update status based on selection
+                  // You may need a controller or state update logic if status is mutable
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 2,
+                    child: Text('In Progress'.tr),
+                  ),
+                  PopupMenuItem(
+                    value: 3,
+                    child: Text('Completed'.tr),
+                  ),
+                  PopupMenuItem(
+                    value: -1,
+                    child: Text('Unknown Status'.tr),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

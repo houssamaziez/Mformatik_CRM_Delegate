@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/feedback/add_feedback.dart';
 
 import '../../../Controller/home/company_controller.dart';
 import '../../../Util/Route/Go.dart';
@@ -7,8 +8,8 @@ import '../../../Util/Style/stylecontainer.dart';
 import '../Home screen/clientview/client_list_screen.dart';
 import '../Home screen/clientview/client_list_screen_add_mission.dart';
 
-class AddMissionbutton extends StatelessWidget {
-  const AddMissionbutton({
+class AddMissionbuttonFeddback extends StatelessWidget {
+  const AddMissionbuttonFeddback({
     super.key,
   });
 
@@ -20,14 +21,13 @@ class AddMissionbutton extends StatelessWidget {
             builder: (companyController) {
               return InkWell(
                 onTap: () {
-                  Go.to(
-                      context,
-                      ClientListScreenAddMission(
-                        companyid:
-                            companyController.selectCompany!.id.toString(),
-                        isback: true,
-                        role: "mission",
-                      ));
+                  // Go.to(
+                  //     context,
+                  //     AddFeedbackScreen(
+                  //       companyid:
+                  //           companyController.selectCompany!.id.toString(),
+                  //       isback: true,
+                  //     ));
                 },
                 child: Container(
                   decoration: StyleContainer.stylecontainer(
@@ -43,7 +43,7 @@ class AddMissionbutton extends StatelessWidget {
                         height: 10,
                       ),
                       const Text(
-                        "Add \n Mission",
+                        "Add \n Feddback",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
