@@ -94,7 +94,7 @@ Padding liststate() {
                       ? " in English is \"Verifying ..."
                       : (controller.user!.isActive == true
                           ? "Active".tr.toString()
-                          : " in English is Inactive"),
+                          : "Inactive"),
                   image: listt[2]["Image"].toString());
             }),
       ],

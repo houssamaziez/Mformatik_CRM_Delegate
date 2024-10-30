@@ -15,8 +15,10 @@ import '../widgetsController/expandable_controller.dart';
 
 class MissionsController extends GetxController {
   List<Mission>? missions = [];
+  Mission? mission;
   List<Mission>? missionsfilter = [];
   bool isLoading = false;
+  bool isLoadingProfile = false;
   bool isLoadingMore = false;
   int offset = 0;
   int limit = 7;
@@ -229,5 +231,69 @@ class MissionsController extends GetxController {
     try {
       final respons = await http.put(Uri.parse(Endpoint.apiChangeStatus));
     } catch (e) {}
+  }
+
+  bool changestatus = false;
+
+  changeStatuseMission(int id, int missionId) async {
+    try {
+      changestatus = true;
+      update();
+
+      final response = await http.put(
+        Uri.parse(Endpoint.apiChangeStatus + "/${id.toString()}"),
+        headers: {
+          'x-auth-token': token.read("token").toString(),
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          "missions": [missionId]
+        }),
+      );
+      if (response.statusCode == 200) {
+        await getMissionById(Get.context, missionId);
+        getAllMission(
+            Get.context, Get.put(CompanyController()).selectCompany!.id);
+        // showMessage(
+        //   Get.context,
+        //   title: 'Mission Status updated successfully',
+        //   color: Colors.green,
+        // );
+      }
+    } catch (e) {
+      showMessage(Get.context, title: "Failed to load Mission Status");
+    } finally {
+      changestatus = false;
+      update();
+    }
+  }
+
+  Future<void> getMissionById(context, int missionId) async {
+    isLoadingProfile = true;
+    update();
+
+    final uri = Uri.parse(
+        '${Endpoint.apiMissions}/$missionId'); // Add API endpoint for single mission
+    print("object");
+    try {
+      final response = await http.get(
+        uri,
+        headers: {"x-auth-token": token.read("token").toString()},
+      ).timeout(const Duration(seconds: 50));
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        final responseData = ResponseHandler.processResponse(response);
+        mission =
+            Mission.fromJson(responseData); // Assuming mission is the model
+        update(); // Update the state to refresh the screen
+      } else {
+        showMessage(context, title: 'Error fetching mission data'.tr);
+      }
+    } catch (e) {
+      showMessage(context, title: 'Connection problem'.tr);
+    } finally {}
+    isLoadingProfile = false;
+    update();
   }
 }

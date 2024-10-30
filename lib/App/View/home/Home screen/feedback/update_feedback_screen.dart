@@ -38,7 +38,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   final ExpandableControllerFeedback expandableController =
       Get.put(ExpandableControllerFeedback());
   final _formKey = GlobalKey<FormState>();
-
+  List<dynamic> images = [];
   FeedbackMission? feedbacklocal;
   @override
   void initState() {
@@ -54,6 +54,8 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
     requestDateController.text = feedbacklocal!.requestDate ?? '';
     clientIdController.text = feedbacklocal!.clientId.toString();
     feedbackModelIdController.text = feedbacklocal!.feedbackModelId.toString();
+
+    images = feedbacklocal!.gallery;
   }
 
   @override
@@ -135,10 +137,9 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                       height: 200,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: feedbacklocal!.gallery.length,
+                        itemCount: images.length,
                         itemBuilder: (context, index) {
-                          final imagePath =
-                              feedbacklocal!.gallery[index]['path'];
+                          final imagePath = images[index]['path'];
                           return Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 4.0),
@@ -168,11 +169,13 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                                 IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        feedbacklocal!.gallery
-                                            .remove(imagePath);
+                                        images.remove(images[index]);
                                       });
                                     },
-                                    icon: const Icon(Icons.delete))
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ))
                               ],
                             ),
                           );
@@ -250,18 +253,20 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
     if (location.isPermissionGranted == true) {
       await feedbackController
           .updateFeedback(
-        feedbackId: widget.feedback.id.toString(),
-        lastLabel: expandableController.controllerTextEditingController!.text,
-        Label: widget.feedback.label.toString(),
-        desc: descController.text,
-        lat: location.latitude.toString(),
-        lng: location.longitude.toString(),
-        requestDate:
-            formatDate(Get.put(DateController()).selectedDate.value.toString()),
-        clientId: int.parse(clientIdController.text),
-        feedbackModelId: int.parse(widget.feedback.feedbackModelId.toString()),
-        creatorId: widget.feedback.creatorId!,
-      )
+              feedbackId: widget.feedback.id.toString(),
+              lastLabel:
+                  expandableController.controllerTextEditingController!.text,
+              Label: widget.feedback.label.toString(),
+              desc: descController.text,
+              lat: location.latitude.toString(),
+              lng: location.longitude.toString(),
+              requestDate: formatDate(
+                  Get.put(DateController()).selectedDate.value.toString()),
+              clientId: int.parse(clientIdController.text),
+              feedbackModelId:
+                  int.parse(widget.feedback.feedbackModelId.toString()),
+              creatorId: widget.feedback.creatorId!,
+              images: images)
           .then((success) {
         getCurrentLocation();
       });

@@ -47,7 +47,8 @@ class _ClientListScreenState extends State<ClientListScreen> {
     setState(() {
       isLoadingMore = true;
     });
-    await clientController.fetchClients(widget.companyid!, fullName: '');
+    await clientController.fetchClientsaddOffset(widget.companyid!,
+        fullName: '');
     setState(() {
       isLoadingMore = false;
     });
@@ -110,7 +111,7 @@ class _ClientListScreenState extends State<ClientListScreen> {
                 itemBuilder: (context, index) {
                   if (index == clientController.clients.length) {
                     // Show circular indicator at the bottom when loading more
-                    return Center(child: CircularProgressIndicator());
+                    return Center(child: spinkit);
                   }
 
                   final client = clientController.clients[index];

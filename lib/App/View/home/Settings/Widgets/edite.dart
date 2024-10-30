@@ -31,32 +31,17 @@ Row editeProfile(context) {
                         : controller.user!.username!.toString(),
                     style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
-                  // Text(
-                  //   controller.user!. == null
-                  //       ? "'جاري جلب البيانات'"
-                  //       : controller.student!.email.toString(),
-                  //   style: const TextStyle(fontWeight: FontWeight.w400),
-                  // ),
+                  Text(
+                    controller.user!.username == null
+                        ? '...جاري جلب البيانات'
+                        : 'id: ' + controller.user!.id!.toString(),
+                    style: const TextStyle(fontWeight: FontWeight.w400),
+                  ),
                 ],
               );
             }),
       ),
-      //     if (storageteatcher.read(
-      //         "typeUser",
-      //       ) ==
-      //       "parent") {
 
-      //   }
-      //   if (storageteatcher.read(
-      //         "typeUser",
-      //       ) ==
-      //       "teatcher") {
-      //   }
-      //   if (storageteatcher.read(
-      //         "typeUser",
-      //       ) ==
-      //       "studnet") {
-      //   }
       // }
       Padding(
         padding: const EdgeInsets.all(8.0),

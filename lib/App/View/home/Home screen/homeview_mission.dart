@@ -317,8 +317,8 @@ class Home extends StatelessWidget {
                                                                   Go.to(
                                                                       context,
                                                                       MissionProfileScreen(
-                                                                        mission:
-                                                                            mission,
+                                                                        missionId:
+                                                                            mission.id,
                                                                       ));
                                                                 },
                                                                 child: Icon(

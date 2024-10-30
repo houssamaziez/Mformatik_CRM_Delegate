@@ -1,104 +1,162 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../Model/mission.dart';
+import '../../../widgets/Dialog/showExitConfirmationDialog.dart';
 import '../feedback/add_feedback.dart';
 import '../feedback/cretate_screen.dart';
 
-class MissionProfileScreen extends StatelessWidget {
-  final Mission mission;
+class MissionProfileScreen extends StatefulWidget {
+  final int missionId;
 
-  const MissionProfileScreen({Key? key, required this.mission})
-      : super(key: key);
+  MissionProfileScreen({Key? key, required this.missionId}) : super(key: key);
+
+  @override
+  State<MissionProfileScreen> createState() => _MissionProfileScreenState();
+}
+
+class _MissionProfileScreenState extends State<MissionProfileScreen> {
+  final missionController = Get.put(MissionsController());
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      missionController.getMissionById(context, widget.missionId);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+
+    // Fetch mission by ID on widget build
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Mission Details'.tr),
-        centerTitle: true,
-        backgroundColor: theme.primaryColor,
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: Theme.of(context).primaryColor,
-          onPressed: () {
-            Go.to(
-                context,
-                CreateFeedBackScreen(
-                  clientID: mission.clientId,
-                  feedbackModelID: 16,
-                  missionID: mission.id,
-                ));
-          },
-          label: Text(
-            "Add Feedback",
-            style: TextStyle(color: Colors.white),
-          )),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            _buildMissionHeader(context),
-            const SizedBox(height: 16),
-            _buildMissionInfoSection('Mission Label'.tr, mission.label,
-                Icons.label, theme.primaryColor),
-            _buildMissionStatusSection(theme, mission.statusId),
-            _buildMissionInfoSection(
-                'Mission Description'.tr,
-                mission.desc ?? 'No description available'.tr,
-                Icons.description,
-                theme.primaryColor),
-            _buildMissionInfoSection('Creator Username'.tr,
-                mission.creatorUsername, Icons.person, theme.primaryColor),
-            _buildMissionInfoSection(
-                'Creator Role ID'.tr,
-                mission.creatorRoleId.toString(),
-                Icons.account_circle,
-                theme.primaryColor),
-            _buildMissionInfoSection(
-                'Editor Username'.tr,
-                mission.editorUsername ?? 'No editor assigned'.tr,
-                Icons.edit,
-                theme.primaryColor),
-            _buildMissionInfoSection(
-                'Editor Role ID'.tr,
-                mission.editorRoleId?.toString() ?? 'N/A',
-                Icons.account_circle,
-                theme.primaryColor),
-            // _buildMissionInfoSection(
-            //     'Client ID'.tr,
-            //     mission.clientId.toString(),
-            //     Icons.business,
-            //     theme.primaryColor),
-            // _buildMissionInfoSection(
-            //     'Responsible ID'.tr,
-            //     mission.responsibleId.toString(),
-            //     Icons.person,
-            //     theme.primaryColor),
-            // _buildMissionInfoSection('Reason ID'.tr,
-            //     mission.reasonId.toString(), Icons.help, theme.primaryColor),
-            _buildMissionInfoSection(
-                'Created At'.tr,
-                mission.createdAt.toString(),
-                Icons.date_range,
-                theme.primaryColor),
-            // if (mission.updatedAt != null)
-            // _buildMissionInfoSection(
-            //     'Updated At'.tr,
-            //     mission.updatedAt.toString(),
-            //     Icons.update,
-            //     theme.primaryColor),
-          ],
-        ),
+      body: GetBuilder<MissionsController>(
+        init: MissionsController(),
+        builder: (controller) {
+          if (controller.isLoadingProfile) {
+            return const Center(child: spinkit);
+          }
+          if (controller.mission == null) {
+            return Center(child: Text('Mission not found'.tr));
+          }
+          final mission = controller.mission!;
+
+          return Scaffold(
+            floatingActionButton: Column(
+              children: [
+                const Spacer(),
+                if (mission.statusId == 1)
+                  FloatingActionButton.extended(
+                      heroTag: "IN_PROGRESS", // Unique tag for the first button
+
+                      backgroundColor: Theme.of(context).primaryColor,
+                      onPressed: () async {
+                        showExitConfirmationDialog(context,
+                            onPressed: () async {
+                          await controller.changeStatuseMission(
+                              2, widget.missionId);
+                          Get.back();
+                        },
+                            details: 'Are you sure to Start the Mission?',
+                            title: 'Cnfirmation');
+                      },
+                      label: const Text(
+                        "Start Mission",
+                        style: TextStyle(color: Colors.white),
+                      )),
+                if (mission.statusId == 2)
+                  FloatingActionButton.extended(
+                      heroTag: "COMPLETED", // Unique tag for the first button
+
+                      backgroundColor: getStatusColor(3),
+                      onPressed: () async {
+                        showExitConfirmationDialog(context,
+                            onPressed: () async {
+                          await controller.changeStatuseMission(
+                              3, widget.missionId);
+                          Get.back();
+                        },
+                            details: 'Are you sure to complete the Mission?',
+                            title: 'Cnfirmation');
+                      },
+                      label: const Text(
+                        "Completed Mission",
+                        style: TextStyle(color: Colors.white),
+                      )),
+                const SizedBox(
+                  height: 20,
+                ),
+                if (mission.statusId == 3)
+                  FloatingActionButton.extended(
+                      heroTag:
+                          "addFeedback2", // Unique tag for the first button
+
+                      backgroundColor: Theme.of(context).primaryColor,
+                      onPressed: () {
+                        Go.to(
+                            context,
+                            CreateFeedBackScreen(
+                              clientID: mission.clientId,
+                              feedbackModelID: 16,
+                              missionID: mission.id,
+                            ));
+                      },
+                      label: const Text(
+                        "Add Feedback",
+                        style: TextStyle(color: Colors.white),
+                      )),
+              ],
+            ),
+            appBar: AppBar(
+              title: Text('Mission Details'.tr),
+              centerTitle: true,
+              backgroundColor: theme.primaryColor,
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListView(
+                children: [
+                  _buildMissionHeader(context, mission),
+                  const SizedBox(height: 16),
+                  _buildMissionInfoSection('Mission Label'.tr, mission.label,
+                      Icons.label, theme.primaryColor),
+                  _buildMissionStatusSection(theme, mission.statusId),
+                  _buildMissionInfoSection(
+                      'Mission Description'.tr,
+                      mission.desc ?? 'No description available'.tr,
+                      Icons.description,
+                      theme.primaryColor),
+                  _buildMissionInfoSection(
+                      'Creator Username'.tr,
+                      mission.creatorUsername,
+                      Icons.person,
+                      theme.primaryColor),
+                  _buildMissionInfoSection(
+                      'Editor Username'.tr,
+                      mission.editorUsername ?? 'No editor assigned'.tr,
+                      Icons.edit,
+                      theme.primaryColor),
+                  _buildMissionInfoSection(
+                      'Created At'.tr,
+                      mission.createdAt.toString(),
+                      Icons.date_range,
+                      theme.primaryColor),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildMissionHeader(BuildContext context) {
+  Widget _buildMissionHeader(BuildContext context, Mission mission) {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -149,7 +207,6 @@ class MissionProfileScreen extends StatelessWidget {
   }
 
   Widget _buildMissionStatusSection(ThemeData theme, int statusId) {
-    // Define the current status label and color
     String statusLabel = getStatusLabel(statusId);
     Color statusColor = getStatusColor(statusId);
 
@@ -162,8 +219,8 @@ class MissionProfileScreen extends StatelessWidget {
         ),
         child: ListTile(
           leading: Icon(
-            mission.isSuccessful == true ? Icons.check_circle : Icons.pending,
-            color: mission.isSuccessful == true ? Colors.green : Colors.orange,
+            Icons.circle,
+            color: statusColor,
           ),
           title: Text(
             'Status'.tr,
@@ -172,43 +229,12 @@ class MissionProfileScreen extends StatelessWidget {
               color: theme.primaryColor,
             ),
           ),
-          subtitle: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  statusLabel,
-                  style: TextStyle(
-                    color: statusColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              PopupMenuButton<int>(
-                icon: Icon(Icons.more_vert, color: theme.primaryColor),
-                onSelected: (selectedStatus) {
-                  // Handle the status change here
-                  // For example, update the statusId and refresh UI (if needed)
-                  Get.snackbar(
-                      'Status Updated', getStatusLabel(selectedStatus));
-                  // Update status based on selection
-                  // You may need a controller or state update logic if status is mutable
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 2,
-                    child: Text('In Progress'.tr),
-                  ),
-                  PopupMenuItem(
-                    value: 3,
-                    child: Text('Completed'.tr),
-                  ),
-                  PopupMenuItem(
-                    value: -1,
-                    child: Text('Unknown Status'.tr),
-                  ),
-                ],
-              ),
-            ],
+          subtitle: Text(
+            statusLabel,
+            style: TextStyle(
+              color: statusColor,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),

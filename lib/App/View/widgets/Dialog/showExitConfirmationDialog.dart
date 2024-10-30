@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 
-import '../../../Controller/auth/auth_controller.dart';
-import '../../auth/screen_auth.dart';
-import '../../splashScreen/splash_screen.dart';
-
-Future<bool> showExitConfirmationDialog(BuildContext context) async {
+Future<bool> showExitConfirmationDialog(
+  context, {
+  required void Function()? onPressed,
+  required String title,
+  required String details,
+}) async {
   return await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Log out'),
-          content: const Text('Do you really want to log out of the account?'),
+          title: Text(title),
+          content: Text(details),
           actions: [
             TextButton(
               onPressed: () {
@@ -19,11 +19,7 @@ Future<bool> showExitConfirmationDialog(BuildContext context) async {
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () {
-                token.write("token", null);
-                spalshscreenfirst.write('key', false);
-                Go.clearAndTo(context, ScreenAuth());
-              },
+              onPressed: onPressed,
               child: const Text('OK'),
             ),
           ],

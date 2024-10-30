@@ -17,7 +17,7 @@ class MissionCard extends StatelessWidget {
       onTap: () {
         Go.to(
           context,
-          MissionProfileScreen(mission: mission),
+          MissionProfileScreen(missionId: mission.id),
         );
       },
       child: Container(

@@ -20,6 +20,7 @@ class FeedbackController extends GetxController {
   RxList<FeedbackMission> feedbacks = <FeedbackMission>[].obs;
   FeedbackMission? feedbackprofile;
   var isLoading = false.obs;
+  var isLoadingoffset = false.obs;
   var isLoadingprofile = false;
   var isLoadingadd = false;
   var offset = 0.obs;
@@ -43,6 +44,8 @@ class FeedbackController extends GetxController {
   void _scrollListener() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
+      isLoadingoffset.value = true;
+      update();
       addOffset(
           Get.put(CompanyController()).selectCompany!.id.toString(),
           Get.put(AuthController())
@@ -130,7 +133,8 @@ class FeedbackController extends GetxController {
 
   Future<void> addOffset(String companyId, String creatorId) async {
     // if (isLoading.value && feedbacks.isNotEmpty) return;
-    // isLoading(true);
+    isLoadingoffset(true);
+    update();
     print("object");
     try {
       final response = await http.get(
@@ -162,7 +166,8 @@ class FeedbackController extends GetxController {
 
       print('Error: $e');
     } finally {
-      // isLoading(false);
+      isLoadingoffset(false);
+      update();
     }
   }
 
@@ -256,18 +261,18 @@ class FeedbackController extends GetxController {
     }
   }
 
-  Future<void> updateFeedback({
-    required String feedbackId,
-    required String lastLabel,
-    required String Label,
-    required String desc,
-    String? lat,
-    String? lng,
-    String? requestDate,
-    required int creatorId,
-    required int clientId,
-    required int feedbackModelId,
-  }) async {
+  Future<void> updateFeedback(
+      {required String feedbackId,
+      required String lastLabel,
+      required String Label,
+      required String desc,
+      String? lat,
+      String? lng,
+      String? requestDate,
+      required int creatorId,
+      required int clientId,
+      required int feedbackModelId,
+      required List<dynamic> images}) async {
     ExpandableControllerFeedback expandableControllerFeedback =
         Get.put(ExpandableControllerFeedback());
     // Indicate loading state
@@ -275,19 +280,10 @@ class FeedbackController extends GetxController {
     update();
 
     try {
-      print(feedbackModelId);
+      // return;
       final url =
           Uri.parse('${Endpoint.apiFeedbacks}/$feedbackId'); // Endpoint URL
-      // Map<String, Object?> map = {
-      //   'label': label,
-      //   'desc': desc,
-      //   'lat': lat,
-      //   'lng': lng,
-      //   'requestDate': requestDate,
-      //   'clientId': clientId,
-      //   'feedbackModelId':
-      //       Get.put(ExpandableControllerFeedback()).selectedItem.value!.id!,
-      // };
+
       String feedbackModelFilter = '0';
 
       if (expandableControllerFeedback.selectedItem.value.isNull == true) {
@@ -302,20 +298,36 @@ class FeedbackController extends GetxController {
             expandableControllerFeedback.selectedItem.value!.id.toString();
         update();
       }
+
+      final List imagpath = [];
+      for (var i = 0; i < images.length; i++) {
+        // print(images[i]["id"]);
+        for (var i = 0; i < images.length; i++) {
+          imagpath.add({
+            "id": images[i]["id"].toString(),
+            "path": images[i]["id"].toString()
+          });
+        }
+      }
+      Map<String, Object?> map = {
+        'label': lastLabel,
+        'desc': desc,
+        'lat': lat,
+        'lng': lng,
+        'requestDate': requestDate,
+        // 'clientId': clientId,
+        'feedbackModelId': feedbackModelFilter,
+        'gallery': imagpath,
+      };
+      print(map);
+      // return;
       final response = await http.put(
         url,
         headers: {
           'x-auth-token': token.read("token").toString(),
+          'Content-Type': 'application/json',
         },
-        body: {
-          'label': lastLabel,
-          'desc': desc,
-          // 'lat': lat,
-          // 'lng': lng,
-          'requestDate': requestDate,
-          // 'clientId': clientId,
-          'feedbackModelId': feedbackModelFilter,
-        },
+        body: jsonEncode(map),
       );
       print(response.body);
 

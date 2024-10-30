@@ -9,6 +9,21 @@ import '../../../Util/Style/stylecontainer.dart';
 import '../../widgets/Containers/container_blue.dart';
 import '../../widgets/flutter_slider.dart';
 
+/// A widget to display the percentage of completed, in progress and canceled missions in a given list of missions.
+///
+/// This widget is a child of [GetBuilder] and is initialized with a [MissionsController].
+/// It displays a card with two sections: A header with the title "Statistics Missions" and a row with the number of missions,
+/// and a body with a column of four rows:
+/// - The first row displays the number of completed missions and the percentage of completed missions.
+/// - The second row displays the number of in progress missions and the percentage of in progress missions.
+/// - The third row displays the number of canceled missions and the percentage of canceled missions.
+/// - The fourth row displays the number of created missions and the percentage of created missions.
+///
+/// The percentages are displayed as a slider with a color that changes based on the percentage.
+/// The color of the slider is defined by the [getSliderColor] function.
+///
+/// This widget is used in the [HomeScreen] to display the statistics of the missions.
+///
 Expanded statuseAndLatenessButton(
     BuildContext context, Color Function(int value) getSliderColor) {
   return Expanded(
@@ -210,7 +225,7 @@ Expanded statuseAndLatenessButton(
                                       missionsController.missions!.length
                                           .toDouble(),
                                       missionsController.created.toDouble(),
-                                      Colors.grey),
+                                      Theme.of(context).primaryColor),
                                   const SizedBox(
                                     width: 5,
                                   ),

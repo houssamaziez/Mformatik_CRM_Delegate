@@ -19,7 +19,7 @@ class ScreenSetting extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Directionality(
-                textDirection: TextDirection.rtl, // Set text direction to RTL
+                textDirection: TextDirection.ltr, // Set text direction to RTL
                 child: editeProfile(context)),
             liststate(),
             Padding(

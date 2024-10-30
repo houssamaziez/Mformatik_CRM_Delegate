@@ -1,10 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Containers/container_blue.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Dialog/showExitConfirmationDialog.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
+
+import '../../../../Util/Route/Go.dart';
+import '../../../auth/screen_auth.dart';
+import '../../../splashScreen/splash_screen.dart';
 
 class ProfileUserScreen extends StatelessWidget {
   const ProfileUserScreen({super.key});
@@ -12,10 +17,6 @@ class ProfileUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Profile"),
-        centerTitle: true,
-      ),
       body: GetBuilder<AuthController>(
           init: AuthController(),
           builder: (authController) {
@@ -25,7 +26,7 @@ class ProfileUserScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
@@ -36,25 +37,26 @@ class ProfileUserScreen extends StatelessWidget {
                         child: CachedNetworkImage(
                           imageUrl: person.img == null
                               ? 'https://img.freepik.com/premium-photo/stylish-man-flat-vector-profile-picture-ai-generated_606187-310.jpg'
-                              : person.img!,
+                              : '${dotenv.get('urlHost')}/uploads/' +
+                                  person.img!,
                           height: 90,
                           width: 90,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => spinkit,
                           errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
+                              const Icon(Icons.error),
                         ),
                       ),
                     ],
                   ),
                   Text(person.firstName + " " + person.lastName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       )),
-                  Spacer(),
-                  SizedBox(
+                  const Spacer(),
+                  const SizedBox(
                     height: 16,
                   ),
                   containerwithblue(context,
@@ -70,12 +72,12 @@ class ProfileUserScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               fontSize: 16),
                         ),
-                        subtitle: Text(
+                        subtitle: const Text(
                           "Delegate",
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       )),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   containerwithblue(context,
@@ -100,16 +102,23 @@ class ProfileUserScreen extends StatelessWidget {
                           ),
                         ),
                       )),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   InkWell(
                     onTap: () {
-                      showExitConfirmationDialog(context);
+                      showExitConfirmationDialog(context, onPressed: () {
+                        token.write("token", null);
+                        spalshscreenfirst.write('key', false);
+                        Go.clearAndTo(context, ScreenAuth());
+                      },
+                          details:
+                              'Do you really want to log out of the account?',
+                          title: 'Log out');
                     },
                     child: containerwithblue(context,
                         widget: ListTile(
-                          leading: Icon(
+                          leading: const Icon(
                             Icons.logout,
                             color: Colors.red,
                           ),
@@ -120,7 +129,7 @@ class ProfileUserScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ),
-                          subtitle: Text(
+                          subtitle: const Text(
                             "Log out of the account",
                             style: TextStyle(
                               color: Colors.grey,
@@ -129,7 +138,7 @@ class ProfileUserScreen extends StatelessWidget {
                           ),
                         )),
                   ),
-                  Spacer(),
+                  const Spacer(),
                 ],
               ),
             );

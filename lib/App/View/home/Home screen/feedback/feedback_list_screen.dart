@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
@@ -52,37 +53,40 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       body: Column(
         children: [
           Expanded(
-            child: Obx(() {
-              if (feedbackController.isLoading.value) {
-                return const Center(child: spinkit);
-              }
-              if (feedbackController.feedbacks.isEmpty) {
-                return const Center(child: Text("No feedback available."));
-              }
-              return ListView.builder(
-                physics: AlwaysScrollableScrollPhysics(),
-                controller: feedbackController.scrollController,
-                itemCount: feedbackController.feedbacks.length + 1,
-                itemBuilder: (context, index) {
-                  if (index < feedbackController.feedbacks.length) {
-                    return FeedbackCard(
-                        feedback: feedbackController.feedbacks[index]);
-                  } else if (feedbackController.isLoading.value) {
-                    return const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  } else {
-                    return Container(); // Empty container for end of list
+            child: GetBuilder<FeedbackController>(
+                init: FeedbackController(),
+                builder: (feedbackController) {
+                  if (feedbackController.isLoading.value) {
+                    return const Center(child: spinkit);
                   }
-                },
-              ).addRefreshIndicator(
-                onRefresh: () => feedbackController.fetchFeedbacks(
-                    companyController.selectCompany!.id.toString(),
-                    Get.put(AuthController()).user!.id.toString(),
-                    isreafrach: true),
-              );
-            }),
+                  if (feedbackController.feedbacks.isEmpty) {
+                    return const Center(child: Text("No feedback available."));
+                  }
+                  return ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    controller: feedbackController.scrollController,
+                    itemCount: feedbackController.feedbacks.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index < feedbackController.feedbacks.length) {
+                        return FeedbackCard(
+                            feedback: feedbackController.feedbacks[index]);
+                      } else if (feedbackController.isLoadingoffset.value ==
+                          true) {
+                        return const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(child: spinkit),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ).addRefreshIndicator(
+                    onRefresh: () => feedbackController.fetchFeedbacks(
+                        companyController.selectCompany!.id.toString(),
+                        Get.put(AuthController()).user!.id.toString(),
+                        isreafrach: true),
+                  );
+                }),
           ),
         ],
       ),
