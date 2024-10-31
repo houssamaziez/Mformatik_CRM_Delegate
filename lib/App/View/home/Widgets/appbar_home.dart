@@ -15,15 +15,21 @@ AppBar appbarHome(
     actions: [
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: InkWell(
-          onTap: () {
-            Get.put(HomeController()).upadteshowcontaner();
-          },
-          child: Image.asset(
-            "assets/icons/filter.png",
-            width: 25,
-          ),
-        ),
+        child: GetBuilder<HomeController>(
+            init: HomeController(),
+            builder: (homeController) {
+              return homeController.indexBottomBar == 2
+                  ? Container()
+                  : InkWell(
+                      onTap: () {
+                        homeController.upadteshowcontaner();
+                      },
+                      child: Image.asset(
+                        "assets/icons/filter.png",
+                        width: 25,
+                      ),
+                    );
+            }),
       ),
       SizedBox(
         width: 5,

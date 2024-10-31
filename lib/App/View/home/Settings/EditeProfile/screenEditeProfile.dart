@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/profile_user_controller.dart';
 import 'package:mformatic_crm_delegate/App/View/home/Widgets/textfild.dart';
 
 import '../../../../Controller/auth/auth_controller.dart';
@@ -116,11 +117,21 @@ class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ButtonAll(
-                          function: () {}, title: "Edit Basic Information"),
-                    ),
+                    GetBuilder<ProfileUserController>(
+                        init: ProfileUserController(),
+                        builder: (updateController) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ButtonAll(
+                                isloading: updateController.isloading,
+                                function: () {
+                                  updateController.updateProfile(
+                                      firstName: firstNameController.text,
+                                      lastName: lastNameController.text);
+                                },
+                                title: "Edit Basic Information"),
+                          );
+                        }),
                     buttonsetting(
                         function: () {
                           Go.to(context, ModifyPassword());

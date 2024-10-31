@@ -199,23 +199,26 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                     onPressed: controllercreateFeedback.isLoadingadd
                         ? null
                         : () async {
-                            var location = await getCurrentLocation();
-
-                            if (controllerisreq.selectedItem.value == null) {
-                              showMessage(context, title: 'Select Reasons');
-                            } else if (controllerisreq
-                                    .selectedItem.value!.isDescRequired ==
-                                true) {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
+                            var location =
+                                await LocationService.getCurrentLocation(
+                                    context);
+                            if (location.isPermissionGranted) {
+                              if (controllerisreq.selectedItem.value == null) {
+                                showMessage(context, title: 'Select Reasons');
+                              } else if (controllerisreq
+                                      .selectedItem.value!.isDescRequired ==
+                                  true) {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  post(controllercreateFeedback, location);
+                                  return;
+                                } else {
+                                  print("object");
+                                }
+                              } else {
                                 post(controllercreateFeedback, location);
                                 return;
-                              } else {
-                                print("object");
                               }
-                            } else {
-                              post(controllercreateFeedback, location);
-                              return;
                             }
                           },
                     child: controllercreateFeedback.isLoadingadd

@@ -3,7 +3,6 @@ import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 
 import '../../../../../Model/mission.dart';
-import '../../../../../Util/Style/stylecontainer.dart';
 import '../profile_mission.dart';
 
 class MissionCard extends StatelessWidget {
@@ -29,20 +28,25 @@ class MissionCard extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
-              Image.asset(
-                "assets/icons/mission.png",
-                height: 50,
-              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      mission.label,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          mission.label,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Spacer(),
+                        Image.asset(
+                          "assets/icons/mission.png",
+                          height: 30,
+                        ),
+                      ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

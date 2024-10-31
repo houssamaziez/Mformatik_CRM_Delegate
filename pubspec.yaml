@@ -52,6 +52,7 @@ dependencies:
   flutter_xlider: ^3.5.0
   image_picker: ^1.1.2
   image: ^4.3.0
+  open_settings_plus: ^0.3.3
   
 
 dev_dependencies:

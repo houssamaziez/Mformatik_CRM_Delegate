@@ -1,5 +1,6 @@
 {
     "conventionalCommits.scopes": [
-        "annex screen"
+        "annex screen",
+        "screen edite profile "
     ]
 }

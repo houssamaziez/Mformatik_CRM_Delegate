@@ -151,21 +151,28 @@ class _AddFeedbackScreenState extends State<AddFeedbackScreen> {
                     onPressed: controller.isLoadingadd
                         ? null
                         : () async {
-                            getCurrentLocation().then((location) {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                                controller.addFeedback(
-                                  label: label,
-                                  desc: desc,
-                                  lat: location.latitude.toString(),
-                                  lng: location.longitude.toString(),
-                                  requestDate: '01/01/2022',
-                                  clientId: widget.clientID,
-                                  missionId: widget.missionID!,
-                                  feedbackModelId: widget.feedbackModelID,
-                                  images:
-                                      _imageFiles, // Pass the images to the controller
-                                );
+                            LocationService.getCurrentLocation(context)
+                                .then((location) {
+                              if (location.isPermissionGranted == true) {
+                                // if (_formKey.currentState!.validate()) {
+                                //   _formKey.currentState!.save();
+                                //   controller.addFeedback(
+                                //     label: label,
+                                //     desc: desc,
+                                //     lat: location.latitude.toString(),
+                                //     lng: location.longitude.toString(),
+                                //     requestDate: '01/01/2022',
+                                //     clientId: widget.clientID,
+                                //     missionId: widget.missionID!,
+                                //     feedbackModelId: widget.feedbackModelID,
+                                //     images:
+                                //         _imageFiles, // Pass the images to the controller
+                                //   );
+                                // }
+                                print("active v auto");
+                              } else {
+                                print("active localisation auto");
+                                // active localisation auto
                               }
                             });
                           },

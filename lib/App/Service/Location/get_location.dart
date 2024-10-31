@@ -1,67 +1,116 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 
-Future<LocationDataModel> getCurrentLocation() async {
-  try {
-    // Check for location permissions
-    LocationPermission permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
+class LocationService {
+  static Future<LocationDataModel> getCurrentLocation(context) async {
+    try {
+      // Check and request location permissions
+      LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          return LocationDataModel(
+            isPermissionGranted: false,
+            message: 'Location permissions are denied.',
+          );
+        }
+      }
+
+      // Check if location services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        _showEnableLocationDialog(context);
         return LocationDataModel(
           isPermissionGranted: false,
-          message: 'Location permissions are denied.',
+          message: 'Location services are disabled.',
         );
       }
-    }
 
-    // Check if location services are enabled
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return LocationDataModel(
-        isPermissionGranted: false,
-        message: 'Location services are disabled.',
-      );
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permission is denied forever, direct the user to the settings
-      bool opened = await Geolocator.openAppSettings();
-      if (!opened) {
+      if (permission == LocationPermission.deniedForever) {
+        // Permissions denied permanently, show dialog to guide user
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Location Services Disabled'),
+              content: Text(
+                  'Location services are required for this feature. Please enable them in settings.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    await Geolocator.openAppSettings();
+                  },
+                  child: Text('Open Settings'),
+                ),
+              ],
+            );
+          },
+        );
         return LocationDataModel(
           isPermissionGranted: false,
-          message:
-              'Unable to open settings. Please enable location permissions manually.',
+          message: false
+              ? 'Please enable location permissions in settings.'
+              : 'Unable to open settings. Enable permissions manually.',
         );
       }
+
+      // Fetch current position
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      return LocationDataModel(
+        isPermissionGranted: true,
+        latitude: position.latitude,
+        longitude: position.longitude,
+        message: 'Location fetched successfully.',
+      );
+    } catch (e) {
       return LocationDataModel(
         isPermissionGranted: false,
-        message:
-            'Location permissions are permanently denied. Please enable permissions in settings.',
+        message: 'Failed to get location: $e',
       );
     }
+  }
 
-    // Get the current position (latitude and longitude)
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-
-    // Return location and permission status in the model
-    return LocationDataModel(
-      isPermissionGranted: true,
-      latitude: position.latitude,
-      longitude: position.longitude,
-      message: 'Location fetched successfully.',
-    );
-  } catch (e) {
-    return LocationDataModel(
-      isPermissionGranted: false,
-      message: 'Failed to get location: $e',
+  // Show dialog prompting the user to enable location services
+  static void _showEnableLocationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Location Services Disabled'),
+          content: Text(
+              'Location services are required for this feature. Please enable them in settings.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await Geolocator.openLocationSettings();
+              },
+              child: Text('Open Settings'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
+// LocationDataModel to store location and permission data
 class LocationDataModel {
   final bool isPermissionGranted;
   final double? latitude;

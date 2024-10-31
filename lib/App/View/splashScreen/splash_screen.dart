@@ -23,18 +23,21 @@ GetStorage spalshscreenfirst = GetStorage();
 class _SpalshScreenState extends State<SpalshScreen> {
   LocationDataModel? locationData;
   void fetchLocation() async {
-    locationData = await getCurrentLocation();
-    print(locationData!.isPermissionGranted);
+    // locationData = await LocationService.getCurrentLocation(context);
+    // print(locationData!.isPermissionGranted);
 
-    if (locationData!.isPermissionGranted) {
-      print(
-          'Latitude: ${locationData!.latitude}, Longitude: ${locationData!.longitude}');
+    // if (locationData!.isPermissionGranted) {
+    //   print(
+    //       'Latitude: ${locationData!.latitude}, Longitude: ${locationData!.longitude}');
 
-      Get.put(AuthController()).getme(Get.context);
-      spalshscreenfirst.write('key', true);
-    } else {
-      print('Error: ${locationData!.message}');
-    }
+    //   Get.put(AuthController()).getme(Get.context);
+    //   spalshscreenfirst.write('key', true);
+    // } else {
+    //   print('Error: ${locationData!.message}');
+    // }
+
+    Get.put(AuthController()).getme(Get.context);
+    spalshscreenfirst.write('key', true);
   }
 
   @override

@@ -10,17 +10,17 @@ class ButtonAll extends StatelessWidget {
       required this.function,
       required this.title,
       this.height = 50,
-      this.islogin = false});
+      this.isloading = false});
 
   final Function function;
   final String title;
-  final bool islogin;
+  final bool isloading;
   final double height;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (islogin) {
+        if (isloading) {
         } else {
           function();
         }
@@ -35,12 +35,12 @@ class ButtonAll extends StatelessWidget {
           child: Row(
             children: [
               const Spacer(),
-              if (islogin == true) spinkitwhite,
+              if (isloading == true) spinkitwhite,
               SizedBox(
-                width: islogin == true ? 10 : 0,
+                width: isloading == true ? 10 : 0,
               ),
               Text(
-                islogin == true ? 'Verifying...'.tr : title,
+                isloading == true ? 'Verifying...'.tr : title,
                 style: const TextStyle(color: Colors.white),
               ),
               const Spacer(),

@@ -17,6 +17,8 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../Controller/home/company_controller.dart';
 import '../../../Controller/home/home_controller.dart';
+import '../../../Controller/home/reasons_feedback_controller.dart';
+import '../../../Controller/widgetsController/expandable_controller.dart';
 import 'screenMissions/profile_mission.dart';
 import '../Widgets/absence_and_lateness_button.dart';
 import '../Widgets/add_feedback_button.dart';
@@ -42,6 +44,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
     feedbackController.fetchFeedbacks(
         Get.put(CompanyController()).selectCompany!.id.toString(),
         Get.put(AuthController()).user!.id.toString());
+    Get.put(ReasonsFeedbackController()).fetchReasons();
     super.initState();
   }
 

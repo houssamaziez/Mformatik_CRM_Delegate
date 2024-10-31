@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import '../../../../Controller/home/feedback_controller.dart';
 import '../../../../Controller/home/reasons_feedback_controller.dart';
 import '../../../../Controller/widgetsController/date_controller.dart';
@@ -187,15 +188,15 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                       style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                     ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _handleUpdateFeedback,
-                child: const Text('Update Feedback'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-              ),
+              GetBuilder<FeedbackController>(
+                  init: FeedbackController(),
+                  builder: (xontrolllerFeedback) {
+                    return ButtonAll(
+                      function: _handleUpdateFeedback,
+                      title: 'Update Feedback',
+                      isloading: xontrolllerFeedback.isLoadingadd,
+                    );
+                  }),
             ],
           ),
         ),
@@ -231,46 +232,38 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
     //       backgroundColor: Colors.red, colorText: Colors.white);
     //   return;
     // }
-    var location = await getCurrentLocation();
 
     if (controllerisreq.selectedItem.value == null) {
       showMessage(context, title: 'Select Reasons');
     } else if (controllerisreq.selectedItem.value!.isDescRequired == true) {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
-        post(location);
+        post();
         return;
       } else {
         print("object");
       }
-    } else {
-      post(location);
-      return;
     }
   }
 
-  post(LocationDataModel location) async {
-    if (location.isPermissionGranted == true) {
-      await feedbackController
-          .updateFeedback(
-              feedbackId: widget.feedback.id.toString(),
-              lastLabel:
-                  expandableController.controllerTextEditingController!.text,
-              Label: widget.feedback.label.toString(),
-              desc: descController.text,
-              lat: location.latitude.toString(),
-              lng: location.longitude.toString(),
-              requestDate: formatDate(
-                  Get.put(DateController()).selectedDate.value.toString()),
-              clientId: int.parse(clientIdController.text),
-              feedbackModelId:
-                  int.parse(widget.feedback.feedbackModelId.toString()),
-              creatorId: widget.feedback.creatorId!,
-              images: images)
-          .then((success) {
-        getCurrentLocation();
-      });
-    } else {}
+  post() async {
+    await feedbackController
+        .updateFeedback(
+            feedbackId: widget.feedback.id.toString(),
+            lastLabel:
+                expandableController.controllerTextEditingController!.text,
+            Label: widget.feedback.label.toString(),
+            desc: descController.text,
+            requestDate: formatDate(
+                Get.put(DateController()).selectedDate.value.toString()),
+            clientId: int.parse(clientIdController.text),
+            feedbackModelId:
+                int.parse(widget.feedback.feedbackModelId.toString()),
+            creatorId: widget.feedback.creatorId!,
+            images: images)
+        .then((success) {
+      LocationService.getCurrentLocation(context);
+    });
   }
 }
 

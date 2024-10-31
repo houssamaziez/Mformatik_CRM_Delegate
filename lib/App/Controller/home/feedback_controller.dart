@@ -11,6 +11,7 @@ import 'dart:convert';
 
 import '../../Model/feedback.dart';
 import '../../RouteEndPoint/EndPoint.dart';
+import '../../Service/Location/get_location.dart';
 import '../auth/auth_controller.dart';
 import '../widgetsController/expandable_controller.dart';
 import 'reasons_feedback_controller.dart';
@@ -273,11 +274,15 @@ class FeedbackController extends GetxController {
       required int clientId,
       required int feedbackModelId,
       required List<dynamic> images}) async {
+    isLoadingadd = true;
+    update();
+    var location = await LocationService.getCurrentLocation(Get.context);
+    if (!location.isPermissionGranted) {
+      return;
+    }
     ExpandableControllerFeedback expandableControllerFeedback =
         Get.put(ExpandableControllerFeedback());
     // Indicate loading state
-    isLoadingadd = true;
-    update();
 
     try {
       // return;

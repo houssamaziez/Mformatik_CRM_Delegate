@@ -86,7 +86,10 @@ class AuthController extends GetxController {
       final responseData = ResponseHandler.processResponse(response);
       if (response.statusCode == 200) {
         user = User.fromJson(responseData['user']);
+        update();
         person = Person.fromJson(responseData);
+        update();
+
         print('person in as: ${person?.firstName}');
         print('user in as: ${user?.username}');
         if (user!.roleId == 4) {
@@ -99,6 +102,33 @@ class AuthController extends GetxController {
         if (response.statusCode == 401) {
           Go.clearAndTo(context, ScreenAuth());
         }
+      }
+    } catch (e) {
+      // Handle exceptions
+      showMessage(context, title: 'Connection problem'.tr);
+    } finally {
+      isLoading = false; // Reset loading state
+      update();
+    }
+  }
+
+  Future<void> updateMe(
+    context,
+  ) async {
+    Uri url = Uri.parse(Endpoint.apIme);
+
+    isLoading = true;
+    update();
+    try {
+      final response = await http
+          .get(url, headers: {"x-auth-token": token.read("token").toString()});
+      print(response.body);
+      final responseData = ResponseHandler.processResponse(response);
+      if (response.statusCode == 200) {
+        user = User.fromJson(responseData['user']);
+        update();
+        person = Person.fromJson(responseData);
+        update();
       }
     } catch (e) {
       // Handle exceptions
