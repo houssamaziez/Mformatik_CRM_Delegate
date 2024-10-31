@@ -10,6 +10,9 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../Util/Route/Go.dart';
 import '../../../auth/screen_auth.dart';
 import '../../../splashScreen/splash_screen.dart';
+import '../../Settings/EditeProfile/screenEditeProfile.dart';
+import '../../Settings/Widgets/buttons.dart';
+import '../../Settings/Widgets/cardstate.dart';
 
 class ProfileUserScreen extends StatelessWidget {
   const ProfileUserScreen({super.key});
@@ -55,89 +58,32 @@ class ProfileUserScreen extends StatelessWidget {
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       )),
-                  const Spacer(),
                   const SizedBox(
                     height: 16,
                   ),
-                  containerwithblue(context,
-                      widget: ListTile(
-                        leading: Icon(
-                          Icons.admin_panel_settings,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        title: Text(
-                          "Role",
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ),
-                        subtitle: const Text(
-                          "Delegate",
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
-                        ),
-                      )),
+                  liststateprofile(),
                   const SizedBox(
                     height: 16,
                   ),
-                  containerwithblue(context,
-                      color: user.isActive ? Colors.green : Colors.orange,
-                      widget: ListTile(
-                        leading: Icon(
-                          Icons.check_circle,
-                          color: user.isActive ? Colors.green : Colors.orange,
-                        ),
-                        title: Text(
-                          "Status",
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ),
-                        subtitle: Text(
-                          user.isActive ? "Active" : "Inactive",
-                          style: TextStyle(
-                            color: user.isActive ? Colors.green : Colors.grey,
-                            fontSize: 14,
-                          ),
-                        ),
-                      )),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      showExitConfirmationDialog(context, onPressed: () {
-                        token.write("token", null);
-                        spalshscreenfirst.write('key', false);
-                        Go.clearAndTo(context, ScreenAuth());
+                  buttonsetting(
+                      function: () => Go.to(context, ScreenEditeProfile()),
+                      title: "Edite Profile",
+                      image: 'assets/icons/edit-info.png',
+                      colortext: Colors.black,
+                      color: Theme.of(context).cardColor),
+                  buttonsetting(
+                      function: () {
+                        showExitConfirmationDialog(context, onPressed: () {
+                          token.write("token", null);
+                          spalshscreenfirst.write('key', false);
+                          Go.clearAndTo(context, ScreenAuth());
+                        },
+                            details:
+                                'Do you really want to log out of the account?',
+                            title: 'Log out');
                       },
-                          details:
-                              'Do you really want to log out of the account?',
-                          title: 'Log out');
-                    },
-                    child: containerwithblue(context,
-                        widget: ListTile(
-                          leading: const Icon(
-                            Icons.logout,
-                            color: Colors.red,
-                          ),
-                          title: Text(
-                            "Logout",
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                          subtitle: const Text(
-                            "Log out of the account",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
-                          ),
-                        )),
-                  ),
+                      title: "Log Out       ".tr,
+                      image: 'assets/icons/log-out1.png'),
                   const Spacer(),
                 ],
               ),

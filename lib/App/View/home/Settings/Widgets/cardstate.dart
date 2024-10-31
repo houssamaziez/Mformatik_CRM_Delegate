@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/annex_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 
 import '../../../../Util/Style/stylecontainer.dart';
@@ -12,7 +13,24 @@ List<Map<String, String>> listt = [
     "Image": "assets/icons/load.png",
   },
   {
-    "title": "المدارس",
+    "title": " ",
+    "suptitle": "1",
+    "Image": "assets/icons/school_82938461.png",
+  },
+  {
+    "title": "حالة الحساب",
+    "suptitle": "فعال",
+    "Image": "assets/icons/subscribe1.png",
+  }
+];
+List<Map<String, String>> listt2 = [
+  {
+    "title": " ".tr,
+    "suptitle": "1.0",
+    "Image": "assets/icons/connecting.png",
+  },
+  {
+    "title": " ",
     "suptitle": "1",
     "Image": "assets/icons/school_82938461.png",
   },
@@ -96,6 +114,55 @@ Padding liststate() {
                           ? "Active".tr.toString()
                           : "Inactive"),
                   image: listt[2]["Image"].toString());
+            }),
+      ],
+    ),
+  );
+}
+
+Padding liststateprofile() {
+  return Padding(
+    padding: const EdgeInsets.all(10.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        GetBuilder<CompanyController>(
+            init: CompanyController(),
+            builder: (cont) {
+              return cardstate(
+                  title: "Company".tr.toString(),
+                  // ignore: unnecessary_null_comparison
+                  suptitle: cont.companies == null
+                      ? '0'
+                      : cont.companies!.length.toString(),
+                  image: listt2[1]["Image"].toString());
+            }),
+        GetBuilder<AnnexController>(
+            init: AnnexController(),
+            builder: (cont) {
+              return cardstate(
+                  title: "Annex".tr.toString(),
+                  suptitle: cont.annexList == null
+                      ? '0'
+                      : cont.annexList!.length.toString(),
+                  image: listt2[0]["Image"].toString());
+            }),
+        GetBuilder<AuthController>(
+            init: AuthController(),
+            builder: (controller) {
+              return cardstate(
+                  colortext: controller.user!.isActive == null
+                      ? Colors.grey
+                      : (controller.user!.isActive == true
+                          ? Colors.green
+                          : Colors.red),
+                  title: "Account".tr.toString(),
+                  suptitle: controller.user!.isActive == null
+                      ? " in English is \"Verifying ..."
+                      : (controller.user!.isActive == true
+                          ? "Active".tr.toString()
+                          : "Inactive"),
+                  image: listt2[2]["Image"].toString());
             }),
       ],
     ),

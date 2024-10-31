@@ -245,7 +245,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
 String getStatusLabel(int statusId) {
   switch (statusId) {
     case 1:
-      return 'Created'.tr; // Translates to "Created"
+      return 'New'.tr; // Translates to "Created"
     case 2:
       return 'In Progress'.tr; // Translates to "In Progress"
     case 3:

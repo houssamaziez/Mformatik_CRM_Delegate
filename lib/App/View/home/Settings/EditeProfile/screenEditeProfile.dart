@@ -7,15 +7,34 @@ import 'package:mformatic_crm_delegate/App/View/home/Widgets/textfild.dart';
 import '../../../../Controller/auth/auth_controller.dart';
 import '../../../../Util/Route/Go.dart';
 import '../../../widgets/Buttons/buttonall.dart';
+import '../../../widgets/TextField.dart';
 import '../../../widgets/app_bar.dart';
 import '../../../widgets/flutter_spinkit.dart';
 import '../Widgets/buttons.dart';
 import 'modifypassword.dart';
 
 // ignore: must_be_immutable
-class ScreenEditeProfile extends StatelessWidget {
+class ScreenEditeProfile extends StatefulWidget {
   ScreenEditeProfile({super.key});
-  TextEditingController nameController = TextEditingController();
+
+  @override
+  State<ScreenEditeProfile> createState() => _ScreenEditeProfileState();
+}
+
+class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
+  TextEditingController firstNameController = TextEditingController();
+
+  TextEditingController lastNameController = TextEditingController();
+
+  AuthController usercontroller = Get.put(AuthController());
+  @override
+  void initState() {
+    firstNameController.text = usercontroller.person!.firstName;
+    lastNameController.text = usercontroller.person!.lastName;
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +52,7 @@ class ScreenEditeProfile extends StatelessWidget {
                   children: [
                     const SizedBox(
                       width: double.infinity,
+                      height: 10,
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(180),
@@ -57,39 +77,50 @@ class ScreenEditeProfile extends StatelessWidget {
                     Text(
                       person.firstName == null
                           ? '...جاري جلب البيانات'
-                          : 'id: ' + person.id!.toString(),
-                      style: const TextStyle(fontWeight: FontWeight.w400),
+                          : '@' + user.username!.toString(),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Theme.of(context).primaryColor),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     const Align(
-                      alignment: Alignment.bottomRight,
+                      alignment: Alignment.bottomLeft,
                       child: Text(
                         "Edit Information",
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 16),
                       ),
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     MyTextfield(
-                        namecontroller: nameController,
-                        title: "Full Name*",
-                        suptitle: "full name",
-                        ispassword: false),
+                      controller: firstNameController,
+                      label: "First Name",
+                      hint: "First Name",
+                      isPassword: false,
+                    ),
                     MyTextfield(
-                        namecontroller: nameController,
-                        title: "Email*",
-                        suptitle: "some1234@gmail.com",
-                        ispassword: false),
-                    MyTextfield(
-                        namecontroller: nameController,
-                        title: "Mobile Number*",
-                        suptitle: "102030405060",
-                        ispassword: false),
+                      controller: lastNameController,
+                      label: "last Name",
+                      hint: "last Name",
+                      isPassword: false,
+                    ),
+                    // MyTextfield(
+                    //     controller: nameController,
+                    //     label: "Mobile Number*",
+                    //     hint: "102030405060",
+                    //     isPassword: false),
                     const SizedBox(
                       height: 20,
                     ),
-                    ButtonAll(function: () {}, title: "Edit Basic Information"),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ButtonAll(
+                          function: () {}, title: "Edit Basic Information"),
+                    ),
                     buttonsetting(
                         function: () {
                           Go.to(context, ModifyPassword());

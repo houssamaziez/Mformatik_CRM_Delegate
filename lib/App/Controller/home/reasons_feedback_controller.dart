@@ -6,6 +6,7 @@ import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 
 import '../../Model/reason_feedback.dart';
 import '../../Model/reason_mission.dart';
+import '../../View/widgets/showsnack.dart';
 import '../auth/auth_controller.dart';
 
 class ReasonsFeedbackController extends GetxController {
@@ -32,7 +33,7 @@ class ReasonsFeedbackController extends GetxController {
       }
     } catch (e) {
       // Handle exceptions
-      Get.snackbar('Error', 'Failed to load reasons: $e');
+      showMessage(Get.context, title: 'Connection problem'.tr);
     } finally {
       isLoading = false; // Reset loading state
       update();
