@@ -42,7 +42,9 @@ class _HomeFeedbackState extends State<HomeFeedback> {
   @override
   void initState() {
     feedbackController.fetchFeedbacks(
-        Get.put(CompanyController()).selectCompany!.id.toString(),
+        Get.put(CompanyController()).selectCompany == null
+            ? 0.toString()
+            : Get.put(CompanyController()).selectCompany!.id.toString(),
         Get.put(AuthController()).user!.id.toString());
     Get.put(ReasonsFeedbackController()).fetchReasons();
     super.initState();
@@ -73,7 +75,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                   );
                 });
           }
-          if (companyController.companies == null) {
+          if (companyController.selectCompany == null) {
             return GetBuilder<HomeController>(
                 init: HomeController(),
                 builder: (controller) {
@@ -403,14 +405,22 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 50,
-                        )
                       ],
                     ),
-                  ).addRefreshIndicator(
-                      onRefresh: () => companyController.updateannex(
-                          Get.put(CompanyController()).selectCompany));
+                  ).addRefreshIndicator(onRefresh: () {
+                    startDateMission = null;
+                    endDateMission = null;
+                    startDateTextMission = '';
+                    final anex = Get.put(AnnexController()).selectAnnex!;
+                    print(anex);
+                    endDateTextMission = '';
+                    if (Get.put(CompanyController()).selectCompany == null) {
+                      return Get.put(AnnexController()).updateannex(anex);
+                    } else {
+                      return companyController.updateannex(
+                          Get.put(CompanyController()).selectCompany);
+                    }
+                  });
                 }),
           );
         });

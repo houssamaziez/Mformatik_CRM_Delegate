@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 
 import '../../../../../Model/mission.dart';
@@ -20,10 +22,7 @@ class MissionCard extends StatelessWidget {
         );
       },
       child: Container(
-        decoration: BoxDecoration(
-          color: _getCardColor(mission.isSuccessful).withOpacity(0.2),
-          borderRadius: BorderRadius.circular(12), // Rounded corners
-        ),
+        decoration: StyleContainer.style1,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
@@ -35,16 +34,11 @@ class MissionCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          mission.label,
+                          mission.label!,
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
-                        Spacer(),
-                        Image.asset(
-                          "assets/icons/mission.png",
-                          height: 30,
                         ),
                       ],
                     ),
@@ -60,29 +54,64 @@ class MissionCard extends StatelessWidget {
                             ),
                           ),
                         const SizedBox(height: 12),
-                        Text(
-                          'Created by: ${mission.creatorUsername}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                          ),
+                        Row(
+                          children: [
+                            Icon(Icons.person, color: Colors.grey, size: 18),
+                            const SizedBox(width: 4),
+                            Text(
+                              'Created by: ${mission.creatorUsername}',
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 4),
                         // Display status with updated design
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Icon(Icons.circle,
+                                color: _getStatusColor(mission.statusId!),
+                                size: 14),
+                            const SizedBox(width: 4),
                             Text(
-                              'Status: ${_getStatusLabel(mission.statusId)}',
+                              'Status: ${_getStatusLabel(mission.statusId!)}',
                               style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: _getStatusColor(mission.statusId),
+                                fontSize: 13,
+                                color: _getStatusColor(mission.statusId!),
                               ),
                             ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+
+                        Row(
+                          children: [
+                            Icon(Icons.person_pin,
+                                color: Colors.grey, size: 18),
+                            const SizedBox(width: 4),
                             Text(
-                              '${_formatDate(mission.createdAt.toString())}',
+                              "Client: ${mission.client.fullName}",
                               style: const TextStyle(
-                                fontSize: 12,
+                                color: Colors.grey,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+
+                        Row(
+                          children: [
+                            Icon(Icons.date_range,
+                                color: Colors.grey, size: 18),
+                            const SizedBox(width: 4),
+                            Text(
+                              "Date: ${formatDate(mission.createdAt.toString())}",
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 13,
                               ),
                             ),
                           ],

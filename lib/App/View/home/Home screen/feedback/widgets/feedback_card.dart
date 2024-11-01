@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 
 import '../../../../../Model/feedback.dart';
 import '../../../../../Util/Route/Go.dart';
@@ -22,36 +23,12 @@ class FeedbackCard extends StatelessWidget {
               ));
         },
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.15),
-                spreadRadius: 2,
-                blurRadius: 8,
-                offset: const Offset(0, 4), // Shadow position
-              ),
-            ],
-          ),
+          decoration: StyleContainer.style1,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Colors.blueAccent.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Image.asset(
-                    "assets/icons/satisfaction.png",
-                    height: 40,
-                    width: 40,
-                    fit: BoxFit.fill,
-                  ),
-                ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(

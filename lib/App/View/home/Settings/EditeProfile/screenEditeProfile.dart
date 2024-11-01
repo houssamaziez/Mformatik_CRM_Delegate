@@ -102,12 +102,24 @@ class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
                       label: "First Name",
                       hint: "First Name",
                       isPassword: false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a First Name';
+                        }
+                        return null;
+                      },
                     ),
                     MyTextfield(
                       controller: lastNameController,
                       label: "last Name",
                       hint: "last Name",
                       isPassword: false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a last Name';
+                        }
+                        return null;
+                      },
                     ),
                     // MyTextfield(
                     //     controller: nameController,

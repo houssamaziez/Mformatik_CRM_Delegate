@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
@@ -19,10 +21,11 @@ class _ClientListScreenState extends State<ClientListScreen> {
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
   bool isLoadingMore = false;
+  Timer? _debounce;
 
   @override
   void initState() {
-    clientController.fetchClients(widget.companyid!, fullName: '');
+    // clientController.fetchClients(widget.companyid!, fullName: '');
     scrollController.addListener(_scrollListener);
     super.initState();
   }
@@ -54,6 +57,18 @@ class _ClientListScreenState extends State<ClientListScreen> {
     });
   }
 
+  // Method to handle search with debounce
+  void _onSearchChanged(String value) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+    _debounce = Timer(Duration(milliseconds: 500), () async {
+      await clientController.search(widget.companyid!, fullName: value);
+      setState(() {
+        selctserach = value;
+      });
+    });
+  }
+
   String selctserach = "";
   @override
   Widget build(BuildContext context) {
@@ -70,14 +85,15 @@ class _ClientListScreenState extends State<ClientListScreen> {
             padding: const EdgeInsets.all(16.0),
             child: TextField(
               controller: searchController,
-              onChanged: (value) async {
-                print(value);
-                await clientController.search(widget.companyid!,
-                    fullName: value);
+              // onChanged: (value) async {
+              //   print(value);
+              //   await clientController.search(widget.companyid!,
+              //       fullName: value);
 
-                selctserach = value;
-                // Add search logic here if needed
-              },
+              //   selctserach = value;
+              //   // Add search logic here if needed
+              // },
+              onChanged: _onSearchChanged,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
                 hintText: "Search clients...",

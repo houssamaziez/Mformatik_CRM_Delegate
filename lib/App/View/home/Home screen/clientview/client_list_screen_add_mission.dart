@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/feedback/add_feedback.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../Controller/home/client_controller.dart';
 import '../feedback/cretate_screen.dart';
@@ -63,6 +64,19 @@ class _ClientListScreenAddMissionState
     });
   }
 
+  Timer? _debounce;
+
+  void _onSearchChanged(String value) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+    _debounce = Timer(Duration(milliseconds: 500), () async {
+      await clientController.search(widget.companyid!, fullName: value);
+      setState(() {
+        selctserach = value;
+      });
+    });
+  }
+
   String selctserach = "";
   @override
   Widget build(BuildContext context) {
@@ -79,14 +93,7 @@ class _ClientListScreenAddMissionState
             padding: const EdgeInsets.all(16.0),
             child: TextField(
               controller: searchController,
-              onChanged: (value) async {
-                print(value);
-                await clientController.search(widget.companyid!,
-                    fullName: value);
-
-                selctserach = value;
-                // Add search logic here if needed
-              },
+              onChanged: _onSearchChanged,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
                 hintText: "Search clients...",
@@ -132,7 +139,7 @@ class _ClientListScreenAddMissionState
                           Get.to(() => ClientProfileScreen(client: client));
                         } else {
                           Get.to(() => CreateFeedBackScreen(
-                                clientID: client.id,
+                                clientID: client.id!,
                                 missionID: null,
                                 feedbackModelID: 0,
                               ));

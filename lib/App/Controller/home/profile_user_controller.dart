@@ -46,4 +46,46 @@ class ProfileUserController extends GetxController {
       update();
     }
   }
+
+  updatePassword(
+      {required String oldPassword, required String newPassword}) async {
+    Uri url = Uri.parse(Endpoint.apipersonsUpdate);
+    isloading = true;
+    print("response.statusCode");
+    update();
+    try {
+      final response = await http.put(url,
+          headers: {
+            "Content-Type": "application/json",
+            'x-auth-token': token.read("token").toString(),
+          },
+          body: jsonEncode({
+            'user': {
+              "oldPassword": oldPassword,
+              "newPassword": newPassword,
+            },
+          }));
+      print(response.body);
+
+      if (response.statusCode == 204) {
+        showMessage(
+          Get.context,
+          title: 'Password updated successfully',
+          color: Colors.green,
+        );
+        Get.put(AuthController()).updateMe(Get.context);
+      } else {
+        message = jsonDecode(response.body)[0]["code"];
+
+        showMessage(Get.context,
+            title: jsonDecode(response.body)[0]["code"].tr);
+      }
+    } catch (e) {
+      showMessage(Get.context,
+          title: message == "" ? 'Connection problem'.tr : message);
+    } finally {
+      isloading = false;
+      update();
+    }
+  }
 }

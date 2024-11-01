@@ -57,7 +57,7 @@ Expanded statuseAndLatenessButton(
                                 Spacer(),
                                 Text(
                                   "(" +
-                                      missionsController.missions!.length
+                                      missionsController.missionslength
                                           .toString() +
                                       ")",
                                   style: TextStyle(
@@ -150,7 +150,7 @@ Expanded statuseAndLatenessButton(
                                 children: [
                                   flutterSlider(
                                       getSliderColor,
-                                      missionsController.missions!.length
+                                      missionsController.missionslength
                                           .toDouble(),
                                       missionsController.completed.toDouble(),
                                       Colors.green),
@@ -160,8 +160,7 @@ Expanded statuseAndLatenessButton(
                                   missionsController.completed == 0
                                       ? 0.toString().style()
                                       : ((missionsController.completed * 100) /
-                                              missionsController
-                                                  .missions!.length)
+                                              missionsController.missionslength)
                                           .toStringAsFixed(2)
                                           .style(),
                                   "%".style(),
@@ -174,7 +173,7 @@ Expanded statuseAndLatenessButton(
                                 children: [
                                   flutterSlider(
                                       getSliderColor,
-                                      missionsController.missions!.length
+                                      missionsController.missionslength
                                           .toDouble(),
                                       missionsController.inProgress.toDouble(),
                                       Colors.orange),
@@ -184,8 +183,7 @@ Expanded statuseAndLatenessButton(
                                   missionsController.inProgress == 0
                                       ? 0.toString().style()
                                       : ((missionsController.inProgress * 100) /
-                                              missionsController
-                                                  .missions!.length)
+                                              missionsController.missionslength)
                                           .toStringAsFixed(2)
                                           .style(),
                                   "%".style(),
@@ -198,7 +196,7 @@ Expanded statuseAndLatenessButton(
                                 children: [
                                   flutterSlider(
                                       getSliderColor,
-                                      missionsController.missions!.length
+                                      missionsController.missionslength
                                           .toDouble(),
                                       missionsController.canceled.toDouble(),
                                       Colors.red),
@@ -208,8 +206,7 @@ Expanded statuseAndLatenessButton(
                                   missionsController.canceled == 0
                                       ? 0.toString().style()
                                       : ((missionsController.canceled * 100) /
-                                              missionsController
-                                                  .missions!.length)
+                                              missionsController.missionslength)
                                           .toStringAsFixed(2)
                                           .style(),
                                   "%".style(),
@@ -222,7 +219,7 @@ Expanded statuseAndLatenessButton(
                                 children: [
                                   flutterSlider(
                                       getSliderColor,
-                                      missionsController.missions!.length
+                                      missionsController.missionslength
                                           .toDouble(),
                                       missionsController.created.toDouble(),
                                       Theme.of(context).primaryColor),
@@ -232,8 +229,7 @@ Expanded statuseAndLatenessButton(
                                   missionsController.created == 0
                                       ? 0.toString().style()
                                       : ((missionsController.created * 100) /
-                                              missionsController
-                                                  .missions!.length)
+                                              missionsController.missionslength)
                                           .toStringAsFixed(2)
                                           .style(),
                                   "%".style(),

@@ -40,37 +40,37 @@ class Home extends StatelessWidget {
                         FilterCompany(
                           controller: controller,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 150,
                         ),
-                        Center(child: spinkit),
+                        const Center(child: spinkit),
                       ],
                     ),
                   );
                 });
           }
-          if (companyController.companies == null) {
+          if (companyController.selectCompany == null) {
             return GetBuilder<HomeController>(
                 init: HomeController(),
                 builder: (controller) {
                   return SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
                         FilterCompany(
                           controller: controller,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 200,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
                           child: Text(
                             "No company found, please select another annex.",
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         GetBuilder<HomeController>(
@@ -96,7 +96,7 @@ class Home extends StatelessWidget {
                                     )
                                   : Container();
                             }),
-                        SizedBox(
+                        const SizedBox(
                           height: 200,
                         )
                       ],
@@ -117,7 +117,7 @@ class Home extends StatelessWidget {
                 init: HomeController(),
                 builder: (controller) {
                   return SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
                         FilterCompany(
@@ -148,7 +148,7 @@ class Home extends StatelessWidget {
                                 ),
                               ],
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Padding(
@@ -174,13 +174,13 @@ class Home extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Flexible(
+                                        const Flexible(
                                           child: Icon(
                                             Icons.ads_click_sharp,
                                             color: Colors.transparent,
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 1,
                                         ),
                                         Expanded(
@@ -208,7 +208,7 @@ class Home extends StatelessWidget {
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 14)
                                                 .center()),
-                                        Flexible(
+                                        const Flexible(
                                           child: Icon(
                                             Icons.ads_click_sharp,
                                             color: Colors.transparent,
@@ -223,17 +223,14 @@ class Home extends StatelessWidget {
                                         return missionsController.isLoading ==
                                                 false
                                             ? missionsController
-                                                        .missions!.length ==
-                                                    0
-                                                ? Padding(
+                                                    .missions!.isEmpty
+                                                ? const Padding(
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
+                                                        EdgeInsets.all(8.0),
                                                     child: Center(
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
+                                                            EdgeInsets.all(8.0),
                                                         child: Text(
                                                           "No Missions found",
                                                           style: TextStyle(
@@ -247,7 +244,7 @@ class Home extends StatelessWidget {
                                                     padding: EdgeInsets.zero,
                                                     shrinkWrap: true,
                                                     physics:
-                                                        NeverScrollableScrollPhysics(),
+                                                        const NeverScrollableScrollPhysics(),
                                                     itemCount:
                                                         missionsController
                                                                     .missions!
@@ -280,13 +277,13 @@ class Home extends StatelessWidget {
                                                                     .primaryColor,
                                                               ),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 1,
                                                             ),
                                                             Expanded(
                                                                 flex: 2,
                                                                 child: mission
-                                                                    .label
+                                                                    .label!
                                                                     .style(
                                                                         textAlign:
                                                                             TextAlign.start)),
@@ -302,11 +299,11 @@ class Home extends StatelessWidget {
                                                                 flex: 2,
                                                                 child: getStatusLabel(
                                                                         mission
-                                                                            .statusId)
+                                                                            .statusId!)
                                                                     .toString()
                                                                     .style(
                                                                         color: getStatusColor(mission
-                                                                            .statusId),
+                                                                            .statusId!),
                                                                         textAlign:
                                                                             TextAlign.center)
                                                                     .center()),
@@ -321,15 +318,16 @@ class Home extends StatelessWidget {
                                                                             mission.id,
                                                                       ));
                                                                 },
-                                                                child: Icon(
+                                                                child:
+                                                                    const Icon(
                                                                   Icons
                                                                       .arrow_circle_right_outlined,
-                                                                  color: const Color
+                                                                  color: Color
                                                                       .fromARGB(
-                                                                      255,
-                                                                      86,
-                                                                      209,
-                                                                      90),
+                                                                          255,
+                                                                          86,
+                                                                          209,
+                                                                          90),
                                                                 ),
                                                               ),
                                                             ),
@@ -339,15 +337,16 @@ class Home extends StatelessWidget {
                                                     })
                                             : spinkit.paddingAll().center();
                                       }),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   Row(
                                     children: [
-                                      Spacer(),
+                                      const Spacer(),
                                       InkWell(
                                         onTap: () {
-                                          Go.to(context, MissionListScreen());
+                                          Go.to(context,
+                                              const MissionListScreen());
                                         },
                                         child: Container(
                                           decoration:
@@ -355,8 +354,8 @@ class Home extends StatelessWidget {
                                             color:
                                                 Theme.of(context).primaryColor,
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
+                                          child: const Padding(
+                                            padding: EdgeInsets.only(
                                                 left: 20.0,
                                                 right: 20,
                                                 top: 5,
@@ -370,7 +369,7 @@ class Home extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 8,
                                       )
                                     ],
@@ -380,14 +379,22 @@ class Home extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 50,
-                        )
                       ],
                     ),
-                  ).addRefreshIndicator(
-                      onRefresh: () => companyController.updateannex(
-                          Get.put(CompanyController()).selectCompany));
+                  ).addRefreshIndicator(onRefresh: () {
+                    startDateMission = null;
+                    endDateMission = null;
+                    startDateTextMission = '';
+                    final anex = Get.put(AnnexController()).selectAnnex!;
+                    print(anex);
+                    endDateTextMission = '';
+                    if (Get.put(CompanyController()).selectCompany == null) {
+                      return Get.put(AnnexController()).updateannex(anex);
+                    } else {
+                      return companyController.updateannex(
+                          Get.put(CompanyController()).selectCompany);
+                    }
+                  });
                 }),
           );
         });

@@ -14,6 +14,7 @@ import '../../RouteEndPoint/EndPoint.dart';
 import '../../Service/Location/get_location.dart';
 import '../auth/auth_controller.dart';
 import '../widgetsController/expandable_controller.dart';
+import 'missions_controller.dart';
 import 'reasons_feedback_controller.dart';
 import 'reasons_mission_controller.dart';
 
@@ -29,41 +30,15 @@ class FeedbackController extends GetxController {
   int feedbacksWithMission = 0;
   int feedbacksWithOutMission = 0;
   int feedbackslength = 0;
-  late ScrollController scrollController;
-
-  @override
-  void onInit() {
-    super.onInit();
-    // final controller = Get.put(CompanyController());
-
-    // fetchFeedbacks(controller.selectCompany!.id
-    //     .toString()); // Replace with actual company ID
-    scrollController = ScrollController();
-    scrollController.addListener(_scrollListener);
-  }
-
-  void _scrollListener() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      isLoadingoffset.value = true;
-      update();
-      addOffset(
-          Get.put(CompanyController()).selectCompany!.id.toString(),
-          Get.put(AuthController())
-              .user!
-              .id
-              .toString()); // Fetch more when reaching the end
-    }
-  }
 
   Future<void> fetchFeedbacks(String companyId, String creatorId,
-      {bool isreafrach = true}) async {
+      {bool isreafrach = true,
+      String? startingDate = "",
+      String? endingDate = ""}) async {
     feedbacksWithMission = 0;
     feedbacksWithOutMission = 0;
     feedbackslength = 0;
     feedbacks.clear();
-    print(companyId);
-    // if (isLoading.value && feedbacks.isNotEmpty) return;
     isLoading(true);
     update();
 
@@ -71,6 +46,7 @@ class FeedbackController extends GetxController {
       offset.value = 0;
       feedbacks.clear();
     }
+
     try {
       final response = await http.get(
         Uri.parse(Endpoint.apiFeedbacks).replace(
@@ -78,29 +54,23 @@ class FeedbackController extends GetxController {
             'companyId': companyId,
             'offset': offset.value.toString(),
             'limit': limit.toString(),
-            'creatorId': Get.put(AuthController()).user!.id.toString()
+            'creatorId': Get.put(AuthController()).user!.id.toString(),
+            if (startingDate!.isNotEmpty) ...{'startDate': startingDate},
+            if (endingDate!.isNotEmpty) ...{'endDate': endingDate},
           },
         ),
         headers: {"x-auth-token": token.read("token").toString()},
       );
-
-      print('--------------------------');
-      print("fetchFeedbacks  function :  ");
-      print('--------------------------');
+      offset.value = 10;
 
       if (response.statusCode == 200) {
-        update();
-        print("objecccct");
-        update();
         List<dynamic> responseData = json.decode(response.body)['rows'];
-        // feedbackslength = json.decode(response.body)['count'];
         update();
         if (responseData.isNotEmpty) {
           feedbacks.addAll(responseData
               .map((data) => FeedbackMission.fromJson(data))
               .toList());
           update();
-          offset.value = 10;
           final responseCounts = await http.get(
             Uri.parse("${Endpoint.apiFeedbacksCounts}?companyId=$companyId"),
             headers: {"x-auth-token": token.read("token").toString()},
@@ -117,11 +87,6 @@ class FeedbackController extends GetxController {
             update();
           }
         }
-
-        print("objecccct");
-        print(feedbacks);
-        print("objecccct");
-
         throw Exception('Failed to load feedbacks');
       }
     } catch (e) {
@@ -132,11 +97,10 @@ class FeedbackController extends GetxController {
     }
   }
 
-  Future<void> addOffset(String companyId, String creatorId) async {
-    // if (isLoading.value && feedbacks.isNotEmpty) return;
+  Future<void> addOffset(String companyId, String creatorId,
+      {String? startingDate = "", String? endingDate = ""}) async {
     isLoadingoffset(true);
     update();
-    print("object");
     try {
       final response = await http.get(
         Uri.parse(Endpoint.apiFeedbacks).replace(
@@ -144,12 +108,13 @@ class FeedbackController extends GetxController {
             'companyId': companyId,
             'offset': offset.value.toString(),
             'limit': limit.toString(),
-            'creatorId': creatorId
+            'creatorId': creatorId,
+            if (startingDate!.isNotEmpty) ...{'startDate': startingDate},
+            if (endingDate!.isNotEmpty) ...{'endDate': endingDate},
           },
         ),
         headers: {"x-auth-token": token.read("token").toString()},
       );
-      print(response.body);
       if (response.statusCode == 200) {
         List<dynamic> responseData = json.decode(response.body)['rows'];
         if (responseData.isNotEmpty) {
@@ -164,7 +129,6 @@ class FeedbackController extends GetxController {
       }
     } catch (e) {
       offset.value == offset.value - limit;
-
       print('Error: $e');
     } finally {
       isLoadingoffset(false);
@@ -246,6 +210,10 @@ class FeedbackController extends GetxController {
       print(response.statusCode);
       if (response.statusCode == 200) {
         Get.back();
+        if (missionId != null) {
+          await Get.put(MissionsController())
+              .changeStatuseMission(3, missionId!);
+        }
         showMessage(Get.context,
             title: 'Feedback added successfully', color: Colors.green);
 
@@ -286,6 +254,7 @@ class FeedbackController extends GetxController {
 
     try {
       // return;
+
       final url =
           Uri.parse('${Endpoint.apiFeedbacks}/$feedbackId'); // Endpoint URL
 

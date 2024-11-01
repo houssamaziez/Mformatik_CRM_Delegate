@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/clientview/profile_client_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../Model/mission.dart';
 import '../../../widgets/Dialog/showExitConfirmationDialog.dart';
-import '../feedback/add_feedback.dart';
 import '../feedback/cretate_screen.dart';
 
 class MissionProfileScreen extends StatefulWidget {
@@ -54,8 +54,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                 if (mission.statusId == 1)
                   FloatingActionButton.extended(
                       heroTag: "IN_PROGRESS", // Unique tag for the first button
-
-                      backgroundColor: Theme.of(context).primaryColor,
+                      backgroundColor: Colors.green,
                       onPressed: () async {
                         showExitConfirmationDialog(context,
                             onPressed: () async {
@@ -70,29 +69,10 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                         "Start Mission",
                         style: TextStyle(color: Colors.white),
                       )),
-                if (mission.statusId == 2)
-                  FloatingActionButton.extended(
-                      heroTag: "COMPLETED", // Unique tag for the first button
-
-                      backgroundColor: getStatusColor(3),
-                      onPressed: () async {
-                        showExitConfirmationDialog(context,
-                            onPressed: () async {
-                          await controller.changeStatuseMission(
-                              3, widget.missionId);
-                          Get.back();
-                        },
-                            details: 'Are you sure to complete the Mission?',
-                            title: 'Cnfirmation');
-                      },
-                      label: const Text(
-                        "Completed Mission",
-                        style: TextStyle(color: Colors.white),
-                      )),
                 const SizedBox(
                   height: 20,
                 ),
-                if (mission.statusId == 3)
+                if (mission.statusId == 2)
                   FloatingActionButton.extended(
                       heroTag:
                           "addFeedback2", // Unique tag for the first button
@@ -124,14 +104,20 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                 children: [
                   _buildMissionHeader(context, mission),
                   const SizedBox(height: 16),
-                  _buildMissionInfoSection('Mission Label'.tr, mission.label,
-                      Icons.label, theme.primaryColor),
-                  _buildMissionStatusSection(theme, mission.statusId),
-                  _buildMissionInfoSection(
-                      'Mission Description'.tr,
-                      mission.desc ?? 'No description available'.tr,
-                      Icons.description,
-                      theme.primaryColor),
+                  InkWell(
+                    child: _buildMissionInfoSection(
+                        'Clinet'.tr,
+                        mission.client.fullName!,
+                        Icons.person_pin,
+                        theme.primaryColor),
+                  ),
+                  _buildMissionStatusSection(
+                      theme, mission.statusId!, controller),
+                  // _buildMissionInfoSection(
+                  //     'Mission Description'.tr,
+                  //     mission.desc ?? 'No description available'.tr,
+                  //     Icons.description,
+                  //     theme.primaryColor),
                   _buildMissionInfoSection(
                       'Creator Username'.tr,
                       mission.creatorUsername,
@@ -164,7 +150,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            mission.label,
+            mission.label!,
             style: theme.textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color: theme.primaryColor,
@@ -206,7 +192,8 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
     );
   }
 
-  Widget _buildMissionStatusSection(ThemeData theme, int statusId) {
+  Widget _buildMissionStatusSection(
+      ThemeData theme, int statusId, MissionsController controller) {
     String statusLabel = getStatusLabel(statusId);
     Color statusColor = getStatusColor(statusId);
 
@@ -236,6 +223,41 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          trailing: statusId == 2
+              ? IconButton(
+                  onPressed: () {
+                    showExitConfirmationDialog(context, onPressed: () async {
+                      await controller.changeStatuseMission(
+                          1, widget.missionId);
+                      Get.back();
+                    },
+                        details: 'Are you sure to Stop the Mission?',
+                        title: 'Cnfirmation');
+                  },
+                  icon: Icon(
+                    Icons.stop_circle_outlined,
+                    color: Colors.red,
+                  ))
+              : statusId == 1
+                  ? IconButton(
+                      onPressed: () {
+                        showExitConfirmationDialog(context,
+                            onPressed: () async {
+                          await controller.changeStatuseMission(
+                              2, widget.missionId);
+                          Get.back();
+                        },
+                            details: 'Are you sure to Start the Mission?',
+                            title: 'Cnfirmation');
+                      },
+                      icon: Icon(
+                        Icons.play_circle_outline_outlined,
+                        color: Colors.green,
+                      ))
+                  : Container(
+                      height: 4,
+                      width: 4,
+                    ),
         ),
       ),
     );

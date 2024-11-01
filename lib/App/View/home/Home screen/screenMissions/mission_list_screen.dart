@@ -10,11 +10,17 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../Controller/auth/auth_controller.dart';
 import '../../../../Controller/home/annex_controller.dart';
 import '../../../../Controller/home/missions_controller.dart';
+import '../../../../Controller/home/missions_controllerAll.dart';
 import '../../../widgets/Buttons/meneuSelectTow.dart';
 import '../../../widgets/Containers/container_blue.dart';
 import '../../../widgets/bolck_screen.dart';
 import '../clientview/client_list_screen.dart';
 import 'widgets/mission_card.dart';
+
+DateTime? startDateMission;
+DateTime? endDateMission;
+String startDateTextMission = '';
+String endDateTextMission = '';
 
 class MissionListScreen extends StatefulWidget {
   const MissionListScreen({Key? key}) : super(key: key);
@@ -25,23 +31,41 @@ class MissionListScreen extends StatefulWidget {
 
 class _MissionListScreenState extends State<MissionListScreen> {
   // Initialize the MissionsController
-  final MissionsController controller = Get.put(MissionsController());
+  final MissionsControllerAll controller1 = Get.put(MissionsControllerAll());
   final ScrollController _scrollController = ScrollController();
 
+  late ScrollController scrollController;
   @override
   void initState() {
     // controller.getAllMission(context);
-    // _scrollController.addListener(_scrollListener);
+    controller1.getAllMission(
+        context,
+        Get.put(CompanyController()).selectCompany == null
+            ? 0
+            : Get.put(CompanyController()).selectCompany!.id,
+        endingDate: endDateTextMission,
+        startingDate: startDateTextMission);
+    scrollController = ScrollController();
+    scrollController.addListener(_scrollListener);
     super.initState();
   }
 
   void _scrollListener() {
-    if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent &&
-        !controller.isLoadingMore) {
-      controller.loadingMoreMission(
-        context,
-      );
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      if (controller1.offset <= controller1.missionslength) {
+        print("object");
+        controller1.loadingMoreMission(
+          context,
+          endingDate: endDateTextMission,
+          startingDate: startDateTextMission,
+        );
+      }
+
+      // if (Get.put(MissionsController()).offset <=
+      //     Get.put(MissionsController()).missionslength) {
+
+      // }
     }
   }
 
@@ -52,11 +76,24 @@ class _MissionListScreenState extends State<MissionListScreen> {
   final CompanyController companyController =
       Get.put(CompanyController(), permanent: true);
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     bool isactive = controllers.user!.isActive;
     return isactive == true
         ? Scaffold(
             appBar: AppBar(
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.filter_list),
+                  onPressed: () {
+                    showDateRangeDialog(context);
+                  },
+                ),
+              ],
               title: Text("All Missions"),
               centerTitle: true,
             ),
@@ -65,24 +102,24 @@ class _MissionListScreenState extends State<MissionListScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: GetBuilder<MissionsController>(
-                    builder: (_) {
+                  child: GetBuilder<MissionsControllerAll>(
+                    builder: (controller) {
                       if (controller.isLoading) {
                         // Show a loading indicator while fetching data
                         return const Center(
                           child: spinkit,
                         );
-                      } else if (controller.missionsfilter == null ||
-                          controller.missionsfilter!.isEmpty) {
+                      } else if (controller.missions == null ||
+                          controller.missions!.isEmpty) {
                         // Show a message when there are no missions
                         return Column(
                           children: [
-                            SizedBox(
-                                child: meneuSelectTow(context,
-                                    indexchos: controller.indexminu,
-                                    onIndexChanged: (p0) {
-                              controller.onIndexChanged(p0);
-                            }, titles: ["From Platform", "By me"])),
+                            // SizedBox(
+                            //     child: meneuSelectTow(context,
+                            //         indexchos: controller.indexminu,
+                            //         onIndexChanged: (p0) {
+                            //   controller.onIndexChanged(p0);
+                            // }, titles: ["From Platform", "By me"])),
                             const Spacer(),
                             Center(
                               child: Text(
@@ -95,42 +132,29 @@ class _MissionListScreenState extends State<MissionListScreen> {
                         );
                       } else {
                         // Display the list of missions
-                        return Column(
-                          children: [
-                            SizedBox(
-                                child: meneuSelectTow(context,
-                                    indexchos: controller.indexminu,
-                                    onIndexChanged: (p0) {
-                              controller.onIndexChanged(p0);
-                            }, titles: ["Platform", "By me"])),
-                            Expanded(
-                                child: ListView(
-                              controller: _scrollController,
-                              shrinkWrap: true,
-                              children: [
-                                ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: controller.missionsfilter!.length,
-                                  itemBuilder: (context, index) {
-                                    final mission =
-                                        controller.missionsfilter![index];
-                                    return MissionCard(mission: mission);
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                if (controller.isLoadingMore) spinkit
-                              ],
-                            )
+                        return ListView.builder(
+                          controller:
+                              scrollController, // Attach the scrollController here
 
-                                // .addRefreshIndicator(
-                                //     onRefresh: () =>
-                                //         controller.getAllMission(context)),
-                                ),
-                          ],
-                        );
+                          shrinkWrap: true,
+                          itemCount: controller.missions!.length,
+                          itemBuilder: (context, index) {
+                            print(index);
+                            if (index == controller.missions!.length - 1 &&
+                                controller.isLoadingMore) {
+                              // Show circular indicator at the bottom when loading more
+                              return Center(child: spinkit);
+                            } else {
+                              final mission = controller.missions![index];
+                              return MissionCard(mission: mission);
+                            }
+                          },
+                        ).addRefreshIndicator(
+                            onRefresh: () => controller.getAllMission(
+                                context,
+                                Get.put(CompanyController())
+                                    .selectCompany!
+                                    .id));
                       }
                     },
                   ),
@@ -140,4 +164,99 @@ class _MissionListScreenState extends State<MissionListScreen> {
           )
         : const screenBlock();
   }
+}
+
+void showDateRangeDialog(context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return StatefulBuilder(builder: (context, setState) {
+        return AlertDialog(
+          title: const Text('Select Date Range'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Start Date:'),
+                TextButton(
+                  onPressed: () async {
+                    DateTime? pickedStartDate = await showDatePicker(
+                      context: context,
+                      initialDate: startDateMission ?? DateTime.now(),
+                      firstDate: DateTime(2024),
+                      lastDate: DateTime.now(),
+                    );
+
+                    if (pickedStartDate != null &&
+                        pickedStartDate != startDateMission) {
+                      setState(() {
+                        startDateMission = pickedStartDate;
+                        startDateTextMission = startDateMission!
+                            .toLocal()
+                            .toString()
+                            .split(' ')[0];
+                      });
+                    }
+                  },
+                  child: Text(
+                    startDateMission != null
+                        ? startDateMission!.toLocal().toString().split(' ')[0]
+                        : 'Select Start Date',
+                    style: const TextStyle(color: Colors.blue),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text('End Date:'),
+                TextButton(
+                  onPressed: () async {
+                    DateTime? pickedEndDate = await showDatePicker(
+                      context: context,
+                      initialDate: endDateMission ?? DateTime.now(),
+                      firstDate: DateTime(2024),
+                      lastDate: DateTime.now(),
+                    );
+
+                    if (pickedEndDate != null &&
+                        pickedEndDate != endDateMission) {
+                      setState(() {
+                        endDateMission = pickedEndDate;
+                        endDateTextMission =
+                            endDateMission!.toLocal().toString().split(' ')[0];
+                      });
+                    }
+                  },
+                  child: Text(
+                    endDateMission != null
+                        ? endDateMission!.toLocal().toString().split(' ')[0]
+                        : 'Select End Date',
+                    style: const TextStyle(color: Colors.blue),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            ElevatedButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Get.put(MissionsControllerAll()).getAllMission(
+                    endingDate: endDateTextMission,
+                    startingDate: startDateTextMission,
+                    context,
+                    Get.put(CompanyController()).selectCompany!.id);
+
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      });
+    },
+  );
 }

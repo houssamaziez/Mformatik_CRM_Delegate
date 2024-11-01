@@ -22,7 +22,7 @@ class ClientProfileScreen extends StatelessWidget {
           Go.to(
               context,
               CreateMissionScreen(
-                clientID: client.id,
+                clientID: client.id!,
               ));
         },
         label: const Text(
@@ -154,7 +154,7 @@ class ClientProfileScreen extends StatelessWidget {
             _buildInfoRow('Sold:', client.sold!),
             _buildInfoRow('Potential:', client.potential!),
             _buildInfoRow('Turnover:', client.turnover!),
-            _buildInfoRow('Cashing In:', client.cashingIn),
+            _buildInfoRow('Cashing In:', client.cashingIn!),
           ],
         ),
       ),

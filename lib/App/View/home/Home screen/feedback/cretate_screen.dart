@@ -13,6 +13,7 @@ import '../../../../Controller/widgetsController/date_controller.dart';
 import '../../../../Service/Location/get_location.dart';
 import '../../../../Util/Date/formatDate.dart';
 import '../../../widgets/Date/date_picker.dart';
+import '../../../widgets/Dialog/showExitConfirmationDialog.dart';
 import 'widgets/reason_selector_feedback.dart';
 
 class CreateFeedBackScreen extends StatefulWidget {
@@ -199,25 +200,59 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                     onPressed: controllercreateFeedback.isLoadingadd
                         ? null
                         : () async {
-                            var location =
-                                await LocationService.getCurrentLocation(
-                                    context);
-                            if (location.isPermissionGranted) {
-                              if (controllerisreq.selectedItem.value == null) {
-                                showMessage(context, title: 'Select Reasons');
-                              } else if (controllerisreq
-                                      .selectedItem.value!.isDescRequired ==
-                                  true) {
-                                if (_formKey.currentState!.validate()) {
-                                  _formKey.currentState!.save();
+                            if (widget.missionID != null) {
+                              showExitConfirmationDialog(context,
+                                  onPressed: () async {
+                                Get.back();
+                                var location =
+                                    await LocationService.getCurrentLocation(
+                                        context);
+                                if (location.isPermissionGranted) {
+                                  if (controllerisreq.selectedItem.value ==
+                                      null) {
+                                    showMessage(context,
+                                        title: 'Select Reasons');
+                                  } else if (controllerisreq
+                                          .selectedItem.value!.isDescRequired ==
+                                      true) {
+                                    if (_formKey.currentState!.validate()) {
+                                      _formKey.currentState!.save();
+                                      post(controllercreateFeedback, location);
+                                      return;
+                                    } else {
+                                      print("object");
+                                    }
+                                  } else {
+                                    post(controllercreateFeedback, location);
+                                    return;
+                                  }
+                                }
+                              },
+                                  details:
+                                      'Are you sure to complete the Mission?',
+                                  title: 'Cnfirmation');
+                            } else {
+                              var location =
+                                  await LocationService.getCurrentLocation(
+                                      context);
+                              if (location.isPermissionGranted) {
+                                if (controllerisreq.selectedItem.value ==
+                                    null) {
+                                  showMessage(context, title: 'Select Reasons');
+                                } else if (controllerisreq
+                                        .selectedItem.value!.isDescRequired ==
+                                    true) {
+                                  if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
+                                    post(controllercreateFeedback, location);
+                                    return;
+                                  } else {
+                                    print("object");
+                                  }
+                                } else {
                                   post(controllercreateFeedback, location);
                                   return;
-                                } else {
-                                  print("object");
                                 }
-                              } else {
-                                post(controllercreateFeedback, location);
-                                return;
                               }
                             }
                           },

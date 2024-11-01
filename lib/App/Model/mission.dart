@@ -1,3 +1,23 @@
+class Client {
+  String? fullName;
+
+  Client({this.fullName});
+
+  // Factory constructor to create a Client object from a JSON map
+  factory Client.fromJson(Map<String, dynamic> json) {
+    return Client(
+      fullName: json['fullName'],
+    );
+  }
+
+  // Method to convert a Client object back to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'fullName': fullName,
+    };
+  }
+}
+
 class Mission {
   int id;
   String label;
@@ -12,9 +32,10 @@ class Mission {
   int clientId;
   int responsibleId;
   int reasonId;
-  int statusId;
+  int? statusId;
   DateTime createdAt;
   DateTime updatedAt;
+  Client client;
 
   Mission({
     required this.id,
@@ -33,6 +54,7 @@ class Mission {
     required this.statusId,
     required this.createdAt,
     required this.updatedAt,
+    required this.client,
   });
 
   // Factory constructor to create a Mission object from a JSON map
@@ -54,6 +76,7 @@ class Mission {
       statusId: json['statusId'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
+      client: Client.fromJson(json['client']),
     );
   }
 
@@ -76,11 +99,11 @@ class Mission {
       'statusId': statusId,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
+      'client': client.toJson(),
     };
   }
 }
 
-// Example of a response model that includes a list of missions
 class MissionResponse {
   int count;
   List<Mission> rows;

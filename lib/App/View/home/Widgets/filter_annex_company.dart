@@ -118,7 +118,8 @@ class FilterCompany extends StatelessWidget {
                 builder: (companyController) {
                   print('----------');
 
-                  return companyController.isLoading.value
+                  return companyController.isLoading.value ||
+                          companyController.selectCompany == null
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(

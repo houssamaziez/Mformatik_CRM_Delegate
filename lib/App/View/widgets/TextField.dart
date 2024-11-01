@@ -11,6 +11,7 @@ class MyTextfield extends StatefulWidget {
     this.isPassword = false,
     this.isPasswordVisible = false,
     this.passwordVisibleupdate,
+    this.validator,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -18,6 +19,7 @@ class MyTextfield extends StatefulWidget {
   final String hint;
   final bool isPassword;
   final bool isPasswordVisible;
+  final String? Function(String?)? validator;
   final void Function()? passwordVisibleupdate;
   @override
   _MyTextfieldState createState() => _MyTextfieldState();
@@ -40,7 +42,7 @@ class _MyTextfieldState extends State<MyTextfield> {
         Row(
           children: [
             Expanded(
-              child: TextField(
+              child: TextFormField(
                 controller: widget.controller,
                 style: TextStyle(color: Colors.black),
                 obscureText: widget.isPassword && !widget.isPasswordVisible,
@@ -73,6 +75,7 @@ class _MyTextfieldState extends State<MyTextfield> {
                       borderSide:
                           BorderSide(color: Theme.of(context).primaryColor)),
                 ),
+                validator: widget.validator,
               ),
             ),
           ],

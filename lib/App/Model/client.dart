@@ -1,20 +1,20 @@
 // client_model.dart
 class Client {
-  final int id;
-  final int localId;
+  final int? id;
+  final int? localId;
   final String? fullName;
   final String? email;
   final String? address;
   final String? phone;
   final String? tel;
   final String? region;
-  final String cashingIn;
+  final String? cashingIn;
   final String? sold;
   final String? potential;
   final String? turnover;
   final int? companyId;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Client({
     required this.id,
@@ -69,8 +69,8 @@ class Client {
       'potential': potential,
       'turnover': turnover,
       'companyId': companyId,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt!.toIso8601String(),
+      'updatedAt': updatedAt!.toIso8601String(),
     };
   }
 }

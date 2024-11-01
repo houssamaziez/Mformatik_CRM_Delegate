@@ -22,7 +22,12 @@ class MissionsController extends GetxController {
   bool isLoadingMore = false;
   int offset = 0;
   int limit = 7;
+  int missionslength = 0;
   int indexminu = 0;
+  int inProgress = 0;
+  int created = 0;
+  int completed = 0;
+  int canceled = 0;
   onIndexChanged(indexselect) {
     var controllerUser = Get.put(AuthController());
     print(controllerUser.user!.roleId);
@@ -36,7 +41,6 @@ class MissionsController extends GetxController {
     update();
     missionsfilter!.clear();
     missions!.forEach((action) {
-      getStatusLabel(action.statusId);
       if (indexselect == 1) {
         if (action.creatorRoleId == controllerUser.user!.roleId) {
           missionsfilter!.add(action);
@@ -61,19 +65,20 @@ class MissionsController extends GetxController {
   }
 
   // Fetch all missions
-  Future<void> getAllMission(context, int companyId) async {
-    var controllerUser = Get.put(AuthController());
+  Future<void> getAllMission(context, int companyId,
+      {String? startingDate = "", String? endingDate = ""}) async {
+    missions!.clear();
+    update();
 
-    offset = 0;
-    // final uri =
-    //     Uri.parse('${Endpoint.apiMissions}?offset=$offset&limit=$limit');
     final uri = Uri.parse('${Endpoint.apiMissions}').replace(
       queryParameters: {
         'companyId': companyId.toString(),
+        'offset': 0.toString(),
+        'limit': limit.toString(),
       },
     );
-    offset = limit + offset;
-    update();
+
+    // offset = 7;
 
     isLoading = true;
     update();
@@ -86,55 +91,35 @@ class MissionsController extends GetxController {
       final responseData = ResponseHandler.processResponse(response);
       if (response.statusCode == 200) {
         missions = MissionResponse.fromJson(responseData).rows;
-        onIndexChanged(0);
+        update();
+
+        missionslength = MissionResponse.fromJson(responseData).count;
+        update();
+        // onIndexChanged(0);
       } else {
         missionsfilter!.clear();
       }
+      final ff = jsonDecode(response.body);
+      final responseCounts = await http.get(
+        Uri.parse("${Endpoint.apiMissionCounts}?companyId=$companyId"),
+        headers: {"x-auth-token": token.read("token").toString()},
+      );
+      print(responseCounts.body);
+      if (responseCounts.statusCode == 200) {
+        created = jsonDecode(responseCounts.body)["NEW"];
+        update();
+        inProgress = jsonDecode(responseCounts.body)["IN_PROGRESS"];
+        update();
+        completed = jsonDecode(responseCounts.body)["COMPLETED"];
+        update();
+        canceled = jsonDecode(responseCounts.body)["CANCELED"];
+
+        update();
+      }
     } catch (e) {
-      offset = limit - offset;
-      update();
       showMessage(context, title: 'Connection problem'.tr);
     } finally {
       isLoading = false;
-      update();
-    }
-  }
-
-  // Load more missions
-  Future<void> loadingMoreMission(
-    context,
-  ) async {
-    var controllerUser = Get.put(AuthController());
-    var controllercompany = Get.put(CompanyController());
-
-    isLoadingMore = true;
-    update();
-    offset = limit + offset;
-    update();
-
-    final uri = Uri.parse('${Endpoint.apiMissions}').replace(
-      queryParameters: {
-        'companyId': controllercompany.selectCompany!.id.toString(),
-      },
-    );
-    update();
-    try {
-      final response = await http.get(
-        uri,
-        headers: {"x-auth-token": token.read("token").toString()},
-      ).timeout(const Duration(seconds: 50));
-      print(response.body);
-      final responseData = ResponseHandler.processResponse(response);
-      if (response.statusCode == 200) {
-        missions!.addAll(MissionResponse.fromJson(responseData).rows);
-        onIndexChanged(indexminu);
-      }
-    } catch (e) {
-      offset = limit - offset;
-      isLoadingMore = false;
-      update();
-    } finally {
-      isLoadingMore = false;
       update();
     }
   }
@@ -199,31 +184,6 @@ class MissionsController extends GetxController {
     } finally {
       isLoading = false;
       update();
-    }
-  }
-
-  int inProgress = 0;
-  int created = 0;
-  int completed = 0;
-  int canceled = 0;
-  getStatusLabel(int statusId) {
-    switch (statusId) {
-      case 1:
-        created = created + 1;
-        // 'In Progress'.tr; // Translates to "In Progress"
-        update();
-      case 2:
-        inProgress = inProgress + 1;
-        // 'In Progress'.tr; // Translates to "In Progress"
-        update();
-      case 3:
-        completed = completed + 1;
-        update();
-      // 'Completed'.tr; // Translates to "Completed"
-      case 4:
-        canceled = canceled + 1;
-        update();
-      // 'Canceled'.tr; // Translates to "Canceled"
     }
   }
 
