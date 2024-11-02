@@ -36,6 +36,11 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
     // Fetch mission by ID on widget build
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Mission Details'.tr),
+        centerTitle: true,
+        backgroundColor: theme.primaryColor,
+      ),
       body: GetBuilder<MissionsController>(
         init: MissionsController(),
         builder: (controller) {
@@ -92,11 +97,6 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                         style: TextStyle(color: Colors.white),
                       )),
               ],
-            ),
-            appBar: AppBar(
-              title: Text('Mission Details'.tr),
-              centerTitle: true,
-              backgroundColor: theme.primaryColor,
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -243,9 +243,11 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                       onPressed: () {
                         showExitConfirmationDialog(context,
                             onPressed: () async {
-                          await controller.changeStatuseMission(
-                              2, widget.missionId);
-                          Get.back();
+                          await controller
+                              .changeStatuseMission(2, widget.missionId)
+                              .then((onValue) {
+                            Get.back();
+                          });
                         },
                             details: 'Are you sure to Start the Mission?',
                             title: 'Cnfirmation');

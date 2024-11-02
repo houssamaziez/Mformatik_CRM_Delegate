@@ -195,7 +195,7 @@ class MissionsController extends GetxController {
 
   bool changestatus = false;
 
-  changeStatuseMission(int id, int missionId) async {
+  Future<void> changeStatuseMission(int id, int missionId) async {
     try {
       changestatus = true;
       update();

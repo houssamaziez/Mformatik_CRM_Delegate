@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import '../../../../Controller/home/feedback_controller.dart';
 import '../../../../Controller/home/reasons_feedback_controller.dart';
@@ -16,6 +19,7 @@ import '../../../widgets/Date/date_picker.dart';
 import '../../../widgets/flutter_spinkit.dart';
 import '../../../widgets/showsnack.dart';
 import 'feedback_profile_screen.dart';
+import 'package:image/image.dart' as img; // For image compression
 
 class UpdateFeedbackScreen extends StatefulWidget {
   final FeedbackMission feedback;
@@ -57,6 +61,52 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
     feedbackModelIdController.text = feedbacklocal!.feedbackModelId.toString();
 
     images = feedbacklocal!.gallery;
+  }
+
+  double _compressionProgress = 0.0;
+  List<File>? _compressedImages = [];
+
+  Future<File> _compressImage(XFile file) async {
+    final bytes = await file.readAsBytes();
+    final img.Image? image = img.decodeImage(bytes);
+
+    final img.Image resized = img.copyResize(image!, width: 500);
+    final compressedBytes = img.encodeJpg(resized, quality: 85);
+
+    final compressedImageFile = File('${file.path}_compressed.jpg');
+    await compressedImageFile.writeAsBytes(compressedBytes);
+
+    return compressedImageFile;
+  }
+
+  Future<void> _takePhoto() async {
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    if (photo != null) {
+      File compressedImage = await _compressImage(photo);
+      setState(() {
+        _compressedImages!.add(compressedImage);
+      });
+    }
+  }
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _selectImagesFromGallery() async {
+    final List<XFile>? pickedFiles = await _picker.pickMultiImage();
+    if (pickedFiles != null) {
+      for (int i = 0; i < pickedFiles.length; i++) {
+        File compressedImage = await _compressImage(pickedFiles[i]);
+        _compressedImages!.add(compressedImage);
+
+        setState(() {
+          _compressionProgress = ((i + 1) / pickedFiles.length) * 100;
+        });
+      }
+      setState(() {
+        _compressedImages = _compressedImages;
+        _compressionProgress = 0.0;
+      });
+    }
   }
 
   @override
@@ -187,6 +237,78 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                       'No Images available',
                       style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                     ),
+
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Selected Images',
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Spacer(),
+                  IconButton(
+                      onPressed: _takePhoto,
+                      icon: Icon(
+                        Icons.camera,
+                        color: Theme.of(context).primaryColor,
+                      )),
+                  const SizedBox(width: 8),
+                  IconButton(
+                      onPressed: _selectImagesFromGallery,
+                      color: Theme.of(context).primaryColor,
+                      icon: Icon(
+                        Icons.image,
+                      )),
+                ],
+              ),
+              if (_compressionProgress > 0 && _compressionProgress < 100) ...[
+                const SizedBox(height: 16),
+                Text(
+                    'Loading images: ${_compressionProgress.toStringAsFixed(0)}%'),
+                const SizedBox(height: 8),
+                LinearProgressIndicator(
+                  value: _compressionProgress / 100,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ],
+              if (_compressedImages != null &&
+                  _compressedImages!.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                  ),
+                  itemCount: _compressedImages!.length,
+                  itemBuilder: (context, index) {
+                    return Stack(
+                      children: [
+                        Image.file(
+                          _compressedImages![index],
+                          fit: BoxFit.cover,
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _compressedImages!
+                                    .remove(_compressedImages![index]);
+                              });
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ))
+                      ],
+                    );
+                  },
+                ),
+              ],
+
               const SizedBox(height: 20),
               GetBuilder<FeedbackController>(
                   init: FeedbackController(),
@@ -247,20 +369,22 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   }
 
   post() async {
+    final List<XFile> xFiles =
+        _compressedImages!.map((file) => XFile(file.path)).toList();
     await feedbackController
-        .updateFeedback(
-            feedbackId: widget.feedback.id.toString(),
-            lastLabel:
-                expandableController.controllerTextEditingController!.text,
-            Label: widget.feedback.label.toString(),
-            desc: descController.text,
-            requestDate: formatDate(
-                Get.put(DateController()).selectedDate.value.toString()),
-            clientId: int.parse(clientIdController.text),
-            feedbackModelId:
-                int.parse(widget.feedback.feedbackModelId.toString()),
-            creatorId: widget.feedback.creatorId!,
-            images: images)
+        .updateFeedbacks(
+      imagesAdd: xFiles,
+      feedbackId: widget.feedback.id.toString(),
+      lastLabel: expandableController.controllerTextEditingController!.text,
+      Label: widget.feedback.label.toString(),
+      desc: descController.text,
+      requestDate:
+          formatDate(Get.put(DateController()).selectedDate.value.toString()),
+      clientId: int.parse(clientIdController.text),
+      feedbackModelId: int.parse(widget.feedback.feedbackModelId.toString()),
+      creatorId: widget.feedback.creatorId!,
+      images: images,
+    )
         .then((success) {
       LocationService.getCurrentLocation(context);
     });

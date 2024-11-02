@@ -5,10 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img; // For image compression
 import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/widgetsController/expandable_controller.dart';
-import 'package:mformatic_crm_delegate/App/Model/reason_feedback.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
-import '../../../../Controller/home/reasons_feedback_controller.dart';
 import '../../../../Controller/widgetsController/date_controller.dart';
 import '../../../../Service/Location/get_location.dart';
 import '../../../../Util/Date/formatDate.dart';
@@ -39,11 +37,11 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
   int reasonId = 0;
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
-  List<File>? _compressedImages = [];
   double? lat;
   double? lng;
   DateTime? requestDate;
   double _compressionProgress = 0.0;
+  List<File>? _compressedImages = [];
 
   Future<File> _compressImage(XFile file) async {
     final bytes = await file.readAsBytes();
@@ -58,20 +56,29 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
     return compressedImageFile;
   }
 
-  Future<void> _selectAndCompressImages() async {
+  Future<void> _takePhoto() async {
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    if (photo != null) {
+      File compressedImage = await _compressImage(photo);
+      setState(() {
+        _compressedImages!.add(compressedImage);
+      });
+    }
+  }
+
+  Future<void> _selectImagesFromGallery() async {
     final List<XFile>? pickedFiles = await _picker.pickMultiImage();
     if (pickedFiles != null) {
-      List<File> compressedFiles = [];
       for (int i = 0; i < pickedFiles.length; i++) {
         File compressedImage = await _compressImage(pickedFiles[i]);
-        compressedFiles.add(compressedImage);
+        _compressedImages!.add(compressedImage);
 
         setState(() {
           _compressionProgress = ((i + 1) / pickedFiles.length) * 100;
         });
       }
       setState(() {
-        _compressedImages = compressedFiles;
+        _compressedImages = _compressedImages;
         _compressionProgress = 0.0;
       });
     }
@@ -126,6 +133,8 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                 controller: controller,
                 decoration: const InputDecoration(
                   labelText: 'Description',
+                  alignLabelWithHint: true, // لتعيين العنوان في الأعلى
+
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 5,
@@ -155,10 +164,30 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                             : Container()
                         : Container();
                   }),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: _selectAndCompressImages,
-                child: const Text('Select Images'),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Selected Images',
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Spacer(),
+                  IconButton(
+                      onPressed: _takePhoto,
+                      icon: Icon(
+                        Icons.camera,
+                        color: Theme.of(context).primaryColor,
+                      )),
+                  const SizedBox(width: 8),
+                  IconButton(
+                      onPressed: _selectImagesFromGallery,
+                      color: Theme.of(context).primaryColor,
+                      icon: Icon(
+                        Icons.image,
+                      )),
+                ],
               ),
               if (_compressionProgress > 0 && _compressionProgress < 100) ...[
                 const SizedBox(height: 16),
@@ -172,8 +201,6 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
               ],
               if (_compressedImages != null &&
                   _compressedImages!.isNotEmpty) ...[
-                const SizedBox(height: 16),
-                const Text('Selected Images:'),
                 const SizedBox(height: 8),
                 GridView.builder(
                   shrinkWrap: true,
@@ -185,9 +212,24 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                   ),
                   itemCount: _compressedImages!.length,
                   itemBuilder: (context, index) {
-                    return Image.file(
-                      _compressedImages![index],
-                      fit: BoxFit.cover,
+                    return Stack(
+                      children: [
+                        Image.file(
+                          _compressedImages![index],
+                          fit: BoxFit.cover,
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _compressedImages!
+                                    .remove(_compressedImages![index]);
+                              });
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ))
+                      ],
                     );
                   },
                 ),
@@ -219,8 +261,6 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                       _formKey.currentState!.save();
                                       post(controllercreateFeedback, location);
                                       return;
-                                    } else {
-                                      print("object");
                                     }
                                   } else {
                                     post(controllercreateFeedback, location);
@@ -230,7 +270,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                               },
                                   details:
                                       'Are you sure to complete the Mission?',
-                                  title: 'Cnfirmation');
+                                  title: 'Confirmation');
                             } else {
                               var location =
                                   await LocationService.getCurrentLocation(
@@ -246,8 +286,6 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                     _formKey.currentState!.save();
                                     post(controllercreateFeedback, location);
                                     return;
-                                  } else {
-                                    print("object");
                                   }
                                 } else {
                                   post(controllercreateFeedback, location);

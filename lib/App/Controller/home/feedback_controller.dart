@@ -15,8 +15,6 @@ import '../../Service/Location/get_location.dart';
 import '../auth/auth_controller.dart';
 import '../widgetsController/expandable_controller.dart';
 import 'missions_controller.dart';
-import 'reasons_feedback_controller.dart';
-import 'reasons_mission_controller.dart';
 
 class FeedbackController extends GetxController {
   RxList<FeedbackMission> feedbacks = <FeedbackMission>[].obs;
@@ -230,7 +228,7 @@ class FeedbackController extends GetxController {
     }
   }
 
-  Future<void> updateFeedback(
+  Future<void> updateFeedbacks(
       {required String feedbackId,
       required String lastLabel,
       required String Label,
@@ -240,6 +238,7 @@ class FeedbackController extends GetxController {
       String? requestDate,
       required int creatorId,
       required int clientId,
+      required List<XFile>? imagesAdd,
       required int feedbackModelId,
       required List<dynamic> images}) async {
     isLoadingadd = true;
@@ -295,6 +294,7 @@ class FeedbackController extends GetxController {
       };
       print(map);
       // return;
+
       final response = await http.put(
         url,
         headers: {
@@ -304,13 +304,24 @@ class FeedbackController extends GetxController {
         body: jsonEncode(map),
       );
       print(response.body);
+      if (imagesAdd!.isNotEmpty) {
+        await updateFeedback(
+            feedbackId: feedbackId,
+            lastLabel: lastLabel,
+            label: lastLabel,
+            desc: desc,
+            creatorId: creatorId,
+            clientId: clientId,
+            feedbackModelId: feedbackModelId,
+            imagesAdd: imagesAdd,
+            images: images);
+      }
 
       // Handle response based on status code
       if (response.statusCode == 204) {
         fetchFeedbacks(
             Get.put(CompanyController()).selectCompany!.id.toString(),
             creatorId.toString());
-        Go.back(Get.context);
         Go.back(Get.context);
         showMessage(
           Get.context,
@@ -347,5 +358,81 @@ class FeedbackController extends GetxController {
       isLoadingadd = false;
       update();
     }
+  }
+
+  Future<void> updateFeedback({
+    required String feedbackId,
+    required String lastLabel,
+    required String label,
+    required String desc,
+    String? lat,
+    String? lng,
+    String? requestDate,
+    required int creatorId,
+    required int clientId,
+    required int feedbackModelId,
+    required List<XFile>? imagesAdd,
+    required List<dynamic> images,
+  }) async {
+    try {
+      final url =
+          Uri.parse('${Endpoint.apiFeedbacks}/$feedbackId'); // Endpoint URL
+
+      Map<String, dynamic> fields = {
+        'label': lastLabel,
+        'desc': desc,
+        'lat': lat ?? '',
+        'lng': lng ?? '',
+        // "gallery": jsonEncode(imagpath), // Encode as JSON if needed
+        // 'requestDate': requestDate ?? '',
+        'feedbackModelId': feedbackModelId,
+      };
+
+      var request = http.MultipartRequest('PUT', url);
+      request.headers['x-auth-token'] = token.read("token").toString();
+
+      fields.forEach((key, value) {
+        request.fields[key] = value.toString(); // Ensure all values are strings
+      });
+
+      // Debugging output for images
+      if (imagesAdd != null) {
+        for (var image in imagesAdd) {
+          print("Adding image: ${image.path}"); // Debugging output
+          request.files.add(await http.MultipartFile.fromPath(
+            'img', // Change this to the correct field name expected by your API
+            image.path,
+          ));
+        }
+      }
+      var response = await request.send();
+
+      // Send the request and handle response
+      print("Response status code: ${response.statusCode}"); // Debugging output
+      final responseBody = await response.stream.bytesToString();
+      print("Response body: $responseBody"); // Debugging output
+
+      // Check the response status
+      if (response.statusCode == 204) {
+        // fetchFeedbacks(
+        //     Get.put(CompanyController()).selectCompany!.id.toString(),
+        //     creatorId.toString());
+        Go.back(Get.context);
+        // showMessage(Get.context,
+        //     title: 'Feedback updated successfully', color: Colors.green);
+        print('Feedback updated successfully');
+      } else {
+        // showMessage(Get.context,
+        //     title: 'Failed to update feedback', color: Colors.orange);
+        print('Failed to update feedback: $responseBody');
+      }
+    } on SocketException catch (e) {
+      // showMessage(Get.context,
+      //     title: 'No Internet Connection', color: Colors.red);
+      print('Network error: $e');
+    } catch (e) {
+      // showMessage(Get.context, title: 'Unexpected Error', color: Colors.red);
+      print('Unexpected error: $e');
+    } finally {}
   }
 }

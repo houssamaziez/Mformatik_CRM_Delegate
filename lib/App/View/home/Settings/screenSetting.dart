@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../Controller/auth/auth_controller.dart';
+import '../../../Util/Route/Go.dart';
+import '../../auth/screen_auth.dart';
+import '../../splashScreen/splash_screen.dart';
+import '../../widgets/Dialog/showExitConfirmationDialog.dart';
 import '../../widgets/app_bar.dart';
 import 'Widgets/buttons.dart';
 import 'Widgets/cardstate.dart';
@@ -33,7 +38,15 @@ class ScreenSetting extends StatelessWidget {
             ),
             carditemsetting(context),
             buttonsetting(
-                function: () {},
+                function: () {
+                  showExitConfirmationDialog(context, onPressed: () {
+                    token.write("token", null);
+                    spalshscreenfirst.write('key', false);
+                    Go.clearAndTo(context, ScreenAuth());
+                  },
+                      details: 'Do you really want to log out of the account?',
+                      title: 'Log out');
+                },
                 title: "Log Out".tr,
                 image: 'assets/icons/log-out1.png'),
           ],

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/annex_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
@@ -18,11 +17,8 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../Controller/home/company_controller.dart';
 import '../../../Controller/home/home_controller.dart';
 import '../../../Controller/home/reasons_feedback_controller.dart';
-import '../../../Controller/widgetsController/expandable_controller.dart';
-import 'screenMissions/profile_mission.dart';
 import '../Widgets/absence_and_lateness_button.dart';
 import '../Widgets/add_feedback_button.dart';
-import '../Widgets/add_mission_button.dart';
 import '../Widgets/filter_annex_company.dart';
 import '../Widgets/getSliderColor.dart';
 import '../Widgets/homeMenuSelectScreens.dart';
@@ -287,66 +283,65 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                           missionsController
                                                                   .feedbacks![
                                                               index];
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Flexible(
-                                                              child: Icon(
-                                                                Icons
-                                                                    .ads_click_sharp,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor,
+                                                      return InkWell(
+                                                        onTap: () {
+                                                          Go.to(
+                                                              context,
+                                                              FeedbackDetailScreen(
+                                                                feedbackId: feedback
+                                                                    .id
+                                                                    .toString(),
+                                                              ));
+                                                        },
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Flexible(
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .ads_click_sharp,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .primaryColor,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            const SizedBox(
-                                                              width: 1,
-                                                            ),
-                                                            Expanded(
-                                                                flex: 2,
-                                                                child: feedback
-                                                                    .label!
-                                                                    .style(
-                                                                        textAlign:
-                                                                            TextAlign.start)),
-                                                            Flexible(
-                                                                flex: 2,
-                                                                child: feedback
-                                                                    .creatorUsername!
-                                                                    .style(
-                                                                        textAlign:
-                                                                            TextAlign.center)
-                                                                    .center()),
-                                                            Flexible(
-                                                                flex: 2,
-                                                                child: feedback
-                                                                    .client!
-                                                                    .fullName!
-                                                                    .toString()
-                                                                    .style(
-                                                                        textAlign:
-                                                                            TextAlign.center)
-                                                                    .center()),
-                                                            Flexible(
-                                                              flex: 1,
-                                                              child: InkWell(
-                                                                onTap: () {
-                                                                  Go.to(
-                                                                      context,
-                                                                      FeedbackDetailScreen(
-                                                                        feedbackId: feedback
-                                                                            .id
-                                                                            .toString(),
-                                                                      ));
-                                                                },
-                                                                child:
-                                                                    const Icon(
+                                                              const SizedBox(
+                                                                width: 1,
+                                                              ),
+                                                              Expanded(
+                                                                  flex: 2,
+                                                                  child: feedback
+                                                                      .label!
+                                                                      .style(
+                                                                          textAlign:
+                                                                              TextAlign.start)),
+                                                              Flexible(
+                                                                  flex: 2,
+                                                                  child: feedback
+                                                                      .creatorUsername!
+                                                                      .style(
+                                                                          textAlign:
+                                                                              TextAlign.center)
+                                                                      .center()),
+                                                              Flexible(
+                                                                  flex: 2,
+                                                                  child: feedback
+                                                                      .client!
+                                                                      .fullName!
+                                                                      .toString()
+                                                                      .style(
+                                                                          textAlign:
+                                                                              TextAlign.center)
+                                                                      .center()),
+                                                              Flexible(
+                                                                flex: 1,
+                                                                child: Icon(
                                                                   Icons
                                                                       .arrow_circle_right_outlined,
                                                                   color: Color
@@ -357,8 +352,8 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                                           90),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
                                                       );
                                                     })

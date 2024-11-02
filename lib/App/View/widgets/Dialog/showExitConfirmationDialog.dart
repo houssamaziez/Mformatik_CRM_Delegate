@@ -50,7 +50,11 @@ Future<bool> showExitConfirmationDialog(
             ),
             Container(
               width: 50,
-              child: ButtonAll(function: onPressed!, title: 'OK'),
+              child: ButtonAll(
+                  function: () {
+                    onPressed!;
+                  },
+                  title: 'OK'),
             )
             // TextButton(
             //   onPressed: onPressed,
