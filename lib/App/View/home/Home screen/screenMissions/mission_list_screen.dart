@@ -11,10 +11,10 @@ import '../../../../Controller/home/missions_controllerAll.dart';
 import '../../../widgets/bolck_screen.dart';
 import 'widgets/mission_card.dart';
 
-DateTime? startDateMission;
-DateTime? endDateMission;
-String startDateTextMission = '';
-String endDateTextMission = '';
+DateTime? startDateMissions;
+DateTime? endDateMissions;
+String startDateTextMissions = '';
+String endDateTextMissions = '';
 
 class MissionListScreen extends StatefulWidget {
   const MissionListScreen({Key? key}) : super(key: key);
@@ -37,8 +37,8 @@ class _MissionListScreenState extends State<MissionListScreen> {
         Get.put(CompanyController()).selectCompany == null
             ? 0
             : Get.put(CompanyController()).selectCompany!.id,
-        endingDate: endDateTextMission,
-        startingDate: startDateTextMission);
+        endingDate: endDateTextMissions,
+        startingDate: startDateTextMissions);
     scrollController = ScrollController();
     scrollController.addListener(_scrollListener);
     super.initState();
@@ -51,8 +51,8 @@ class _MissionListScreenState extends State<MissionListScreen> {
         print("object");
         controller1.loadingMoreMission(
           context,
-          endingDate: endDateTextMission,
-          startingDate: startDateTextMission,
+          endingDate: endDateTextMissions,
+          startingDate: startDateTextMissions,
         );
       }
 
@@ -176,16 +176,16 @@ void showDateRangeDialog(context) {
                   onPressed: () async {
                     DateTime? pickedStartDate = await showDatePicker(
                       context: context,
-                      initialDate: startDateMission ?? DateTime.now(),
+                      initialDate: startDateMissions ?? DateTime.now(),
                       firstDate: DateTime(2024),
                       lastDate: DateTime.now(),
                     );
 
                     if (pickedStartDate != null &&
-                        pickedStartDate != startDateMission) {
+                        pickedStartDate != startDateMissions) {
                       setState(() {
-                        startDateMission = pickedStartDate;
-                        startDateTextMission = startDateMission!
+                        startDateMissions = pickedStartDate;
+                        startDateTextMissions = startDateMissions!
                             .toLocal()
                             .toString()
                             .split(' ')[0];
@@ -193,8 +193,8 @@ void showDateRangeDialog(context) {
                     }
                   },
                   child: Text(
-                    startDateMission != null
-                        ? startDateMission!.toLocal().toString().split(' ')[0]
+                    startDateMissions != null
+                        ? startDateMissions!.toLocal().toString().split(' ')[0]
                         : 'Select Start Date'.tr,
                     style: const TextStyle(color: Colors.blue),
                   ),
@@ -205,23 +205,23 @@ void showDateRangeDialog(context) {
                   onPressed: () async {
                     DateTime? pickedEndDate = await showDatePicker(
                       context: context,
-                      initialDate: endDateMission ?? DateTime.now(),
+                      initialDate: endDateMissions ?? DateTime.now(),
                       firstDate: DateTime(2024),
                       lastDate: DateTime.now(),
                     );
 
                     if (pickedEndDate != null &&
-                        pickedEndDate != endDateMission) {
+                        pickedEndDate != endDateMissions) {
                       setState(() {
-                        endDateMission = pickedEndDate;
-                        endDateTextMission =
-                            endDateMission!.toLocal().toString().split(' ')[0];
+                        endDateMissions = pickedEndDate;
+                        endDateTextMissions =
+                            endDateMissions!.toLocal().toString().split(' ')[0];
                       });
                     }
                   },
                   child: Text(
-                    endDateMission != null
-                        ? endDateMission!.toLocal().toString().split(' ')[0]
+                    endDateMissions != null
+                        ? endDateMissions!.toLocal().toString().split(' ')[0]
                         : 'Select End Date'.tr,
                     style: const TextStyle(color: Colors.blue),
                   ),
@@ -240,8 +240,8 @@ void showDateRangeDialog(context) {
               child: Text('OK'.tr),
               onPressed: () {
                 Get.put(MissionsControllerAll()).getAllMission(
-                    endingDate: endDateTextMission,
-                    startingDate: startDateTextMission,
+                    endingDate: endDateTextMissions,
+                    startingDate: startDateTextMissions,
                     context,
                     Get.put(CompanyController()).selectCompany!.id);
 

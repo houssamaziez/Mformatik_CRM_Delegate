@@ -21,7 +21,7 @@ class AnnexScreen extends StatelessWidget {
     return isactive == true
         ? Scaffold(
             appBar: AppBar(
-              title: Text('Annexes'),
+              title: Text('Annexes'.tr),
               backgroundColor: Colors.blue,
             ),
             body: Obx(() {

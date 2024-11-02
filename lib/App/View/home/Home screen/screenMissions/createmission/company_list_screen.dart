@@ -27,7 +27,7 @@ class _CompanyListScreenState extends State<CompanyListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Companies'),
+        title: Text('Companies'.tr),
         centerTitle: true,
       ),
       body: Obx(() {
@@ -36,7 +36,7 @@ class _CompanyListScreenState extends State<CompanyListScreen> {
         }
 
         if (companyController.companies.isEmpty) {
-          return Center(child: Text('No companies available.'));
+          return Center(child: Text('No companies available.'.tr));
         }
 
         return ListView.builder(
@@ -52,9 +52,9 @@ class _CompanyListScreenState extends State<CompanyListScreen> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Company name: ${company.label}'),
-                      Text('Created: ${company.createdAt}'),
-                      Text('Updated: ${company.updatedAt}'),
+                      Text('Company name:'.tr + " ${company.label}"),
+                      Text('Created:'.tr + " ${company.createdAt}"),
+                      Text('Updated:'.tr + " ${company.updatedAt}"),
                     ],
                   ),
                   trailing: Icon(Icons.arrow_forward_ios),

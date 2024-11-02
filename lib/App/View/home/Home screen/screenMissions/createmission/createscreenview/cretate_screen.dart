@@ -33,7 +33,7 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Mission'),
+        title: Text('Create Mission'.tr),
         centerTitle: true,
       ),
       body: Padding(
@@ -50,8 +50,8 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
               // Description field
               TextFormField(
                 controller: controller,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
+                decoration: InputDecoration(
+                  labelText: 'Description'.tr,
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 5,
@@ -60,7 +60,7 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
+                    return 'Please enter a description'.tr;
                   }
                   return null;
                 },
@@ -92,7 +92,7 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
                             },
                       child: controllercreateMission.isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text('Create Mission'),
+                          : Text('Create Mission'.tr),
                     );
                   }),
             ],
@@ -117,7 +117,8 @@ class ReasonsSelector extends StatelessWidget {
           if (controller.reasons.isEmpty) {
             return Center(
               child: Text(
-                'No reasons available', // Display a message when no reasons are found
+                'No reasons available'
+                    .tr, // Display a message when no reasons are found
                 style: TextStyle(fontSize: 16, color: Colors.red),
               ),
             );
@@ -125,7 +126,7 @@ class ReasonsSelector extends StatelessWidget {
 
           return SelectReasdon(
             items: controller.reasons,
-            title: 'Select Reasons',
+            title: 'Select Reasons'.tr,
           );
         }
       },

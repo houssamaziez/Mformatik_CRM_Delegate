@@ -23,6 +23,8 @@ import '../Widgets/filter_annex_company.dart';
 import '../Widgets/getSliderColor.dart';
 import '../Widgets/homeMenuSelectScreens.dart';
 import '../Widgets/homeMenu_select.dart';
+import 'clientview/client_list_screen.dart';
+import 'screenMissions/mission_list_screen_by_me.dart';
 
 class HomeFeedback extends StatefulWidget {
   HomeFeedback({super.key});
@@ -48,6 +50,51 @@ class _HomeFeedbackState extends State<HomeFeedback> {
 
   @override
   Widget build(BuildContext context) {
+    List<HomeMenuSelect> listiconhomemeneu = [
+      HomeMenuSelect(
+          title: "My Mission".tr,
+          icon: "job-description.png",
+          function: (context) {
+            // Go.to(context, CourseGridScreen(role: 'تنبيهات الحضور'));
+            Go.to(context, const MissionListScreenByMe());
+          }),
+      HomeMenuSelect(
+        title: "ALL Missions".tr,
+        icon: 'daily-task.png',
+        function: (context) {
+          Go.to(context, MissionListScreen());
+          // Go.to(context, const RequestForPermission());
+        },
+      ),
+      HomeMenuSelect(
+        title: "All Clients".tr,
+        icon: 'item3.png',
+        function: (context) {
+          Go.to(
+              context,
+              GetBuilder<CompanyController>(
+                  init: CompanyController(),
+                  builder: (companyController) {
+                    return ClientListScreen(
+                      isback: true,
+                      companyid:
+                          Get.put(CompanyController()).selectCompany == null
+                              ? 0.toString()
+                              : companyController.selectCompany!.id.toString(),
+                    );
+                  }));
+        },
+      ),
+      HomeMenuSelect(
+        title: "My FeedBack".tr,
+        icon: 'Messages, Chat.png',
+        function: (context) {
+          Go.to(context, FeedbackScreen());
+          // Go.to(context, const ScreeenFollowUpTeachers());
+        },
+      ),
+    ];
+
     return GetBuilder<CompanyController>(
         init: CompanyController(),
         builder: (companyController) {
@@ -406,12 +453,12 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                       ],
                     ),
                   ).addRefreshIndicator(onRefresh: () {
-                    startDateMission = null;
-                    endDateMission = null;
-                    startDateTextMission = '';
+                    startDateMissions = null;
+                    endDateMissions = null;
+                    startDateTextMissions = '';
                     final anex = Get.put(AnnexController()).selectAnnex!;
                     print(anex);
-                    endDateTextMission = '';
+                    endDateTextMissions = '';
                     if (Get.put(CompanyController()).selectCompany == null) {
                       return Get.put(AnnexController()).updateannex(anex);
                     } else {

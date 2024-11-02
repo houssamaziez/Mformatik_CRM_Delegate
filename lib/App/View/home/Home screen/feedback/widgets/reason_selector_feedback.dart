@@ -15,9 +15,9 @@ class ReasonsSelectorFeedback extends StatelessWidget {
         if (controller.isLoading) {
           return Center(child: spinkit);
         } else if (controller.reasons.isEmpty) {
-          return const Center(
+          return Center(
             child: Text(
-              'No reasons available',
+              'No reasons available'.tr,
               style: TextStyle(fontSize: 16, color: Colors.red),
             ),
           );
@@ -25,7 +25,7 @@ class ReasonsSelectorFeedback extends StatelessWidget {
 
         return SelectReason(
           items: controller.reasons,
-          title: 'Select Reasons',
+          title: 'Select Reasons'.tr,
         );
       },
     );
@@ -71,7 +71,7 @@ class SelectReason extends StatelessWidget {
               key: Key(expandableController.selectedItem.value?.label ?? ''),
               title: Text(
                 expandableController.selectedItem.value == null
-                    ? 'Select Reasons'
+                    ? 'Select Reasons'.tr
                     : expandableController.selectedItem.value!.label!,
                 style: TextStyle(fontSize: 16, color: Colors.black87),
               ),
@@ -114,7 +114,7 @@ class SelectReason extends StatelessWidget {
                   controller:
                       expandableController.controllerTextEditingController,
                   decoration: InputDecoration(
-                    labelText: 'Please specify',
+                    labelText: 'Please specify'.tr,
                     border: OutlineInputBorder(),
                   ),
                 ),

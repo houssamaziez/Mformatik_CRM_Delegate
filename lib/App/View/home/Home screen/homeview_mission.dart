@@ -13,6 +13,9 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../Controller/home/company_controller.dart';
 import '../../../Controller/home/home_controller.dart';
+import 'clientview/client_list_screen.dart';
+import 'feedback/feedback_list_screen.dart';
+import 'screenMissions/mission_list_screen_by_me.dart';
 import 'screenMissions/profile_mission.dart';
 import '../Widgets/absence_and_lateness_button.dart';
 import '../Widgets/add_mission_button.dart';
@@ -26,6 +29,51 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<HomeMenuSelect> listiconhomemeneu = [
+      HomeMenuSelect(
+          title: "My Mission".tr,
+          icon: "job-description.png",
+          function: (context) {
+            // Go.to(context, CourseGridScreen(role: 'تنبيهات الحضور'));
+            Go.to(context, const MissionListScreenByMe());
+          }),
+      HomeMenuSelect(
+        title: "ALL Missions".tr,
+        icon: 'daily-task.png',
+        function: (context) {
+          Go.to(context, MissionListScreen());
+          // Go.to(context, const RequestForPermission());
+        },
+      ),
+      HomeMenuSelect(
+        title: "All Clients".tr,
+        icon: 'item3.png',
+        function: (context) {
+          Go.to(
+              context,
+              GetBuilder<CompanyController>(
+                  init: CompanyController(),
+                  builder: (companyController) {
+                    return ClientListScreen(
+                      isback: true,
+                      companyid:
+                          Get.put(CompanyController()).selectCompany == null
+                              ? 0.toString()
+                              : companyController.selectCompany!.id.toString(),
+                    );
+                  }));
+        },
+      ),
+      HomeMenuSelect(
+        title: "My FeedBack".tr,
+        icon: 'Messages, Chat.png',
+        function: (context) {
+          Go.to(context, FeedbackScreen());
+          // Go.to(context, const ScreeenFollowUpTeachers());
+        },
+      ),
+    ];
+
     return GetBuilder<CompanyController>(
         init: CompanyController(),
         builder: (companyController) {
@@ -385,12 +433,12 @@ class Home extends StatelessWidget {
                       ],
                     ),
                   ).addRefreshIndicator(onRefresh: () {
-                    startDateMission = null;
-                    endDateMission = null;
-                    startDateTextMission = '';
+                    startDateMissions = null;
+                    endDateMissions = null;
+                    startDateTextMissions = '';
                     final anex = Get.put(AnnexController()).selectAnnex!;
                     print(anex);
-                    endDateTextMission = '';
+                    endDateTextMissions = '';
                     if (Get.put(CompanyController()).selectCompany == null) {
                       return Get.put(AnnexController()).updateannex(anex);
                     } else {

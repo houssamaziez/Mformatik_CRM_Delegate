@@ -28,7 +28,7 @@ class ProfileUserController extends GetxController {
       if (response.statusCode == 204) {
         showMessage(
           Get.context,
-          title: 'User updated successfully',
+          title: 'User updated successfully'.tr,
           color: Colors.green,
         );
         Get.put(AuthController()).updateMe(Get.context);
@@ -70,7 +70,7 @@ class ProfileUserController extends GetxController {
       if (response.statusCode == 204) {
         showMessage(
           Get.context,
-          title: 'Password updated successfully',
+          title: 'Password updated successfully'.tr,
           color: Colors.green,
         );
         Get.put(AuthController()).updateMe(Get.context);

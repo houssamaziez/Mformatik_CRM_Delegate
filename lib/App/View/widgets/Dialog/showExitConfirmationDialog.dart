@@ -50,7 +50,7 @@ Future<bool> showExitConfirmationDialog(
               ),
             ),
             Container(
-              width: 50,
+              width: 90,
               child: ButtonAll(
                   function: () {
                     onPressed!();

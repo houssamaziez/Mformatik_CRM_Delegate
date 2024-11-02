@@ -19,7 +19,7 @@ class ResponseHandler {
           showMessage(Get.context, title: "username is invalid".tr);
         } else {
           if (decodeResponseBody(response)[0]["message"] ==
-              "the password is wrong") {
+              "the password is wrong".tr) {
             showMessage(Get.context, title: "the password is wrong".tr);
           } else {
             // showMessage(Get.context,

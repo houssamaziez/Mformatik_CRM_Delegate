@@ -35,12 +35,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            title: const Text('Select Date Range'),
+            title: Text('Select Date Range'.tr),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('Start Date:'),
+                  Text('Start Date:'.tr),
                   TextButton(
                     onPressed: () async {
                       DateTime? pickedStartDate = await showDatePicker(
@@ -62,12 +62,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     child: Text(
                       _startDate != null
                           ? _startDate!.toLocal().toString().split(' ')[0]
-                          : 'Select Start Date',
+                          : 'Select Start Date'.tr,
                       style: const TextStyle(color: Colors.blue),
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Text('End Date:'),
+                  Text('End Date:'.tr),
                   TextButton(
                     onPressed: () async {
                       DateTime? pickedEndDate = await showDatePicker(
@@ -88,7 +88,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     child: Text(
                       _endDate != null
                           ? _endDate!.toLocal().toString().split(' ')[0]
-                          : 'Select End Date',
+                          : 'Select End Date'.tr,
                       style: const TextStyle(color: Colors.blue),
                     ),
                   ),
@@ -97,13 +97,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             ),
             actions: [
               TextButton(
-                child: const Text('Cancel'),
+                child: Text('Cancel'.tr),
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
                 },
               ),
               ElevatedButton(
-                child: const Text('OK'),
+                child: Text('OK'.tr),
                 onPressed: () {
                   Get.put(FeedbackController()).fetchFeedbacks(
                       companyController.selectCompany!.id.toString(),
@@ -169,7 +169,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Feedbacks"),
+        title: Text("My Feedbacks".tr),
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),
@@ -190,7 +190,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     return const Center(child: spinkit);
                   }
                   if (feedbackController.feedbacks.isEmpty) {
-                    return const Center(child: Text("No feedback available."));
+                    return Center(child: Text("No feedback available.".tr));
                   }
                   return ListView.builder(
                     physics: const AlwaysScrollableScrollPhysics(),

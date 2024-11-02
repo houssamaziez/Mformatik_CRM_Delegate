@@ -83,7 +83,7 @@ class _ClientListScreenAddMissionState
     return Scaffold(
       appBar: widget.isback
           ? AppBar(
-              title: Text("Select the client"),
+              title: Text("Select the client".tr),
               centerTitle: true,
             )
           : null,
@@ -96,7 +96,7 @@ class _ClientListScreenAddMissionState
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
-                hintText: "Search clients...",
+                hintText: "Search clients...".tr,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -113,7 +113,7 @@ class _ClientListScreenAddMissionState
               if (clientController.clients.isEmpty) {
                 return Center(
                   child: Text(
-                    'No clients available.',
+                    'No clients available.'.tr,
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                   ),
                 );
@@ -158,7 +158,7 @@ class _ClientListScreenAddMissionState
                                   SizedBox(width: 10),
                                   Flexible(
                                     child: Text(
-                                      client.fullName ?? 'No Name',
+                                      client.fullName ?? 'No Name'.tr,
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,

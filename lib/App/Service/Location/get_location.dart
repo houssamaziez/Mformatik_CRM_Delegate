@@ -1,5 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LocationService {
   static Future<LocationDataModel> getCurrentLocation(context) async {
@@ -32,22 +33,23 @@ class LocationService {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Location Services Disabled'),
+              title: Text('Location Services Disabled'.tr),
               content: Text(
-                  'Location services are required for this feature. Please enable them in settings.'),
+                  'Location services are required for this feature. Please enable them in settings.'
+                      .tr),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('Cancel'),
+                  child: Text('Cancel'.tr),
                 ),
                 TextButton(
                   onPressed: () async {
                     Navigator.of(context).pop();
                     await Geolocator.openAppSettings();
                   },
-                  child: Text('Open Settings'),
+                  child: Text('Open Settings'.tr),
                 ),
               ],
             );
@@ -86,9 +88,10 @@ class LocationService {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Location Services Disabled'),
+          title: Text('Location Services Disabled'.tr),
           content: Text(
-              'Location services are required for this feature. Please enable them in settings.'),
+              'Location services are required for this feature. Please enable them in settings.'
+                  .tr),
           actions: [
             TextButton(
               onPressed: () {

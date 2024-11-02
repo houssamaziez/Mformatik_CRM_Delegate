@@ -75,7 +75,7 @@ class _ClientListScreenState extends State<ClientListScreen> {
     return Scaffold(
       appBar: widget.isback
           ? AppBar(
-              title: Text("All Clinets"),
+              title: Text("All Clinets".tr),
               centerTitle: true,
             )
           : null,
@@ -96,7 +96,7 @@ class _ClientListScreenState extends State<ClientListScreen> {
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
-                hintText: "Search clients...",
+                hintText: "Search clients...".tr,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -113,7 +113,7 @@ class _ClientListScreenState extends State<ClientListScreen> {
               if (clientController.clients.isEmpty) {
                 return Center(
                   child: Text(
-                    'No clients available.',
+                    'No clients available.'.tr,
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                   ),
                 );
@@ -150,7 +150,7 @@ class _ClientListScreenState extends State<ClientListScreen> {
                                   SizedBox(width: 10),
                                   Flexible(
                                     child: Text(
-                                      client.fullName ?? 'No Name',
+                                      client.fullName ?? 'No Name'.tr,
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -176,7 +176,7 @@ class _ClientListScreenState extends State<ClientListScreen> {
                                   Icon(Icons.email, color: Colors.redAccent),
                                   SizedBox(width: 10),
                                   Text(
-                                    client.email ?? 'No Email',
+                                    client.email ?? 'No Email'.tr,
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ],
@@ -187,14 +187,14 @@ class _ClientListScreenState extends State<ClientListScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Sold: ${client.sold}',
+                                    'Sold:'.tr + " ${client.sold}",
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.black87,
                                     ),
                                   ),
                                   Text(
-                                    'Potential: ${client.potential}',
+                                    'Potential:'.tr + " ${client.potential}",
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.blueGrey,

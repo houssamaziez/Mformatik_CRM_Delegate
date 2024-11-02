@@ -11,10 +11,10 @@ import '../language_screen.dart';
 
 Padding carditemsetting(context) {
   List<Map<String, String>> listtitemsetting = [
-    {
-      "title": "Added Accounts".tr,
-      "Image": "assets/icons/school_82202891.png",
-    },
+    // {
+    //   "title": "Added Accounts".tr,
+    //   "Image": "assets/icons/school_82202891.png",
+    // },
     {
       "title": "Notifications".tr,
       "Image": "assets/icons/bell.png",
@@ -29,7 +29,7 @@ Padding carditemsetting(context) {
     },
     {
       "title": "Change Language".tr,
-      "Image": "assets/icons/letter-i_111653901.png",
+      "Image": "assets/icons/2661198.png",
     },
   ];
 
@@ -47,29 +47,29 @@ Padding carditemsetting(context) {
           //     function: () {
           //       // Go.to(context, AddedAccounts());
           //     }),
+          // itemsetting(
+          //     titile: listtitemsetting[1]["title"].toString(),
+          //     image: listtitemsetting[1]["Image"].toString(),
+          //     function: () {
+          //       Go.to(context, const NotificationScreen());
+          //     }),
+          itemsetting(
+              titile: listtitemsetting[3]["title"].toString(),
+              image: listtitemsetting[3]["Image"].toString(),
+              function: () {
+                Go.to(context, const LanguageScreen());
+              }),
           itemsetting(
               titile: listtitemsetting[1]["title"].toString(),
               image: listtitemsetting[1]["Image"].toString(),
               function: () {
-                Go.to(context, const NotificationScreen());
+                Go.to(context, SuggestionsScreen());
               }),
           itemsetting(
               titile: listtitemsetting[2]["title"].toString(),
               image: listtitemsetting[2]["Image"].toString(),
               function: () {
-                Go.to(context, SuggestionsScreen());
-              }),
-          itemsetting(
-              titile: listtitemsetting[3]["title"].toString(),
-              image: listtitemsetting[3]["Image"].toString(),
-              function: () {
                 Go.to(context, AboutTheApplication());
-              }),
-          itemsetting(
-              titile: listtitemsetting[4]["title"].toString(),
-              image: listtitemsetting[4]["Image"].toString(),
-              function: () {
-                Go.to(context, const LanguageScreen());
               }),
         ],
       ),

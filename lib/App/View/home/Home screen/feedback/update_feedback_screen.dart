@@ -119,7 +119,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Update Feedback')),
+      appBar: AppBar(title: Text('Update Feedback'.tr)),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -141,8 +141,8 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
               //     maxLines: 3),
               TextFormField(
                 controller: descController,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
+                decoration: InputDecoration(
+                  labelText: 'Description'.tr,
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 5,
@@ -151,7 +151,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
+                    return 'Please enter a description'.tr;
                   }
                   return null;
                 },
@@ -174,8 +174,8 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                             : Container()
                         : Container();
                   }),
-              const Text(
-                'Gallery',
+              Text(
+                'Gallery'.tr,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -234,7 +234,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                       ),
                     )
                   : Text(
-                      'No Images available',
+                      'No Images available'.tr,
                       style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                     ),
 
@@ -242,7 +242,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Selected Images',
+                    'Selected Images'.tr,
                     style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold),
@@ -265,8 +265,8 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
               ),
               if (_compressionProgress > 0 && _compressionProgress < 100) ...[
                 const SizedBox(height: 16),
-                Text(
-                    'Loading images: ${_compressionProgress.toStringAsFixed(0)}%'),
+                Text('Loading images:'.tr +
+                    " ${_compressionProgress.toStringAsFixed(0)}%"),
                 const SizedBox(height: 8),
                 LinearProgressIndicator(
                   value: _compressionProgress / 100,
@@ -315,7 +315,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                   builder: (xontrolllerFeedback) {
                     return ButtonAll(
                       function: _handleUpdateFeedback,
-                      title: 'Update Feedback',
+                      title: 'Update Feedback'.tr,
                       isloading: xontrolllerFeedback.isLoadingadd,
                     );
                   }),
@@ -356,7 +356,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
     // }
 
     if (controllerisreq.selectedItem.value == null) {
-      showMessage(context, title: 'Select Reasons');
+      showMessage(context, title: 'Select Reasons'.tr);
     } else if (controllerisreq.selectedItem.value!.isDescRequired == true) {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
@@ -418,9 +418,9 @@ class _ReasonsSelectorFeedbackupdState
         if (controller.isLoading) {
           return const Center(child: spinkit);
         } else if (controller.reasons.isEmpty) {
-          return const Center(
+          return Center(
             child: Text(
-              'No reasons available',
+              'No reasons available'.tr,
               style: TextStyle(fontSize: 16, color: Colors.red),
             ),
           );
@@ -428,7 +428,7 @@ class _ReasonsSelectorFeedbackupdState
 
         return SelectReason(
           items: controller.reasons,
-          title: 'Select Reasons',
+          title: 'Select Reasons'.tr,
           id: widget.id,
         );
       },
@@ -477,7 +477,7 @@ class SelectReason extends StatelessWidget {
               key: Key(expandableController.selectedItem.value?.label ?? ''),
               title: Text(
                 expandableController.selectedItem.value == null
-                    ? 'Select Reasons'
+                    ? 'Select Reasons'.tr
                     : expandableController.selectedItem.value!.label!,
                 style: const TextStyle(fontSize: 16, color: Colors.black87),
               ),
@@ -522,8 +522,8 @@ class SelectReason extends StatelessWidget {
                 child: TextField(
                   controller:
                       expandableController.controllerTextEditingController,
-                  decoration: const InputDecoration(
-                    labelText: 'Please specify',
+                  decoration: InputDecoration(
+                    labelText: 'Please specify'.tr,
                     border: OutlineInputBorder(),
                   ),
                 ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/View/home/Widgets/homeMenu_select.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Containers/container_blue.dart';
 import '../../../../Model/client.dart';
 import '../screenMissions/createmission/createscreenview/cretate_screen.dart';
@@ -13,7 +15,7 @@ class ClientProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(client.fullName ?? 'Client Profile'),
+        title: Text(client.fullName ?? 'Client Profile'.tr),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -25,8 +27,8 @@ class ClientProfileScreen extends StatelessWidget {
                 clientID: client.id!,
               ));
         },
-        label: const Text(
-          "Add Mission",
+        label: Text(
+          "Add Mission".tr,
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -78,13 +80,13 @@ class ClientProfileScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              Text(
-                'Client ID: ${client.localId}',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[700],
-                ),
-              ),
+              // Text(
+              //   'Client ID: ${client.localId}',
+              //   style: TextStyle(
+              //     fontSize: 16,
+              //     color: Colors.grey[700],
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -98,15 +100,15 @@ class ClientProfileScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Contact Details',
+          Text(
+            'Contact Details'.tr,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-          _buildContactRow(Icons.phone, 'Phone', client.phone ?? 'N/A'),
+          _buildContactRow(Icons.phone, 'Phone'.tr, client.phone ?? 'N/A'),
           _buildContactRow(Icons.email, 'Email', client.email ?? 'N/A'),
           _buildContactRow(
-              Icons.location_on, 'Address', client.address ?? 'N/A'),
+              Icons.location_on, 'Address'.tr, client.address ?? 'N/A'),
         ],
       ),
     );
@@ -146,15 +148,15 @@ class ClientProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Business Information',
+            Text(
+              'Business Information'.tr,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            _buildInfoRow('Sold:', client.sold!),
-            _buildInfoRow('Potential:', client.potential!),
-            _buildInfoRow('Turnover:', client.turnover!),
-            _buildInfoRow('Cashing In:', client.cashingIn!),
+            _buildInfoRow('Sold:'.tr, client.sold!),
+            _buildInfoRow('Potential:'.tr, client.potential!),
+            _buildInfoRow('Turnover:'.tr, client.turnover!),
+            _buildInfoRow('Cashing In:'.tr, client.cashingIn!),
           ],
         ),
       ),
@@ -186,15 +188,15 @@ class ClientProfileScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Other Details',
+          Text(
+            'Other Details'.tr,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-          Text('Region: ${client.region ?? 'N/A'}',
+          Text('Region:'.tr + " ${client.region ?? 'N/A'}",
               style: const TextStyle(fontSize: 16)),
           const SizedBox(height: 10),
-          Text('Client Since: ${client.createdAt}',
+          Text('Client Since:'.tr + " ${client.createdAt}",
               style: const TextStyle(fontSize: 16)),
         ],
       ),

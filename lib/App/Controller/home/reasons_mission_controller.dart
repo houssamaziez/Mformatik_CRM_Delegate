@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 
 import '../../Model/reason_mission.dart';
 import '../auth/auth_controller.dart';
@@ -26,11 +27,11 @@ class ReasonsMissionController extends GetxController {
         update();
       } else {
         // Handle error responses
-        Get.snackbar('Error', 'Failed to load reasons: ${response.statusCode}');
+        showMessage(Get.context, title: "Failed to load reasons:".tr);
       }
     } catch (e) {
       // Handle exceptions
-      Get.snackbar('Error', 'Failed to load reasons: $e');
+      showMessage(Get.context, title: "Failed to load reasons:".tr);
     } finally {
       isLoading = false; // Reset loading state
       update();

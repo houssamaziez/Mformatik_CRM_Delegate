@@ -16,6 +16,15 @@ class AboutTheApplication extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Image.asset(
+                  "assets/icons/about.png",
+                  height: 150,
+                ),
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
                 width: double.infinity,
@@ -26,55 +35,13 @@ class AboutTheApplication extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text(
-                    "app dec".tr,
+                    "We introduce an exclusive application designed for customer delegates, enabling them to effortlessly record their notes. This app facilitates the organization of information and the effective tracking of customer interactions, ultimately enhancing service quality and improving the overall customer experience."
+                        .tr,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text("Contact Us".tr),
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Image.asset(
-                      "assets/icons/X.png",
-                      height: 28.39,
-                      width: 32,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Image.asset(
-                      "assets/icons/googleIcons.png",
-                      height: 28.39,
-                      width: 32,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Image.asset(
-                      "assets/icons/linkideing.png",
-                      height: 28.39,
-                      width: 32,
-                    ),
-                  ),
-                ),
-              ],
-            )
           ],
         ),
       ),

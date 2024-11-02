@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 
 import '../../../../../Model/feedback.dart';
@@ -75,7 +76,7 @@ class FeedbackCard extends StatelessWidget {
                               color: Colors.grey, size: 18),
                           const SizedBox(width: 4),
                           Text(
-                            "Created by: ${feedback.creatorUsername}",
+                            "Created by:".tr + " ${feedback.creatorUsername}",
                             style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 13,
@@ -89,7 +90,8 @@ class FeedbackCard extends StatelessWidget {
                           Icon(Icons.date_range, color: Colors.grey, size: 18),
                           const SizedBox(width: 4),
                           Text(
-                            "Date: ${feedback.createdAt?.split('T')[0]}",
+                            "Date:".tr +
+                                " ${feedback.createdAt?.split('T')[0]}",
                             style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 13,

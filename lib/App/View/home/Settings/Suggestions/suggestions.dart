@@ -64,9 +64,12 @@ class SuggestionsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            ButtonAll(
-              function: () {},
-              title: "Send Your Suggestion".tr,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ButtonAll(
+                function: () {},
+                title: "Send Your Suggestion".tr,
+              ),
             )
           ],
         ),

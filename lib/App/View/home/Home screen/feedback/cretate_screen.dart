@@ -117,7 +117,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
     final controllerisreq = Get.put(ExpandableControllerFeedback());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Feedback'),
+        title: Text('Create Feedback'.tr),
         centerTitle: true,
       ),
       body: Padding(
@@ -131,8 +131,8 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: controller,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
+                decoration: InputDecoration(
+                  labelText: 'Description'.tr,
                   alignLabelWithHint: true, // لتعيين العنوان في الأعلى
 
                   border: OutlineInputBorder(),
@@ -143,7 +143,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
+                    return 'Please enter a description'.tr;
                   }
                   return null;
                 },
@@ -168,7 +168,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Selected Images',
+                    'Selected Images'.tr,
                     style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold),
@@ -253,7 +253,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                   if (controllerisreq.selectedItem.value ==
                                       null) {
                                     showMessage(context,
-                                        title: 'Select Reasons');
+                                        title: 'Select Reasons'.tr);
                                   } else if (controllerisreq
                                           .selectedItem.value!.isDescRequired ==
                                       true) {
@@ -269,7 +269,9 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                 }
                               },
                                   details:
-                                      'Are you sure to complete the Mission?',
+                                      'Are you sure to complete the Mission?'
+                                          .tr
+                                          .tr,
                                   title: 'Confirmation');
                             } else {
                               var location =
@@ -278,7 +280,8 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                               if (location.isPermissionGranted) {
                                 if (controllerisreq.selectedItem.value ==
                                     null) {
-                                  showMessage(context, title: 'Select Reasons');
+                                  showMessage(context,
+                                      title: 'Select Reasons'.tr);
                                 } else if (controllerisreq
                                         .selectedItem.value!.isDescRequired ==
                                     true) {
@@ -296,7 +299,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                           },
                     child: controllercreateFeedback.isLoadingadd
                         ? spinkitwhite
-                        : const Text('Create Feedback'),
+                        : Text('Create Feedback'.tr),
                   );
                 },
               ),

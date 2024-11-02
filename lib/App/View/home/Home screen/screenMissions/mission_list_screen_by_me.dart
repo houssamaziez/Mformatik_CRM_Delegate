@@ -94,7 +94,7 @@ class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
                   },
                 ),
               ],
-              title: Text("My Missions"),
+              title: Text("My Missions".tr),
               centerTitle: true,
             ),
             backgroundColor: ColorsApp.white,
@@ -172,12 +172,12 @@ void showDateRangeDialog(context) {
     builder: (BuildContext context) {
       return StatefulBuilder(builder: (context, setState) {
         return AlertDialog(
-          title: const Text('Select Date Range'),
+          title: Text('Select Date Range'.tr),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text('Start Date:'),
+                Text('Start Date:'.tr),
                 TextButton(
                   onPressed: () async {
                     DateTime? pickedStartDate = await showDatePicker(
@@ -201,12 +201,12 @@ void showDateRangeDialog(context) {
                   child: Text(
                     startDateMission != null
                         ? startDateMission!.toLocal().toString().split(' ')[0]
-                        : 'Select Start Date',
+                        : 'Select Start Date'.tr,
                     style: const TextStyle(color: Colors.blue),
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text('End Date:'),
+                Text('End Date:'.tr),
                 TextButton(
                   onPressed: () async {
                     DateTime? pickedEndDate = await showDatePicker(
@@ -228,7 +228,7 @@ void showDateRangeDialog(context) {
                   child: Text(
                     endDateMission != null
                         ? endDateMission!.toLocal().toString().split(' ')[0]
-                        : 'Select End Date',
+                        : 'Select End Date'.tr,
                     style: const TextStyle(color: Colors.blue),
                   ),
                 ),
@@ -237,13 +237,13 @@ void showDateRangeDialog(context) {
           ),
           actions: [
             TextButton(
-              child: const Text('Cancel'),
+              child: Text('Cancel'.tr),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
             ElevatedButton(
-              child: const Text('OK'),
+              child: Text('OK'.tr),
               onPressed: () {
                 Get.put(MissionsControllerAll()).getAllMission(
                     endingDate: endDateTextMission,

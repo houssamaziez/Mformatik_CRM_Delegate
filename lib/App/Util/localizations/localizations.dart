@@ -9,6 +9,6 @@ class Messages extends Translations {
   Map<String, Map<String, String>> get keys => {
         'en': en,
         'fr': fr,
-        'ar': ar,
+        // 'ar': ar,
       };
 }

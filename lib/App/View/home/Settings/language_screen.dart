@@ -10,72 +10,124 @@ class LanguageScreen extends StatefulWidget {
 }
 
 class _LanguageScreenState extends State<LanguageScreen> {
-  final GetStorage _storage = GetStorage(); // Initialize GetStorage
-  String _selectedLanguage = 'en'; // Default language is English
+  final GetStorage _storage = GetStorage();
+  late String _selectedLanguage;
 
-  // List of supported languages
+  // Supported languages
   final Map<String, String> _languages = {
     'en': 'English',
     'fr': 'Français',
-    'ar': 'العربية',
   };
 
   @override
   void initState() {
     super.initState();
-    _loadSelectedLanguage(); // Load the saved language on startup
+    _loadSelectedLanguage();
   }
 
   void _loadSelectedLanguage() {
-    final String? storedLanguage = _storage.read<String>('selected_language');
-    if (storedLanguage != null) {
-      setState(() {
-        _selectedLanguage = storedLanguage;
-      });
-      Get.updateLocale(
-          Locale(storedLanguage)); // Update locale based on stored value
-    }
+    final storedLanguage = _storage.read<String>('selected_language');
+    setState(() {
+      _selectedLanguage = storedLanguage ?? 'en';
+      Get.updateLocale(Locale(_selectedLanguage));
+    });
+  }
+
+  void _onLanguageSelected(String language) {
+    setState(() {
+      _selectedLanguage = language;
+    });
+    Get.updateLocale(Locale(language)); // Update the locale immediately
+    _storage.write(
+        'selected_language', language); // Save the language selection
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Selected language'.tr), // Translation key
+        title: Text('Language Selection'.tr),
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            SizedBox(
+              height: 60,
+            ),
             Text(
-              'Selected language'.tr, // Translation key
-              style: const TextStyle(fontSize: 18),
+              'Choose your preferred language to make it easier for you to use the application'
+                  .tr,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
-            DropdownButton<String>(
-              value: _selectedLanguage,
-              icon: const Icon(Icons.language),
-              isExpanded: true,
-              items: _languages.entries.map((entry) {
-                return DropdownMenuItem<String>(
-                  value: entry.key,
-                  child: Text(entry.value),
+            const SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: _languages.entries.map((entry) {
+                final bool isSelected = _selectedLanguage == entry.key;
+                return GestureDetector(
+                  onTap: () => _onLanguageSelected(entry.key),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: 130,
+                    height: 130,
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? Theme.of(context).primaryColor
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: isSelected
+                            ? Theme.of(context).primaryColor
+                            : Colors.grey.shade300,
+                        width: 2,
+                      ),
+                      boxShadow: [
+                        if (isSelected)
+                          BoxShadow(
+                            color:
+                                Theme.of(context).primaryColor.withOpacity(0.2),
+                            spreadRadius: 4,
+                            blurRadius: 8,
+                          ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        entry.value,
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : Colors.black87,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
                 );
               }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedLanguage = newValue!;
-                });
-
-                // Change the locale based on the selected language
-                Get.updateLocale(Locale(_selectedLanguage));
-                _storage.write('Selected language'.tr,
-                    _selectedLanguage); // Save selected language
-              },
             ),
+            const SizedBox(height: 40),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     Get.back();
+            //   },
+            //   style: ElevatedButton.styleFrom(
+            //     padding:
+            //         const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+            //     backgroundColor: Colors.teal,
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(10),
+            //     ),
+            //   ),
+            //   child: Text(
+            //     'save'.tr,
+            //     style: const TextStyle(fontSize: 18),
+            //   ),
+            // ),
           ],
         ),
       ),

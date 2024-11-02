@@ -213,7 +213,7 @@ class FeedbackController extends GetxController {
               .changeStatuseMission(3, missionId!);
         }
         showMessage(Get.context,
-            title: 'Feedback added successfully', color: Colors.green);
+            title: 'Feedback added successfully'.tr, color: Colors.green);
 
         print('Feedback added successfully');
         // Optionally refresh the feedbacks list or perform other actions
@@ -305,7 +305,7 @@ class FeedbackController extends GetxController {
       );
       print(response.body);
       if (imagesAdd!.isNotEmpty) {
-        await updateFeedback(
+        await updateFeedbackImage(
             feedbackId: feedbackId,
             lastLabel: lastLabel,
             label: lastLabel,
@@ -325,14 +325,14 @@ class FeedbackController extends GetxController {
         Go.back(Get.context);
         showMessage(
           Get.context,
-          title: 'Feedback updated successfully',
+          title: 'Feedback updated successfully'.tr,
           color: Colors.green,
         );
         print('Feedback updated successfully');
       } else {
         showMessage(
           Get.context,
-          title: 'Failed to update feedback',
+          title: 'Failed to update feedback'.tr,
           color: Colors.orange,
         );
         print('Failed to update feedback: ${response.body}');
@@ -341,7 +341,7 @@ class FeedbackController extends GetxController {
       // Handle network-related errors
       showMessage(
         Get.context,
-        title: 'No Internet Connection',
+        title: 'No Internet Connection'.tr,
         color: Colors.red,
       );
       print('Network error: $e');
@@ -349,7 +349,7 @@ class FeedbackController extends GetxController {
       // Handle other types of errors
       showMessage(
         Get.context,
-        title: 'Unexpected Error',
+        title: 'No Internet Connection'.tr,
         color: Colors.red,
       );
       print('Unexpected error: $e');
@@ -360,7 +360,7 @@ class FeedbackController extends GetxController {
     }
   }
 
-  Future<void> updateFeedback({
+  Future<void> updateFeedbackImage({
     required String feedbackId,
     required String lastLabel,
     required String label,

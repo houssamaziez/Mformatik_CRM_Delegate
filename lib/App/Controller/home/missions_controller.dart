@@ -221,7 +221,7 @@ class MissionsController extends GetxController {
         // );
       }
     } catch (e) {
-      showMessage(Get.context, title: "Failed to load Mission Status");
+      showMessage(Get.context, title: "Failed to load Mission Status".tr);
     } finally {
       changestatus = false;
       update();

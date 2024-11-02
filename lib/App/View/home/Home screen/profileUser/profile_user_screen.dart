@@ -64,7 +64,7 @@ class ProfileUserScreen extends StatelessWidget {
                 ),
                 buttonsetting(
                     function: () => Go.to(context, ScreenEditeProfile()),
-                    title: "Edite Profile",
+                    title: "Edite Profile".tr,
                     image: 'assets/icons/edit-info.png',
                     colortext: Colors.black,
                     color: Theme.of(context).cardColor),
@@ -76,10 +76,11 @@ class ProfileUserScreen extends StatelessWidget {
                         Go.clearAndTo(context, ScreenAuth());
                       },
                           details:
-                              'Do you really want to log out of the account?',
-                          title: 'Log out');
+                              'Do you really want to log out of the account?'
+                                  .tr,
+                          title: 'Log Out'.tr);
                     },
-                    title: "Log Out       ".tr,
+                    title: "Log Out".tr + "       ",
                     image: 'assets/icons/log-out1.png'),
                 const Spacer(),
               ],
