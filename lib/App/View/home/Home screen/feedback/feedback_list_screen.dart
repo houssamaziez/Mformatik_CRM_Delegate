@@ -160,7 +160,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   @override
   void dispose() {
-    Get.delete<FeedbackController>(force: true);
+    // Get.delete<FeedbackController>(force: true);
 
     super.dispose();
   }
