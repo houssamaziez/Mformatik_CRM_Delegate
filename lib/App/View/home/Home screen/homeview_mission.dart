@@ -63,10 +63,10 @@ class Home extends StatelessWidget {
                         const SizedBox(
                           height: 200,
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
-                            "No company found, please select another annex.",
+                            "No company found, please select another annex.".tr,
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -90,6 +90,7 @@ class Home extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: "Select another annex"
+                                              .tr
                                               .style(color: Colors.white),
                                         ),
                                       ),
@@ -163,7 +164,7 @@ class Home extends StatelessWidget {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: "Last Missions".style(
+                                    child: "Last Missions".tr.style(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black54,
                                         fontSize: 14),
@@ -185,7 +186,7 @@ class Home extends StatelessWidget {
                                         ),
                                         Expanded(
                                             flex: 2,
-                                            child: "Label".style(
+                                            child: "Label".tr.style(
                                                 color: Theme.of(context)
                                                     .primaryColor,
                                                 fontWeight: FontWeight.bold,
@@ -193,6 +194,7 @@ class Home extends StatelessWidget {
                                         Flexible(
                                             flex: 2,
                                             child: "Creator"
+                                                .tr
                                                 .style(
                                                     color: Theme.of(context)
                                                         .primaryColor,
@@ -202,6 +204,7 @@ class Home extends StatelessWidget {
                                         Flexible(
                                             flex: 2,
                                             child: "Status"
+                                                .tr
                                                 .style(
                                                     color: Theme.of(context)
                                                         .primaryColor,
@@ -224,7 +227,7 @@ class Home extends StatelessWidget {
                                                 false
                                             ? missionsController
                                                     .missions!.isEmpty
-                                                ? const Padding(
+                                                ? Padding(
                                                     padding:
                                                         EdgeInsets.all(8.0),
                                                     child: Center(
@@ -232,7 +235,8 @@ class Home extends StatelessWidget {
                                                         padding:
                                                             EdgeInsets.all(8.0),
                                                         child: Text(
-                                                          "No Missions found",
+                                                          "No Missions found"
+                                                              .tr,
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.grey),
@@ -353,14 +357,14 @@ class Home extends StatelessWidget {
                                             color:
                                                 Theme.of(context).primaryColor,
                                           ),
-                                          child: const Padding(
+                                          child: Padding(
                                             padding: EdgeInsets.only(
                                                 left: 20.0,
                                                 right: 20,
                                                 top: 5,
                                                 bottom: 5),
                                             child: Text(
-                                              "View All Missions",
+                                              "View All Missions".tr,
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 13),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/profile_user_controller.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Widgets/textfild.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 
 import '../../../widgets/Buttons/buttonall.dart';
@@ -10,7 +9,7 @@ import '../../../widgets/app_bar.dart';
 
 // ignore: must_be_immutable
 class ModifyPassword extends StatefulWidget {
-  ModifyPassword({super.key});
+  const ModifyPassword({super.key});
 
   @override
   State<ModifyPassword> createState() => _ModifyPasswordState();
@@ -29,7 +28,7 @@ class _ModifyPasswordState extends State<ModifyPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myappbar(context, title: "Change Password"),
+      appBar: myappbar(context, title: "Change Password".tr),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -40,22 +39,22 @@ class _ModifyPasswordState extends State<ModifyPassword> {
               children: [
                 MyTextfield(
                     controller: passwordController,
-                    label: "Current Password",
-                    hint: "Enter Current Password",
+                    label: "Current Password".tr,
+                    hint: "Enter Current Password".tr,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a Current Password';
+                        return 'Please enter a Current Password'.tr;
                       }
                       return null;
                     },
                     isPassword: false),
                 MyTextfield(
                     controller: newpaswwordController,
-                    label: "New Password",
-                    hint: "Enter New Password",
+                    label: "New Password".tr,
+                    hint: "Enter New Password".tr,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a New Password';
+                        return 'Please enter a New Password'.tr;
                       }
                       return null;
                     },
@@ -71,12 +70,12 @@ class _ModifyPasswordState extends State<ModifyPassword> {
                       confirmySee = !confirmySee;
                       setState(() {});
                     },
-                    label: "Confirm Password",
+                    label: "Confirm Password".tr,
                     isPasswordVisible: confirmySee,
-                    hint: "Enter the New Password",
+                    hint: "Enter the New Password".tr,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a Confirm Password';
+                        return 'Please enter a Confirm Password'.tr;
                       }
                       return null;
                     },
@@ -97,10 +96,10 @@ class _ModifyPasswordState extends State<ModifyPassword> {
                                   newPassword: newpaswwordController.text);
                           } else {
                             showMessage(context,
-                                title: "Make sure the password matches.");
+                                title: "Make sure the password matches.".tr);
                           }
                         },
-                        title: "Save",
+                        title: "Save".tr,
                         isloading: passwordUpdateController.isloading,
                       );
                     }),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../widgets/app_bar.dart';
 
@@ -9,7 +10,7 @@ class AboutTheApplication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myappbar(context, title: "About the application"),
+      appBar: myappbar(context, title: "About the application".tr),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,18 +23,18 @@ class AboutTheApplication extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
                     borderRadius: const BorderRadius.all(Radius.circular(8))),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text(
-                    "app dec",
+                    "app dec".tr,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                 ),
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(16.0),
-              child: Text("Contact Us"),
+              child: Text("Contact Us".tr),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,

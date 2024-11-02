@@ -41,7 +41,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('select_language'.tr), // Translation key
+        title: Text('Selected language'.tr), // Translation key
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -50,7 +50,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'select_language'.tr, // Translation key
+              'Selected language'.tr, // Translation key
               style: const TextStyle(fontSize: 18),
               textAlign: TextAlign.center,
             ),
@@ -72,7 +72,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
 
                 // Change the locale based on the selected language
                 Get.updateLocale(Locale(_selectedLanguage));
-                _storage.write('selected_language',
+                _storage.write('Selected language'.tr,
                     _selectedLanguage); // Save selected language
               },
             ),

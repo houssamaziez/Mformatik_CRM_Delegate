@@ -109,10 +109,10 @@ Padding liststate() {
                           : Colors.red),
                   title: "Account".tr.toString(),
                   suptitle: controller.user!.isActive == null
-                      ? " in English is \"Verifying ..."
+                      ? "in English is \"Verifying...".tr
                       : (controller.user!.isActive == true
                           ? "Active".tr.toString()
-                          : "Inactive"),
+                          : "Inactive".tr),
                   image: listt[2]["Image"].toString());
             }),
       ],
@@ -158,10 +158,10 @@ Padding liststateprofile() {
                           : Colors.red),
                   title: "Account".tr.toString(),
                   suptitle: controller.user!.isActive == null
-                      ? " in English is \"Verifying ..."
+                      ? "in English is \"Verifying...".tr
                       : (controller.user!.isActive == true
                           ? "Active".tr.toString()
-                          : "Inactive"),
+                          : "Inactive".tr),
                   image: listt2[2]["Image"].toString());
             }),
       ],

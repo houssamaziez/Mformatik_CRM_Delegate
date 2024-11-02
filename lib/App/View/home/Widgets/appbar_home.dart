@@ -43,7 +43,7 @@ AppBar appbarHome(
             children: [
               usercontroller.user!.username == null
                   ? Text(
-                      "Loading name...",
+                      "Loading name...".tr,
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,

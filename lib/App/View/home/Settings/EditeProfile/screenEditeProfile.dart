@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/profile_user_controller.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Widgets/textfild.dart';
 
 import '../../../../Controller/auth/auth_controller.dart';
 import '../../../../Util/Route/Go.dart';
@@ -39,7 +38,7 @@ class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myappbar(context, title: "User Information"),
+      appBar: myappbar(context, title: "User Information".tr),
       body: GetBuilder<AuthController>(
           init: AuthController(),
           builder: (authController) {
@@ -77,7 +76,7 @@ class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
                     ),
                     Text(
                       person.firstName == null
-                          ? '...جاري جلب البيانات'
+                          ? 'Fetching data...'.tr
                           : '@' + user.username!.toString(),
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
@@ -86,10 +85,10 @@ class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Align(
+                    Align(
                       alignment: Alignment.bottomLeft,
                       child: Text(
-                        "Edit Information",
+                        "Edit Information".tr,
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 16),
                       ),
@@ -99,24 +98,24 @@ class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
                     ),
                     MyTextfield(
                       controller: firstNameController,
-                      label: "First Name",
-                      hint: "First Name",
+                      label: "First Name".tr,
+                      hint: "First Name".tr,
                       isPassword: false,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a First Name';
+                          return 'Please enter a First Name'.tr;
                         }
                         return null;
                       },
                     ),
                     MyTextfield(
                       controller: lastNameController,
-                      label: "last Name",
-                      hint: "last Name",
+                      label: "last Name".tr,
+                      hint: "last Name".tr,
                       isPassword: false,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a last Name';
+                          return 'Please enter a last Name'.tr;
                         }
                         return null;
                       },
@@ -141,14 +140,14 @@ class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
                                       firstName: firstNameController.text,
                                       lastName: lastNameController.text);
                                 },
-                                title: "Edit Basic Information"),
+                                title: "Edit Basic Information".tr),
                           );
                         }),
                     buttonsetting(
                         function: () {
                           Go.to(context, ModifyPassword());
                         },
-                        title: "Change Password",
+                        title: "Change Password".tr,
                         image: 'assets/icons/padlock_67326471.png',
                         colortext: Colors.black,
                         color: Theme.of(context).cardColor),

@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         storedLanguage != null ? Locale(storedLanguage) : const Locale('en');
 
     return GetMaterialApp(
-      title: 'Multi-Language App',
+      title: 'CRM Delegate',
       theme: themeLight,
 
       translations: Messages(), // Your translations

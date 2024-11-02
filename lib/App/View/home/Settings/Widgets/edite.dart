@@ -46,7 +46,7 @@ editeProfile(context) {
                           children: [
                             Text(
                               controller.person!.firstName == null
-                                  ? '...جاري جلب البيانات'
+                                  ? 'Fetching data...'.tr
                                   : controller.user!.username!.toString(),
                               style:
                                   const TextStyle(fontWeight: FontWeight.w600),
@@ -54,7 +54,7 @@ editeProfile(context) {
                             " ".style(),
                             Text(
                               controller.user!.username == null
-                                  ? '...جاري جلب البيانات'
+                                  ? 'Fetching data...'.tr
                                   : controller.person!.lastName.toString(),
                               style:
                                   const TextStyle(fontWeight: FontWeight.w600),
@@ -63,7 +63,7 @@ editeProfile(context) {
                         ),
                         Text(
                           controller.user!.username == null
-                              ? '...جاري جلب البيانات'
+                              ? 'Fetching data...'.tr
                               : '@' + controller.user!.username!.toString(),
                           style: TextStyle(
                             fontWeight: FontWeight.w400,

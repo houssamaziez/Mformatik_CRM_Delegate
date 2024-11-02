@@ -5,87 +5,6 @@ import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 
 import '../../Controller/widgetsController/expandable_controller.dart';
 
-// class ExpandableItemSelector extends StatelessWidget {
-//   final List<String> items;
-//   final String title;
-//   final String initialItem;
-
-//   ExpandableItemSelector({
-//     Key? key,
-//     required this.items,
-//     required this.title,
-//     this.initialItem = '',
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final ExpandableController expandableController =
-//         Get.put(ExpandableController());
-
-//     if (initialItem.isNotEmpty) {
-//       expandableController.selectedItem.value = initialItem;
-//     }
-
-//     return Container(
-//       decoration: StyleContainer.style1,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.all(16.0),
-//             child: Text(
-//               title,
-//               style: TextStyle(
-//                   fontSize: 18,
-//                   fontWeight: FontWeight.w600,
-//                   color: Colors.blueGrey[800]),
-//             ),
-//           ),
-//           Obx(() {
-//             return ExpansionTile(
-//               key: Key(expandableController.selectedItem.value),
-//               title: Text(
-//                 expandableController.selectedItem.value.isEmpty
-//                     ? 'Select item'
-//                     : expandableController.selectedItem.value,
-//                 style: TextStyle(fontSize: 16, color: Colors.black87),
-//               ),
-//               trailing: Icon(
-//                 expandableController.isExpanded.value
-//                     ? Icons.arrow_drop_up
-//                     : Icons.arrow_drop_down,
-//                 color: Colors.blueGrey,
-//               ),
-//               initiallyExpanded: expandableController.isExpanded.value,
-//               onExpansionChanged: (expanded) {
-//                 expandableController.toggleExpanded();
-//               },
-//               children: items.map((item) {
-//                 return GestureDetector(
-//                   onTap: () {
-//                     expandableController.selectItem(item);
-//                   },
-//                   child: Container(
-//                     color: Colors.transparent, // اللون الشفاف للتفاعل
-//                     child: Padding(
-//                       padding: const EdgeInsets.symmetric(
-//                           vertical: 12.0, horizontal: 16.0),
-//                       child: Text(
-//                         item,
-//                         style: TextStyle(fontSize: 15, color: Colors.black),
-//                       ),
-//                     ),
-//                   ),
-//                 );
-//               }).toList(),
-//             );
-//           }),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 class SelectReasdon extends StatelessWidget {
   final List<ReasonMission> items;
   final String title;
@@ -125,7 +44,7 @@ class SelectReasdon extends StatelessWidget {
               key: Key(expandableController.selectedItem.value?.label ?? ''),
               title: Text(
                 expandableController.selectedItem.value == null
-                    ? 'Select Reasons'
+                    ? 'Select Reasons'.tr
                     : expandableController.selectedItem.value!.label!,
                 style: TextStyle(fontSize: 16, color: Colors.black87),
               ),
@@ -168,7 +87,7 @@ class SelectReasdon extends StatelessWidget {
                   controller:
                       expandableController.controllerTextEditingController,
                   decoration: InputDecoration(
-                    labelText: 'Please specify',
+                    labelText: 'Please specify'.tr,
                     border: OutlineInputBorder(),
                   ),
                 ),

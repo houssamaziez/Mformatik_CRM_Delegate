@@ -44,8 +44,9 @@ class ScreenSetting extends StatelessWidget {
                     spalshscreenfirst.write('key', false);
                     Go.clearAndTo(context, ScreenAuth());
                   },
-                      details: 'Do you really want to log out of the account?',
-                      title: 'Log out');
+                      details:
+                          'Do you really want to log out of the account?'.tr,
+                      title: "Log Out".tr);
                 },
                 title: "Log Out".tr,
                 image: 'assets/icons/log-out1.png'),

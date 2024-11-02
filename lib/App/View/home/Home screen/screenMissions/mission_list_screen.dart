@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
-import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
-import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Theme/colors.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../Controller/auth/auth_controller.dart';
 import '../../../../Controller/home/annex_controller.dart';
-import '../../../../Controller/home/missions_controller.dart';
 import '../../../../Controller/home/missions_controllerAll.dart';
-import '../../../widgets/Buttons/meneuSelectTow.dart';
-import '../../../widgets/Containers/container_blue.dart';
 import '../../../widgets/bolck_screen.dart';
-import '../clientview/client_list_screen.dart';
 import 'widgets/mission_card.dart';
 
 DateTime? startDateMission;
@@ -94,7 +88,7 @@ class _MissionListScreenState extends State<MissionListScreen> {
                   },
                 ),
               ],
-              title: Text("All Missions"),
+              title: Text("All Missions".tr),
               centerTitle: true,
             ),
             backgroundColor: ColorsApp.white,
@@ -172,12 +166,12 @@ void showDateRangeDialog(context) {
     builder: (BuildContext context) {
       return StatefulBuilder(builder: (context, setState) {
         return AlertDialog(
-          title: const Text('Select Date Range'),
+          title: Text('Select Date Range'.tr),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text('Start Date:'),
+                Text('Start Date:'.tr),
                 TextButton(
                   onPressed: () async {
                     DateTime? pickedStartDate = await showDatePicker(
@@ -201,12 +195,12 @@ void showDateRangeDialog(context) {
                   child: Text(
                     startDateMission != null
                         ? startDateMission!.toLocal().toString().split(' ')[0]
-                        : 'Select Start Date',
+                        : 'Select Start Date'.tr,
                     style: const TextStyle(color: Colors.blue),
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text('End Date:'),
+                Text('End Date:'.tr),
                 TextButton(
                   onPressed: () async {
                     DateTime? pickedEndDate = await showDatePicker(
@@ -228,7 +222,7 @@ void showDateRangeDialog(context) {
                   child: Text(
                     endDateMission != null
                         ? endDateMission!.toLocal().toString().split(' ')[0]
-                        : 'Select End Date',
+                        : 'Select End Date'.tr,
                     style: const TextStyle(color: Colors.blue),
                   ),
                 ),
@@ -237,13 +231,13 @@ void showDateRangeDialog(context) {
           ),
           actions: [
             TextButton(
-              child: const Text('Cancel'),
+              child: Text('Cancel'.tr),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
             ElevatedButton(
-              child: const Text('OK'),
+              child: Text('OK'.tr),
               onPressed: () {
                 Get.put(MissionsControllerAll()).getAllMission(
                     endingDate: endDateTextMission,

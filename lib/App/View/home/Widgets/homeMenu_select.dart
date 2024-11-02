@@ -21,14 +21,14 @@ class HomeMenuSelect {
 
 List<HomeMenuSelect> listiconhomemeneu = [
   HomeMenuSelect(
-      title: "My Mission",
+      title: "My Mission".tr,
       icon: "job-description.png",
       function: (context) {
         // Go.to(context, CourseGridScreen(role: 'تنبيهات الحضور'));
         Go.to(context, const MissionListScreenByMe());
       }),
   HomeMenuSelect(
-    title: "ALL Missions",
+    title: "ALL Missions".tr,
     icon: 'daily-task.png',
     function: (context) {
       Go.to(context, MissionListScreen());
@@ -36,7 +36,7 @@ List<HomeMenuSelect> listiconhomemeneu = [
     },
   ),
   HomeMenuSelect(
-    title: "All Clients",
+    title: "All Clients".tr,
     icon: 'item3.png',
     function: (context) {
       Go.to(
@@ -54,7 +54,7 @@ List<HomeMenuSelect> listiconhomemeneu = [
     },
   ),
   HomeMenuSelect(
-    title: "My FeedBack",
+    title: "My FeedBack".tr,
     icon: 'Messages, Chat.png',
     function: (context) {
       Go.to(context, FeedbackScreen());

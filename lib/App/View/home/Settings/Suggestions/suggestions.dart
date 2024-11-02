@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/View/home/Widgets/homeMenu_select.dart';
 import '../../../widgets/Buttons/buttonall.dart';
 import '../../../widgets/app_bar.dart';
 
@@ -9,7 +11,7 @@ class SuggestionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myappbar(context, title: "Suggestions"),
+      appBar: myappbar(context, title: "Suggestions".tr),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,7 +48,7 @@ class SuggestionsScreen extends StatelessWidget {
                           maxLines: 6,
                           decoration: InputDecoration(
                               hintText:
-                                  "Write your opinion or suggestion here...",
+                                  "Write your opinion or suggestion here...".tr,
                               icon: Padding(
                                 padding: const EdgeInsets.only(bottom: 130),
                                 child: Image.asset(
@@ -64,7 +66,7 @@ class SuggestionsScreen extends StatelessWidget {
             ),
             ButtonAll(
               function: () {},
-              title: "Send Your Suggestion",
+              title: "Send Your Suggestion".tr,
             )
           ],
         ),

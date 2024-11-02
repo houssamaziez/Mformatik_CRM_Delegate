@@ -85,10 +85,10 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                         const SizedBox(
                           height: 200,
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
-                            "No company found, please select another annex.",
+                            "No company found, please select another annex.".tr,
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -185,7 +185,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: "Last Feedbacks".style(
+                                    child: "Last Feedbacks".tr.style(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black54,
                                         fontSize: 14),
@@ -207,7 +207,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                         ),
                                         Expanded(
                                             flex: 2,
-                                            child: "Label".style(
+                                            child: "Label".tr.style(
                                                 color: Theme.of(context)
                                                     .primaryColor,
                                                 fontWeight: FontWeight.bold,
@@ -215,6 +215,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                         Flexible(
                                             flex: 2,
                                             child: "Creator"
+                                                .tr
                                                 .style(
                                                     color: Theme.of(context)
                                                         .primaryColor,
@@ -224,6 +225,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                         Flexible(
                                             flex: 2,
                                             child: "Clients"
+                                                .tr
                                                 .style(
                                                     color: Theme.of(context)
                                                         .primaryColor,
@@ -247,7 +249,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                             ? missionsController
                                                         .feedbacks!.length ==
                                                     0
-                                                ? const Padding(
+                                                ? Padding(
                                                     padding:
                                                         EdgeInsets.all(8.0),
                                                     child: Center(
@@ -255,7 +257,8 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                         padding:
                                                             EdgeInsets.all(8.0),
                                                         child: Text(
-                                                          "No Missions found",
+                                                          "No Missions found"
+                                                              .tr,
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.grey),
@@ -375,14 +378,14 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                             color:
                                                 Theme.of(context).primaryColor,
                                           ),
-                                          child: const Padding(
+                                          child: Padding(
                                             padding: EdgeInsets.only(
                                                 left: 20.0,
                                                 right: 20,
                                                 top: 5,
                                                 bottom: 5),
                                             child: Text(
-                                              "View All Feedback",
+                                              "View All Feedback".tr,
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 13),

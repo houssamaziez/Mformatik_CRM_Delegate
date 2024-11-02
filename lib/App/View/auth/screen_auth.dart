@@ -28,16 +28,7 @@ class ScreenAuth extends StatelessWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 2.6,
                 ),
-                // Hero(
-                //   tag: 'logo',
-                //   child: Center(
-                //     child: Image.asset(
-                //       fit: BoxFit.cover,
-                //       "assets/icons/logo.png",
-                //       height: 180,
-                //     ),
-                //   ),
-                // ),
+
                 Hero(
                   tag: "logo",
                   child: Padding(

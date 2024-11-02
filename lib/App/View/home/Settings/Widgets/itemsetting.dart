@@ -7,6 +7,7 @@ import '../AboutTheApplication/aboutTheApplication.dart';
 import '../Addedaccounts/addedaccounts.dart';
 import '../Notification/notificationscreen.dart';
 import '../Suggestions/suggestions.dart';
+import '../language_screen.dart';
 
 Padding carditemsetting(context) {
   List<Map<String, String>> listtitemsetting = [
@@ -68,7 +69,7 @@ Padding carditemsetting(context) {
               titile: listtitemsetting[4]["title"].toString(),
               image: listtitemsetting[4]["Image"].toString(),
               function: () {
-                Go.to(context, const LanguageChangeScreen());
+                Go.to(context, const LanguageScreen());
               }),
         ],
       ),

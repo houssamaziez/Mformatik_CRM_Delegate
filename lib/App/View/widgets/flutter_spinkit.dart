@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 
 const spinkit = SpinKitSpinningLines(
   color: Color(0xff1073BA),
@@ -10,12 +11,12 @@ const spinkitwhite = SpinKitSpinningLines(
   size: 50.0,
 );
 
-var spinkwithtitle = const SizedBox(
+var spinkwithtitle = SizedBox(
   width: 300,
   height: 300,
   child: Column(
     children: [
-      Text("جاري تحميل البيانات ..."),
+      Text("Loading data...".tr),
       SizedBox(
         height: 10,
       ),

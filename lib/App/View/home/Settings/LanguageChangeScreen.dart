@@ -26,15 +26,15 @@ class LanguageChangeScreen extends StatelessWidget {
               _changeLanguage('en');
             },
           ),
-          ListTile(
-            title: const Text('عربي'),
-            trailing: currentLocale == 'ar'
-                ? const Icon(Icons.check, color: Colors.green)
-                : null,
-            onTap: () {
-              _changeLanguage('ar');
-            },
-          ),
+          // ListTile(
+          //   title: const Text('عربي'),
+          //   trailing: currentLocale == 'ar'
+          //       ? const Icon(Icons.check, color: Colors.green)
+          //       : null,
+          //   onTap: () {
+          //     _changeLanguage('ar');
+          //   },
+          // ),
           // يمكنك إضافة لغات أخرى هنا
         ],
       ),

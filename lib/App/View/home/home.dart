@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/home_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/clientview/client_list_screen.dart';
 
 import '../../Controller/auth/auth_controller.dart';
 import '../../Controller/home/annex_controller.dart';
@@ -13,7 +12,6 @@ import 'Widgets/appbar_home.dart';
 import 'Home screen/homeview_feedback.dart';
 import 'Home screen/homeview_mission.dart';
 import 'Home screen/profileUser/profile_user_screen.dart';
-import 'Home screen/screenMissions/mission_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,7 +22,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    // Get.put(MissionsController()).getAllMission(context );
     super.initState();
   }
 

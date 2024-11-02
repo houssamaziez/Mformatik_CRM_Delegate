@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import '../../../Controller/home/company_controller.dart';
 import '../../../Util/Route/Go.dart';
 import '../../../Util/Style/stylecontainer.dart';
-import '../Home screen/clientview/client_list_screen.dart';
 import '../Home screen/clientview/client_list_screen_add_mission.dart';
 
 class AddMissionbutton extends StatelessWidget {
@@ -42,8 +41,8 @@ class AddMissionbutton extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                      const Text(
-                        "Add \n Mission",
+                      Text(
+                        "Add \n Mission".tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,

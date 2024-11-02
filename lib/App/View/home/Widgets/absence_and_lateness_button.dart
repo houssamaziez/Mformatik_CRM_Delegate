@@ -47,8 +47,8 @@ Expanded statuseAndLatenessButton(
                           children: [
                             Row(
                               children: [
-                                const Text(
-                                  "Statistics Missions",
+                                Text(
+                                  "Statistics Missions".tr,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black54,
@@ -95,7 +95,8 @@ Expanded statuseAndLatenessButton(
                                             width: 5,
                                           ),
                                           Text(
-                                            "Canceled ${missionsController.canceled}",
+                                            "Canceled".tr +
+                                                " ${missionsController.canceled}",
                                             style: TextStyle(fontSize: 10),
                                           ),
                                         ],
@@ -111,7 +112,8 @@ Expanded statuseAndLatenessButton(
                                             width: 5,
                                           ),
                                           Text(
-                                            "In Progress ${missionsController.inProgress}",
+                                            "In Progress".tr +
+                                                " ${missionsController.inProgress}",
                                             style: TextStyle(fontSize: 10),
                                           ),
                                         ],
@@ -127,7 +129,8 @@ Expanded statuseAndLatenessButton(
                                             width: 4,
                                           ),
                                           Text(
-                                            "Completed ${missionsController.completed} ",
+                                            "Completed".tr +
+                                                " ${missionsController.completed} ",
                                             style: TextStyle(fontSize: 10),
                                           ),
                                         ],
@@ -139,8 +142,8 @@ Expanded statuseAndLatenessButton(
                             const SizedBox(
                               height: 8,
                             ),
-                            const Text(
-                              "Percentage ",
+                            Text(
+                              "Percentage".tr,
                               style: TextStyle(
                                   fontWeight: FontWeight.w300, fontSize: 12),
                             ),
@@ -270,8 +273,8 @@ Expanded statuseFeddbackAndLatenessButton(
                           children: [
                             Row(
                               children: [
-                                const Text(
-                                  "Statistics Feddback",
+                                Text(
+                                  "Statistics Feddback".tr,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black54,
@@ -279,7 +282,7 @@ Expanded statuseFeddbackAndLatenessButton(
                                 ),
                                 Spacer(),
                                 Text(
-                                  "All " +
+                                  "All".tr +
                                       "(" +
                                       missionsController.feedbackslength
                                           .toString() +
@@ -319,7 +322,8 @@ Expanded statuseFeddbackAndLatenessButton(
                                             width: 5,
                                           ),
                                           Text(
-                                            "With Out Mission ${missionsController.feedbacksWithOutMission}",
+                                            "With Out Mission".tr +
+                                                " ${missionsController.feedbacksWithOutMission}",
                                             style: TextStyle(fontSize: 10),
                                           ),
                                         ],
@@ -335,7 +339,8 @@ Expanded statuseFeddbackAndLatenessButton(
                                             width: 4,
                                           ),
                                           Text(
-                                            "With Mission   ${missionsController.feedbacksWithMission}",
+                                            "With Mission".tr +
+                                                " ${missionsController.feedbacksWithMission}",
                                             style: TextStyle(fontSize: 10),
                                           ),
                                         ],
@@ -347,8 +352,8 @@ Expanded statuseFeddbackAndLatenessButton(
                             const SizedBox(
                               height: 8,
                             ),
-                            const Text(
-                              "Percentage ",
+                            Text(
+                              "Percentage".tr,
                               style: TextStyle(
                                   fontWeight: FontWeight.w300, fontSize: 12),
                             ),

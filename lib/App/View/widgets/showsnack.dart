@@ -32,7 +32,7 @@ void showMessageDialog(BuildContext context,
           onPressed: () {
             Get.back();
           },
-          child: const Text('OK'),
+          child: Text('OK'.tr),
         ),
       ],
     ),

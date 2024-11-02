@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 
 Future<bool> showExitConfirmationDialog(
@@ -44,7 +45,7 @@ Future<bool> showExitConfirmationDialog(
                 Navigator.of(context).pop(false); // Stay in the app
               },
               child: Text(
-                'Cancel',
+                'Cancel'.tr,
                 style: TextStyle(color: Theme.of(context).primaryColor),
               ),
             ),
@@ -52,17 +53,10 @@ Future<bool> showExitConfirmationDialog(
               width: 50,
               child: ButtonAll(
                   function: () {
-                    onPressed!;
+                    onPressed!();
                   },
-                  title: 'OK'),
+                  title: 'OK'.tr),
             )
-            // TextButton(
-            //   onPressed: onPressed,
-            //   child: Text(
-            //     'OK',
-            //     style: TextStyle(color: Theme.of(context).primaryColor),
-            //   ),
-            // ),
           ],
         ),
       ) ??

@@ -14,10 +14,10 @@ buttonnavigationbar(context) {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildNavItem(
-                  context, 0, Icons.assignment, 'Missions', controller),
+                  context, 0, Icons.assignment, 'Missions'.tr, controller),
               _buildNavItem(context, 1, Icons.featured_play_list_outlined,
-                  'Feedbacks', controller),
-              _buildNavItem(context, 2, Icons.person, 'Profile', controller),
+                  'Feedbacks'.tr, controller),
+              _buildNavItem(context, 2, Icons.person, 'Profile'.tr, controller),
             ],
           ),
         );

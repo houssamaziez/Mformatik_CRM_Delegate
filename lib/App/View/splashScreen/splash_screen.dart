@@ -23,19 +23,6 @@ GetStorage spalshscreenfirst = GetStorage();
 class _SpalshScreenState extends State<SpalshScreen> {
   LocationDataModel? locationData;
   void fetchLocation() async {
-    // locationData = await LocationService.getCurrentLocation(context);
-    // print(locationData!.isPermissionGranted);
-
-    // if (locationData!.isPermissionGranted) {
-    //   print(
-    //       'Latitude: ${locationData!.latitude}, Longitude: ${locationData!.longitude}');
-
-    //   Get.put(AuthController()).getme(Get.context);
-    //   spalshscreenfirst.write('key', true);
-    // } else {
-    //   print('Error: ${locationData!.message}');
-    // }
-
     Get.put(AuthController()).getme(Get.context);
     spalshscreenfirst.write('key', true);
   }
@@ -49,13 +36,13 @@ class _SpalshScreenState extends State<SpalshScreen> {
     }
     // fetchLocation();
 
-    Timer(Duration(seconds: 10), () {
+    Timer(const Duration(seconds: 10), () {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                SpalshScreen(),
+                const SpalshScreen(),
             transitionDuration: Duration.zero, // No animation transition
             reverseTransitionDuration: Duration.zero, // No reverse animation
           ),
@@ -90,20 +77,20 @@ class _SpalshScreenState extends State<SpalshScreen> {
                   ),
                 ),
                 Text(
-                  "Delegate",
+                  "Delegate".tr,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w600,
                       fontSize: MediaQuery.of(context).size.height / 25),
                 ),
-                'Every thing \nunder controlle'.style(
+                'Every thing \nunder controlle'.tr.style(
                     fontWeight: FontWeight?.w300,
                     fontSize: MediaQuery.of(context).size.height / 38,
                     color: Theme.of(context).primaryColor),
-                Spacer(),
+                const Spacer(),
                 Row(
                   children: [
-                    Spacer(),
+                    const Spacer(),
                     spalshscreenfirst.read('key') == true
                         ? spinkitwhite
                         : Padding(
@@ -128,7 +115,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      'Get Started',
+                                      'Get Started'.tr,
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: MediaQuery.of(context)

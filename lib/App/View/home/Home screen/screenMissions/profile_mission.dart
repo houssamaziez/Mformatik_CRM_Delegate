@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
+import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/clientview/profile_client_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../Model/mission.dart';
@@ -67,11 +67,11 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                               2, widget.missionId);
                           Get.back();
                         },
-                            details: 'Are you sure to Start the Mission?',
-                            title: 'Cnfirmation');
+                            details: 'Are you sure to Start the Mission?'.tr,
+                            title: 'Cnfirmation'.tr);
                       },
-                      label: const Text(
-                        "Start Mission",
+                      label: Text(
+                        "Start Mission".tr,
                         style: TextStyle(color: Colors.white),
                       )),
                 const SizedBox(
@@ -92,8 +92,8 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                               missionID: mission.id,
                             ));
                       },
-                      label: const Text(
-                        "Add Feedback",
+                      label: Text(
+                        "Add Feedback".tr,
                         style: TextStyle(color: Colors.white),
                       )),
               ],
@@ -130,7 +130,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                       theme.primaryColor),
                   _buildMissionInfoSection(
                       'Created At'.tr,
-                      mission.createdAt.toString(),
+                      formatDate(mission.createdAt.toString()),
                       Icons.date_range,
                       theme.primaryColor),
                 ],
@@ -231,8 +231,8 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                           1, widget.missionId);
                       Get.back();
                     },
-                        details: 'Are you sure to Stop the Mission?',
-                        title: 'Cnfirmation');
+                        details: 'Are you sure to Stop the Mission?'.tr,
+                        title: 'Cnfirmation'.tr);
                   },
                   icon: Icon(
                     Icons.stop_circle_outlined,
@@ -249,8 +249,8 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                             Get.back();
                           });
                         },
-                            details: 'Are you sure to Start the Mission?',
-                            title: 'Cnfirmation');
+                            details: 'Are you sure to Start the Mission?'.tr,
+                            title: 'Cnfirmation'.tr);
                       },
                       icon: Icon(
                         Icons.play_circle_outline_outlined,

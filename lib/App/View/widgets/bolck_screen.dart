@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/myapp.dart';
 
 class screenBlock extends StatelessWidget {
   const screenBlock({
@@ -20,7 +22,7 @@ class screenBlock extends StatelessWidget {
             height: 10,
           ),
           Text(
-            "Your account is blocked, please contact our support team.",
+            "Your account is blocked, please contact our support team.".tr,
             textAlign: TextAlign.center,
           ),
         ],

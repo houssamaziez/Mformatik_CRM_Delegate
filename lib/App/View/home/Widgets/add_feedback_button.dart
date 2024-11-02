@@ -41,8 +41,8 @@ class AddMissionbuttonFeddback extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                      const Text(
-                        "Add \n Feddback",
+                      Text(
+                        "Add \n Feddback".tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,

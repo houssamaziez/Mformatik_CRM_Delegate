@@ -31,7 +31,7 @@ class FilterCompany extends StatelessWidget {
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: "Select Annex ".style(
+              child: "Select Annex".tr.style(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: Theme.of(context).primaryColor),
@@ -50,7 +50,7 @@ class FilterCompany extends StatelessWidget {
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "No Annex found",
+                            "No Annex found".tr,
                             style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
                         )
@@ -101,7 +101,7 @@ class FilterCompany extends StatelessWidget {
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: "Select Company".style(
+              child: "Select Company".tr.style(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: Theme.of(context).primaryColor),
@@ -123,7 +123,7 @@ class FilterCompany extends StatelessWidget {
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "No Company found",
+                            "No Company found".tr,
                             style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
                         )

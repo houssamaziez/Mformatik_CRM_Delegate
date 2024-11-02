@@ -27,7 +27,7 @@ class AuthController extends GetxController {
       {required String username, required String password}) async {
     Uri url = Uri.parse(Endpoint.apiLogin);
     if (namecontroller.text == '' || passwordcontroller.text == '') {
-      showMessage(context, title: "Please fill in the blank fields.");
+      showMessage(context, title: "Please fill in the blank fields.".tr);
       return;
     }
     isLoading = true; // Set loading state
@@ -48,7 +48,7 @@ class AuthController extends GetxController {
 
           Go.clearAndTo(context, HomeScreen());
         } else {
-          showMessage(context, title: "You are not allowed to enter.");
+          showMessage(context, title: "You are not allowed to enter.".tr);
         }
 
         print('person in as: ${person?.firstName}');
@@ -58,7 +58,8 @@ class AuthController extends GetxController {
       if (response.statusCode == 401) {
         showMessage(context,
             title:
-                "Access Denied! You don't have permission to view this content.");
+                "Access Denied! You don't have permission to view this content."
+                    .tr);
       }
       if (response.statusCode == 400) {
         showMessage(context, title: decodeResponseBody(response)[0]["message"]);
@@ -96,7 +97,7 @@ class AuthController extends GetxController {
           Go.clearAndTo(context, HomeScreen());
         } else {
           Go.clearAndTo(context, ScreenAuth());
-          showMessage(context, title: "You are not allowed to enter.");
+          showMessage(context, title: "You are not allowed to enter.".tr);
         }
       } else {
         if (response.statusCode == 401) {

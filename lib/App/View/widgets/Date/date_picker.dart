@@ -17,8 +17,8 @@ class DatePickerWidget extends StatelessWidget {
     return Obx(() => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Select Date',
+            Text(
+              'Select Date'.tr,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
