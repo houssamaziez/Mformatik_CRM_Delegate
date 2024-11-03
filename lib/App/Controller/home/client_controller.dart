@@ -129,7 +129,7 @@ class ClientController extends GetxController {
 
       // Conditionally add 'fullName' to the queryParams map
       if (fullName.isNotEmpty) {
-        queryParams['fullName'] = fullName;
+        queryParams['search'] = fullName;
       }
       final response = await http.get(
         Uri.parse(Endpoint.apiCients).replace(

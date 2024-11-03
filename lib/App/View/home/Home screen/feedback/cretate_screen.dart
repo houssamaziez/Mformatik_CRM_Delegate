@@ -5,9 +5,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img; // For image compression
 import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/widgetsController/expandable_controller.dart';
+import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import '../../../../Controller/widgetsController/date_controller.dart';
+import '../../../../Service/AppValidator/AppValidator.dart';
 import '../../../../Service/Location/get_location.dart';
 import '../../../../Util/Date/formatDate.dart';
 import '../../../widgets/Date/date_picker.dart';
@@ -33,7 +35,6 @@ class CreateFeedBackScreen extends StatefulWidget {
 class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
   final FeedbackController feedbackController = Get.put(FeedbackController());
   TextEditingController? controller = TextEditingController();
-  String desc = '';
   int reasonId = 0;
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
@@ -129,6 +130,32 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
               const SizedBox(height: 16),
               ReasonsSelectorFeedback(),
               const SizedBox(height: 16),
+              GetBuilder<ExpandableControllerFeedback>(
+                  init: ExpandableControllerFeedback(),
+                  builder: (controllerExp) {
+                    return Row(
+                      children: [
+                        'Description'.tr.style(fontSize: 16),
+                        Text(
+                          (controllerExp.selectedItem.value != null
+                              ? controllerExp
+                                          .selectedItem.value!.isDescRequired !=
+                                      null
+                                  ? controllerExp.selectedItem.value!
+                                              .isDescRequired ==
+                                          true
+                                      ? ' *'
+                                      : ''
+                                  : ''
+                              : ''),
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    );
+                  }),
+              SizedBox(
+                height: 8,
+              ),
               TextFormField(
                 controller: controller,
                 decoration: InputDecoration(
@@ -138,15 +165,14 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 5,
-                onSaved: (value) {
-                  desc = value!;
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description'.tr;
-                  }
-                  return null;
-                },
+                onSaved: (value) {},
+                validator: (value) => AppValidator.validate(value, [
+                  (val) => AppValidator.validateRequired(val,
+                      fieldName: 'Description'),
+                  // You can add more validators here if needed, e.g., for length
+                  (val) => AppValidator.validateLength(val,
+                      minLength: 5, fieldName: 'Description'),
+                ]),
               ),
               const SizedBox(height: 16),
               GetBuilder<ExpandableControllerFeedback>(
@@ -242,10 +268,16 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                     onPressed: controllercreateFeedback.isLoadingadd
                         ? null
                         : () async {
+                            if (controllerisreq.selectedItem.value == null) {
+                              showMessage(context, title: 'Select Reasons'.tr);
+                              return;
+                            }
                             if (widget.missionID != null) {
                               showExitConfirmationDialog(context,
                                   onPressed: () async {
                                 Get.back();
+                                controllercreateFeedback.upadteisloading(true);
+
                                 var location =
                                     await LocationService.getCurrentLocation(
                                         context);
@@ -267,6 +299,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                     return;
                                   }
                                 }
+                                controllercreateFeedback.upadteisloading(false);
                               },
                                   details:
                                       'Are you sure to complete the Mission?'
@@ -322,7 +355,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
       label: Get.put(ExpandableControllerFeedback())
           .controllerTextEditingController!
           .text,
-      desc: desc,
+      desc: controller!.text,
       lat: location.latitude.toString(),
       lng: location.longitude.toString(),
       requestDate:

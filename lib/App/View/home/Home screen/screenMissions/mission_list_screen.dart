@@ -219,11 +219,14 @@ void showDateRangeDialog(context) {
                       });
                     }
                   },
-                  child: Text(
-                    endDateMissions != null
-                        ? endDateMissions!.toLocal().toString().split(' ')[0]
-                        : 'Select End Date'.tr,
-                    style: const TextStyle(color: Colors.blue),
+                  child: Center(
+                    child: Text(
+                      endDateMissions != null
+                          ? endDateMissions!.toLocal().toString().split(' ')[0]
+                          : 'Select End Date'.tr,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.blue),
+                    ),
                   ),
                 ),
               ],

@@ -163,6 +163,11 @@ class FeedbackController extends GetxController {
     }
   }
 
+  upadteisloading(bool valu) {
+    isLoadingadd = valu;
+    update();
+  }
+
   Future<void> addFeedback({
     required String label,
     required String desc,
@@ -323,6 +328,8 @@ class FeedbackController extends GetxController {
             Get.put(CompanyController()).selectCompany!.id.toString(),
             creatorId.toString());
         Go.back(Get.context);
+        Go.back(Get.context);
+
         showMessage(
           Get.context,
           title: 'Feedback updated successfully'.tr,
@@ -417,7 +424,6 @@ class FeedbackController extends GetxController {
         // fetchFeedbacks(
         //     Get.put(CompanyController()).selectCompany!.id.toString(),
         //     creatorId.toString());
-        Go.back(Get.context);
         // showMessage(Get.context,
         //     title: 'Feedback updated successfully', color: Colors.green);
         print('Feedback updated successfully');

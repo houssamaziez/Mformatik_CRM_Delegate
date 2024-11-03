@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import '../../../../Controller/home/feedback_controller.dart';
 import '../../../../Controller/home/reasons_feedback_controller.dart';
@@ -12,6 +13,7 @@ import '../../../../Controller/widgetsController/date_controller.dart';
 import '../../../../Controller/widgetsController/expandable_controller.dart';
 import '../../../../Model/feedback.dart';
 import '../../../../Model/reason_feedback.dart';
+import '../../../../Service/AppValidator/AppValidator.dart';
 import '../../../../Service/Location/get_location.dart';
 import '../../../../Util/Date/formatDate.dart';
 import '../../../../Util/Style/stylecontainer.dart';
@@ -130,8 +132,10 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
               // // if (widget.feedback.feedbackModelId == 1)
               // ReasonsSelectorFeedbackupd(
               //     id: widget.feedback.feedbackModelId.toString()),
-              ReasonsSelectorFeedbackupd(
-                  id: widget.feedback.feedbackModelId.toString()),
+              Builder(builder: (context) {
+                return ReasonsSelectorFeedbackupd(
+                    id: widget.feedback.feedbackModelId.toString());
+              }),
 
               const SizedBox(
                 height: 20,
@@ -139,6 +143,32 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
               // _buildTextField(
               //     descController, 'Description', 'Enter a description',
               //     maxLines: 3),
+              GetBuilder<ExpandableControllerFeedback>(
+                  init: ExpandableControllerFeedback(),
+                  builder: (controllerExp) {
+                    return Row(
+                      children: [
+                        'Description'.tr.style(fontSize: 16),
+                        Text(
+                          (controllerExp.selectedItem.value != null
+                              ? controllerExp
+                                          .selectedItem.value!.isDescRequired !=
+                                      null
+                                  ? controllerExp.selectedItem.value!
+                                              .isDescRequired ==
+                                          true
+                                      ? ' *'
+                                      : ''
+                                  : ''
+                              : ''),
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    );
+                  }),
+              SizedBox(
+                height: 8,
+              ),
               TextFormField(
                 controller: descController,
                 decoration: InputDecoration(
@@ -146,16 +176,15 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 5,
-                onSaved: (value) {
-                  // desc = value!;
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description'.tr;
-                  }
-                  return null;
-                },
+                validator: (value) => AppValidator.validate(value, [
+                  (val) => AppValidator.validateRequired(val,
+                      fieldName: 'Description'),
+                  // You can add more validators here if needed, e.g., for length
+                  (val) => AppValidator.validateLength(val,
+                      minLength: 5, fieldName: 'Description'),
+                ]),
               ),
+
               SizedBox(
                 height: 10,
               ),
@@ -510,20 +539,20 @@ class SelectReason extends StatelessWidget {
                             style: const TextStyle(
                                 fontSize: 15, color: Colors.black),
                           ),
-                          Text(
-                            (item.isDescRequired == true
-                                ? "Description Required *".tr
-                                : ""),
-                            style: const TextStyle(
-                                fontSize: 10, color: Colors.red),
-                          ),
-                          Text(
-                            (item.isRequestDateRequired == true
-                                ? "Request Date Required *"
-                                : ""),
-                            style: const TextStyle(
-                                fontSize: 10, color: Colors.red),
-                          )
+                          // Text(
+                          //   (item.isDescRequired == true
+                          //       ? "Description Required *".tr
+                          //       : ""),
+                          //   style: const TextStyle(
+                          //       fontSize: 10, color: Colors.red),
+                          // ),
+                          // Text(
+                          //   (item.isRequestDateRequired == true
+                          //       ? "Request Date Required *"
+                          //       : ""),
+                          //   style: const TextStyle(
+                          //       fontSize: 10, color: Colors.red),
+                          // )
                         ],
                       ),
                     ),
@@ -535,7 +564,7 @@ class SelectReason extends StatelessWidget {
 
           // Show a TextField if "autre" is selected
           Obx(() {
-            if (expandableController.selectedItem.value?.label == 'autre' ||
+            if (expandableController.selectedItem.value?.id.toString() == id &&
                 id == "1") {
               return Padding(
                 padding: const EdgeInsets.all(16.0),

@@ -102,20 +102,20 @@ class SelectReason extends StatelessWidget {
                             style: const TextStyle(
                                 fontSize: 15, color: Colors.black),
                           ),
-                          Text(
-                            (item.isDescRequired == true
-                                ? "Description Required *".tr
-                                : ""),
-                            style: const TextStyle(
-                                fontSize: 10, color: Colors.red),
-                          ),
-                          Text(
-                            (item.isRequestDateRequired == true
-                                ? "Request Date Required *"
-                                : ""),
-                            style: const TextStyle(
-                                fontSize: 10, color: Colors.red),
-                          )
+                          // Text(
+                          //   (item.isDescRequired == true
+                          //       ? "Description Required *".tr
+                          //       : ""),
+                          //   style: const TextStyle(
+                          //       fontSize: 10, color: Colors.red),
+                          // ),
+                          // Text(
+                          //   (item.isRequestDateRequired == true
+                          //       ? "Request Date Required *"
+                          //       : ""),
+                          //   style: const TextStyle(
+                          //       fontSize: 10, color: Colors.red),
+                          // )
                         ],
                       ),
                     ),

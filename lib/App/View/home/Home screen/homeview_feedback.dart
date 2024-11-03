@@ -59,7 +59,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
             Go.to(context, const MissionListScreenByMe());
           }),
       HomeMenuSelect(
-        title: "ALL Missions".tr,
+        title: "All Missions".tr,
         icon: 'daily-task.png',
         function: (context) {
           Go.to(context, MissionListScreen());
@@ -253,22 +253,12 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                           width: 1,
                                         ),
                                         Expanded(
-                                            flex: 2,
+                                            flex: 4,
                                             child: "Label".tr.style(
                                                 color: Theme.of(context)
                                                     .primaryColor,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 14)),
-                                        Flexible(
-                                            flex: 2,
-                                            child: "Creator"
-                                                .tr
-                                                .style(
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14)
-                                                .center()),
                                         Flexible(
                                             flex: 2,
                                             child: "Clients"
@@ -313,13 +303,17 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                       ),
                                                     ),
                                                   )
-                                                : ListView.builder(
-                                                    padding: EdgeInsets.zero,
-                                                    shrinkWrap: true,
-                                                    physics:
-                                                        const NeverScrollableScrollPhysics(),
-                                                    itemCount:
-                                                        missionsController
+                                                : Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: ListView.builder(
+                                                        padding:
+                                                            EdgeInsets.zero,
+                                                        shrinkWrap: true,
+                                                        physics:
+                                                            const NeverScrollableScrollPhysics(),
+                                                        itemCount: missionsController
                                                                     .feedbacks!
                                                                     .length >
                                                                 7
@@ -327,87 +321,78 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                             : missionsController
                                                                 .feedbacks!
                                                                 .length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      final feedback =
-                                                          missionsController
-                                                                  .feedbacks![
-                                                              index];
-                                                      return InkWell(
-                                                        onTap: () {
-                                                          Go.to(
-                                                              context,
-                                                              FeedbackDetailScreen(
-                                                                feedbackId: feedback
-                                                                    .id
-                                                                    .toString(),
-                                                              ));
-                                                        },
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Flexible(
-                                                                child: Icon(
-                                                                  Icons
-                                                                      .ads_click_sharp,
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .primaryColor,
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 1,
-                                                              ),
-                                                              Expanded(
-                                                                  flex: 2,
-                                                                  child: feedback
-                                                                      .label!
-                                                                      .style(
-                                                                          textAlign:
-                                                                              TextAlign.start)),
-                                                              Flexible(
-                                                                  flex: 2,
-                                                                  child: feedback
-                                                                      .creatorUsername!
-                                                                      .style(
-                                                                          textAlign:
-                                                                              TextAlign.center)
-                                                                      .center()),
-                                                              Flexible(
-                                                                  flex: 2,
-                                                                  child: feedback
-                                                                      .client!
-                                                                      .fullName!
-                                                                      .toString()
-                                                                      .style(
-                                                                          textAlign:
-                                                                              TextAlign.center)
-                                                                      .center()),
-                                                              Flexible(
-                                                                flex: 1,
-                                                                child: Icon(
-                                                                  Icons
-                                                                      .arrow_circle_right_outlined,
-                                                                  color: Color
-                                                                      .fromARGB(
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          final feedback =
+                                                              missionsController
+                                                                      .feedbacks![
+                                                                  index];
+                                                          return InkWell(
+                                                            onTap: () {
+                                                              Go.to(
+                                                                  context,
+                                                                  FeedbackDetailScreen(
+                                                                    feedbackId:
+                                                                        feedback
+                                                                            .id
+                                                                            .toString(),
+                                                                  ));
+                                                            },
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Flexible(
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .ads_click_sharp,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .primaryColor,
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 1,
+                                                                  ),
+                                                                  Expanded(
+                                                                      flex: 5,
+                                                                      child: feedback
+                                                                          .label!
+                                                                          .style(
+                                                                              textAlign: TextAlign.start)),
+                                                                  Flexible(
+                                                                      flex: 2,
+                                                                      child: feedback
+                                                                          .client!
+                                                                          .fullName!
+                                                                          .toString()
+                                                                          .style(
+                                                                              textAlign: TextAlign.center)
+                                                                          .center()),
+                                                                  Flexible(
+                                                                    flex: 1,
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .arrow_circle_right_outlined,
+                                                                      color: Color.fromARGB(
                                                                           255,
                                                                           86,
                                                                           209,
                                                                           90),
-                                                                ),
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      );
-                                                    })
-                                            : spinkit.paddingAll().center();
+                                                            ),
+                                                          );
+                                                        }),
+                                                  )
+                                            : spinkit.center();
                                       }),
                                   const SizedBox(
                                     height: 10,

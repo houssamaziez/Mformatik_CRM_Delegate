@@ -198,11 +198,14 @@ void showDateRangeDialog(context) {
                       });
                     }
                   },
-                  child: Text(
-                    startDateMission != null
-                        ? startDateMission!.toLocal().toString().split(' ')[0]
-                        : 'Select Start Date'.tr,
-                    style: const TextStyle(color: Colors.blue),
+                  child: Center(
+                    child: Text(
+                      startDateMission != null
+                          ? startDateMission!.toLocal().toString().split(' ')[0]
+                          : 'Select Start Date'.tr,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.blue),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),

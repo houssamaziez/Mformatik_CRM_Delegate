@@ -106,7 +106,7 @@ class MissionsControllerAll extends GetxController {
         update();
         // onIndexChanged(indexminu);
       }
-      print(missions!.first.client.fullName);
+      print(missions!.first.client!.fullName);
     } catch (e) {
       isLoadingMore = false;
       update();

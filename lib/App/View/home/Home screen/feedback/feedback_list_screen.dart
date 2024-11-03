@@ -59,11 +59,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         });
                       }
                     },
-                    child: Text(
-                      _startDate != null
-                          ? _startDate!.toLocal().toString().split(' ')[0]
-                          : 'Select Start Date'.tr,
-                      style: const TextStyle(color: Colors.blue),
+                    child: Center(
+                      child: Text(
+                        _startDate != null
+                            ? _startDate!.toLocal().toString().split(' ')[0]
+                            : 'Select Start Date'.tr,
+                        style: const TextStyle(color: Colors.blue),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -89,6 +92,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                       _endDate != null
                           ? _endDate!.toLocal().toString().split(' ')[0]
                           : 'Select End Date'.tr,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.blue),
                     ),
                   ),

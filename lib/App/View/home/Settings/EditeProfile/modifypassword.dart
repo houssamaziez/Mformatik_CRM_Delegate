@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/profile_user_controller.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
-
 import '../../../widgets/Buttons/buttonall.dart';
 import '../../../widgets/TextField.dart';
 import '../../../widgets/app_bar.dart';
+import '../../../../Service/AppValidator/AppValidator.dart'; // Adjust the import path accordingly
 
 // ignore: must_be_immutable
 class ModifyPassword extends StatefulWidget {
@@ -16,15 +16,16 @@ class ModifyPassword extends StatefulWidget {
 }
 
 class _ModifyPasswordState extends State<ModifyPassword> {
-  TextEditingController passwordController = TextEditingController();
-
-  TextEditingController newpaswwordController = TextEditingController();
-
-  TextEditingController confirmypasswordController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  bool confirmySee = false;
-  bool newSee = false;
+  bool isCurrentPasswordVisible = false;
+  bool isNewPasswordVisible = false;
+  bool isConfirmPasswordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,79 +33,84 @@ class _ModifyPasswordState extends State<ModifyPassword> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                MyTextfield(
-                    controller: passwordController,
-                    label: "Current Password".tr,
-                    hint: "Enter Current Password".tr,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a Current Password'.tr;
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              MyTextfield(
+                controller: passwordController,
+                label: "Current Password".tr,
+                hint: "Enter Current Password".tr,
+                validator: (value) => AppValidator.validate(value, [
+                  (val) => AppValidator.validateRequired(val,
+                      fieldName: "Current Password"),
+                  (val) => AppValidator.validatePassword(val,
+                      minLength: 4), // Set minLength to 4 for Current Password
+                ]),
+                isPassword: true,
+                isPasswordVisible: isCurrentPasswordVisible,
+                passwordVisibleupdate: () {
+                  setState(() {
+                    isCurrentPasswordVisible = !isCurrentPasswordVisible;
+                  });
+                },
+              ),
+              MyTextfield(
+                controller: newPasswordController,
+                label: "New Password".tr,
+                hint: "Enter New Password".tr,
+                validator: (value) => AppValidator.validate(value, [
+                  (val) => AppValidator.validateRequired(val,
+                      fieldName: "New Password"),
+                  (val) => AppValidator.validatePassword(val, minLength: 4),
+                ]),
+                isPassword: true,
+                isPasswordVisible: isNewPasswordVisible,
+                passwordVisibleupdate: () {
+                  setState(() {
+                    isNewPasswordVisible = !isNewPasswordVisible;
+                  });
+                },
+              ),
+              MyTextfield(
+                controller: confirmPasswordController,
+                label: "Confirm Password".tr,
+                hint: "Re-enter New Password".tr,
+                validator: (value) => AppValidator.validate(value, [
+                  (val) => AppValidator.validateRequired(val,
+                      fieldName: "Confirm Password"),
+                  (val) => AppValidator.validatePassword(val, minLength: 4),
+                  (val) => newPasswordController.text == val
+                      ? null
+                      : 'Passwords do not match'.tr,
+                ]),
+                isPassword: true,
+                isPasswordVisible: isConfirmPasswordVisible,
+                passwordVisibleupdate: () {
+                  setState(() {
+                    isConfirmPasswordVisible = !isConfirmPasswordVisible;
+                  });
+                },
+              ),
+              const SizedBox(height: 20),
+              GetBuilder<ProfileUserController>(
+                init: ProfileUserController(),
+                builder: (passwordUpdateController) {
+                  return ButtonAll(
+                    function: () {
+                      if (_formKey.currentState!.validate()) {
+                        passwordUpdateController.updatePassword(
+                          oldPassword: passwordController.text,
+                          newPassword: newPasswordController.text,
+                        );
                       }
-                      return null;
                     },
-                    isPassword: false),
-                MyTextfield(
-                    controller: newpaswwordController,
-                    label: "New Password".tr,
-                    hint: "Enter New Password".tr,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a New Password'.tr;
-                      }
-                      return null;
-                    },
-                    passwordVisibleupdate: () {
-                      newSee = !newSee;
-                      setState(() {});
-                    },
-                    isPasswordVisible: newSee,
-                    isPassword: true),
-                MyTextfield(
-                    controller: confirmypasswordController,
-                    passwordVisibleupdate: () {
-                      confirmySee = !confirmySee;
-                      setState(() {});
-                    },
-                    label: "Confirm Password".tr,
-                    isPasswordVisible: confirmySee,
-                    hint: "Enter the New Password".tr,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a Confirm Password'.tr;
-                      }
-                      return null;
-                    },
-                    isPassword: true),
-                const SizedBox(
-                  height: 20,
-                ),
-                GetBuilder<ProfileUserController>(
-                    init: ProfileUserController(),
-                    builder: (passwordUpdateController) {
-                      return ButtonAll(
-                        function: () {
-                          if (confirmypasswordController.text ==
-                              newpaswwordController.text) {
-                            if (_formKey.currentState!.validate())
-                              passwordUpdateController.updatePassword(
-                                  oldPassword: passwordController.text,
-                                  newPassword: newpaswwordController.text);
-                          } else {
-                            showMessage(context,
-                                title: "Make sure the password matches.".tr);
-                          }
-                        },
-                        title: "Save".tr,
-                        isloading: passwordUpdateController.isloading,
-                      );
-                    }),
-              ],
-            ),
+                    title: "Save".tr,
+                    isloading: passwordUpdateController.isloading,
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),

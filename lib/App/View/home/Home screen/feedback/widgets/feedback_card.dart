@@ -50,7 +50,7 @@ class FeedbackCard extends StatelessWidget {
                           fontSize: 14,
                           color: Colors.black87,
                         ),
-                        maxLines: 3,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 12),
@@ -72,11 +72,11 @@ class FeedbackCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          Icon(Icons.account_circle,
-                              color: Colors.grey, size: 18),
+                          Icon(Icons.date_range, color: Colors.grey, size: 18),
                           const SizedBox(width: 4),
                           Text(
-                            "Created by:".tr + " ${feedback.creatorUsername}",
+                            "Date:".tr +
+                                " ${feedback.createdAt?.split('T')[0]}",
                             style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 13,
@@ -90,8 +90,8 @@ class FeedbackCard extends StatelessWidget {
                           Icon(Icons.date_range, color: Colors.grey, size: 18),
                           const SizedBox(width: 4),
                           Text(
-                            "Date:".tr +
-                                " ${feedback.createdAt?.split('T')[0]}",
+                            "Updated Date :".tr +
+                                " ${feedback.updatedAt?.split('T')[0]}",
                             style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 13,

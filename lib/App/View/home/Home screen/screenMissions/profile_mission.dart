@@ -3,11 +3,15 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/feedback/feedback_profile_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../Model/mission.dart';
+import '../../../widgets/Containers/container_blue.dart';
 import '../../../widgets/Dialog/showExitConfirmationDialog.dart';
 import '../feedback/cretate_screen.dart';
+import 'widgets/getStatusColor.dart';
+import 'widgets/getStatusLabel.dart';
 
 class MissionProfileScreen extends StatefulWidget {
   final int missionId;
@@ -105,14 +109,27 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                   _buildMissionHeader(context, mission),
                   const SizedBox(height: 16),
                   InkWell(
-                    child: _buildMissionInfoSection(
-                        'Clinet'.tr,
-                        mission.client.fullName!,
-                        Icons.person_pin,
-                        theme.primaryColor),
+                    child: _buildMissionInfoSectionClient('Clinet'.tr,
+                        mission.client!, Icons.person_pin, theme.primaryColor),
                   ),
                   _buildMissionStatusSection(
                       theme, mission.statusId!, controller),
+                  if (mission.feedback!.id != 0)
+                    InkWell(
+                      onTap: () {
+                        if (mission.feedback!.id != 1) {
+                          Go.to(
+                              context,
+                              FeedbackDetailScreen(
+                                  feedbackId: mission.feedback!.id.toString()));
+                        }
+                      },
+                      child: _buildMissionInfoSection(
+                          'Feedback'.tr,
+                          mission.feedback!.label.toString(),
+                          Icons.feed,
+                          theme.primaryColor),
+                    ),
                   // _buildMissionInfoSection(
                   //     'Mission Description'.tr,
                   //     mission.desc ?? 'No description available'.tr,
@@ -120,7 +137,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                   //     theme.primaryColor),
                   _buildMissionInfoSection(
                       'Creator Username'.tr,
-                      mission.creatorUsername,
+                      mission.creatorUsername!,
                       Icons.person,
                       theme.primaryColor),
                   _buildMissionInfoSection(
@@ -133,6 +150,10 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                       formatDate(mission.createdAt.toString()),
                       Icons.date_range,
                       theme.primaryColor),
+
+                  SizedBox(
+                    height: 75,
+                  )
                 ],
               ),
             ),
@@ -163,6 +184,152 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                 theme.textTheme.titleMedium?.copyWith(color: Colors.grey[700]),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildBusinessDetailsSection(
+    context,
+    ClientMission client,
+  ) {
+    return containerwithblue(
+      context,
+      widget: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Business Information'.tr,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            _buildInfoRow('Sold:'.tr, client.sold!),
+            _buildInfoRow('Potential:'.tr, client.potential!),
+            _buildInfoRow('Turnover:'.tr, client.turnover!),
+            _buildInfoRow('Cashing In:'.tr, client.cashingIn!),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+          ),
+          Text(
+            value.isNotEmpty ? value : 'N/A',
+            style: TextStyle(fontSize: 13, color: Colors.grey[800]),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMissionInfoSectionClient(
+      String title, ClientMission client, IconData icon, Color iconColor) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        ),
+        child: ListTile(
+          title: Text(
+            title.toString(),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: iconColor,
+            ),
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.person, color: Colors.grey, size: 18),
+                  const SizedBox(width: 4),
+                  Text(
+                    "full Name :".tr + " ${client.fullName}",
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.phone, color: Colors.grey, size: 18),
+                  const SizedBox(width: 4),
+                  Text(
+                    "Tel :".tr + " ${(client.tel == "" ? 'N/A' : client.tel)}",
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.phone_android_rounded,
+                      color: Colors.grey, size: 18),
+                  const SizedBox(width: 4),
+                  Text(
+                    "Phone :".tr +
+                        " ${(client.phone == "" ? 'N/A' : client.phone)}",
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.home, color: Colors.grey, size: 18),
+                  const SizedBox(width: 4),
+                  Flexible(
+                    child: Text(
+                      "Address :".tr +
+                          " ${(client.address == "" ? 'N/A' : client.address)}",
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              _buildBusinessDetailsSection(context, client)
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -263,35 +430,5 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
         ),
       ),
     );
-  }
-}
-
-String getStatusLabel(int statusId) {
-  switch (statusId) {
-    case 1:
-      return 'New'.tr; // Translates to "Created"
-    case 2:
-      return 'In Progress'.tr; // Translates to "In Progress"
-    case 3:
-      return 'Completed'.tr; // Translates to "Completed"
-    case 4:
-      return 'Canceled'.tr; // Translates to "Canceled"
-    default:
-      return 'Unknown Status'.tr; // Fallback for unknown status
-  }
-}
-
-Color getStatusColor(int statusId) {
-  switch (statusId) {
-    case 1: // CREATED
-      return Colors.blue; // Color for created status
-    case 2: // IN_PROGRESS
-      return Colors.orange; // Color for in progress
-    case 3: // COMPLETED
-      return Colors.green; // Color for completed
-    case 4: // CANCELED
-      return Colors.red; // Color for canceled
-    default:
-      return Colors.grey; // Fallback color for unknown status
   }
 }

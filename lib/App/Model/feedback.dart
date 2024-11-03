@@ -1,5 +1,7 @@
+import 'package:mformatic_crm_delegate/App/Model/mission.dart';
+
 class Clientfeedback {
-  final int id;
+  final int? id;
   final int? localId;
   final String? fullName;
   final String? email;
@@ -36,21 +38,31 @@ class Clientfeedback {
   factory Clientfeedback.fromJson(Map<String, dynamic> json) {
     return Clientfeedback(
       id: json['id'] ?? 0,
-      localId: json['localId'],
-      fullName: json['fullName'],
-      email: json['email'],
-      address: json['address'],
-      phone: json['phone'],
-      tel: json['tel'],
-      region: json['region'],
+      localId: json['localId'] ?? 0,
+      fullName: json['fullName'] ?? "",
+      email: json['email'] ?? "",
+      address: json['address'] ?? "",
+      phone: json['phone'] ?? "",
+      tel: json['tel'] ?? "",
+      region: json['region'] ?? "",
       cashingIn: json['cashingIn'],
-      sold: json['sold'],
-      potential: json['potential'],
-      turnover: json['turnover'],
-      companyId: json['companyId'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
+      sold: json['sold'] ?? "0",
+      potential: json['potential'] ?? "0",
+      turnover: json['turnover'] ?? "0",
+      companyId: json['companyId'] ?? 0,
+      createdAt: json['createdAt'] ?? null,
+      updatedAt: json['updatedAt'] ?? null,
     );
+  }
+}
+
+class Decision {
+  final int? id;
+
+  Decision({this.id});
+
+  factory Decision.fromJson(Map<String, dynamic> json) {
+    return Decision(id: json['id']);
   }
 }
 
@@ -75,6 +87,8 @@ class FeedbackMission {
   final String? updatedAt;
   final Clientfeedback? client;
   final List<dynamic> gallery;
+  final Mission? mission;
+  final Decision? decision;
 
   FeedbackMission({
     required this.id,
@@ -97,6 +111,8 @@ class FeedbackMission {
     this.updatedAt,
     this.client,
     required this.gallery,
+    this.mission,
+    this.decision,
   });
 
   factory FeedbackMission.fromJson(Map<String, dynamic> json) {
@@ -123,6 +139,10 @@ class FeedbackMission {
           ? Clientfeedback.fromJson(json['client'])
           : null,
       gallery: List<dynamic>.from(json['gallery'] ?? []),
+      mission:
+          json['mission'] != null ? Mission.fromJson(json['mission']) : null,
+      decision:
+          json['decision'] != null ? Decision.fromJson(json['decision']) : null,
     );
   }
 }

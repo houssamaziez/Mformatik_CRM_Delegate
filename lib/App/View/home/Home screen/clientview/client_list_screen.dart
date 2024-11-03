@@ -165,6 +165,18 @@ class _ClientListScreenState extends State<ClientListScreen> {
                                   Icon(Icons.phone, color: Colors.green),
                                   SizedBox(width: 10),
                                   Text(
+                                    client.tel ?? 'N/A',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Icon(Icons.phone_android_rounded,
+                                      color: Colors.green),
+                                  SizedBox(width: 10),
+                                  Text(
                                     client.phone ?? 'N/A',
                                     style: TextStyle(fontSize: 16),
                                   ),
@@ -195,6 +207,26 @@ class _ClientListScreenState extends State<ClientListScreen> {
                                   ),
                                   Text(
                                     'Potential:'.tr + " ${client.potential}",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.blueGrey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Turnover:'.tr + " ${client.sold}",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  Text(
+                                    'CashingIn:'.tr + " ${client.potential}",
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.blueGrey,

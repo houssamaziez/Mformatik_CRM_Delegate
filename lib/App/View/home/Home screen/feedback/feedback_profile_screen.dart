@@ -4,10 +4,14 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
+import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/screenMissions/profile_mission.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../Controller/home/feedback_controller.dart';
 import '../../../../Model/feedback.dart';
+import '../../../widgets/Containers/container_blue.dart';
 import 'update_feedback_screen.dart';
 
 class FeedbackDetailScreen extends StatefulWidget {
@@ -34,7 +38,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
   String formatDate(String? date) {
     if (date == null) return 'No Date Available'.tr;
     final DateTime parsedDate = DateTime.parse(date);
-    return DateFormat('yyyy-MM-dd – kk:mm').format(parsedDate);
+    return DateFormat('yyyy-MM-dd').format(parsedDate);
   }
 
   @override
@@ -82,43 +86,51 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                     Icon(Icons.date_range,
                         color: Theme.of(context).primaryColor),
                     const SizedBox(width: 8),
-                    Text(
-                      'Request Date:'.tr +
-                          " ${formatDate(feedback.requestDate)}",
-                      style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                    Flexible(
+                      child: Text(
+                        'Request Date:'.tr +
+                            " ${formatDate(feedback.requestDate)}",
+                        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 10),
                 const SizedBox(height: 20),
                 // Creator Information
-                const Divider(),
-                Text(
-                  'Creator Information'.tr,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Theme.of(context).primaryColor,
+
+                _buildContactSection("Client".tr, feedback.client!),
+                const SizedBox(height: 10),
+                if (feedback.missionId != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: InkWell(
+                      onTap: () {
+                        if (feedback.missionId != null) {
+                          Go.to(
+                              context,
+                              MissionProfileScreen(
+                                  missionId: feedback.missionId!));
+                        }
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border:
+                                Border.all(color: Colors.grey.withOpacity(0.2)),
+                          ),
+                          child: ListTile(
+                            title: "This feedback has a mission."
+                                .style(fontSize: 15),
+                            trailing: Icon(
+                              Icons.arrow_forward_ios,
+                              size: 15,
+                            ),
+                          )),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Username:'.tr +
-                      " ${feedback.creatorUsername ?? 'No Username'}",
-                  style: const TextStyle(fontSize: 16, color: Colors.black87),
-                ),
-                const SizedBox(height: 10),
-                // Gallery
-                const Divider(),
-                Text(
-                  'Gallery'.tr,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 10),
+
                 feedback.gallery.isNotEmpty
                     ? SizedBox(
                         height: 200,
@@ -187,6 +199,200 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildContactSection(title, Clientfeedback client) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        ),
+        child: ListTile(
+          title: Text(
+            title.toString(),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.person, color: Colors.grey, size: 18),
+                  const SizedBox(width: 4),
+                  Text(
+                    "full Name :".tr + " ${client.fullName}",
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.phone, color: Colors.grey, size: 18),
+                  const SizedBox(width: 4),
+                  Text(
+                    "Tel :".tr +
+                        " ${(client.tel == null || client.tel == "" ? 'N/A' : client.tel)}",
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.phone_android_rounded,
+                      color: Colors.grey, size: 18),
+                  const SizedBox(width: 4),
+                  Text(
+                    "Phone :".tr +
+                        " ${(client.phone == null || client.phone == "" ? 'N/A' : client.phone)}",
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.home, color: Colors.grey, size: 18),
+                  const SizedBox(width: 4),
+                  Flexible(
+                    child: Text(
+                      "Address :".tr +
+                          " ${(client.address == "" ? 'N/A' : client.address)}",
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              _buildBusinessDetailsSection(context, client)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContactRow(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.blueAccent),
+          const SizedBox(width: 12),
+          Text(
+            '$label:',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBusinessDetailsSection(
+    context,
+    Clientfeedback client,
+  ) {
+    return containerwithblue(
+      context,
+      widget: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Business Information'.tr,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            _buildInfoRow('Sold:'.tr, client.sold!),
+            _buildInfoRow('Potential:'.tr, client.potential!),
+            _buildInfoRow('Turnover:'.tr, client.turnover!),
+            _buildInfoRow('Cashing In:'.tr, client.cashingIn!),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          Text(
+            value.isNotEmpty ? value : 'N/A',
+            style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMissionInfoSection(
+      String title, String content, IconData icon, Color iconColor) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        ),
+        child: ListTile(
+          leading: Icon(icon, color: iconColor),
+          title: Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: iconColor,
+            ),
+          ),
+          subtitle: Text(content),
+        ),
       ),
     );
   }

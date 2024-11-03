@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/reasons_mission_controller.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Item_selector.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import '../../../../../../Controller/home/missions_controller.dart';
 import '../../../../../../Controller/home/reasons_feedback_controller.dart';
 import '../../../../../../Controller/widgetsController/expandable_controller.dart';
+import '../../../../../../Service/AppValidator/AppValidator.dart';
 
 class CreateMissionScreen extends StatefulWidget {
   final int clientID;
@@ -58,12 +60,13 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
                 onSaved: (value) {
                   desc = value!;
                 },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description'.tr;
-                  }
-                  return null;
-                },
+                validator: (value) => AppValidator.validate(value, [
+                  (val) => AppValidator.validateRequired(val,
+                      fieldName: 'Description'),
+                  // You can add more validators here if needed, e.g., for length
+                  (val) => AppValidator.validateLength(val,
+                      minLength: 5, fieldName: 'Description'),
+                ]),
               ),
 
               // Client ID field
@@ -81,17 +84,25 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
                           ? null
                           : () {
                               print(widget.clientID);
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                                controllercreateMission.createMission(
-                                    desc: desc,
-                                    clientId: widget.clientID,
-                                    context: context,
-                                    text: controller!.text);
+                              ExpandableControllerd controllerzx =
+                                  Get.put(ExpandableControllerd());
+                              if (controllerzx.selectedItem.value == null) {
+                                showMessage(context,
+                                    title: 'Select Reasons'.tr);
+                              } else {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+
+                                  controllercreateMission.createMission(
+                                      desc: desc,
+                                      clientId: widget.clientID,
+                                      context: context,
+                                      text: controller!.text);
+                                }
                               }
                             },
                       child: controllercreateMission.isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
+                          ? spinkit
                           : Text('Create Mission'.tr),
                     );
                   }),

@@ -130,6 +130,8 @@ class MissionsController extends GetxController {
       required int clientId,
       required context,
       required String text}) async {
+    isLoading = true;
+    update();
     var reasonId;
     final uri = Uri.parse('${Endpoint.apiMissions}');
     final cilentID = Get.put(AuthController()).user!.id;
@@ -147,8 +149,7 @@ class MissionsController extends GetxController {
       showMessage(context, title: "Complete the field");
       return;
     }
-    isLoading = true;
-    update();
+
     final body = {
       "label": label.toString(),
       "desc": desc,
