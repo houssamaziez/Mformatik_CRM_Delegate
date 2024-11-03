@@ -64,7 +64,7 @@ class ProfileUserScreen extends StatelessWidget {
                 ),
                 buttonsetting(
                     function: () => Go.to(context, ScreenEditeProfile()),
-                    title: "Edite Profile".tr,
+                    title: "Edit Profile".tr,
                     image: 'assets/icons/edit-info.png',
                     colortext: Colors.black,
                     color: Theme.of(context).cardColor),

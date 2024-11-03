@@ -270,9 +270,8 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                               },
                                   details:
                                       'Are you sure to complete the Mission?'
-                                          .tr
                                           .tr,
-                                  title: 'Confirmation');
+                                  title: 'Confirmation'.tr);
                             } else {
                               var location =
                                   await LocationService.getCurrentLocation(
@@ -287,8 +286,12 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                     true) {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
+
                                     post(controllercreateFeedback, location);
                                     return;
+                                  } else {
+                                    showMessage(context,
+                                        title: 'Please enter a description'.tr);
                                   }
                                 } else {
                                   post(controllercreateFeedback, location);

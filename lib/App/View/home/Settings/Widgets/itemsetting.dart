@@ -54,19 +54,19 @@ Padding carditemsetting(context) {
           //       Go.to(context, const NotificationScreen());
           //     }),
           itemsetting(
-              titile: listtitemsetting[3]["title"].toString(),
+              titile: listtitemsetting[3]["title"].toString().tr,
               image: listtitemsetting[3]["Image"].toString(),
               function: () {
                 Go.to(context, const LanguageScreen());
               }),
+          // itemsetting(
+          //     titile: listtitemsetting[1]["title"].toString(),
+          //     image: listtitemsetting[1]["Image"].toString(),
+          //     function: () {
+          //       Go.to(context, SuggestionsScreen());
+          //     }),
           itemsetting(
-              titile: listtitemsetting[1]["title"].toString(),
-              image: listtitemsetting[1]["Image"].toString(),
-              function: () {
-                Go.to(context, SuggestionsScreen());
-              }),
-          itemsetting(
-              titile: listtitemsetting[2]["title"].toString(),
+              titile: listtitemsetting[2]["title"].toString().tr,
               image: listtitemsetting[2]["Image"].toString(),
               function: () {
                 Go.to(context, AboutTheApplication());

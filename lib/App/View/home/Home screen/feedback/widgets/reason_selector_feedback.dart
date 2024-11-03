@@ -95,9 +95,28 @@ class SelectReason extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 12.0, horizontal: 16.0),
-                      child: Text(
-                        item.label!,
-                        style: TextStyle(fontSize: 15, color: Colors.black),
+                      child: Column(
+                        children: [
+                          Text(
+                            item.label!,
+                            style: const TextStyle(
+                                fontSize: 15, color: Colors.black),
+                          ),
+                          Text(
+                            (item.isDescRequired == true
+                                ? "Description Required *".tr
+                                : ""),
+                            style: const TextStyle(
+                                fontSize: 10, color: Colors.red),
+                          ),
+                          Text(
+                            (item.isRequestDateRequired == true
+                                ? "Request Date Required *"
+                                : ""),
+                            style: const TextStyle(
+                                fontSize: 10, color: Colors.red),
+                          )
+                        ],
                       ),
                     ),
                   ),
