@@ -201,7 +201,9 @@ const Map<String, String> fr = {
   'Created:': 'Créé :',
   "Request Date Required *": "Date de demande requise *",
   "Change Language": "Changer la langue",
+  "This feedback has a mission.": "Ce retour d'information a une mission.",
   'Company name:': 'Nom de l’entreprise :',
+  "Full Name": "Nom complet",
   "About the Application": "À propos de l'application",
   'We introduce an exclusive application designed for customer delegates, enabling them to effortlessly record their notes. This app facilitates the organization of information and the effective tracking of customer interactions, ultimately enhancing service quality and improving the overall customer experience.':
       'Nous vous présentons une application exclusive conçue pour les délégués clients, leur permettant d\'enregistrer facilement leurs notes. Cette application facilite l\'organisation des informations et le suivi efficace des interactions avec les clients, améliorant ainsi la qualité du service et l\'expérience globale du client.'

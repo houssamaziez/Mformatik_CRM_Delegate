@@ -234,10 +234,10 @@ Expanded statuseAndLatenessButton(
                                             .toStringAsFixed(2)
                                             .style(),
                                     "%".style(),
-                                    " ".style(),
-                                    "New".tr.style(
-                                        fontSize: 10,
-                                        color: Theme.of(context).primaryColor),
+                                    // " ".style(),
+                                    // "New".tr.style(
+                                    //     fontSize: 10,
+                                    //     color: Theme.of(context).primaryColor),
                                   ],
                                 ),
                               ),

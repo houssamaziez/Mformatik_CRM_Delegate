@@ -262,7 +262,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                   Icon(Icons.person, color: Colors.grey, size: 18),
                   const SizedBox(width: 4),
                   Text(
-                    "full Name :".tr + " ${client.fullName}",
+                    "Full Name".tr + " ${client.fullName}",
                     style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 13,

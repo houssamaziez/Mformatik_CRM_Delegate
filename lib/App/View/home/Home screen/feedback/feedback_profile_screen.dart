@@ -122,6 +122,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                           ),
                           child: ListTile(
                             title: "This feedback has a mission."
+                                .tr
                                 .style(fontSize: 15),
                             trailing: Icon(
                               Icons.arrow_forward_ios,
@@ -231,7 +232,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                   Icon(Icons.person, color: Colors.grey, size: 18),
                   const SizedBox(width: 4),
                   Text(
-                    "full Name :".tr + " ${client.fullName}",
+                    "Full Name".tr + " ${client.fullName}",
                     style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 13,
