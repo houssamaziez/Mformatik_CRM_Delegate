@@ -273,7 +273,7 @@ Expanded statuseFeddbackAndLatenessButton(
                           Row(
                             children: [
                               Text(
-                                "Statistics Feddback".tr,
+                                "Statistics Feedback".tr,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black54,
