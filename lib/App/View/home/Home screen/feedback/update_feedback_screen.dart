@@ -67,8 +67,11 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
 
   double _compressionProgress = 0.0;
   List<File>? _compressedImages = [];
-
+  bool isCompressImage = false;
   Future<File> _compressImage(XFile file) async {
+    setState(() {
+      isCompressImage = true;
+    });
     final bytes = await file.readAsBytes();
     final img.Image? image = img.decodeImage(bytes);
 
@@ -78,6 +81,9 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
     final compressedImageFile = File('${file.path}_compressed.jpg');
     await compressedImageFile.writeAsBytes(compressedBytes);
 
+    setState(() {
+      isCompressImage = false;
+    });
     return compressedImageFile;
   }
 
@@ -298,7 +304,8 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                       )),
                 ],
               ),
-              if (_compressionProgress > 0 && _compressionProgress < 100) ...[
+              if (_compressionProgress > 0 && _compressionProgress < 100 ||
+                  isCompressImage) ...[
                 const SizedBox(height: 16),
                 Text('Loading images:'.tr +
                     " ${_compressionProgress.toStringAsFixed(0)}%"),
@@ -389,7 +396,9 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
     //       backgroundColor: Colors.red, colorText: Colors.white);
     //   return;
     // }
-
+    if (isCompressImage) {
+      return;
+    }
     if (controllerisreq.selectedItem.value == null) {
       showMessage(context, title: 'Select Reasons'.tr);
     } else if (controllerisreq.selectedItem.value!.isDescRequired == true) {

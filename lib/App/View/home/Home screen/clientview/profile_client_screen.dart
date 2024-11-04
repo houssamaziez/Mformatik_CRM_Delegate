@@ -34,12 +34,12 @@ class ClientProfileScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Client Basic Information
-              _buildProfileHeader(client),
+              // _buildProfileHeader(client),
               const SizedBox(height: 20),
               // Contact Details Section
               _buildContactSection(client),
@@ -96,7 +96,7 @@ class ClientProfileScreen extends StatelessWidget {
 
   Widget _buildContactSection(Client client) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(5.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -22,7 +23,6 @@ class MyApp extends StatelessWidget {
     String? storedLanguage = storage.read<String>('selected_language');
     Locale initialLocale =
         storedLanguage != null ? Locale(storedLanguage) : const Locale('en');
-
     return GetMaterialApp(
       title: 'CRM Delegate',
       theme: themeLight,

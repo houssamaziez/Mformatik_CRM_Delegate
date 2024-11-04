@@ -44,7 +44,9 @@ class FeedbackController extends GetxController {
       offset.value = 0;
       feedbacks.clear();
     }
-
+    if (companyId == 0) {
+      return;
+    }
     try {
       final response = await http.get(
         Uri.parse(Endpoint.apiFeedbacks).replace(
@@ -168,6 +170,11 @@ class FeedbackController extends GetxController {
     update();
   }
 
+  updateIsLoading(value) {
+    isLoadingadd = value;
+    update();
+  }
+
   Future<void> addFeedback({
     required String label,
     required String desc,
@@ -267,7 +274,16 @@ class FeedbackController extends GetxController {
 
     try {
       // return;
-
+      final List imagpath = [];
+      for (var i = 0; i < images.length; i++) {
+        // print(images[i]["id"]);
+        for (var i = 0; i < images.length; i++) {
+          imagpath.add({
+            "id": images[i]["id"].toString(),
+            "path": images[i]["id"].toString()
+          });
+        }
+      }
       final url =
           Uri.parse('${Endpoint.apiFeedbacks}/$feedbackId'); // Endpoint URL
 
@@ -292,16 +308,7 @@ class FeedbackController extends GetxController {
           return;
         }
       }
-      final List imagpath = [];
-      for (var i = 0; i < images.length; i++) {
-        // print(images[i]["id"]);
-        for (var i = 0; i < images.length; i++) {
-          imagpath.add({
-            "id": images[i]["id"].toString(),
-            "path": images[i]["id"].toString()
-          });
-        }
-      }
+
       Map<String, Object?> map = {
         'label': lastLabel,
         'desc': desc,
@@ -312,7 +319,10 @@ class FeedbackController extends GetxController {
         'feedbackModelId': feedbackModelFilter,
         'gallery': imagpath,
       };
+      print("==========================");
       print(map);
+      print("==========================");
+
       // return;
 
       final response = await http.put(

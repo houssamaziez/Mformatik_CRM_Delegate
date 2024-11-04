@@ -63,13 +63,15 @@ class MissionCard extends StatelessWidget {
                           const SizedBox(height: 12),
                           Row(
                             children: [
-                              Icon(Icons.person, color: Colors.grey, size: 18),
+                              Icon(Icons.person,
+                                  color: Color.fromARGB(255, 37, 37, 37),
+                                  size: 18),
                               const SizedBox(width: 4),
                               Text(
                                 'Created by:'.tr +
                                     " ${mission.creatorUsername}",
                                 style: const TextStyle(
-                                  color: Colors.grey,
+                                  color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
                                 ),
                               ),
@@ -98,12 +100,12 @@ class MissionCard extends StatelessWidget {
                           Row(
                             children: [
                               Icon(Icons.person_pin,
-                                  color: Colors.grey, size: 18),
+                                  color: Colors.black, size: 18),
                               const SizedBox(width: 4),
                               Text(
                                 "Client: ${mission.client!.fullName}",
                                 style: const TextStyle(
-                                  color: Colors.grey,
+                                  color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
                                 ),
                               ),
@@ -114,12 +116,13 @@ class MissionCard extends StatelessWidget {
                           Row(
                             children: [
                               Icon(Icons.date_range,
-                                  color: Colors.grey, size: 18),
+                                  color: Color.fromARGB(255, 37, 37, 37),
+                                  size: 18),
                               const SizedBox(width: 4),
                               Text(
                                 "Date: ${formatDate(mission.createdAt.toString())}",
                                 style: const TextStyle(
-                                  color: Colors.grey,
+                                  color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
                                 ),
                               ),
@@ -130,13 +133,13 @@ class MissionCard extends StatelessWidget {
                           Row(
                             children: [
                               Icon(Icons.date_range,
-                                  color: Colors.grey, size: 18),
+                                  color: Colors.black, size: 18),
                               const SizedBox(width: 4),
                               Text(
                                 "Updated Date :".tr +
                                     "${formatDate(mission.updatedAt.toString())}",
                                 style: const TextStyle(
-                                  color: Colors.grey,
+                                  color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
                                 ),
                               ),

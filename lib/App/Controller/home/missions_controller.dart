@@ -79,7 +79,9 @@ class MissionsController extends GetxController {
     );
 
     // offset = 7;
-
+    if (companyId == 0) {
+      return;
+    }
     isLoading = true;
     update();
     try {

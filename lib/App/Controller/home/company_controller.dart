@@ -5,6 +5,7 @@ import 'package:mformatic_crm_delegate/App/Controller/home/client_controller.dar
 import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import 'dart:convert';
 import '../../Model/company.dart';
 import '../auth/auth_controller.dart';
@@ -21,7 +22,11 @@ class CompanyController extends GetxController {
     try {
       isLoading.value = true;
       update();
-
+      print("=================================================$id");
+      if (id == "0".toString()) {
+        showMessage(Get.context, title: "No companies found.");
+        return;
+      }
       final response = await http.get(
         Uri.parse(Endpoint.apiCompanies).replace(
           queryParameters: {

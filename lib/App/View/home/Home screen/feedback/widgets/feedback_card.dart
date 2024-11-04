@@ -62,7 +62,7 @@ class FeedbackCard extends StatelessWidget {
                             child: Text(
                               "Client: ${feedback.client!.fullName}",
                               style: const TextStyle(
-                                color: Colors.grey,
+                                color: Color.fromARGB(255, 37, 37, 37),
                                 fontSize: 13,
                               ),
                             ),
@@ -78,7 +78,7 @@ class FeedbackCard extends StatelessWidget {
                             "Date:".tr +
                                 " ${feedback.createdAt?.split('T')[0]}",
                             style: const TextStyle(
-                              color: Colors.grey,
+                              color: Color.fromARGB(255, 37, 37, 37),
                               fontSize: 13,
                             ),
                           ),
@@ -93,7 +93,7 @@ class FeedbackCard extends StatelessWidget {
                             "Updated Date :".tr +
                                 " ${feedback.updatedAt?.split('T')[0]}",
                             style: const TextStyle(
-                              color: Colors.grey,
+                              color: Color.fromARGB(255, 37, 37, 37),
                               fontSize: 13,
                             ),
                           ),

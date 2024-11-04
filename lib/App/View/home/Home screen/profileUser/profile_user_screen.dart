@@ -73,7 +73,7 @@ class ProfileUserScreen extends StatelessWidget {
                       showExitConfirmationDialog(context, onPressed: () {
                         token.write("token", null);
                         spalshscreenfirst.write('key', false);
-                        Go.clearAndTo(context, ScreenAuth());
+                        Get.offAll(ScreenAuth());
                       },
                           details:
                               'Do you really want to log out of the account?'

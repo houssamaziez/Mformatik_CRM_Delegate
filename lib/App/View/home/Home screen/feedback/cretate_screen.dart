@@ -43,8 +43,11 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
   DateTime? requestDate;
   double _compressionProgress = 0.0;
   List<File>? _compressedImages = [];
-
+  bool isCompressImage = false;
   Future<File> _compressImage(XFile file) async {
+    setState(() {
+      isCompressImage = true;
+    });
     final bytes = await file.readAsBytes();
     final img.Image? image = img.decodeImage(bytes);
 
@@ -54,6 +57,9 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
     final compressedImageFile = File('${file.path}_compressed.jpg');
     await compressedImageFile.writeAsBytes(compressedBytes);
 
+    setState(() {
+      isCompressImage = false;
+    });
     return compressedImageFile;
   }
 
@@ -275,6 +281,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                             if (widget.missionID != null) {
                               showExitConfirmationDialog(context,
                                   onPressed: () async {
+                                controllercreateFeedback.updateIsLoading(true);
                                 Get.back();
                                 controllercreateFeedback.upadteisloading(true);
 
@@ -292,10 +299,12 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                     if (_formKey.currentState!.validate()) {
                                       _formKey.currentState!.save();
                                       post(controllercreateFeedback, location);
+
                                       return;
                                     }
                                   } else {
                                     post(controllercreateFeedback, location);
+
                                     return;
                                   }
                                 }
@@ -321,6 +330,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                     _formKey.currentState!.save();
 
                                     post(controllercreateFeedback, location);
+
                                     return;
                                   } else {
                                     showMessage(context,
@@ -328,6 +338,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                   }
                                 } else {
                                   post(controllercreateFeedback, location);
+
                                   return;
                                 }
                               }
@@ -350,8 +361,9 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
       FeedbackController controllercreateFeedback, LocationDataModel location) {
     final List<XFile> xFiles =
         _compressedImages!.map((file) => XFile(file.path)).toList();
-
-    controllercreateFeedback.addFeedback(
+    controllercreateFeedback.upadteisloading(true);
+    controllercreateFeedback
+        .addFeedback(
       label: Get.put(ExpandableControllerFeedback())
           .controllerTextEditingController!
           .text,
@@ -365,6 +377,9 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
       feedbackModelId:
           Get.put(ExpandableControllerFeedback()).selectedItem.value!.id!,
       images: xFiles,
-    );
+    )
+        .then((onValue) {
+      controllercreateFeedback.upadteisloading(false);
+    });
   }
 }

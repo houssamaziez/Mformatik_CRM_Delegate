@@ -7,6 +7,7 @@ import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.d
 import '../../Controller/auth/auth_controller.dart';
 import '../../Controller/home/annex_controller.dart';
 import '../widgets/Bottombar/widgetbottombar.dart';
+import '../widgets/Dialog/showExitConfirmationDialog.dart';
 import '../widgets/bolck_screen.dart';
 import 'Widgets/appbar_home.dart';
 import 'Home screen/homeview_feedback.dart';
@@ -44,18 +45,49 @@ class _HomeScreenState extends State<HomeScreen> {
         init: HomeController(),
         builder: (controller) {
           bool isactive = controllers.user!.isActive;
-          return Scaffold(
-            appBar: appbarHome(
-              context,
-            ),
-            bottomNavigationBar: buttonnavigationbar(context),
-            body: isactive == true
-                ? Column(
-                    children: [
-                      Expanded(child: _screen[controller.indexBottomBar]),
+          return WillPopScope(
+            onWillPop: () async {
+              // Show a dialog when the back button is pressed
+              // Show a dialog when the back button is pressed
+              bool shouldExit = await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Exit App'.tr),
+                    content: Text('Are you sure you want to exit the app?'.tr),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(false); // Do not exit
+                        },
+                        child: Text('No'.tr),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(true); // Exit the app
+                        },
+                        child: Text('Yes'.tr),
+                      ),
                     ],
-                  )
-                : const screenBlock(),
+                  );
+                },
+              );
+
+              return shouldExit;
+            },
+            child: Scaffold(
+              appBar: appbarHome(
+                context,
+              ),
+              bottomNavigationBar: buttonnavigationbar(context),
+              body: isactive == true
+                  ? Column(
+                      children: [
+                        Expanded(child: _screen[controller.indexBottomBar]),
+                      ],
+                    )
+                  : const screenBlock(),
+            ),
           );
         });
   }

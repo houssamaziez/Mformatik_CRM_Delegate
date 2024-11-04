@@ -15,9 +15,8 @@ import '../../Util/app_exceptions/response_handler.dart';
 GetStorage token = GetStorage();
 
 class AuthController extends GetxController {
-  TextEditingController namecontroller = TextEditingController(text: "flutter");
-  TextEditingController passwordcontroller =
-      TextEditingController(text: "123456");
+  TextEditingController namecontroller = TextEditingController(text: "");
+  TextEditingController passwordcontroller = TextEditingController(text: "");
   var isLoading = false;
   User? user;
   Person? person;
@@ -55,6 +54,7 @@ class AuthController extends GetxController {
         print('user in as: ${user?.username}');
       } else {}
 
+      print(response.body);
       if (response.statusCode == 401) {
         showMessage(context,
             title:

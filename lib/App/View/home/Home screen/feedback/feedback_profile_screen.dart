@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
+import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/screenMissions/profile_mission.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
@@ -81,20 +82,23 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                 ),
                 const SizedBox(height: 20),
                 // Date and Location
-                Row(
-                  children: [
-                    Icon(Icons.date_range,
-                        color: Theme.of(context).primaryColor),
-                    const SizedBox(width: 8),
-                    Flexible(
-                      child: Text(
-                        'Request Date:'.tr +
-                            " ${formatDate(feedback.requestDate)}",
-                        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                feedback.requestDate == null
+                    ? Container()
+                    : Row(
+                        children: [
+                          Icon(Icons.date_range,
+                              color: Theme.of(context).primaryColor),
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: Text(
+                              'Request Date:'.tr +
+                                  " ${formatDate(feedback.requestDate)}",
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.grey[600]),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
                 const SizedBox(height: 10),
                 const SizedBox(height: 20),
                 // Creator Information
@@ -166,8 +170,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                               ),
                             );
                           },
-                        ),
-                      )
+                        ))
                     : Text(
                         'No Images available'.tr,
                         style: TextStyle(fontSize: 16, color: Colors.grey[600]),
@@ -198,7 +201,9 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                 ),
               ],
             ),
-          );
+          ).addRefreshIndicator(
+              onRefresh: () =>
+                  feedbackController.getFeedbackById(widget.feedbackId));
         },
       ),
     );
@@ -211,7 +216,8 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+          border: Border.all(
+              color: Color.fromARGB(255, 48, 48, 48).withOpacity(0.2)),
         ),
         child: ListTile(
           title: Text(
@@ -229,12 +235,13 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
               ),
               Row(
                 children: [
-                  Icon(Icons.person, color: Colors.grey, size: 18),
+                  Icon(Icons.person,
+                      color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Text(
                     "Full Name".tr + " ${client.fullName}",
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: Color.fromARGB(255, 48, 48, 48),
                       fontSize: 13,
                     ),
                   ),
@@ -245,13 +252,14 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
               ),
               Row(
                 children: [
-                  Icon(Icons.phone, color: Colors.grey, size: 18),
+                  Icon(Icons.phone,
+                      color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Text(
                     "Tel :".tr +
                         " ${(client.tel == null || client.tel == "" ? 'N/A' : client.tel)}",
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: Color.fromARGB(255, 48, 48, 48),
                       fontSize: 13,
                     ),
                   ),
@@ -263,13 +271,13 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
               Row(
                 children: [
                   Icon(Icons.phone_android_rounded,
-                      color: Colors.grey, size: 18),
+                      color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Text(
                     "Phone :".tr +
                         " ${(client.phone == null || client.phone == "" ? 'N/A' : client.phone)}",
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: Color.fromARGB(255, 48, 48, 48),
                       fontSize: 13,
                     ),
                   ),
@@ -280,14 +288,15 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
               ),
               Row(
                 children: [
-                  Icon(Icons.home, color: Colors.grey, size: 18),
+                  Icon(Icons.home,
+                      color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Flexible(
                     child: Text(
                       "Address :".tr +
                           " ${(client.address == "" ? 'N/A' : client.address)}",
                       style: const TextStyle(
-                        color: Colors.grey,
+                        color: Color.fromARGB(255, 48, 48, 48),
                         fontSize: 13,
                       ),
                     ),

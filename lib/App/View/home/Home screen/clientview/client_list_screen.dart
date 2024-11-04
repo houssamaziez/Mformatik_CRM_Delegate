@@ -146,8 +146,6 @@ class _ClientListScreenState extends State<ClientListScreen> {
                             children: [
                               Row(
                                 children: [
-                                  Icon(Icons.person, color: Colors.blueAccent),
-                                  SizedBox(width: 10),
                                   Flexible(
                                     child: Text(
                                       client.fullName ?? 'No Name'.tr,
@@ -159,41 +157,49 @@ class _ClientListScreenState extends State<ClientListScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 6),
                               Row(
                                 children: [
-                                  Icon(Icons.phone, color: Colors.green),
+                                  Icon(
+                                    Icons.phone,
+                                    color: Colors.green,
+                                    size: 15,
+                                  ),
                                   SizedBox(width: 10),
                                   Text(
                                     client.tel ?? 'N/A',
-                                    style: TextStyle(fontSize: 16),
+                                    style: TextStyle(fontSize: 14),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 6),
                               Row(
                                 children: [
                                   Icon(Icons.phone_android_rounded,
-                                      color: Colors.green),
+                                      size: 15, color: Colors.green),
                                   SizedBox(width: 10),
                                   Text(
                                     client.phone ?? 'N/A',
-                                    style: TextStyle(fontSize: 16),
+                                    style: TextStyle(fontSize: 14),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 6),
                               Row(
                                 children: [
-                                  Icon(Icons.email, color: Colors.redAccent),
+                                  Icon(
+                                    Icons.email,
+                                    color: Colors.redAccent,
+                                    size: 15,
+                                  ),
                                   SizedBox(width: 10),
                                   Text(
                                     client.email ?? 'No Email'.tr,
-                                    style: TextStyle(fontSize: 16),
+                                    style: TextStyle(fontSize: 14),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 6),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -201,15 +207,15 @@ class _ClientListScreenState extends State<ClientListScreen> {
                                   Text(
                                     'Sold:'.tr + " ${client.sold}",
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 12,
                                       color: Colors.black87,
                                     ),
                                   ),
                                   Text(
                                     'Potential:'.tr + " ${client.potential}",
                                     style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.blueGrey,
+                                      fontSize: 12,
+                                      color: Colors.black87,
                                     ),
                                   ),
                                 ],
@@ -221,15 +227,17 @@ class _ClientListScreenState extends State<ClientListScreen> {
                                   Text(
                                     'Turnover:'.tr + " ${client.sold}",
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 12,
                                       color: Colors.black87,
                                     ),
                                   ),
-                                  Text(
-                                    'CashingIn:'.tr + " ${client.potential}",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.blueGrey,
+                                  Flexible(
+                                    child: Text(
+                                      'Cashing In:'.tr + " ${client.potential}",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black87,
+                                      ),
                                     ),
                                   ),
                                 ],

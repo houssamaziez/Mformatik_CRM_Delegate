@@ -44,6 +44,9 @@ class MissionsControllerAll extends GetxController {
         if (endingDate!.isNotEmpty) ...{'endDate': endingDate},
       },
     );
+    if (companyId == 0) {
+      return;
+    }
     offset = 7;
 
     isLoading = true;

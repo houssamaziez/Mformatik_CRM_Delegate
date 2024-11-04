@@ -42,7 +42,7 @@ class AddMissionbuttonFeddback extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        "Add \n Feddback".tr,
+                        "Add \n Feedback".tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,

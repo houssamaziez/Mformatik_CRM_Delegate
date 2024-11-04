@@ -1,9 +1,11 @@
+import 'package:get/get.dart';
+
 class AppValidator {
   // Validates required text fields
   static String? validateRequired(String? value,
       {String fieldName = 'This field'}) {
     if (value == null || value.trim().isEmpty) {
-      return '$fieldName is required.';
+      return '$fieldName'.tr + ' ' + 'is required.'.tr;
     }
     return null;
   }
@@ -12,10 +14,18 @@ class AppValidator {
   static String? validateLength(String? value,
       {int? minLength, int? maxLength, String fieldName = 'This field'}) {
     if (minLength != null && (value == null || value.length < minLength)) {
-      return '$fieldName must be at least $minLength characters.';
+      return '$fieldName'.tr +
+          ' ' +
+          'must be at least'.tr +
+          ' $minLength ' +
+          'characters.'.tr;
     }
     if (maxLength != null && (value != null && value.length > maxLength)) {
-      return '$fieldName must be no more than $maxLength characters.';
+      return '$fieldName'.tr +
+          ' ' +
+          'must be no more than'.tr +
+          ' $maxLength ' +
+          'characters.'.tr;
     }
     return null;
   }
@@ -23,12 +33,12 @@ class AppValidator {
   // Validates email format
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Email is required.';
+      return 'Email is required.'.tr;
     }
     // Basic email pattern
     final emailPattern = r'^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
     if (!RegExp(emailPattern).hasMatch(value)) {
-      return 'Please enter a valid email address.';
+      return 'Please enter a valid email address.'.tr;
     }
     return null;
   }
@@ -36,7 +46,7 @@ class AppValidator {
   // Validates password with minimum length
   static String? validatePassword(String? value, {int minLength = 6}) {
     if (value == null || value.length < minLength) {
-      return 'Password must be at least $minLength characters.';
+      return 'Password must be at least $minLength characters.'.tr;
     }
     return null;
   }
@@ -44,12 +54,12 @@ class AppValidator {
   // Validates phone number format
   static String? validatePhoneNumber(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Phone number is required.';
+      return 'Phone number is required.'.tr;
     }
     // Basic phone number pattern (customize for your region)
     final phonePattern = r'^[0-9]{10}$';
     if (!RegExp(phonePattern).hasMatch(value)) {
-      return 'Please enter a valid phone number.';
+      return 'Please enter a valid phone number.'.tr;
     }
     return null;
   }

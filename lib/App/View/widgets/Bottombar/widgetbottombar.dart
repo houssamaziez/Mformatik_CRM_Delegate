@@ -7,7 +7,7 @@ buttonnavigationbar(context) {
       init: HomeController(),
       builder: (controller) {
         return Container(
-          height: 75,
+          height: 60,
           color: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(

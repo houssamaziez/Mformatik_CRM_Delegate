@@ -154,14 +154,97 @@ class _ClientListScreenAddMissionState
                             children: [
                               Row(
                                 children: [
-                                  Icon(Icons.person, color: Colors.blueAccent),
-                                  SizedBox(width: 10),
                                   Flexible(
                                     child: Text(
                                       client.fullName ?? 'No Name'.tr,
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 6),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.phone,
+                                    color: Colors.green,
+                                    size: 15,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    client.tel ?? 'N/A',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 6),
+                              Row(
+                                children: [
+                                  Icon(Icons.phone_android_rounded,
+                                      size: 15, color: Colors.green),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    client.phone ?? 'N/A',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 6),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.email,
+                                    color: Colors.redAccent,
+                                    size: 15,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    client.email ?? 'No Email'.tr,
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 6),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Sold:'.tr + " ${client.sold}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Potential:'.tr + " ${client.potential}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Turnover:'.tr + " ${client.sold}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      'Cashing In:'.tr + " ${client.potential}",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black87,
                                       ),
                                     ),
                                   ),

@@ -44,6 +44,9 @@ class _MyTextfieldState extends State<MyTextfield> {
             Expanded(
               child: TextFormField(
                 controller: widget.controller,
+                cursorColor: Theme.of(context)
+                    .primaryColor, // Change the cursor color here
+
                 style: TextStyle(color: Colors.black),
                 obscureText: widget.isPassword && !widget.isPasswordVisible,
                 decoration: InputDecoration(
