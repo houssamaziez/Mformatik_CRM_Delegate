@@ -188,8 +188,17 @@ class FeedbackController extends GetxController {
       );
 
       request.headers['x-auth-token'] = token.read("token").toString();
+      print(feedbackModelId);
 
+      if (feedbackModelId == 1) {
+        print(feedbackModelId);
+        if (label.isEmpty || label.length <= 2) {
+          showMessage(Get.context, title: 'Please specify'.tr);
+          return;
+        }
+      }
       request.fields['label'] = label;
+
       request.fields['desc'] = desc;
       if (lat != null) request.fields['lat'] = lat;
       if (lng != null) request.fields['lng'] = lng;
@@ -276,7 +285,13 @@ class FeedbackController extends GetxController {
             expandableControllerFeedback.selectedItem.value!.id.toString();
         update();
       }
-
+      if (feedbackModelFilter == "1".toString()) {
+        print(lastLabel);
+        if (lastLabel.isEmpty || lastLabel.length <= 2) {
+          showMessage(Get.context, title: 'Please specify'.tr);
+          return;
+        }
+      }
       final List imagpath = [];
       for (var i = 0; i < images.length; i++) {
         // print(images[i]["id"]);
