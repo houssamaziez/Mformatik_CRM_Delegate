@@ -66,7 +66,8 @@ class MissionCard extends StatelessWidget {
                               Icon(Icons.person, color: Colors.grey, size: 18),
                               const SizedBox(width: 4),
                               Text(
-                                'Created by: ${mission.creatorUsername}',
+                                'Created by:'.tr +
+                                    " ${mission.creatorUsername}",
                                 style: const TextStyle(
                                   color: Colors.grey,
                                   fontSize: 13,
@@ -83,7 +84,8 @@ class MissionCard extends StatelessWidget {
                                   size: 14),
                               const SizedBox(width: 4),
                               Text(
-                                'Status: ${_getStatusLabel(mission.statusId!)}',
+                                'Status:'.tr +
+                                    " ${_getStatusLabel(mission.statusId!)}",
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: _getStatusColor(mission.statusId!),
