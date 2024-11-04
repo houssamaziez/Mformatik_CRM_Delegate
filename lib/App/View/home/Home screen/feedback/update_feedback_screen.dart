@@ -132,10 +132,16 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
               // // if (widget.feedback.feedbackModelId == 1)
               // ReasonsSelectorFeedbackupd(
               //     id: widget.feedback.feedbackModelId.toString()),
-              Builder(builder: (context) {
-                return ReasonsSelectorFeedbackupd(
-                    id: widget.feedback.feedbackModelId.toString());
-              }),
+              GetBuilder<ExpandableControllerFeedback>(
+                builder: (controller) {
+                  return ReasonsSelectorFeedbackupd(
+                    id: controller.selectedItem.value != null
+                        ? controller.selectedItem.value!.id?.toString() ??
+                            widget.feedback.feedbackModelId.toString()
+                        : widget.feedback.feedbackModelId.toString(),
+                  );
+                },
+              ),
 
               const SizedBox(
                 height: 20,
@@ -436,8 +442,11 @@ class _ReasonsSelectorFeedbackupdState
     extends State<ReasonsSelectorFeedbackupd> {
   @override
   void initState() {
-    Get.put(ExpandableControllerFeedback()).intiItme(int.parse(widget.id));
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        Get.put(ExpandableControllerFeedback()).intiItme(int.parse(widget.id));
+      }
+    });
     super.initState();
   }
 
