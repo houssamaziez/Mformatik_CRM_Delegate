@@ -49,12 +49,24 @@ class ProfileUserScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 8,
+                ),
                 Text(person.firstName + " " + person.lastName,
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     )),
+                Text(
+                  person?.firstName == null
+                      ? 'Fetching data...'.tr
+                      : '@${user?.username ?? ''}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
                 const SizedBox(
                   height: 16,
                 ),

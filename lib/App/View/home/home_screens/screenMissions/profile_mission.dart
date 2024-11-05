@@ -264,12 +264,13 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
               ),
               Row(
                 children: [
-                  Icon(Icons.person, color: Colors.grey, size: 18),
+                  Icon(Icons.person,
+                      color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Text(
                     "Full Name".tr + " ${client.fullName}",
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: Color.fromARGB(255, 48, 48, 48),
                       fontSize: 13,
                     ),
                   ),
@@ -280,12 +281,13 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
               ),
               Row(
                 children: [
-                  Icon(Icons.phone, color: Colors.grey, size: 18),
+                  Icon(Icons.phone,
+                      color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Text(
                     "Tel :".tr + " ${(client.tel == "" ? 'N/A' : client.tel)}",
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: Color.fromARGB(255, 48, 48, 48),
                       fontSize: 13,
                     ),
                   ),
@@ -297,13 +299,13 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
               Row(
                 children: [
                   Icon(Icons.phone_android_rounded,
-                      color: Colors.grey, size: 18),
+                      color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Text(
                     "Phone :".tr +
                         " ${(client.phone == "" ? 'N/A' : client.phone)}",
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: Color.fromARGB(255, 48, 48, 48),
                       fontSize: 13,
                     ),
                   ),
@@ -314,14 +316,15 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
               ),
               Row(
                 children: [
-                  Icon(Icons.home, color: Colors.grey, size: 18),
+                  Icon(Icons.home,
+                      color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Flexible(
                     child: Text(
                       "Address :".tr +
                           " ${(client.address == "" ? 'N/A' : client.address)}",
                       style: const TextStyle(
-                        color: Colors.grey,
+                        color: Color.fromARGB(255, 48, 48, 48),
                         fontSize: 13,
                       ),
                     ),

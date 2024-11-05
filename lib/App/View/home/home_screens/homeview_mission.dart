@@ -17,7 +17,7 @@ import 'clientview/client_list_screen.dart';
 import 'feedback/feedback_list_screen.dart';
 import 'screenMissions/mission_list_screen_by_me.dart';
 import 'screenMissions/profile_mission.dart';
-import '../Widgets/absence_and_lateness_button.dart';
+import '../Widgets/status_button.dart';
 import '../Widgets/add_mission_button.dart';
 import '../Widgets/filter_annex_company.dart';
 import '../Widgets/getSliderColor.dart';

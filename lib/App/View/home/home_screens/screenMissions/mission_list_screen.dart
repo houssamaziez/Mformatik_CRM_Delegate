@@ -146,6 +146,8 @@ class _MissionListScreenState extends State<MissionListScreen> {
                         ).addRefreshIndicator(
                             onRefresh: () => controller.getAllMission(
                                 context,
+                                endingDate: endDateTextMissions,
+                                startingDate: startDateTextMissions,
                                 Get.put(CompanyController())
                                     .selectCompany!
                                     .id));
@@ -160,87 +162,133 @@ class _MissionListScreenState extends State<MissionListScreen> {
   }
 }
 
-void showDateRangeDialog(context) {
+void showDateRangeDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return StatefulBuilder(builder: (context, setState) {
         return AlertDialog(
-          title: Text('Select Date Range'.tr),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: Row(
+            children: [
+              Text(
+                'Select Date Range'.tr,
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
+              Spacer(),
+            ],
+          ),
           content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Start Date:'.tr),
-                TextButton(
-                  onPressed: () async {
-                    DateTime? pickedStartDate = await showDatePicker(
-                      context: context,
-                      initialDate: startDateMissions ?? DateTime.now(),
-                      firstDate: DateTime(2024),
-                      lastDate: DateTime.now(),
-                    );
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildDateSelection(
+                    context,
+                    'Start Date'.tr,
+                    startDateMissions,
+                    () async {
+                      DateTime? pickedStartDate = await showDatePicker(
+                        context: context,
+                        initialDate: startDateMissions ?? DateTime.now(),
+                        firstDate: DateTime(2024),
+                        lastDate: DateTime.now(),
+                      );
 
-                    if (pickedStartDate != null &&
-                        pickedStartDate != startDateMissions) {
-                      setState(() {
-                        startDateMissions = pickedStartDate;
-                        startDateTextMissions = startDateMissions!
-                            .toLocal()
-                            .toString()
-                            .split(' ')[0];
-                      });
-                    }
-                  },
-                  child: Text(
-                    startDateMissions != null
-                        ? startDateMissions!.toLocal().toString().split(' ')[0]
-                        : 'Select Start Date'.tr,
-                    style: const TextStyle(color: Colors.blue),
+                      if (pickedStartDate != null &&
+                          pickedStartDate != startDateMissions) {
+                        setState(() {
+                          startDateMissions = pickedStartDate;
+                          startDateTextMissions = startDateMissions!
+                              .toLocal()
+                              .toString()
+                              .split(' ')[0];
+                        });
+                      }
+                    },
                   ),
-                ),
-                const SizedBox(height: 20),
-                Text('End Date:'.tr),
-                TextButton(
-                  onPressed: () async {
-                    DateTime? pickedEndDate = await showDatePicker(
-                      context: context,
-                      initialDate: endDateMissions ?? DateTime.now(),
-                      firstDate: DateTime(2024),
-                      lastDate: DateTime.now(),
-                    );
+                  const SizedBox(height: 20),
+                  _buildDateSelection(
+                    context,
+                    'End Date'.tr,
+                    endDateMissions,
+                    () async {
+                      DateTime? pickedEndDate = await showDatePicker(
+                        context: context,
+                        initialDate: endDateMissions ?? DateTime.now(),
+                        firstDate: DateTime(2024),
+                        lastDate: DateTime.now(),
+                      );
 
-                    if (pickedEndDate != null &&
-                        pickedEndDate != endDateMissions) {
-                      setState(() {
-                        endDateMissions = pickedEndDate;
-                        endDateTextMissions =
-                            endDateMissions!.toLocal().toString().split(' ')[0];
-                      });
-                    }
-                  },
-                  child: Center(
-                    child: Text(
-                      endDateMissions != null
-                          ? endDateMissions!.toLocal().toString().split(' ')[0]
-                          : 'Select End Date'.tr,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.blue),
+                      if (pickedEndDate != null &&
+                          pickedEndDate != endDateMissions) {
+                        setState(() {
+                          endDateMissions = pickedEndDate;
+                          endDateTextMissions = endDateMissions!
+                              .toLocal()
+                              .toString()
+                              .split(' ')[0];
+                        });
+                      }
+                    },
+                  ),
+                  Tooltip(
+                    message: 'Reset Dates',
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          startDateMissions = null;
+                          endDateMissions = null;
+                          endDateTextMissions = "";
+                          startDateTextMissions = "";
+                        });
+
+                        Get.put(MissionsControllerAll()).getAllMission(
+                            endingDate: endDateTextMissions,
+                            startingDate: startDateTextMissions,
+                            context,
+                            Get.put(CompanyController()).selectCompany!.id);
+
+                        Navigator.of(context).pop(); // Close the dialog
+                      },
+                      icon: Icon(
+                        Icons.restore_outlined,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           actions: [
             TextButton(
-              child: Text('Cancel'.tr),
+              child: Text(
+                'Cancel'.tr,
+                style: TextStyle(color: Colors.redAccent),
+              ),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
             ElevatedButton(
-              child: Text('OK'.tr),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                child: Text(
+                  'OK'.tr,
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
               onPressed: () {
                 Get.put(MissionsControllerAll()).getAllMission(
                     endingDate: endDateTextMissions,
@@ -255,5 +303,40 @@ void showDateRangeDialog(context) {
         );
       });
     },
+  );
+}
+
+Widget _buildDateSelection(
+    BuildContext context, String label, DateTime? date, Function onPressed) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+      ),
+      const SizedBox(height: 8),
+      TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: Colors.grey[200],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        onPressed: () => onPressed(),
+        child: Center(
+          child: Text(
+            date != null
+                ? date.toLocal().toString().split(' ')[0]
+                : 'Select $label'.tr,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontSize: 14,
+            ),
+          ),
+        ),
+      ),
+    ],
   );
 }

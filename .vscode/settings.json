@@ -2,7 +2,8 @@
     "conventionalCommits.scopes": [
         "annex screen",
         "screen edite profile ",
-        "screen update feedback "
+        "screen update feedback ",
+        "all app "
     ],
     "cSpell.words": [
         "Lengt",

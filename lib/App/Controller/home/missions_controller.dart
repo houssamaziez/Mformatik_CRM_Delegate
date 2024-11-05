@@ -19,6 +19,7 @@ class MissionsController extends GetxController {
   List<Mission>? missionsfilter = [];
   bool isLoading = false;
   bool isLoadingProfile = false;
+  bool isLoadingProfilebutton = false;
   bool isLoadingMore = false;
   int offset = 0;
   int limit = 7;
@@ -250,7 +251,7 @@ class MissionsController extends GetxController {
         }),
       );
       if (response.statusCode == 200) {
-        await getMissionById(Get.context, missionId);
+        await getMissionById(Get.context, missionId, isLoding: true);
         getAllMission(
             Get.context, Get.put(CompanyController()).selectCompany!.id);
         // showMessage(
@@ -260,16 +261,25 @@ class MissionsController extends GetxController {
         // );
       }
     } catch (e) {
-      showMessage(Get.context, title: "Failed to load Mission Status".tr);
+      showMessage(
+        Get.context,
+        title: "Failed to load Mission Status".tr,
+      );
     } finally {
       changestatus = false;
       update();
     }
   }
 
-  Future<void> getMissionById(context, int missionId) async {
-    isLoadingProfile = true;
-    update();
+  Future<void> getMissionById(context, int missionId,
+      {bool isLoding = false}) async {
+    if (isLoding) {
+      isLoadingProfilebutton = true;
+      update();
+    } else {
+      isLoadingProfile = true;
+      update();
+    }
 
     final uri = Uri.parse(
         '${Endpoint.apiMissions}/$missionId'); // Add API endpoint for single mission
@@ -292,7 +302,13 @@ class MissionsController extends GetxController {
     } catch (e) {
       showMessage(context, title: 'Connection problem'.tr);
     } finally {}
-    isLoadingProfile = false;
-    update();
+
+    if (isLoding) {
+      isLoadingProfilebutton = false;
+      update();
+    } else {
+      isLoadingProfile = false;
+      update();
+    }
   }
 }

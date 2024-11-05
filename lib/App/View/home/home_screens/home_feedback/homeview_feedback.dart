@@ -18,7 +18,7 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../Controller/home/company_controller.dart';
 import '../../../../Controller/home/home_controller.dart';
 import '../../../../Controller/home/reasons_feedback_controller.dart';
-import '../../Widgets/absence_and_lateness_button.dart';
+import '../../Widgets/status_button.dart';
 import '../../Widgets/add_feedback_button.dart';
 import '../../Widgets/filter_annex_company.dart';
 import '../../Widgets/getSliderColor.dart';

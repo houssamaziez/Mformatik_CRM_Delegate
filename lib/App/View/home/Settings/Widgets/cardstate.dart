@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/annex_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 
+import '../../../../Controller/home/feedback_controller.dart';
 import '../../../../Util/Style/stylecontainer.dart';
 
 List<Map<String, String>> listt = [
@@ -15,10 +17,10 @@ List<Map<String, String>> listt = [
   {
     "title": " ",
     "suptitle": "1",
-    "Image": "assets/icons/school_82938461.png",
+    "Image": "assets/icons/feedbackIcons.png",
   },
   {
-    "title": "حالة الحساب",
+    "title": " ",
     "suptitle": "فعال",
     "Image": "assets/icons/subscribe1.png",
   }
@@ -83,16 +85,16 @@ Padding liststate() {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        GetBuilder<CompanyController>(
-            init: CompanyController(),
+        GetBuilder<AnnexController>(
+            init: AnnexController(),
             builder: (cont) {
               return cardstate(
-                  title: "Company".tr.toString(),
+                  title: "Annex".tr.toString(),
                   // ignore: unnecessary_null_comparison
-                  suptitle: cont.companies == null
+                  suptitle: cont.annexList == null
                       ? '0'
-                      : cont.companies!.length.toString(),
-                  image: listt[1]["Image"].toString());
+                      : cont.annexList.length.toString(),
+                  image: "assets/icons/connecting.png".toString());
             }),
         cardstate(
             title: "Version.".tr.toString(),
@@ -126,26 +128,27 @@ Padding liststateprofile() {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        GetBuilder<CompanyController>(
-            init: CompanyController(),
+        GetBuilder<FeedbackController>(
+            init: FeedbackController(),
             builder: (cont) {
               return cardstate(
-                  title: "Company".tr.toString(),
+                  title: "Feedback".tr.toString(),
                   // ignore: unnecessary_null_comparison
-                  suptitle: cont.companies == null
+                  suptitle: cont.feedbackslength == null
                       ? '0'
-                      : cont.companies!.length.toString(),
-                  image: listt2[1]["Image"].toString());
+                      : cont.feedbackslength!.toString(),
+                  image:
+                      "assets/icons/feedbackIcons.png".toString().toString());
             }),
-        GetBuilder<AnnexController>(
-            init: AnnexController(),
+        GetBuilder<MissionsController>(
+            init: MissionsController(),
             builder: (cont) {
               return cardstate(
-                  title: "Annex".tr.toString(),
-                  suptitle: cont.annexList == null
+                  title: "Missions".tr.toString(),
+                  suptitle: cont.missionslength == null
                       ? '0'
-                      : cont.annexList!.length.toString(),
-                  image: listt2[0]["Image"].toString());
+                      : cont.missionslength!.toString(),
+                  image: "assets/icons/target.png".toString());
             }),
         GetBuilder<AuthController>(
             init: AuthController(),

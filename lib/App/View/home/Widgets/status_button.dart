@@ -48,13 +48,13 @@ Expanded statuseAndLatenessButton(
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black54,
-                                    fontSize: 14),
+                                    fontSize: 12),
                               ),
                               Spacer(),
                               Text(
-                                "(" +
-                                    missionsController.missionslength
-                                        .toString() +
+                                "New".tr +
+                                    "(" +
+                                    missionsController.created.toString() +
                                     ")",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
@@ -277,20 +277,20 @@ Expanded statuseFeddbackAndLatenessButton(
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black54,
-                                    fontSize: 14),
+                                    fontSize: 12),
                               ),
                               Spacer(),
-                              Text(
-                                "All".tr +
-                                    "(" +
-                                    missionsController.feedbackslength
-                                        .toString() +
-                                    ")",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: Theme.of(context).primaryColor),
-                              ),
+                              // Text(
+                              //   "All".tr +
+                              //       "(" +
+                              //       missionsController.feedbackslength
+                              //           .toString() +
+                              //       ")",
+                              //   style: TextStyle(
+                              //       fontWeight: FontWeight.w500,
+                              //       fontSize: 12,
+                              //       color: Theme.of(context).primaryColor),
+                              // ),
                               SizedBox(
                                 width: 10,
                               )

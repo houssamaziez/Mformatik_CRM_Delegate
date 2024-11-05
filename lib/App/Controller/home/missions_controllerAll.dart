@@ -39,9 +39,11 @@ class MissionsControllerAll extends GetxController {
         'companyId': companyId.toString(),
         'offset': offset.toString(),
         'limit': limit.toString(),
-        if (startingDate!.isNotEmpty) ...{'startDate': startingDate},
-        if (creatorId!.isNotEmpty) ...{'creatorId': creatorId},
-        if (endingDate!.isNotEmpty) ...{'endDate': endingDate},
+        if (startingDate != "") ...{'startDate': startingDate},
+        if (creatorId!.isNotEmpty || creatorId != "") ...{
+          'creatorId': creatorId
+        },
+        if (endingDate != "") ...{'endDate': endingDate},
       },
     );
     if (companyId == 0) {
