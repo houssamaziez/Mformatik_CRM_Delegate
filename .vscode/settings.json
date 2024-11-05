@@ -1,9 +1,11 @@
 {
     "conventionalCommits.scopes": [
         "annex screen",
-        "screen edite profile "
+        "screen edite profile ",
+        "screen update feedback "
     ],
     "cSpell.words": [
-        "Lengt"
+        "Lengt",
+        "upadteisloading"
     ]
 }

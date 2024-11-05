@@ -1,52 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/annex_controller.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/feedback/feedback_profile_screen.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/feedback/feedback_list_screen.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/screenMissions/mission_list_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../Controller/home/company_controller.dart';
 import '../../../Controller/home/home_controller.dart';
-import '../../../Controller/home/reasons_feedback_controller.dart';
+import 'clientview/client_list_screen.dart';
+import 'feedback/feedback_list_screen.dart';
+import 'screenMissions/mission_list_screen_by_me.dart';
+import 'screenMissions/profile_mission.dart';
 import '../Widgets/absence_and_lateness_button.dart';
-import '../Widgets/add_feedback_button.dart';
+import '../Widgets/add_mission_button.dart';
 import '../Widgets/filter_annex_company.dart';
 import '../Widgets/getSliderColor.dart';
 import '../Widgets/homeMenuSelectScreens.dart';
 import '../Widgets/homeMenu_select.dart';
-import 'clientview/client_list_screen.dart';
-import 'screenMissions/mission_list_screen_by_me.dart';
+import 'screenMissions/widgets/getStatusColor.dart';
+import 'screenMissions/widgets/getStatusLabel.dart';
 
-class HomeFeedback extends StatefulWidget {
-  HomeFeedback({super.key});
-
-  @override
-  State<HomeFeedback> createState() => _HomeFeedbackState();
-}
-
-class _HomeFeedbackState extends State<HomeFeedback> {
-  final FeedbackController feedbackController = Get.put(
-    FeedbackController(),
-  );
-  @override
-  void initState() {
-    feedbackController.fetchFeedbacks(
-        Get.put(CompanyController()).selectCompany == null
-            ? 0.toString()
-            : Get.put(CompanyController()).selectCompany!.id.toString(),
-        Get.put(AuthController()).user!.id.toString());
-    Get.put(ReasonsFeedbackController()).fetchReasons();
-    super.initState();
-  }
+class Home extends StatelessWidget {
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -159,6 +140,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: "Select another annex"
+                                              .tr
                                               .style(color: Colors.white),
                                         ),
                                       ),
@@ -200,18 +182,18 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                           height: 14,
                         ),
                         SizedBox(
-                            height: 145,
+                            height: 210,
                             child: Row(
                               children: [
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                statuseFeddbackAndLatenessButton(
+                                statuseAndLatenessButton(
                                     context, getSliderColor),
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                const AddMissionbuttonFeddback(),
+                                const AddMissionbutton(),
                                 const SizedBox(
                                   width: 8,
                                 ),
@@ -232,7 +214,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: "Last Feedbacks".tr.style(
+                                    child: "Last Missions".tr.style(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black54,
                                         fontSize: 14),
@@ -253,7 +235,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                           width: 1,
                                         ),
                                         Expanded(
-                                            flex: 4,
+                                            flex: 2,
                                             child: "Label".tr.style(
                                                 color: Theme.of(context)
                                                     .primaryColor,
@@ -261,7 +243,17 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                 fontSize: 14)),
                                         Flexible(
                                             flex: 2,
-                                            child: "Clients"
+                                            child: "Creator"
+                                                .tr
+                                                .style(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14)
+                                                .center()),
+                                        Flexible(
+                                            flex: 2,
+                                            child: "Status"
                                                 .tr
                                                 .style(
                                                     color: Theme.of(context)
@@ -278,14 +270,13 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                       ],
                                     ),
                                   ),
-                                  GetBuilder<FeedbackController>(
-                                      init: FeedbackController(),
+                                  GetBuilder<MissionsController>(
+                                      init: MissionsController(),
                                       builder: (missionsController) {
                                         return missionsController.isLoading ==
                                                 false
                                             ? missionsController
-                                                        .feedbacks!.length ==
-                                                    0
+                                                    .missions!.isEmpty
                                                 ? Padding(
                                                     padding:
                                                         EdgeInsets.all(8.0),
@@ -314,28 +305,27 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                         physics:
                                                             const NeverScrollableScrollPhysics(),
                                                         itemCount: missionsController
-                                                                    .feedbacks!
+                                                                    .missions!
                                                                     .length >
                                                                 7
                                                             ? 6
                                                             : missionsController
-                                                                .feedbacks!
+                                                                .missions!
                                                                 .length,
                                                         itemBuilder:
                                                             (context, index) {
-                                                          final feedback =
+                                                          final mission =
                                                               missionsController
-                                                                      .feedbacks![
+                                                                      .missions![
                                                                   index];
                                                           return InkWell(
                                                             onTap: () {
                                                               Go.to(
                                                                   context,
-                                                                  FeedbackDetailScreen(
-                                                                    feedbackId:
-                                                                        feedback
-                                                                            .id
-                                                                            .toString(),
+                                                                  MissionProfileScreen(
+                                                                    missionId:
+                                                                        mission
+                                                                            .id,
                                                                   ));
                                                             },
                                                             child: Padding(
@@ -360,18 +350,25 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                                     width: 1,
                                                                   ),
                                                                   Expanded(
-                                                                      flex: 5,
-                                                                      child: feedback
+                                                                      flex: 2,
+                                                                      child: mission
                                                                           .label!
                                                                           .style(
                                                                               textAlign: TextAlign.start)),
                                                                   Flexible(
                                                                       flex: 2,
-                                                                      child: feedback
-                                                                          .client!
-                                                                          .fullName!
+                                                                      child: mission
+                                                                          .creatorUsername!
+                                                                          .style(
+                                                                              textAlign: TextAlign.center)
+                                                                          .center()),
+                                                                  Flexible(
+                                                                      flex: 2,
+                                                                      child: getStatusLabel(mission
+                                                                              .statusId!)
                                                                           .toString()
                                                                           .style(
+                                                                              color: getStatusColor(mission.statusId!),
                                                                               textAlign: TextAlign.center)
                                                                           .center()),
                                                                   Flexible(
@@ -402,7 +399,8 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                       const Spacer(),
                                       InkWell(
                                         onTap: () {
-                                          Go.to(context, FeedbackScreen());
+                                          Go.to(context,
+                                              const MissionListScreen());
                                         },
                                         child: Container(
                                           decoration:
@@ -417,7 +415,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                 top: 5,
                                                 bottom: 5),
                                             child: Text(
-                                              "View All Feedback".tr,
+                                              "View All Missions".tr,
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 13),

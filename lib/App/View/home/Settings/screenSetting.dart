@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Controller/auth/auth_controller.dart';
-import '../../../Util/Route/Go.dart';
 import '../../auth/screen_auth.dart';
 import '../../splashScreen/splash_screen.dart';
 import '../../widgets/Dialog/showExitConfirmationDialog.dart';

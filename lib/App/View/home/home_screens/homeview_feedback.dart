@@ -1,33 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/annex_controller.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/screenMissions/mission_list_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_profile_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_list_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../Controller/home/company_controller.dart';
 import '../../../Controller/home/home_controller.dart';
-import 'clientview/client_list_screen.dart';
-import 'feedback/feedback_list_screen.dart';
-import 'screenMissions/mission_list_screen_by_me.dart';
-import 'screenMissions/profile_mission.dart';
+import '../../../Controller/home/reasons_feedback_controller.dart';
 import '../Widgets/absence_and_lateness_button.dart';
-import '../Widgets/add_mission_button.dart';
+import '../Widgets/add_feedback_button.dart';
 import '../Widgets/filter_annex_company.dart';
 import '../Widgets/getSliderColor.dart';
 import '../Widgets/homeMenuSelectScreens.dart';
 import '../Widgets/homeMenu_select.dart';
-import 'screenMissions/widgets/getStatusColor.dart';
-import 'screenMissions/widgets/getStatusLabel.dart';
+import 'clientview/client_list_screen.dart';
+import 'screenMissions/mission_list_screen_by_me.dart';
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class HomeFeedback extends StatefulWidget {
+  HomeFeedback({super.key});
+
+  @override
+  State<HomeFeedback> createState() => _HomeFeedbackState();
+}
+
+class _HomeFeedbackState extends State<HomeFeedback> {
+  final FeedbackController feedbackController = Get.put(
+    FeedbackController(),
+  );
+  @override
+  void initState() {
+    feedbackController.fetchFeedbacks(
+        Get.put(CompanyController()).selectCompany == null
+            ? 0.toString()
+            : Get.put(CompanyController()).selectCompany!.id.toString(),
+        Get.put(AuthController()).user!.id.toString());
+    Get.put(ReasonsFeedbackController()).fetchReasons();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +159,6 @@ class Home extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: "Select another annex"
-                                              .tr
                                               .style(color: Colors.white),
                                         ),
                                       ),
@@ -182,18 +200,18 @@ class Home extends StatelessWidget {
                           height: 14,
                         ),
                         SizedBox(
-                            height: 210,
+                            height: 145,
                             child: Row(
                               children: [
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                statuseAndLatenessButton(
+                                statuseFeddbackAndLatenessButton(
                                     context, getSliderColor),
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                const AddMissionbutton(),
+                                const AddMissionbuttonFeddback(),
                                 const SizedBox(
                                   width: 8,
                                 ),
@@ -214,7 +232,7 @@ class Home extends StatelessWidget {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: "Last Missions".tr.style(
+                                    child: "Last Feedbacks".tr.style(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black54,
                                         fontSize: 14),
@@ -235,7 +253,7 @@ class Home extends StatelessWidget {
                                           width: 1,
                                         ),
                                         Expanded(
-                                            flex: 2,
+                                            flex: 4,
                                             child: "Label".tr.style(
                                                 color: Theme.of(context)
                                                     .primaryColor,
@@ -243,17 +261,7 @@ class Home extends StatelessWidget {
                                                 fontSize: 14)),
                                         Flexible(
                                             flex: 2,
-                                            child: "Creator"
-                                                .tr
-                                                .style(
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14)
-                                                .center()),
-                                        Flexible(
-                                            flex: 2,
-                                            child: "Status"
+                                            child: "Clients"
                                                 .tr
                                                 .style(
                                                     color: Theme.of(context)
@@ -270,13 +278,14 @@ class Home extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  GetBuilder<MissionsController>(
-                                      init: MissionsController(),
+                                  GetBuilder<FeedbackController>(
+                                      init: FeedbackController(),
                                       builder: (missionsController) {
                                         return missionsController.isLoading ==
                                                 false
                                             ? missionsController
-                                                    .missions!.isEmpty
+                                                        .feedbacks!.length ==
+                                                    0
                                                 ? Padding(
                                                     padding:
                                                         EdgeInsets.all(8.0),
@@ -305,27 +314,28 @@ class Home extends StatelessWidget {
                                                         physics:
                                                             const NeverScrollableScrollPhysics(),
                                                         itemCount: missionsController
-                                                                    .missions!
+                                                                    .feedbacks!
                                                                     .length >
                                                                 7
                                                             ? 6
                                                             : missionsController
-                                                                .missions!
+                                                                .feedbacks!
                                                                 .length,
                                                         itemBuilder:
                                                             (context, index) {
-                                                          final mission =
+                                                          final feedback =
                                                               missionsController
-                                                                      .missions![
+                                                                      .feedbacks![
                                                                   index];
                                                           return InkWell(
                                                             onTap: () {
                                                               Go.to(
                                                                   context,
-                                                                  MissionProfileScreen(
-                                                                    missionId:
-                                                                        mission
-                                                                            .id,
+                                                                  FeedbackDetailScreen(
+                                                                    feedbackId:
+                                                                        feedback
+                                                                            .id
+                                                                            .toString(),
                                                                   ));
                                                             },
                                                             child: Padding(
@@ -350,25 +360,18 @@ class Home extends StatelessWidget {
                                                                     width: 1,
                                                                   ),
                                                                   Expanded(
-                                                                      flex: 2,
-                                                                      child: mission
+                                                                      flex: 5,
+                                                                      child: feedback
                                                                           .label!
                                                                           .style(
                                                                               textAlign: TextAlign.start)),
                                                                   Flexible(
                                                                       flex: 2,
-                                                                      child: mission
-                                                                          .creatorUsername!
-                                                                          .style(
-                                                                              textAlign: TextAlign.center)
-                                                                          .center()),
-                                                                  Flexible(
-                                                                      flex: 2,
-                                                                      child: getStatusLabel(mission
-                                                                              .statusId!)
+                                                                      child: feedback
+                                                                          .client!
+                                                                          .fullName!
                                                                           .toString()
                                                                           .style(
-                                                                              color: getStatusColor(mission.statusId!),
                                                                               textAlign: TextAlign.center)
                                                                           .center()),
                                                                   Flexible(
@@ -399,8 +402,7 @@ class Home extends StatelessWidget {
                                       const Spacer(),
                                       InkWell(
                                         onTap: () {
-                                          Go.to(context,
-                                              const MissionListScreen());
+                                          Go.to(context, FeedbackScreen());
                                         },
                                         child: Container(
                                           decoration:
@@ -415,7 +417,7 @@ class Home extends StatelessWidget {
                                                 top: 5,
                                                 bottom: 5),
                                             child: Text(
-                                              "View All Missions".tr,
+                                              "View All Feedback".tr,
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 13),

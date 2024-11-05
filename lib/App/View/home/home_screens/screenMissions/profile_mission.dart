@@ -4,7 +4,7 @@ import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.d
 import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Home%20screen/feedback/feedback_profile_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_profile_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../Model/mission.dart';

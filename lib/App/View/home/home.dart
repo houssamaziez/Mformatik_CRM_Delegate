@@ -7,12 +7,11 @@ import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.d
 import '../../Controller/auth/auth_controller.dart';
 import '../../Controller/home/annex_controller.dart';
 import '../widgets/Bottombar/widgetbottombar.dart';
-import '../widgets/Dialog/showExitConfirmationDialog.dart';
 import '../widgets/bolck_screen.dart';
 import 'Widgets/appbar_home.dart';
-import 'Home screen/homeview_feedback.dart';
-import 'Home screen/homeview_mission.dart';
-import 'Home screen/profileUser/profile_user_screen.dart';
+import 'home_screens/homeview_feedback.dart';
+import 'home_screens/homeview_mission.dart';
+import 'home_screens/profileUser/profile_user_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -47,8 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
           bool isactive = controllers.user!.isActive;
           return WillPopScope(
             onWillPop: () async {
-              // Show a dialog when the back button is pressed
-              // Show a dialog when the back button is pressed
               bool shouldExit = await showDialog(
                 context: context,
                 builder: (BuildContext context) {

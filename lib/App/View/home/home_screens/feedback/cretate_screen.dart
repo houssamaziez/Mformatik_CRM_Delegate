@@ -281,7 +281,6 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                             if (widget.missionID != null) {
                               showExitConfirmationDialog(context,
                                   onPressed: () async {
-                                controllercreateFeedback.updateIsLoading(true);
                                 Get.back();
                                 controllercreateFeedback.upadteisloading(true);
 
@@ -315,6 +314,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                           .tr,
                                   title: 'Confirmation'.tr);
                             } else {
+                              controllercreateFeedback.updateIsLoading(true);
                               var location =
                                   await LocationService.getCurrentLocation(
                                       context);
@@ -342,6 +342,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                   return;
                                 }
                               }
+                              controllercreateFeedback.updateIsLoading(false);
                             }
                           },
                     child: controllercreateFeedback.isLoadingadd
