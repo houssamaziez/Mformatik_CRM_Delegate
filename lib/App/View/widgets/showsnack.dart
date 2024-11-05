@@ -7,7 +7,7 @@ showMessage(context, {required String title, Color color = Colors.red}) {
       behavior: SnackBarBehavior.floating,
       content: Text(title.tr),
       backgroundColor: color,
-      duration: Duration(milliseconds: 1000), // تعيين المدة بـ 200 ميلي ثانية
+      duration: Duration(milliseconds: 1200), // تعيين المدة بـ 200 ميلي ثانية
     ),
   );
 }

@@ -90,6 +90,8 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
                                 showMessage(context,
                                     title: 'Select Reasons'.tr);
                               } else {
+                                if (controllerzx.selectedItem.value!.id == 1) {}
+
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
 

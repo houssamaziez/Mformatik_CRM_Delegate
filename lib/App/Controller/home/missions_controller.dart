@@ -107,15 +107,41 @@ class MissionsController extends GetxController {
         headers: {"x-auth-token": token.read("token").toString()},
       );
       print(responseCounts.body);
-      if (responseCounts.statusCode == 200) {
-        created = jsonDecode(responseCounts.body)["NEW"];
-        update();
-        inProgress = jsonDecode(responseCounts.body)["IN_PROGRESS"];
-        update();
-        completed = jsonDecode(responseCounts.body)["COMPLETED"];
-        update();
-        canceled = jsonDecode(responseCounts.body)["CANCELED"];
+      // if (responseCounts.statusCode == 200) {
+      //   created = jsonDecode(responseCounts.body)["NEW"];
+      //   update();
+      //   inProgress = jsonDecode(responseCounts.body)["IN_PROGRESS"];
+      //   update();
+      //   completed = jsonDecode(responseCounts.body)["COMPLETED"];
+      //   update();
+      //   canceled = jsonDecode(responseCounts.body)["CANCELED"];
 
+      //   update();
+      // }
+
+      if (responseCounts.statusCode == 200) {
+        // Decode the JSON response into a list of maps
+        List<dynamic> responseData = jsonDecode(responseCounts.body);
+
+        // Iterate over the list to find the counts based on the labels
+        for (var item in responseData) {
+          switch (item["label"]) {
+            case "NEW":
+              created = item["count"];
+              break;
+            case "IN_PROGRESS":
+              inProgress = item["count"];
+              break;
+            case "COMPLETED":
+              completed = item["count"];
+              break;
+            case "CANCELED":
+              canceled = item["count"];
+              break;
+          }
+        }
+
+        // Call update once after all assignments
         update();
       }
     } catch (e) {
@@ -140,15 +166,25 @@ class MissionsController extends GetxController {
     ExpandableControllerd controller = Get.put(ExpandableControllerd());
     reasonId = controller.selectedItem.value!.id;
 
-    String label = text;
+    String label = "";
 
     if (reasonId == null) {
       showMessage(context, title: "Select Reasons");
-
+      isLoading = false;
+      update();
       return;
     }
-    if (label == "" && reasonId != 1) {
-      showMessage(context, title: "Complete the field");
+    // if (reasonId != 1) {
+    //   showMessage(context, title: "Complete the field");
+    //   isLoading = false;
+    //   update();
+    //   return;
+    // }
+    label = controller.controllerTextEditingController!.text;
+    if ((label == "" || label.length <= 3) && reasonId == 1) {
+      showMessage(Get.context, title: 'Please specify'.tr);
+      isLoading = false;
+      update();
       return;
     }
 

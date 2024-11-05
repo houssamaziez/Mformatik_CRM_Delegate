@@ -68,9 +68,10 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                       onPressed: () async {
                         showExitConfirmationDialog(context,
                             onPressed: () async {
+                          Get.back();
+
                           await controller.changeStatuseMission(
                               2, widget.missionId);
-                          Get.back();
                         },
                             details: 'Are you sure to Start the Mission?'.tr,
                             title: 'Cnfirmation'.tr);
@@ -398,9 +399,10 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
               ? IconButton(
                   onPressed: () {
                     showExitConfirmationDialog(context, onPressed: () async {
+                      Get.back();
+
                       await controller.changeStatuseMission(
                           1, widget.missionId);
-                      Get.back();
                     },
                         details: 'Are you sure to Stop the Mission?'.tr,
                         title: 'Cnfirmation'.tr);
@@ -414,11 +416,11 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                       onPressed: () {
                         showExitConfirmationDialog(context,
                             onPressed: () async {
+                          Get.back();
+
                           await controller
                               .changeStatuseMission(2, widget.missionId)
-                              .then((onValue) {
-                            Get.back();
-                          });
+                              .then((onValue) {});
                         },
                             details: 'Are you sure to Start the Mission?'.tr,
                             title: 'Cnfirmation'.tr);

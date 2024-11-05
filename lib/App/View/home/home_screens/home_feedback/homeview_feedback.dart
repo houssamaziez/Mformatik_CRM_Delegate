@@ -11,20 +11,21 @@ import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_profile_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_list_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_feedback/validator/homeview_validator.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
-import '../../../Controller/home/company_controller.dart';
-import '../../../Controller/home/home_controller.dart';
-import '../../../Controller/home/reasons_feedback_controller.dart';
-import '../Widgets/absence_and_lateness_button.dart';
-import '../Widgets/add_feedback_button.dart';
-import '../Widgets/filter_annex_company.dart';
-import '../Widgets/getSliderColor.dart';
-import '../Widgets/homeMenuSelectScreens.dart';
-import '../Widgets/homeMenu_select.dart';
-import 'clientview/client_list_screen.dart';
-import 'screenMissions/mission_list_screen_by_me.dart';
+import '../../../../Controller/home/company_controller.dart';
+import '../../../../Controller/home/home_controller.dart';
+import '../../../../Controller/home/reasons_feedback_controller.dart';
+import '../../Widgets/absence_and_lateness_button.dart';
+import '../../Widgets/add_feedback_button.dart';
+import '../../Widgets/filter_annex_company.dart';
+import '../../Widgets/getSliderColor.dart';
+import '../../Widgets/homeMenuSelectScreens.dart';
+import '../../Widgets/homeMenu_select.dart';
+import '../clientview/client_list_screen.dart';
+import '../screenMissions/mission_list_screen_by_me.dart';
 
 class HomeFeedback extends StatefulWidget {
   HomeFeedback({super.key});
@@ -101,86 +102,20 @@ class _HomeFeedbackState extends State<HomeFeedback> {
           if (companyController.selectCompany == null &&
               companyController.isLoading.value == true) {
             return GetBuilder<HomeController>(
-                init: HomeController(),
-                builder: (controller) {
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        FilterCompany(
-                          controller: controller,
-                        ),
-                        const SizedBox(
-                          height: 150,
-                        ),
-                        const Center(child: spinkit),
-                      ],
-                    ),
-                  );
-                });
+              init: HomeController(),
+              builder: buildLoadingCompanySection,
+            );
           }
           if (companyController.selectCompany == null) {
             return GetBuilder<HomeController>(
-                init: HomeController(),
-                builder: (controller) {
-                  return SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        FilterCompany(
-                          controller: controller,
-                        ),
-                        const SizedBox(
-                          height: 200,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "No company found, please select another annex.".tr,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        GetBuilder<HomeController>(
-                            init: HomeController(),
-                            builder: (controllerHome) {
-                              return controllerHome.showContainers == false
-                                  ? InkWell(
-                                      onTap: () {
-                                        Get.put(HomeController())
-                                            .upadteshowcontaner();
-                                      },
-                                      child: Container(
-                                        decoration:
-                                            StyleContainer.stylecontainer(
-                                                color: Theme.of(context)
-                                                    .primaryColor),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: "Select another annex"
-                                              .style(color: Colors.white),
-                                        ),
-                                      ),
-                                    )
-                                  : Container();
-                            }),
-                        const SizedBox(
-                          height: 200,
-                        )
-                      ],
-                    ),
-                  ).addRefreshIndicator(
-                    onRefresh: () => Get.put(AnnexController())
-                        .fetchAnnexes()
-                        .then((onValue) {
-                      companyController.updateannex(
-                          Get.put(CompanyController()).selectCompany);
-                    }),
-                  );
-                });
+              init: HomeController(),
+              builder: (controller) => buildNoCompanyFoundSection(
+                  context,
+                  controller,
+                  companyController,
+                  "No company found, please select another annex."),
+            );
           }
-
           return Scaffold(
             body: GetBuilder<HomeController>(
                 init: HomeController(),

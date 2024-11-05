@@ -229,6 +229,10 @@ class FeedbackController extends GetxController {
       print(response.statusCode);
       if (response.statusCode == 200) {
         Get.back();
+        Get.back();
+        fetchFeedbacks(
+            Get.put(CompanyController()).selectCompany!.id.toString(),
+            Get.put(AuthController()).user!.id.toStringAsExponential());
         if (missionId != null) {
           await Get.put(MissionsController())
               .changeStatuseMission(3, missionId!);
