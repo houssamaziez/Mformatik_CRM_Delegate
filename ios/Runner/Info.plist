@@ -7,6 +7,11 @@
     <key>NSLocationAlwaysUsageDescription</key>
     <string>We need your location even when the app is in the background.</string>
 
+
+    <key>NSMicrophoneUsageDescription</key>
+    <string>[Permission explanation]</string>
+
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
