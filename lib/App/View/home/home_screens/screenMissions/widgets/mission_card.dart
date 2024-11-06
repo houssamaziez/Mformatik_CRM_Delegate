@@ -87,7 +87,7 @@ class MissionCard extends StatelessWidget {
                               const SizedBox(width: 4),
                               Text(
                                 'Status:'.tr +
-                                    " ${_getStatusLabel(mission.statusId!)}",
+                                    " ${getStatusLabel(mission.statusId!)}",
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: _getStatusColor(mission.statusId!),
@@ -168,22 +168,6 @@ class MissionCard extends StatelessWidget {
     return const Color.fromARGB(255, 196, 196, 196); // Color for Unknown
   }
 
-  // Helper method to get status label based on statusId
-  String _getStatusLabel(int statusId) {
-    switch (statusId) {
-      case 1:
-        return 'New';
-      case 2:
-        return 'In Progress';
-      case 3:
-        return 'Completed';
-      case 4:
-        return 'Canceled';
-      default:
-        return 'Unknown Status';
-    }
-  }
-
   // Helper method to get color based on statusId
   Color _getStatusColor(int statusId) {
     switch (statusId) {
@@ -204,5 +188,21 @@ class MissionCard extends StatelessWidget {
   String _formatDate(String date) {
     DateTime parsedDate = DateTime.parse(date);
     return '${parsedDate.day}/${parsedDate.month}/${parsedDate.year}';
+  }
+}
+
+// Helper method to get status label based on statusId
+String getStatusLabel(int statusId) {
+  switch (statusId) {
+    case 1:
+      return 'New';
+    case 2:
+      return 'In Progress';
+    case 3:
+      return 'Completed';
+    case 4:
+      return 'Canceled';
+    default:
+      return 'Unknown Status';
   }
 }

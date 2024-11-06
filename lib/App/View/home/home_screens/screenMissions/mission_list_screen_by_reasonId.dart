@@ -105,7 +105,7 @@ class _MissionListScreenByReasonState extends State<MissionListScreenByReason> {
                   },
                 ),
               ],
-              title: Text("All Missions".tr),
+              title: Text("${getStatusLabel(int.parse(widget.statusId))}".tr),
               centerTitle: true,
             ),
             backgroundColor: ColorsApp.white,
@@ -279,6 +279,7 @@ void showDateRangeDialog(BuildContext context, {required String statusId}) {
                                     .id,
                             endingDate: endDateTextMission,
                             startingDate: startDateTextMission,
+                            statusId: statusId,
                             creatorId:
                                 Get.put(AuthController()).user!.id.toString());
 
