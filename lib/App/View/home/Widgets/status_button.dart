@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
+import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_list_screen_by_reasonId.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../Controller/home/missions_controller.dart';
@@ -51,15 +53,23 @@ Expanded statuseAndLatenessButton(
                                     fontSize: 12),
                               ),
                               Spacer(),
-                              Text(
-                                "New".tr +
-                                    "(" +
-                                    missionsController.created.toString() +
-                                    ")",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: Theme.of(context).primaryColor),
+                              InkWell(
+                                onTap: () {
+                                  Go.to(
+                                      context,
+                                      MissionListScreenByReason(
+                                          statusId: 1.toString()));
+                                },
+                                child: Text(
+                                  "New".tr +
+                                      "(" +
+                                      missionsController.created.toString() +
+                                      ")",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12,
+                                      color: Theme.of(context).primaryColor),
+                                ),
                               ),
                               SizedBox(
                                 width: 10,
@@ -80,55 +90,79 @@ Expanded statuseAndLatenessButton(
                                     SizedBox(
                                       width: 5,
                                     ),
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 4,
-                                          backgroundColor: Color(0XffD12525),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          "Canceled".tr +
-                                              " ${missionsController.canceled}",
-                                          style: TextStyle(fontSize: 10),
-                                        ),
-                                      ],
+                                    InkWell(
+                                      onTap: () {
+                                        Go.to(
+                                            context,
+                                            MissionListScreenByReason(
+                                                statusId: 4.toString()));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 4,
+                                            backgroundColor: Color(0XffD12525),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "Canceled".tr +
+                                                " ${missionsController.canceled}",
+                                            style: TextStyle(fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Spacer(),
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 4,
-                                          backgroundColor: Color(0XffE3A105),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          "In Progress".tr +
-                                              " ${missionsController.inProgress}",
-                                          style: TextStyle(fontSize: 10),
-                                        ),
-                                      ],
+                                    InkWell(
+                                      onTap: () {
+                                        Go.to(
+                                            context,
+                                            MissionListScreenByReason(
+                                                statusId: 2.toString()));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 4,
+                                            backgroundColor: Color(0XffE3A105),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "In Progress".tr +
+                                                " ${missionsController.inProgress}",
+                                            style: TextStyle(fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Spacer(),
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 5,
-                                          backgroundColor: Color(0Xff26931D),
-                                        ),
-                                        SizedBox(
-                                          width: 4,
-                                        ),
-                                        Text(
-                                          "Completed".tr +
-                                              " ${missionsController.completed} ",
-                                          style: TextStyle(fontSize: 10),
-                                        ),
-                                      ],
+                                    InkWell(
+                                      onTap: () {
+                                        Go.to(
+                                            context,
+                                            MissionListScreenByReason(
+                                                statusId: 3.toString()));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 5,
+                                            backgroundColor: Color(0Xff26931D),
+                                          ),
+                                          SizedBox(
+                                            width: 4,
+                                          ),
+                                          Text(
+                                            "Completed".tr +
+                                                " ${missionsController.completed} ",
+                                            style: TextStyle(fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Spacer(),
                                   ],
@@ -142,106 +176,133 @@ Expanded statuseAndLatenessButton(
                             style: TextStyle(
                                 fontWeight: FontWeight.w300, fontSize: 12),
                           ),
-                          SizedBox(
-                            height: 24,
-                            child: Row(
-                              children: [
-                                flutterSlider(
-                                    getSliderColor,
-                                    missionsController.missionslength
-                                        .toDouble(),
-                                    missionsController.completed.toDouble(),
-                                    Colors.green),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                missionsController.completed == 0
-                                    ? 0.toString().style()
-                                    : ((missionsController.completed * 100) /
-                                            missionsController.missionslength)
-                                        .toStringAsFixed(2)
-                                        .style(),
-                                "%".style(),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 24,
-                            child: Row(
-                              children: [
-                                flutterSlider(
-                                    getSliderColor,
-                                    missionsController.missionslength
-                                        .toDouble(),
-                                    missionsController.inProgress.toDouble(),
-                                    Colors.orange),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                missionsController.inProgress == 0
-                                    ? 0.toString().style()
-                                    : ((missionsController.inProgress * 100) /
-                                            missionsController.missionslength)
-                                        .toStringAsFixed(2)
-                                        .style(),
-                                "%".style(),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 24,
-                            child: Row(
-                              children: [
-                                flutterSlider(
-                                    getSliderColor,
-                                    missionsController.missionslength
-                                        .toDouble(),
-                                    missionsController.canceled.toDouble(),
-                                    Colors.red),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                missionsController.canceled == 0
-                                    ? 0.toString().style()
-                                    : ((missionsController.canceled * 100) /
-                                            missionsController.missionslength)
-                                        .toStringAsFixed(2)
-                                        .style(),
-                                "%".style(),
-                              ],
-                            ),
-                          ),
-                          Stack(
-                            children: [
-                              SizedBox(
-                                height: 24,
-                                child: Row(
-                                  children: [
-                                    flutterSlider(
-                                        getSliderColor,
-                                        missionsController.missionslength
-                                            .toDouble(),
-                                        missionsController.created.toDouble(),
-                                        Theme.of(context).primaryColor),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    missionsController.created == 0
-                                        ? 0.toString().style()
-                                        : ((missionsController.created * 100) /
-                                                missionsController
-                                                    .missionslength)
-                                            .toStringAsFixed(2)
-                                            .style(),
-                                    "%".style(),
-                                    // " ".style(),
-                                    // "New".tr.style(
-                                    //     fontSize: 10,
-                                    //     color: Theme.of(context).primaryColor),
-                                  ],
-                                ),
+                          InkWell(
+                            onTap: () {
+                              Go.to(
+                                  context,
+                                  MissionListScreenByReason(
+                                      statusId: 3.toString()));
+                            },
+                            child: SizedBox(
+                              height: 24,
+                              child: Row(
+                                children: [
+                                  flutterSlider(
+                                      getSliderColor,
+                                      missionsController.missionslength
+                                          .toDouble(),
+                                      missionsController.completed.toDouble(),
+                                      Colors.green),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  missionsController.completed == 0
+                                      ? 0.toString().style()
+                                      : ((missionsController.completed * 100) /
+                                              missionsController.missionslength)
+                                          .toStringAsFixed(2)
+                                          .style(),
+                                  "%".style(),
+                                ],
                               ),
-                            ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Go.to(
+                                  context,
+                                  MissionListScreenByReason(
+                                      statusId: 2.toString()));
+                            },
+                            child: SizedBox(
+                              height: 24,
+                              child: Row(
+                                children: [
+                                  flutterSlider(
+                                      getSliderColor,
+                                      missionsController.missionslength
+                                          .toDouble(),
+                                      missionsController.inProgress.toDouble(),
+                                      Colors.orange),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  missionsController.inProgress == 0
+                                      ? 0.toString().style()
+                                      : ((missionsController.inProgress * 100) /
+                                              missionsController.missionslength)
+                                          .toStringAsFixed(2)
+                                          .style(),
+                                  "%".style(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Go.to(
+                                  context,
+                                  MissionListScreenByReason(
+                                      statusId: 4.toString()));
+                            },
+                            child: SizedBox(
+                              height: 24,
+                              child: Row(
+                                children: [
+                                  flutterSlider(
+                                      getSliderColor,
+                                      missionsController.missionslength
+                                          .toDouble(),
+                                      missionsController.canceled.toDouble(),
+                                      Colors.red),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  missionsController.canceled == 0
+                                      ? 0.toString().style()
+                                      : ((missionsController.canceled * 100) /
+                                              missionsController.missionslength)
+                                          .toStringAsFixed(2)
+                                          .style(),
+                                  "%".style(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Go.to(
+                                  context,
+                                  MissionListScreenByReason(
+                                      statusId: 1.toString()));
+                            },
+                            child: SizedBox(
+                              height: 24,
+                              child: Row(
+                                children: [
+                                  flutterSlider(
+                                      getSliderColor,
+                                      missionsController.missionslength
+                                          .toDouble(),
+                                      missionsController.created.toDouble(),
+                                      Theme.of(context).primaryColor),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  missionsController.created == 0
+                                      ? 0.toString().style()
+                                      : ((missionsController.created * 100) /
+                                              missionsController.missionslength)
+                                          .toStringAsFixed(2)
+                                          .style(),
+                                  "%".style(),
+                                  // " ".style(),
+                                  // "New".tr.style(
+                                  //     fontSize: 10,
+                                  //     color: Theme.of(context).primaryColor),
+                                ],
+                              ),
+                            ),
                           )
                         ],
                       ),

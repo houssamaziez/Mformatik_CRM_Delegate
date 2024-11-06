@@ -29,6 +29,7 @@ class MissionsControllerAll extends GetxController {
   Future<void> getAllMission(context, int companyId,
       {String? startingDate = "",
       String? endingDate = "",
+      String? statusId = "",
       String? creatorId = ""}) async {
     missions!.clear();
     update();
@@ -43,6 +44,7 @@ class MissionsControllerAll extends GetxController {
         if (creatorId!.isNotEmpty || creatorId != "") ...{
           'creatorId': creatorId
         },
+        if (statusId!.isNotEmpty || statusId != "") ...{'statusId': statusId},
         if (endingDate != "") ...{'endDate': endingDate},
       },
     );
@@ -80,6 +82,7 @@ class MissionsControllerAll extends GetxController {
   Future<void> loadingMoreMission(context,
       {String? startingDate = "",
       String? endingDate = "",
+      String? statusId = "",
       String? creatorId = ""}) async {
     var controllercompany = Get.put(CompanyController());
 
@@ -88,9 +91,12 @@ class MissionsControllerAll extends GetxController {
         'companyId': controllercompany.selectCompany!.id.toString(),
         'offset': offset.toString(),
         'limit': limit.toString(),
-        if (creatorId!.isNotEmpty) ...{'creatorId': creatorId},
-        if (startingDate!.isNotEmpty) ...{'startDate': startingDate},
-        if (endingDate!.isNotEmpty) ...{'endDate': endingDate},
+        if (startingDate != "") ...{'startDate': startingDate},
+        if (creatorId!.isNotEmpty || creatorId != "") ...{
+          'creatorId': creatorId
+        },
+        if (statusId!.isNotEmpty || statusId != "") ...{'statusId': statusId},
+        if (endingDate != "") ...{'endDate': endingDate},
       },
     );
 

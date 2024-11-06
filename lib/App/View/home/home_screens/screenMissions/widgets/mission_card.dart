@@ -172,7 +172,7 @@ class MissionCard extends StatelessWidget {
   String _getStatusLabel(int statusId) {
     switch (statusId) {
       case 1:
-        return 'Created';
+        return 'New';
       case 2:
         return 'In Progress';
       case 3:
