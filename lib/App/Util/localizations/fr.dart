@@ -171,6 +171,7 @@ const Map<String, String> fr = {
       'Veuillez entrer un numéro de téléphone valide.',
   "Client Since:": "Client depuis :",
   'Contact Details': 'Détails de contact',
+  "Report": "Rapport",
   "Created by:": "Créé par :",
   "My Feedbacks": "Mes Retours",
   'Client Profile': 'Profil du client',

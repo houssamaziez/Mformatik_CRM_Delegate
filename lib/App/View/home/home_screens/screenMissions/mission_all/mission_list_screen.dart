@@ -1,37 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
-import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
-import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Theme/colors.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
-import '../../../../Controller/auth/auth_controller.dart';
-import '../../../../Controller/home/annex_controller.dart';
-import '../../../../Controller/home/missions_controller.dart';
-import '../../../../Controller/home/missions_controllerAll.dart';
-import '../../../widgets/Buttons/meneuSelectTow.dart';
-import '../../../widgets/Containers/container_blue.dart';
-import '../../../widgets/bolck_screen.dart';
-import '../clientview/client_list_screen.dart';
-import 'widgets/mission_card.dart';
+import '../../../../../Controller/auth/auth_controller.dart';
+import '../../../../../Controller/home/annex_controller.dart';
+import '../../../../../Controller/home/missions_controllerAll.dart';
+import '../../../../widgets/bolck_screen.dart';
+import '../widgets/mission_card.dart';
 
-DateTime? startDateMission;
-DateTime? endDateMission;
-String startDateTextMission = '';
-String endDateTextMission = '';
+DateTime? startDateMissions;
+DateTime? endDateMissions;
+String startDateTextMissions = '';
+String endDateTextMissions = '';
 
-class MissionListScreenByMe extends StatefulWidget {
-  const MissionListScreenByMe({Key? key}) : super(key: key);
+class MissionListScreen extends StatefulWidget {
+  const MissionListScreen({Key? key}) : super(key: key);
 
   @override
-  State<MissionListScreenByMe> createState() => _MissionListScreenByMeState();
+  State<MissionListScreen> createState() => _MissionListScreenState();
 }
 
-class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
+class _MissionListScreenState extends State<MissionListScreen> {
   // Initialize the MissionsController
   final MissionsControllerAll controller1 = Get.put(MissionsControllerAll());
+  final ScrollController _scrollController = ScrollController();
 
   late ScrollController scrollController;
   @override
@@ -42,9 +37,8 @@ class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
         Get.put(CompanyController()).selectCompany == null
             ? 0
             : Get.put(CompanyController()).selectCompany!.id,
-        endingDate: endDateTextMission,
-        startingDate: startDateTextMission,
-        creatorId: Get.put(AuthController()).user!.id.toString());
+        endingDate: endDateTextMissions,
+        startingDate: startDateTextMissions);
     scrollController = ScrollController();
     scrollController.addListener(_scrollListener);
     super.initState();
@@ -55,10 +49,11 @@ class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
         scrollController.position.maxScrollExtent) {
       if (controller1.offset <= controller1.missionslength) {
         print("object");
-        controller1.loadingMoreMission(context,
-            endingDate: endDateTextMission,
-            startingDate: startDateTextMission,
-            creatorId: Get.put(AuthController()).user!.id.toString());
+        controller1.loadingMoreMission(
+          context,
+          endingDate: endDateTextMissions,
+          startingDate: startDateTextMissions,
+        );
       }
 
       // if (Get.put(MissionsController()).offset <=
@@ -69,16 +64,13 @@ class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
   }
 
   AuthController controllers = Get.put(AuthController());
+  bool _showContainers = false;
   final AnnexController annexController =
       Get.put(AnnexController(), permanent: true);
   final CompanyController companyController =
       Get.put(CompanyController(), permanent: true);
   @override
   void dispose() {
-    startDateMission = null;
-    endDateMission = null;
-    endDateTextMission = "";
-    startDateTextMission = "";
     super.dispose();
   }
 
@@ -96,7 +88,7 @@ class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
                   },
                 ),
               ],
-              title: Text("My Missions".tr),
+              title: Text("All Missions".tr),
               centerTitle: true,
             ),
             backgroundColor: ColorsApp.white,
@@ -152,22 +144,13 @@ class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
                             }
                           },
                         ).addRefreshIndicator(
-                            onRefresh: () => Get.put(MissionsControllerAll())
-                                .getAllMission(
-                                    context,
-                                    Get.put(CompanyController())
-                                                .selectCompany ==
-                                            null
-                                        ? 0
-                                        : Get.put(CompanyController())
-                                            .selectCompany!
-                                            .id,
-                                    endingDate: endDateTextMission,
-                                    startingDate: startDateTextMission,
-                                    creatorId: Get.put(AuthController())
-                                        .user!
-                                        .id
-                                        .toString()));
+                            onRefresh: () => controller.getAllMission(
+                                context,
+                                endingDate: endDateTextMissions,
+                                startingDate: startDateTextMissions,
+                                Get.put(CompanyController())
+                                    .selectCompany!
+                                    .id));
                       }
                     },
                   ),
@@ -206,19 +189,20 @@ void showDateRangeDialog(BuildContext context) {
                   _buildDateSelection(
                     context,
                     'Start Date'.tr,
-                    startDateMission,
+                    startDateMissions,
                     () async {
                       DateTime? pickedStartDate = await showDatePicker(
                         context: context,
-                        initialDate: startDateMission ?? DateTime.now(),
+                        initialDate: startDateMissions ?? DateTime.now(),
                         firstDate: DateTime(2024),
                         lastDate: DateTime.now(),
                       );
+
                       if (pickedStartDate != null &&
-                          pickedStartDate != startDateMission) {
+                          pickedStartDate != startDateMissions) {
                         setState(() {
-                          startDateMission = pickedStartDate;
-                          startDateTextMission = startDateMission!
+                          startDateMissions = pickedStartDate;
+                          startDateTextMissions = startDateMissions!
                               .toLocal()
                               .toString()
                               .split(' ')[0];
@@ -230,19 +214,20 @@ void showDateRangeDialog(BuildContext context) {
                   _buildDateSelection(
                     context,
                     'End Date'.tr,
-                    endDateMission,
+                    endDateMissions,
                     () async {
                       DateTime? pickedEndDate = await showDatePicker(
                         context: context,
-                        initialDate: endDateMission ?? DateTime.now(),
+                        initialDate: endDateMissions ?? DateTime.now(),
                         firstDate: DateTime(2024),
                         lastDate: DateTime.now(),
                       );
+
                       if (pickedEndDate != null &&
-                          pickedEndDate != endDateMission) {
+                          pickedEndDate != endDateMissions) {
                         setState(() {
-                          endDateMission = pickedEndDate;
-                          endDateTextMission = endDateMission!
+                          endDateMissions = pickedEndDate;
+                          endDateTextMissions = endDateMissions!
                               .toLocal()
                               .toString()
                               .split(' ')[0];
@@ -255,23 +240,17 @@ void showDateRangeDialog(BuildContext context) {
                     child: IconButton(
                       onPressed: () {
                         setState(() {
-                          startDateMission = null;
-                          endDateMission = null;
-                          endDateTextMission = "";
-                          startDateTextMission = "";
+                          startDateMissions = null;
+                          endDateMissions = null;
+                          endDateTextMissions = "";
+                          startDateTextMissions = "";
                         });
 
                         Get.put(MissionsControllerAll()).getAllMission(
+                            endingDate: endDateTextMissions,
+                            startingDate: startDateTextMissions,
                             context,
-                            Get.put(CompanyController()).selectCompany == null
-                                ? 0
-                                : Get.put(CompanyController())
-                                    .selectCompany!
-                                    .id,
-                            endingDate: endDateTextMission,
-                            startingDate: startDateTextMission,
-                            creatorId:
-                                Get.put(AuthController()).user!.id.toString());
+                            Get.put(CompanyController()).selectCompany!.id);
 
                         Navigator.of(context).pop(); // Close the dialog
                       },
@@ -312,13 +291,10 @@ void showDateRangeDialog(BuildContext context) {
               ),
               onPressed: () {
                 Get.put(MissionsControllerAll()).getAllMission(
+                    endingDate: endDateTextMissions,
+                    startingDate: startDateTextMissions,
                     context,
-                    Get.put(CompanyController()).selectCompany == null
-                        ? 0
-                        : Get.put(CompanyController()).selectCompany!.id,
-                    endingDate: endDateTextMission,
-                    startingDate: startDateTextMission,
-                    creatorId: Get.put(AuthController()).user!.id.toString());
+                    Get.put(CompanyController()).selectCompany!.id);
 
                 Navigator.of(context).pop(); // Close the dialog
               },

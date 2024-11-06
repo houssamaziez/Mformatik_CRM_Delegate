@@ -7,12 +7,12 @@ import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_profile_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
-import '../../../../Model/mission.dart';
-import '../../../widgets/Containers/container_blue.dart';
-import '../../../widgets/Dialog/showExitConfirmationDialog.dart';
-import '../feedback/cretate_screen.dart';
-import 'widgets/getStatusColor.dart';
-import 'widgets/getStatusLabel.dart';
+import '../../../../../Model/mission.dart';
+import '../../../../widgets/Containers/container_blue.dart';
+import '../../../../widgets/Dialog/showExitConfirmationDialog.dart';
+import '../../feedback/create_feedback/cretate_screen.dart';
+import '../widgets/getStatusColor.dart';
+import '../widgets/getStatusLabel.dart';
 
 class MissionProfileScreen extends StatefulWidget {
   final int missionId;

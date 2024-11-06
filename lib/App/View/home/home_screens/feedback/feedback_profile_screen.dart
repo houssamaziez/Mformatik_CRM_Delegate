@@ -7,7 +7,7 @@ import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/profile_mission.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_details/profile_mission.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../Controller/home/feedback_controller.dart';

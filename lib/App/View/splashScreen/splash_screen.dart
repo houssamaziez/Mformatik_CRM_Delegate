@@ -10,6 +10,7 @@ import 'package:mformatic_crm_delegate/App/View/widgets/image/svg_image.dart';
 import '../../Controller/auth/auth_controller.dart';
 import '../../Service/Location/get_location.dart';
 import '../../Util/Route/Go.dart';
+import '../home/Settings/language_screen.dart';
 
 class SpalshScreen extends StatefulWidget {
   const SpalshScreen({super.key});
@@ -66,7 +67,18 @@ class _SpalshScreenState extends State<SpalshScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 2.0,
+                  height: 20,
+                ),
+                IconButton(
+                    onPressed: () {
+                      Go.to(context, const LanguageScreen());
+                    },
+                    icon: Icon(
+                      Icons.language,
+                      color: Colors.white,
+                    )),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 2.4,
                 ),
                 Hero(
                   tag: "logo",
@@ -77,7 +89,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
                   ),
                 ),
                 Text(
-                  "Delegate".tr,
+                  "Report".tr,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w600,

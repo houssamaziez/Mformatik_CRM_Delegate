@@ -6,7 +6,7 @@
 
 
     <application
-        android:label="CRM Delegate"
+        android:label="CRM Report"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

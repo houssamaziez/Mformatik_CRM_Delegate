@@ -4,10 +4,10 @@ import 'package:mformatic_crm_delegate/App/Controller/home/reasons_mission_contr
 import 'package:mformatic_crm_delegate/App/View/widgets/Item_selector.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
-import '../../../../../../Controller/home/missions_controller.dart';
-import '../../../../../../Controller/home/reasons_feedback_controller.dart';
-import '../../../../../../Controller/widgetsController/expandable_controller.dart';
-import '../../../../../../Service/AppValidator/AppValidator.dart';
+import '../../../../../Controller/home/missions_controller.dart';
+import '../../../../../Controller/home/reasons_feedback_controller.dart';
+import '../../../../../Controller/widgetsController/expandable_controller.dart';
+import '../../../../../Service/AppValidator/AppValidator.dart';
 
 class CreateMissionScreen extends StatefulWidget {
   final int clientID;
@@ -69,13 +69,8 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
                 ]),
               ),
 
-              // Client ID field
-
-              // Responsible ID field
-
               const SizedBox(height: 32),
 
-              // Submit button
               GetBuilder<MissionsController>(
                   init: MissionsController(),
                   builder: (controllercreateMission) {

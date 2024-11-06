@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_list_screen_by_reasonId.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_by_reasonId/mission_list_screen_by_reasonId.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../Controller/home/missions_controller.dart';

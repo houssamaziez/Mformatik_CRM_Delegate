@@ -12,7 +12,7 @@ import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_profile_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_feedback/validator/homeview_validator.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_list_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_all/mission_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../Controller/home/company_controller.dart';
@@ -25,7 +25,7 @@ import '../../Widgets/getSliderColor.dart';
 import '../../Widgets/homeMenuSelectScreens.dart';
 import '../../Widgets/homeMenu_select.dart';
 import '../clientview/client_list_screen.dart';
-import '../screenMissions/mission_list_screen_by_me.dart';
+import '../screenMissions/mission_by_me/mission_list_screen_by_me.dart';
 
 class HomeFeedback extends StatefulWidget {
   HomeFeedback({super.key});
