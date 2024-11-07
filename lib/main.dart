@@ -9,7 +9,6 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter/services.dart'; // For loading assets
 import 'package:record/record.dart'; // Import record package
 import 'package:path_provider/path_provider.dart';
-import 'package:voice_message_package/voice_message_package.dart'; // For getting the path to save the file
 
 void main() => runApp(const MyApp());
 
