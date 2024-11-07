@@ -7,7 +7,7 @@ buttonnavigationbar(context) {
       init: HomeController(),
       builder: (controller) {
         return Container(
-          height: 70,
+          height: 65,
           color: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
@@ -15,8 +15,8 @@ buttonnavigationbar(context) {
             children: [
               _buildNavItem(
                   context, 0, Icons.assignment, 'Missions'.tr, controller),
-              _buildNavItem(context, 1, Icons.featured_play_list_outlined,
-                  'Feedbacks'.tr, controller),
+              _buildNavItem(
+                  context, 1, Icons.feed_outlined, 'Feedbacks'.tr, controller),
               _buildNavItem(context, 2, Icons.person, 'Profile'.tr, controller),
             ],
           ),
@@ -38,6 +38,7 @@ Widget _buildNavItem(context, int index, IconData icon, String label,
           color: controller.indexBottomBar == index
               ? Theme.of(context).primaryColor
               : Colors.grey,
+          size: 19,
         ),
         Text(
           label,

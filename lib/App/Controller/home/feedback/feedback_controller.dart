@@ -9,12 +9,12 @@ import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import 'dart:convert';
 
-import '../../Model/feedback.dart';
-import '../../RouteEndPoint/EndPoint.dart';
-import '../../Service/Location/get_location.dart';
-import '../auth/auth_controller.dart';
-import '../widgetsController/expandable_controller.dart';
-import 'missions_controller.dart';
+import '../../../Model/feedback.dart';
+import '../../../RouteEndPoint/EndPoint.dart';
+import '../../../Service/Location/get_location.dart';
+import '../../auth/auth_controller.dart';
+import '../../widgetsController/expandable_controller.dart';
+import '../missions_controller.dart';
 
 class FeedbackController extends GetxController {
   RxList<FeedbackMission> feedbacks = <FeedbackMission>[].obs;
@@ -32,7 +32,8 @@ class FeedbackController extends GetxController {
   Future<void> fetchFeedbacks(String companyId, String creatorId,
       {bool isreafrach = true,
       String? startingDate = "",
-      String? endingDate = ""}) async {
+      String? endingDate = "",
+      bool? isItLinkedToAMission}) async {
     feedbacksWithMission = 0;
     feedbacksWithOutMission = 0;
     feedbackslength = 0;
@@ -56,6 +57,9 @@ class FeedbackController extends GetxController {
             'limit': limit.toString(),
             'creatorId': Get.put(AuthController()).user!.id.toString(),
             if (startingDate!.isNotEmpty) ...{'startDate': startingDate},
+            if (isItLinkedToAMission != null) ...{
+              'isItLinkedToAMission': isItLinkedToAMission
+            },
             if (endingDate!.isNotEmpty) ...{'endDate': endingDate},
           },
         ),
@@ -98,7 +102,9 @@ class FeedbackController extends GetxController {
   }
 
   Future<void> addOffset(String companyId, String creatorId,
-      {String? startingDate = "", String? endingDate = ""}) async {
+      {String? startingDate = "",
+      String? endingDate = "",
+      bool? isItLinkedToAMission}) async {
     isLoadingoffset(true);
     update();
     try {
@@ -109,6 +115,9 @@ class FeedbackController extends GetxController {
             'offset': offset.value.toString(),
             'limit': limit.toString(),
             'creatorId': creatorId,
+            if (isItLinkedToAMission != null) ...{
+              'isItLinkedToAMission': isItLinkedToAMission
+            },
             if (startingDate!.isNotEmpty) ...{'startDate': startingDate},
             if (endingDate!.isNotEmpty) ...{'endDate': endingDate},
           },

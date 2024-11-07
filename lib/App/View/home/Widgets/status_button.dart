@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/feedback/feedback_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_list_screen_filter.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_by_reasonId/mission_list_screen_by_reasonId.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
@@ -371,38 +372,56 @@ Expanded statuseFeddbackAndLatenessButton(
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 4,
-                                          backgroundColor: Color(0XffD12525),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          "With Out Mission".tr +
-                                              " ${missionsController.feedbacksWithOutMission}",
-                                          style: TextStyle(fontSize: 10),
-                                        ),
-                                      ],
+                                    InkWell(
+                                      onTap: () {
+                                        Go.to(
+                                            context,
+                                            FeedbackScreenFilter(
+                                              isItLinkedToAMission: false,
+                                            ));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 4,
+                                            backgroundColor: Color(0XffD12525),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "With Out Mission".tr +
+                                                " ${missionsController.feedbacksWithOutMission}",
+                                            style: TextStyle(fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Spacer(),
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 5,
-                                          backgroundColor: Color(0Xff26931D),
-                                        ),
-                                        SizedBox(
-                                          width: 4,
-                                        ),
-                                        Text(
-                                          "With Mission".tr +
-                                              " ${missionsController.feedbacksWithMission}",
-                                          style: TextStyle(fontSize: 10),
-                                        ),
-                                      ],
+                                    InkWell(
+                                      onTap: () {
+                                        Go.to(
+                                            context,
+                                            FeedbackScreenFilter(
+                                              isItLinkedToAMission: true,
+                                            ));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 5,
+                                            backgroundColor: Color(0Xff26931D),
+                                          ),
+                                          SizedBox(
+                                            width: 4,
+                                          ),
+                                          Text(
+                                            "With Mission".tr +
+                                                " ${missionsController.feedbacksWithMission}",
+                                            style: TextStyle(fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Spacer(),
                                   ],
@@ -416,56 +435,88 @@ Expanded statuseFeddbackAndLatenessButton(
                             style: TextStyle(
                                 fontWeight: FontWeight.w300, fontSize: 12),
                           ),
-                          SizedBox(
-                            height: 24,
-                            child: Row(
-                              children: [
-                                flutterSlider(
-                                    getSliderColor,
-                                    missionsController.feedbackslength
-                                        .toDouble(),
-                                    missionsController.feedbacksWithMission
-                                        .toDouble(),
-                                    Colors.green),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                missionsController.feedbacksWithMission == 0
-                                    ? 0.toString().style()
-                                    : ((missionsController
-                                                    .feedbacksWithMission *
-                                                100) /
-                                            missionsController.feedbackslength)
-                                        .toStringAsFixed(2)
-                                        .style(),
-                                "%".style(),
-                              ],
+                          InkWell(
+                            onTap: () {
+                              Go.to(
+                                  context,
+                                  FeedbackScreenFilter(
+                                    isItLinkedToAMission: true,
+                                  ));
+                            },
+                            child: SizedBox(
+                              height: 24,
+                              child: Row(
+                                children: [
+                                  flutterSlider(
+                                      getSliderColor,
+                                      missionsController.feedbackslength
+                                          .toDouble(),
+                                      missionsController.feedbacksWithMission
+                                          .toDouble(),
+                                      Colors.green),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  missionsController.feedbacksWithMission == 0
+                                      ? 0.toString().style()
+                                      : ((missionsController
+                                                      .feedbacksWithMission *
+                                                  100) /
+                                              missionsController
+                                                  .feedbackslength)
+                                          .toStringAsFixed(2)
+                                          .style(),
+                                  "%".style(),
+                                ],
+                              ),
                             ),
                           ),
-                          SizedBox(
-                            height: 24,
-                            child: Row(
-                              children: [
-                                flutterSlider(
-                                    getSliderColor,
-                                    missionsController.feedbackslength
-                                        .toDouble(),
-                                    missionsController.feedbacksWithOutMission
-                                        .toDouble(),
-                                    Colors.orange),
-                                const SizedBox(
-                                  width: 5,
+                          InkWell(
+                            onTap: () {
+                              Go.to(
+                                  context,
+                                  FeedbackScreenFilter(
+                                    isItLinkedToAMission: true,
+                                  ));
+                            },
+                            child: InkWell(
+                              onTap: () {
+                                Go.to(
+                                    context,
+                                    FeedbackScreenFilter(
+                                      isItLinkedToAMission: false,
+                                    ));
+                              },
+                              child: SizedBox(
+                                height: 24,
+                                child: Row(
+                                  children: [
+                                    flutterSlider(
+                                        getSliderColor,
+                                        missionsController.feedbackslength
+                                            .toDouble(),
+                                        missionsController
+                                            .feedbacksWithOutMission
+                                            .toDouble(),
+                                        Colors.red),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    missionsController
+                                                .feedbacksWithOutMission ==
+                                            0
+                                        ? 0.toString().style()
+                                        : ((missionsController
+                                                        .feedbacksWithOutMission *
+                                                    100) /
+                                                missionsController
+                                                    .feedbackslength)
+                                            .toStringAsFixed(2)
+                                            .style(),
+                                    "%".style(),
+                                  ],
                                 ),
-                                missionsController.feedbacksWithOutMission == 0
-                                    ? 0.toString().style()
-                                    : ((missionsController
-                                                    .feedbacksWithOutMission *
-                                                100) /
-                                            missionsController.feedbackslength)
-                                        .toStringAsFixed(2)
-                                        .style(),
-                                "%".style(),
-                              ],
+                              ),
                             ),
                           ),
                           Spacer()

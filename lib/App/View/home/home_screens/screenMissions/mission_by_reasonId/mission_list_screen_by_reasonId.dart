@@ -152,6 +152,7 @@ class _MissionListScreenByReasonState extends State<MissionListScreenByReason> {
                                             .selectCompany!
                                             .id,
                                     endingDate: endDateTextMissionByReason,
+                                    statusId: widget.statusId,
                                     startingDate: startDateTextMissionByReason,
                                     creatorId: Get.put(AuthController())
                                         .user!

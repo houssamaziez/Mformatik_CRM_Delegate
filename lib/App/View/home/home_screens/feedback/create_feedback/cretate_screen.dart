@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img; // For image compression
-import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/feedback/feedback_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/widgetsController/expandable_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';

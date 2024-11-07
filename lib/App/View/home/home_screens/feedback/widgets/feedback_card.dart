@@ -8,8 +8,9 @@ import '../feedback_profile_screen.dart';
 
 class FeedbackCard extends StatelessWidget {
   final FeedbackMission feedback;
-
-  const FeedbackCard({Key? key, required this.feedback}) : super(key: key);
+  final int index;
+  const FeedbackCard({Key? key, required this.feedback, required this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +37,17 @@ class FeedbackCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        feedback.label?.toString() ?? '',
+                        "${index + 1}- " + ("${feedback.label?.toString()}") ??
+                            '',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      feedback.desc!.isEmpty
+                          ? Container()
+                          : const SizedBox(height: 6),
                       Text(
                         feedback.desc ?? '',
                         style: TextStyle(
@@ -53,7 +57,9 @@ class FeedbackCard extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 12),
+                      feedback.desc!.isEmpty
+                          ? Container()
+                          : const SizedBox(height: 12),
                       Row(
                         children: [
                           Icon(Icons.person, color: Colors.grey, size: 18),
@@ -63,6 +69,30 @@ class FeedbackCard extends StatelessWidget {
                               "Client: ${feedback.client!.fullName}",
                               style: const TextStyle(
                                 color: Color.fromARGB(255, 37, 37, 37),
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(Icons.circle,
+                              color: feedback.missionId == null
+                                  ? Colors.red
+                                  : Colors.green,
+                              size: 16),
+                          const SizedBox(width: 4),
+                          Flexible(
+                            child: Text(
+                              "Status".tr +
+                                  ": " +
+                                  "${(feedback.missionId == null ? "With Out Mission".tr : "With Mission".tr)}",
+                              style: TextStyle(
+                                color: feedback.missionId == null
+                                    ? Colors.red
+                                    : Colors.green,
                                 fontSize: 13,
                               ),
                             ),

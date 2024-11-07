@@ -9,21 +9,22 @@ import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../Controller/auth/auth_controller.dart';
-import '../../../../Controller/home/feedback/feedback_controller.dart';
+import '../../../../Controller/home/feedback/feedback_controller_filter.dart';
 import '../../../../Model/feedback.dart';
 import 'feedback_profile_screen.dart';
 import 'widgets/feedback_card.dart';
 
-class FeedbackScreen extends StatefulWidget {
-  FeedbackScreen({Key? key, this.isItLinkedToAMission}) : super(key: key);
+class FeedbackScreenFilter extends StatefulWidget {
+  FeedbackScreenFilter({Key? key, required this.isItLinkedToAMission})
+      : super(key: key);
   final bool? isItLinkedToAMission;
-
   @override
-  State<FeedbackScreen> createState() => _FeedbackScreenState();
+  State<FeedbackScreenFilter> createState() => _FeedbackScreenFilterState();
 }
 
-class _FeedbackScreenState extends State<FeedbackScreen> {
-  final FeedbackController feedbackController = Get.put(FeedbackController());
+class _FeedbackScreenFilterState extends State<FeedbackScreenFilter> {
+  final FeedbackControllerFilter feedbackController =
+      Get.put(FeedbackControllerFilter());
   final CompanyController companyController = Get.put(CompanyController());
   DateTime? _startDate;
   DateTime? _endDate;
@@ -109,8 +110,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                             _startDate = null;
                             _endDate = null;
                           });
-                          Get.put(FeedbackController()).fetchFeedbacks(
+                          Get.put(FeedbackControllerFilter()).fetchFeedbacks(
                               companyController.selectCompany!.id.toString(),
+                              isItLinkedToAMission: widget.isItLinkedToAMission,
                               Get.put(AuthController()).user!.id.toString(),
                               endingDate: _endDate == null
                                   ? ""
@@ -163,7 +165,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   ),
                 ),
                 onPressed: () {
-                  Get.put(FeedbackController()).fetchFeedbacks(
+                  Get.put(FeedbackControllerFilter()).fetchFeedbacks(
+                      isItLinkedToAMission: widget.isItLinkedToAMission,
                       companyController.selectCompany!.id.toString(),
                       Get.put(AuthController()).user!.id.toString(),
                       endingDate: _endDate == null
@@ -197,10 +200,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     scrollController.addListener(_scrollListener);
     // Delay the call to fetchFeedbacks until after the widget has been built.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.put(FeedbackController()).fetchFeedbacks(
+      Get.put(FeedbackControllerFilter()).fetchFeedbacks(
           companyController.selectCompany!.id.toString(),
-          isItLinkedToAMission: widget.isItLinkedToAMission,
           Get.put(AuthController()).user!.id.toString(),
+          isItLinkedToAMission: widget.isItLinkedToAMission,
           endingDate: _endDateText,
           startingDate: _startDateText);
     });
@@ -210,13 +213,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   void _scrollListener() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-      if (Get.put(FeedbackController()).offset <=
-          Get.put(FeedbackController()).feedbackslength) {
-        Get.put(FeedbackController()).addOffset(
+      if (Get.put(FeedbackControllerFilter()).offset <=
+          Get.put(FeedbackControllerFilter()).feedbackslength) {
+        Get.put(FeedbackControllerFilter()).addOffset(
             Get.put(CompanyController()).selectCompany!.id.toString(),
             Get.put(AuthController()).user!.id.toString(),
-            endingDate: _endDateText,
             isItLinkedToAMission: widget.isItLinkedToAMission,
+            endingDate: _endDateText,
             startingDate: _startDateText); // Fetch more when reaching the end
       }
     }
@@ -224,7 +227,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   @override
   void dispose() {
-    // Get.delete<FeedbackController>(force: true);
+    Get.delete<FeedbackControllerFilter>(force: true);
 
     super.dispose();
   }
@@ -233,7 +236,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Feedbacks".tr),
+        title: Text((widget.isItLinkedToAMission != null
+            ? (widget.isItLinkedToAMission == false
+                ? "With Out Mission".tr
+                : "With Mission".tr)
+            : "My Feedbacks".tr)),
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),
@@ -247,8 +254,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       body: Column(
         children: [
           Expanded(
-            child: GetBuilder<FeedbackController>(
-                init: FeedbackController(),
+            child: GetBuilder<FeedbackControllerFilter>(
+                init: FeedbackControllerFilter(),
                 builder: (feedbackController) {
                   if (feedbackController.isLoading.value) {
                     return const Center(child: spinkit);
@@ -283,6 +290,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                       _endDateText = '';
                       return feedbackController.fetchFeedbacks(
                           companyController.selectCompany!.id.toString(),
+                          isItLinkedToAMission: widget.isItLinkedToAMission,
                           Get.put(AuthController()).user!.id.toString(),
                           isreafrach: true);
                     },

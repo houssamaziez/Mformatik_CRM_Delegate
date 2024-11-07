@@ -85,7 +85,7 @@ Padding listLastMission(BuildContext context) {
                   return missionsController.isLoading == false
                       ? missionsController.missions!.isEmpty
                           ? Padding(
-                              padding: EdgeInsets.all(8.0),
+                              padding: EdgeInsets.only(bottom: 8.0),
                               child: Center(
                                 child: Padding(
                                   padding: EdgeInsets.all(8.0),
@@ -118,7 +118,7 @@ Padding listLastMission(BuildContext context) {
                                             ));
                                       },
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: EdgeInsets.only(bottom: 20.0),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,

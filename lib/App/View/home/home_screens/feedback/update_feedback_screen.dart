@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
-import '../../../../Controller/home/feedback_controller.dart';
+import '../../../../Controller/home/feedback/feedback_controller.dart';
 import '../../../../Controller/home/reasons_feedback_controller.dart';
 import '../../../../Controller/widgetsController/date_controller.dart';
 import '../../../../Controller/widgetsController/expandable_controller.dart';

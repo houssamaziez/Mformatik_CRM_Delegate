@@ -6,7 +6,5 @@ import 'App/myapp.dart';
 void main() async {
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
-  // Get.put(ConnectivityController());
-  // token.write("token", null);
   runApp(const MyApp());
 }

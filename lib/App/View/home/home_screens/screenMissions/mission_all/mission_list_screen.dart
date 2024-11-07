@@ -71,6 +71,10 @@ class _MissionListScreenState extends State<MissionListScreen> {
       Get.put(CompanyController(), permanent: true);
   @override
   void dispose() {
+    startDateMissions = null;
+    endDateMissions = null;
+    startDateTextMissions = '';
+    endDateTextMissions = '';
     super.dispose();
   }
 

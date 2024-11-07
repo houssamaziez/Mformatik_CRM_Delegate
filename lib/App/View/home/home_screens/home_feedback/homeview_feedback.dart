@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/annex_controller.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/feedback/feedback_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_list_screen_filter.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_profile_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_feedback/validator/homeview_validator.dart';
@@ -90,7 +91,11 @@ class _HomeFeedbackState extends State<HomeFeedback> {
         title: "My FeedBack".tr,
         icon: 'Messages, Chat.png',
         function: (context) {
-          Go.to(context, FeedbackScreen());
+          Go.to(
+              context,
+              FeedbackScreenFilter(
+                isItLinkedToAMission: null,
+              ));
           // Go.to(context, const ScreeenFollowUpTeachers());
         },
       ),
@@ -113,7 +118,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                   context,
                   controller,
                   companyController,
-                  "No company found, please select another annex."),
+                  "No company found, please select another annex.".tr),
             );
           }
           return Scaffold(
@@ -180,7 +185,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                       children: [
                                         const Flexible(
                                           child: Icon(
-                                            Icons.ads_click_sharp,
+                                            Icons.feed,
                                             color: Colors.transparent,
                                           ),
                                         ),
@@ -206,7 +211,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                 .center()),
                                         const Flexible(
                                           child: Icon(
-                                            Icons.ads_click_sharp,
+                                            Icons.feed,
                                             color: Colors.transparent,
                                           ),
                                         ),
@@ -276,7 +281,9 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                             child: Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                      .all(8.0),
+                                                                      .only(
+                                                                      bottom:
+                                                                          16),
                                                               child: Row(
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
@@ -285,7 +292,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                                   Flexible(
                                                                     child: Icon(
                                                                       Icons
-                                                                          .ads_click_sharp,
+                                                                          .feed_outlined,
                                                                       color: Theme.of(
                                                                               context)
                                                                           .primaryColor,
