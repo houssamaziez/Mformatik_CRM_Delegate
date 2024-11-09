@@ -43,11 +43,11 @@ Widget _buildNavItem(context, int index, IconData icon, String label,
         Text(
           label,
           style: TextStyle(
-            fontSize: 12,
-            color: controller.indexBottomBar == index
-                ? Theme.of(context).primaryColor
-                : Colors.grey,
-          ),
+              fontSize: 12,
+              color: controller.indexBottomBar == index
+                  ? Theme.of(context).primaryColor
+                  : Colors.grey,
+              fontWeight: FontWeight.bold),
         ),
       ],
     ),

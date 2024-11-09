@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/image/svg_image.dart';
@@ -28,13 +29,21 @@ class _SpalshScreenState extends State<SpalshScreen> {
     spalshscreenfirst.write('key', true);
   }
 
+  AppUpdateInfo? _updateInfo;
+  bool _isUpdateAvailable = false;
   @override
   void initState() {
-    super.initState();
-    print(spalshscreenfirst.read('key'));
-    if (spalshscreenfirst.read('key') == true) {
-      fetchLocation();
+    _checkForUpdate();
+
+    if (_isUpdateAvailable == false) {
+      print(spalshscreenfirst.read('key'));
+      if (spalshscreenfirst.read('key') == true) {
+        fetchLocation();
+      }
     }
+
+    super.initState();
+
     // fetchLocation();
 
     Timer(const Duration(seconds: 10), () {
@@ -51,6 +60,110 @@ class _SpalshScreenState extends State<SpalshScreen> {
         );
       }
     });
+  }
+
+  Future<void> _checkForUpdate() async {
+    try {
+      final AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
+      setState(() {
+        _updateInfo = updateInfo;
+        _isUpdateAvailable =
+            updateInfo.updateAvailability == UpdateAvailability.updateAvailable;
+      });
+      if (_isUpdateAvailable == true) {
+        _showUpdateDialog();
+      }
+    } catch (e) {
+      print("Error checking for update: $e");
+    }
+  }
+
+  void _showUpdateDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Row(
+          children: [
+            Icon(Icons.update, color: Colors.blueAccent),
+            SizedBox(width: 10),
+            Text(
+              "Update Available",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "A new version of the app is available. Update now to enjoy the latest features and improvements.",
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            Icon(
+              Icons.new_releases,
+              color: Colors.blueAccent,
+              size: 60,
+            ),
+          ],
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actionsPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        actions: [
+          TextButton(
+            onPressed: () {
+              if (spalshscreenfirst.read('key') == true) {
+                fetchLocation();
+              }
+              Navigator.of(context).pop();
+            }, // غلق الـ Dialog
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.grey,
+              textStyle: TextStyle(fontSize: 16),
+            ),
+            child: Text("Later"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await _startFlexibleUpdate(); // بدء عملية التحديث
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blueAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              textStyle: TextStyle(fontSize: 16),
+            ),
+            child: Text(
+              "Update Now",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _startFlexibleUpdate() async {
+    if (_updateInfo?.updateAvailability == UpdateAvailability.updateAvailable) {
+      try {
+        await InAppUpdate.startFlexibleUpdate();
+        // Optionally, complete the update once download finishes
+        await InAppUpdate.completeFlexibleUpdate();
+      } catch (e) {
+        print("Error starting update: $e");
+      }
+    }
   }
 
   @override

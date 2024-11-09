@@ -10,8 +10,9 @@ import '../mission_details/profile_mission.dart';
 
 class MissionCard extends StatelessWidget {
   final Mission mission;
-
-  const MissionCard({Key? key, required this.mission}) : super(key: key);
+  const MissionCard({Key? key, required this.mission, required this.index})
+      : super(key: key);
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class MissionCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            mission.label!,
+                            "${(index + 1)}- " + mission.label!,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(

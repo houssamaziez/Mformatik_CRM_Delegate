@@ -143,7 +143,10 @@ class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
                               return Center(child: spinkit);
                             } else {
                               final mission = controller.missions![index];
-                              return MissionCard(mission: mission);
+                              return MissionCard(
+                                mission: mission,
+                                index: index,
+                              );
                             }
                           },
                         ).addRefreshIndicator(
