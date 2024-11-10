@@ -7,20 +7,20 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
-import '../../../../Controller/home/feedback/feedback_controller.dart';
-import '../../../../Controller/home/reasons_feedback_controller.dart';
-import '../../../../Controller/widgetsController/date_controller.dart';
-import '../../../../Controller/widgetsController/expandable_controller.dart';
-import '../../../../Model/feedback.dart';
-import '../../../../Model/reason_feedback.dart';
-import '../../../../Service/AppValidator/AppValidator.dart';
-import '../../../../Service/Location/get_location.dart';
-import '../../../../Util/Date/formatDate.dart';
-import '../../../../Util/Style/stylecontainer.dart';
-import '../../../widgets/Date/date_picker.dart';
-import '../../../widgets/flutter_spinkit.dart';
-import '../../../widgets/showsnack.dart';
-import 'feedback_profile_screen.dart';
+import '../../../../../Controller/home/feedback/feedback_controller.dart';
+import '../../../../../Controller/home/reasons_feedback_controller.dart';
+import '../../../../../Controller/widgetsController/date_controller.dart';
+import '../../../../../Controller/widgetsController/expandable_controller.dart';
+import '../../../../../Model/feedback.dart';
+import '../../../../../Model/reason_feedback.dart';
+import '../../../../../Service/AppValidator/AppValidator.dart';
+import '../../../../../Service/Location/get_location.dart';
+import '../../../../../Util/Date/formatDate.dart';
+import '../../../../../Util/Style/stylecontainer.dart';
+import '../../../../widgets/Date/date_picker.dart';
+import '../../../../widgets/flutter_spinkit.dart';
+import '../../../../widgets/showsnack.dart';
+import '../feedback_details/feedback_profile_screen.dart';
 import 'package:image/image.dart' as img; // For image compression
 
 class UpdateFeedbackScreen extends StatefulWidget {

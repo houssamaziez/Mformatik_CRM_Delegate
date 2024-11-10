@@ -9,11 +9,11 @@ import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_list_screen_filter.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_profile_screen.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_list_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_feedback/feedback_filter/feedback_list_screen_filter.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_feedback/feedback_details/feedback_profile_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_feedback/feedback_list_all/feedback_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_feedback/validator/homeview_validator.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_all/mission_list_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_all/mission_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../Controller/home/company_controller.dart';
@@ -25,8 +25,8 @@ import '../../Widgets/filter_annex_company.dart';
 import '../../Widgets/getSliderColor.dart';
 import '../../Widgets/homeMenuSelectScreens.dart';
 import '../../Widgets/homeMenu_select.dart';
-import '../clientview/client_list_screen.dart';
-import '../screenMissions/mission_by_me/mission_list_screen_by_me.dart';
+import '../clientview/client_list_all/client_list_screen.dart';
+import '../home_mission/mission_by_me/mission_list_screen_by_me.dart';
 
 class HomeFeedback extends StatefulWidget {
   HomeFeedback({super.key});

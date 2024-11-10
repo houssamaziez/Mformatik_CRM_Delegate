@@ -3,37 +3,29 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/create_feedback/cretate_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
-import '../../../../Controller/home/client_controller.dart';
+import '../../../../../Controller/home/client_controller.dart';
+import '../profile_client_screen.dart';
 
-import 'profile_client_screen.dart';
-
-class ClientListScreenAddMission extends StatefulWidget {
+class ClientListScreen extends StatefulWidget {
   final String? companyid;
   final bool isback;
-  final String role;
-  ClientListScreenAddMission(
-      {super.key,
-      this.companyid = "",
-      required this.isback,
-      required this.role});
+  ClientListScreen({super.key, this.companyid = "", required this.isback});
 
   @override
-  State<ClientListScreenAddMission> createState() =>
-      _ClientListScreenAddMissionState();
+  State<ClientListScreen> createState() => _ClientListScreenState();
 }
 
-class _ClientListScreenAddMissionState
-    extends State<ClientListScreenAddMission> {
+class _ClientListScreenState extends State<ClientListScreen> {
   final ClientController clientController = Get.put(ClientController());
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
   bool isLoadingMore = false;
+  Timer? _debounce;
 
   @override
   void initState() {
-    clientController.fetchClients(widget.companyid!, fullName: '');
+    // clientController.fetchClients(widget.companyid!, fullName: '');
     scrollController.addListener(_scrollListener);
     super.initState();
   }
@@ -65,8 +57,7 @@ class _ClientListScreenAddMissionState
     });
   }
 
-  Timer? _debounce;
-
+  // Method to handle search with debounce
   void _onSearchChanged(String value) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
@@ -84,7 +75,7 @@ class _ClientListScreenAddMissionState
     return Scaffold(
       appBar: widget.isback
           ? AppBar(
-              title: Text("Select the client".tr),
+              title: Text("All Clinets".tr),
               centerTitle: true,
             )
           : null,
@@ -94,6 +85,14 @@ class _ClientListScreenAddMissionState
             padding: const EdgeInsets.all(16.0),
             child: TextField(
               controller: searchController,
+              // onChanged: (value) async {
+              //   print(value);
+              //   await clientController.search(widget.companyid!,
+              //       fullName: value);
+
+              //   selctserach = value;
+              //   // Add search logic here if needed
+              // },
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
@@ -136,15 +135,7 @@ class _ClientListScreenAddMissionState
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: () {
-                        if (widget.role == "mission") {
-                          Get.to(() => ClientProfileScreen(client: client));
-                        } else {
-                          Get.to(() => CreateFeedBackScreen(
-                                clientID: client.id!,
-                                missionID: null,
-                                feedbackModelID: 0,
-                              ));
-                        }
+                        Get.to(() => ClientProfileScreen(client: client));
                       },
                       child: Container(
                         decoration: StyleContainer.style1,

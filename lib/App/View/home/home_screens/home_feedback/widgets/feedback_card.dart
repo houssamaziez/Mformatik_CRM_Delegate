@@ -4,7 +4,7 @@ import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 
 import '../../../../../Model/feedback.dart';
 import '../../../../../Util/Route/Go.dart';
-import '../feedback_profile_screen.dart';
+import '../feedback_details/feedback_profile_screen.dart';
 
 class FeedbackCard extends StatelessWidget {
   final FeedbackMission feedback;

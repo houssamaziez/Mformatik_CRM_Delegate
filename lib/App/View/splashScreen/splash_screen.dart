@@ -11,6 +11,7 @@ import 'package:mformatic_crm_delegate/App/View/widgets/image/svg_image.dart';
 import '../../Controller/auth/auth_controller.dart';
 import '../../Service/Location/get_location.dart';
 import '../../Util/Route/Go.dart';
+import '../auth/screen_auth.dart';
 import '../home/Settings/language_screen.dart';
 
 class SpalshScreen extends StatefulWidget {
@@ -24,9 +25,8 @@ GetStorage spalshscreenfirst = GetStorage();
 
 class _SpalshScreenState extends State<SpalshScreen> {
   LocationDataModel? locationData;
-  void fetchLocation() async {
+  void fetchMe() async {
     Get.put(AuthController()).getme(Get.context);
-    spalshscreenfirst.write('key', true);
   }
 
   AppUpdateInfo? _updateInfo;
@@ -36,16 +36,12 @@ class _SpalshScreenState extends State<SpalshScreen> {
     _checkForUpdate();
 
     if (_isUpdateAvailable == false) {
-      print(spalshscreenfirst.read('key'));
       if (spalshscreenfirst.read('key') == true) {
-        fetchLocation();
+        fetchMe();
       }
     }
 
     super.initState();
-
-    // fetchLocation();
-
     Timer(const Duration(seconds: 10), () {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
@@ -86,7 +82,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        title: Row(
+        title: const Row(
           children: [
             Icon(Icons.update, color: Colors.blueAccent),
             SizedBox(width: 10),
@@ -103,12 +99,13 @@ class _SpalshScreenState extends State<SpalshScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "A new version of the app is available. Update now to enjoy the latest features and improvements.",
-              style: TextStyle(fontSize: 16),
+              "A new version of the app is available. Update now to enjoy the latest features and improvements."
+                  .tr,
+              style: const TextStyle(fontSize: 16),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
-            Icon(
+            const SizedBox(height: 20),
+            const Icon(
               Icons.new_releases,
               color: Colors.blueAccent,
               size: 60,
@@ -116,20 +113,21 @@ class _SpalshScreenState extends State<SpalshScreen> {
           ],
         ),
         actionsAlignment: MainAxisAlignment.center,
-        actionsPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        actionsPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         actions: [
           TextButton(
             onPressed: () {
               if (spalshscreenfirst.read('key') == true) {
-                fetchLocation();
+                fetchMe();
               }
               Navigator.of(context).pop();
             }, // غلق الـ Dialog
             style: TextButton.styleFrom(
               foregroundColor: Colors.grey,
-              textStyle: TextStyle(fontSize: 16),
+              textStyle: const TextStyle(fontSize: 16),
             ),
-            child: Text("Later"),
+            child: Text("Later".tr),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -141,11 +139,11 @@ class _SpalshScreenState extends State<SpalshScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              textStyle: TextStyle(fontSize: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              textStyle: const TextStyle(fontSize: 16),
             ),
             child: Text(
-              "Update Now",
+              "Update Now".tr,
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -179,14 +177,14 @@ class _SpalshScreenState extends State<SpalshScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 IconButton(
                     onPressed: () {
                       Go.to(context, const LanguageScreen());
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.language,
                       color: Colors.white,
                     )),
@@ -222,7 +220,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
                             padding: const EdgeInsets.only(bottom: 8),
                             child: InkWell(
                               onTap: () {
-                                fetchLocation();
+                                Go.clearAndTo(context, ScreenAuth());
                               },
                               child: Container(
                                 height: 50, // Specify height

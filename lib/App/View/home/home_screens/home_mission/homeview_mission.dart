@@ -1,29 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/annex_controller.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
-import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_all/mission_list_screen.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_all/mission_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../Controller/home/company_controller.dart';
 import '../../../../Controller/home/home_controller.dart';
-import '../clientview/client_list_screen.dart';
-import '../feedback/feedback_list_screen.dart';
+import '../clientview/client_list_all/client_list_screen.dart';
+import '../home_feedback/feedback_list_all/feedback_list_screen.dart';
 import 'mission_by_me/mission_list_screen_by_me.dart';
-import 'mission_details/profile_mission.dart';
 import '../../Widgets/status_button.dart';
 import '../../Widgets/add_mission_button.dart';
 import '../../Widgets/filter_annex_company.dart';
 import '../../Widgets/getSliderColor.dart';
 import '../../Widgets/homeMenuSelectScreens.dart';
 import '../../Widgets/homeMenu_select.dart';
-import 'widgets/getStatusColor.dart';
-import 'widgets/getStatusLabel.dart';
 import 'widgets/list_last_mission.dart';
 
 class Home extends StatelessWidget {

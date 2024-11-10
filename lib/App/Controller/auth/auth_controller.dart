@@ -11,6 +11,7 @@ import 'package:mformatic_crm_delegate/App/View/home/home.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import '../../Model/user.dart';
 import '../../Util/app_exceptions/response_handler.dart';
+import '../../View/splashScreen/splash_screen.dart';
 
 GetStorage token = GetStorage();
 
@@ -44,7 +45,7 @@ class AuthController extends GetxController {
         person = Person.fromJson(responseData['user']["person"]);
         if (user!.roleId == 4) {
           token.write("token", responseData['token']);
-
+          await spalshscreenfirst.write('key', true);
           Go.clearAndTo(context, HomeScreen());
         } else {
           showMessage(context, title: "You are not allowed to enter.".tr);
@@ -94,13 +95,14 @@ class AuthController extends GetxController {
         print('person in as: ${person?.firstName}');
         print('user in as: ${user?.username}');
         if (user!.roleId == 4) {
+          await spalshscreenfirst.write('key', true);
           Go.clearAndTo(context, HomeScreen());
         } else {
           Go.clearAndTo(context, ScreenAuth());
           showMessage(context, title: "You are not allowed to enter.".tr);
         }
       } else {
-        if (response.statusCode == 401) {
+        if (response.statusCode == 401 || response.statusCode == 403) {
           Go.clearAndTo(context, ScreenAuth());
         }
       }

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../../Controller/home/company_controller.dart';
 import '../../../Util/Route/Go.dart';
 import '../../../Util/Style/stylecontainer.dart';
-import '../home_screens/clientview/client_list_screen_add_mission.dart';
+import '../home_screens/clientview/client_list_add_all/client_list_screen_add.dart';
 
 class AddMissionbuttonFeddback extends StatelessWidget {
   const AddMissionbuttonFeddback({

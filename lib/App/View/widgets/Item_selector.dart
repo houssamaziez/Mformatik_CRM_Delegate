@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Model/reason_mission.dart';
-import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 
 import '../../Controller/widgetsController/expandable_controller.dart';
 

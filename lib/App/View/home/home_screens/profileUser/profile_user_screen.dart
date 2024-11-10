@@ -82,9 +82,9 @@ class ProfileUserScreen extends StatelessWidget {
                     color: Theme.of(context).cardColor),
                 buttonsetting(
                     function: () {
-                      showExitConfirmationDialog(context, onPressed: () {
+                      showExitConfirmationDialog(context, onPressed: () async {
                         token.write("token", null);
-                        spalshscreenfirst.write('key', false);
+                        await spalshscreenfirst.write('key', false);
                         Get.offAll(ScreenAuth());
                       },
                           details:

@@ -8,11 +8,11 @@ import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
-import '../../../../Controller/auth/auth_controller.dart';
-import '../../../../Controller/home/feedback/feedback_controller_filter.dart';
-import '../../../../Model/feedback.dart';
-import 'feedback_profile_screen.dart';
-import 'widgets/feedback_card.dart';
+import '../../../../../Controller/auth/auth_controller.dart';
+import '../../../../../Controller/home/feedback/feedback_controller_filter.dart';
+import '../../../../../Model/feedback.dart';
+import '../feedback_details/feedback_profile_screen.dart';
+import '../widgets/feedback_card.dart';
 
 class FeedbackScreenFilter extends StatefulWidget {
   FeedbackScreenFilter({Key? key, required this.isItLinkedToAMission})

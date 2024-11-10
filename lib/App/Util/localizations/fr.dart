@@ -227,6 +227,10 @@ const Map<String, String> fr = {
   "Change Language": "Changer la langue",
   "This feedback has a mission.": "Ce Feedback d'information a une mission.",
   'Company name:': 'Nom de l’entreprise :',
+  "A new version of the app is available. Update now to enjoy the latest features and improvements.":
+      "Une nouvelle version de l'application est disponible. Mettez à jour maintenant pour profiter des dernières fonctionnalités et améliorations.",
+  "Later": "Plus tard",
+  "Update Now": "Mettre à jour maintenant",
   "Full Name": "Nom complet",
   "About the Application": "À propos de l'application",
   'We introduce an exclusive application designed for customer delegates, enabling them to effortlessly record their notes. This app facilitates the organization of information and the effective tracking of customer interactions, ultimately enhancing service quality and improving the overall customer experience.':
