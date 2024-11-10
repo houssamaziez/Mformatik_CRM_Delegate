@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/image/svg_image.dart';
@@ -10,6 +11,7 @@ import 'package:mformatic_crm_delegate/App/View/widgets/image/svg_image.dart';
 import '../../Controller/auth/auth_controller.dart';
 import '../../Service/Location/get_location.dart';
 import '../../Util/Route/Go.dart';
+import '../auth/screen_auth.dart';
 import '../home/Settings/language_screen.dart';
 
 class SpalshScreen extends StatefulWidget {
@@ -22,21 +24,19 @@ class SpalshScreen extends StatefulWidget {
 GetStorage spalshscreenfirst = GetStorage();
 
 class _SpalshScreenState extends State<SpalshScreen> {
-  LocationDataModel? locationData;
-  void fetchLocation() async {
-    Get.put(AuthController()).getme(Get.context);
-    spalshscreenfirst.write('key', true);
-  }
-
+  AppUpdateInfo? _updateInfo;
+  bool _isUpdateAvailable = false;
   @override
   void initState() {
-    super.initState();
-    print(spalshscreenfirst.read('key'));
-    if (spalshscreenfirst.read('key') == true) {
-      fetchLocation();
-    }
-    // fetchLocation();
+    _checkForUpdate();
 
+    if (_isUpdateAvailable == false) {
+      if (spalshscreenfirst.read('key') == true) {
+        Get.put(AuthController()).getme(Get.context);
+      }
+    }
+
+    super.initState();
     Timer(const Duration(seconds: 10), () {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
@@ -53,6 +53,112 @@ class _SpalshScreenState extends State<SpalshScreen> {
     });
   }
 
+  Future<void> _checkForUpdate() async {
+    try {
+      final AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
+      setState(() {
+        _updateInfo = updateInfo;
+        _isUpdateAvailable =
+            updateInfo.updateAvailability == UpdateAvailability.updateAvailable;
+      });
+      if (_isUpdateAvailable == true) {
+        _showUpdateDialog();
+      }
+    } catch (e) {
+      print("Error checking for update: $e");
+    }
+  }
+
+  void _showUpdateDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Row(
+          children: [
+            Icon(Icons.update, color: Colors.blueAccent),
+            SizedBox(width: 10),
+            Text(
+              "Update Available",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "A new version of the app is available. Update now to enjoy the latest features and improvements."
+                  .tr,
+              style: const TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            const Icon(
+              Icons.new_releases,
+              color: Colors.blueAccent,
+              size: 60,
+            ),
+          ],
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actionsPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        actions: [
+          TextButton(
+            onPressed: () {
+              if (spalshscreenfirst.read('key') == true) {
+                Get.put(AuthController()).getme(Get.context);
+              }
+              Navigator.of(context).pop();
+            }, // غلق الـ Dialog
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.grey,
+              textStyle: const TextStyle(fontSize: 16),
+            ),
+            child: Text("Later".tr),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await _startFlexibleUpdate(); // بدء عملية التحديث
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blueAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              textStyle: const TextStyle(fontSize: 16),
+            ),
+            child: Text(
+              "Update Now".tr,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _startFlexibleUpdate() async {
+    if (_updateInfo?.updateAvailability == UpdateAvailability.updateAvailable) {
+      try {
+        await InAppUpdate.startFlexibleUpdate();
+        // Optionally, complete the update once download finishes
+        await InAppUpdate.completeFlexibleUpdate();
+      } catch (e) {
+        print("Error starting update: $e");
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,14 +172,14 @@ class _SpalshScreenState extends State<SpalshScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 IconButton(
                     onPressed: () {
                       Go.to(context, const LanguageScreen());
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.language,
                       color: Colors.white,
                     )),
@@ -109,7 +215,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
                             padding: const EdgeInsets.only(bottom: 8),
                             child: InkWell(
                               onTap: () {
-                                fetchLocation();
+                                Go.clearAndTo(context, ScreenAuth());
                               },
                               child: Container(
                                 height: 50, // Specify height

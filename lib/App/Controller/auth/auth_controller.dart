@@ -11,6 +11,7 @@ import 'package:mformatic_crm_delegate/App/View/home/home.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import '../../Model/user.dart';
 import '../../Util/app_exceptions/response_handler.dart';
+import '../../View/splashScreen/splash_screen.dart';
 
 GetStorage token = GetStorage();
 
@@ -33,8 +34,8 @@ class AuthController extends GetxController {
     update();
     try {
       final response = await http.post(url, body: {
-        "username": username,
-        "password": password,
+        "username": username.trim(),
+        "password": password.trim(),
       });
       print(response.statusCode);
       // Handle response and parse user data
@@ -44,6 +45,7 @@ class AuthController extends GetxController {
         person = Person.fromJson(responseData['user']["person"]);
         if (user!.roleId == 4) {
           token.write("token", responseData['token']);
+          await spalshscreenfirst.write('key', true);
 
           Go.clearAndTo(context, HomeScreen());
         } else {
@@ -94,6 +96,8 @@ class AuthController extends GetxController {
         print('person in as: ${person?.firstName}');
         print('user in as: ${user?.username}');
         if (user!.roleId == 4) {
+          await spalshscreenfirst.write('key', true);
+
           Go.clearAndTo(context, HomeScreen());
         } else {
           Go.clearAndTo(context, ScreenAuth());
