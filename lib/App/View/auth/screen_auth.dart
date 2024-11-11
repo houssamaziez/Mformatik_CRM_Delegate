@@ -14,7 +14,7 @@ import '../widgets/image/svg_image.dart';
 class ScreenAuth extends StatelessWidget {
   ScreenAuth({super.key});
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  var cont = Get.put(AuthController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

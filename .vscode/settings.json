@@ -4,10 +4,14 @@
         "screen edite profile ",
         "screen update feedback ",
         "all app ",
-        "Status Mission "
+        "Status Mission ",
+        "splash screen",
+        "client Profile"
     ],
     "cSpell.words": [
         "Lengt",
+        "listiconhomemeneu",
         "upadteisloading"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

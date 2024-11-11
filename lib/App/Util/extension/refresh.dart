@@ -9,6 +9,8 @@ extension RefreshWidget on Widget {
   }) {
     return RefreshIndicator(
       onRefresh: onRefresh,
+      edgeOffset: 3,
+      displacement: 20,
       backgroundColor: backgroundColor,
       color: color,
       child: this,

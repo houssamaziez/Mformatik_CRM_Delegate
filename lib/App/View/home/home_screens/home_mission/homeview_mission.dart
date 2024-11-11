@@ -21,8 +21,32 @@ import '../../Widgets/homeMenuSelectScreens.dart';
 import '../../Widgets/homeMenu_select.dart';
 import 'widgets/list_last_mission.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  late ScrollController scrollController;
+  var homeController = Get.put(HomeController());
+  @override
+  void initState() {
+    scrollController = ScrollController();
+
+    scrollController.addListener(_scrollListener);
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      print(scrollController.position.pixels);
+      homeController.upadteshowcontaneClos();
+    } // If you want to handle other conditions, use an else or else if here
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +55,6 @@ class Home extends StatelessWidget {
           title: "My Mission".tr,
           icon: "job-description.png",
           function: (context) {
-            // Go.to(context, CourseGridScreen(role: 'تنبيهات الحضور'));
             Go.to(context, const MissionListScreenByMe());
           }),
       HomeMenuSelect(
@@ -39,7 +62,6 @@ class Home extends StatelessWidget {
         icon: 'daily-task.png',
         function: (context) {
           Go.to(context, MissionListScreen());
-          // Go.to(context, const RequestForPermission());
         },
       ),
       HomeMenuSelect(
@@ -66,7 +88,6 @@ class Home extends StatelessWidget {
         icon: 'Messages, Chat.png',
         function: (context) {
           Go.to(context, FeedbackScreen());
-          // Go.to(context, const ScreeenFollowUpTeachers());
         },
       ),
     ];
@@ -163,6 +184,7 @@ class Home extends StatelessWidget {
                 init: HomeController(),
                 builder: (controller) {
                   return SingleChildScrollView(
+                    controller: scrollController,
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
@@ -201,12 +223,15 @@ class Home extends StatelessWidget {
                       ],
                     ),
                   ).addRefreshIndicator(onRefresh: () {
+                    homeController.upadteshowcontanerOpen();
+
                     startDateMissions = null;
                     endDateMissions = null;
                     startDateTextMissions = '';
                     final anex = Get.put(AnnexController()).selectAnnex!;
                     print(anex);
                     endDateTextMissions = '';
+
                     if (Get.put(CompanyController()).selectCompany == null) {
                       return Get.put(AnnexController()).updateannex(anex);
                     } else {
