@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../main.dart';
 import 'Util/Theme/theme_light.dart';
 import 'Util/localizations/localizations.dart';
 import 'View/splashScreen/splash_screen.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const SpalshScreen(),
+      home: Voice(),
     );
   }
 }

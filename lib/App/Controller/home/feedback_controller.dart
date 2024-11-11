@@ -599,7 +599,7 @@ class FeedbackController extends GetxController {
       // Write the response body to a file
       file = File(filePath);
       await file!.writeAsBytes(response.bodyBytes);
-
+      update();
       print('File saved to: ${file!.path}');
     } else {
       print('Failed to download file. Status code: ${response.statusCode}');
