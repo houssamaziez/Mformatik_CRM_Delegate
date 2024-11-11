@@ -100,7 +100,7 @@ class AuthController extends GetxController {
           showMessage(context, title: "You are not allowed to enter.".tr);
         }
       } else {
-        if (response.statusCode == 401) {
+        if (response.statusCode == 401 || response.statusCode == 404) {
           Go.clearAndTo(context, ScreenAuth());
         }
       }

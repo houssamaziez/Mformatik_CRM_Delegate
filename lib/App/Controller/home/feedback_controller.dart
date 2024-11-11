@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
+import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 
 import '../../Model/feedback.dart';
@@ -467,5 +468,141 @@ class FeedbackController extends GetxController {
       // showMessage(Get.context, title: 'Unexpected Error', color: Colors.red);
       print('Unexpected error: $e');
     } finally {}
+  }
+
+  Future<void> addFeedbackVoice({
+    String label = 'test',
+    String desc = 'test descr',
+    String? lat = '55',
+    String? lng = '55',
+    String? requestDate = '01/01/2022',
+    required int clientId,
+    int? missionId,
+    int feedbackModelId = 1,
+    String? voice,
+  }) async {
+    isLoadingadd = true;
+    update();
+    print(voice);
+    try {
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(Endpoint.apiFeedbacks), // Adjust the endpoint as needed
+      );
+
+      request.headers['x-auth-token'] = token.read("token").toString();
+      print(feedbackModelId);
+
+      if (feedbackModelId == 1) {
+        if (label.isEmpty || label.length <= 2) {
+          showMessage(Get.context, title: 'Please specify'.tr);
+          return;
+        }
+      }
+      request.fields['label'] = label;
+
+      request.fields['desc'] = desc;
+      if (lat != null) request.fields['lat'] = lat;
+      if (lng != null) request.fields['lng'] = lng;
+      if (requestDate != null) request.fields['requestDate'] = requestDate;
+      request.fields['clientId'] = clientId.toString();
+      if (missionId != null) {
+        request.fields['missionId'] = missionId.toString();
+      }
+      request.fields['feedbackModelId'] = feedbackModelId.toString();
+
+      // Add images if they are provided
+      if (voice != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'voice', // Change to the correct field name expected by your API
+          voice,
+        ));
+      }
+      var response = await request.send();
+      print(response.statusCode);
+
+      var responseBody = await response.stream.bytesToString();
+      print('Response Body: $responseBody');
+      if (response.statusCode == 200) {
+        Get.back();
+        Get.back();
+        fetchFeedbacks(
+            Get.put(CompanyController()).selectCompany!.id.toString(),
+            Get.put(AuthController()).user!.id.toStringAsExponential());
+        if (missionId != null) {
+          await Get.put(MissionsController())
+              .changeStatuseMission(3, missionId!);
+        }
+        showMessage(Get.context,
+            title: 'Feedback added successfully'.tr, color: Colors.green);
+
+        print('Feedback added successfully');
+        // Optionally refresh the feedbacks list or perform other actions
+      } else {
+        throw Exception('Failed to add feedback');
+      }
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+      isLoadingadd = false;
+      update();
+    }
+  }
+
+  getVoiceById(String feedbackId) async {
+    isLoadingprofile = true;
+    update();
+    try {
+      final response = await http.get(
+        Uri.parse(
+            '${Endpoint.apiFeedbacks}/$feedbackId/voice'), // Adjust the endpoint as needed
+        headers: {"x-auth-token": token.read("token").toString()},
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('object');
+        print(data);
+        feedbackprofile =
+            FeedbackMission.fromJson(data); // Return the feedback object
+        update();
+        print(feedbackprofile);
+      } else {
+        throw Exception('Failed to load feedback');
+      }
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+      isLoadingprofile = false;
+      update();
+    }
+  }
+
+  File? file;
+  Future<void> downloadFeedbackVoice(String feedbackId) async {
+    final url = Uri.parse(
+        '${Endpoint.apiFeedbacks}/121/voice'); // Adjust the endpoint as needed
+
+    // Send the GET request to download the file
+    final response = await http.get(
+      url,
+      headers: {"x-auth-token": token.read("token").toString()},
+    );
+    print(response.statusCode);
+    // Check if the request was successful
+    if (response.statusCode == 200) {
+      // Get the application's document directory to save the file
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath =
+          '${directory.path}/feedback_voice_$feedbackId.mp3'; // Set the file path and name
+
+      // Write the response body to a file
+      file = File(filePath);
+      await file!.writeAsBytes(response.bodyBytes);
+
+      print('File saved to: ${file!.path}');
+    } else {
+      print('Failed to download file. Status code: ${response.statusCode}');
+    }
   }
 }

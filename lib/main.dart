@@ -3,23 +3,40 @@ import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:mformatic_crm_delegate/audio.dart';
 import 'package:mformatic_crm_delegate/audioController.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter/services.dart'; // For loading assets
 import 'package:record/record.dart'; // Import record package
 import 'package:path_provider/path_provider.dart';
+import 'package:voice_message_package/voice_message_package.dart';
+import 'package:flutter/material.dart';
 
-void main() => runApp(const MyApp());
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get_storage/get_storage.dart';
+import 'App/View/splashScreen/splash_screen.dart';
+import 'App/myapp.dart';
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+void main() async {
+  await dotenv.load(fileName: ".env");
+  await GetStorage.init();
 
-  @override
-  _MyAppState createState() => _MyAppState();
+  print(spalshscreenfirst.read('key'));
+  runApp(const MyApp());
 }
 
-class _MyAppState extends State<MyApp> {
+class Voice extends StatefulWidget {
+  const Voice({Key? key}) : super(key: key);
+
+  @override
+  _VoiceState createState() => _VoiceState();
+}
+
+class _VoiceState extends State<Voice> {
   final AudioRecorder _record = AudioRecorder(); // Initialize the recorder
   bool _isRecording = false; // Track recording status
   String _audioPath = ''; // Path of the recorded audio file
@@ -27,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   final AudioPlayer _play = AudioPlayer();
   late Duration _audioDuration; // Track the duration of the recorded audio
   late Timer _timer; // Timer to show the recording duration
-
+  FeedbackController feedbackController = Get.put(FeedbackController());
   @override
   void initState() {
     super.initState();
@@ -45,7 +62,7 @@ class _MyAppState extends State<MyApp> {
   // Get the path to save the audio file
   Future<String> _getAudioPath() async {
     final directory = await getApplicationDocumentsDirectory();
-    return '${directory.path}/audio_file.m4a'; // Save as .m4a file
+    return '${directory.path}/audio_file.mp3'; // Save as .m4a file
   }
 
   // Start or stop recording
@@ -164,29 +181,55 @@ class _MyAppState extends State<MyApp> {
                           style: TextStyle(fontSize: 14.sp),
                         ),
                       ),
-                    VoiceMessageViewMy(
-                      controller: VoiceControllerMy(
-                        audioSrc:
-                            'https://dl.solahangs.com/Music/1403/02/H/128/Hiphopologist%20-%20Shakkak%20%28128%29.mp3'
-                                .toString(),
-                        maxDuration: const Duration(seconds: 10),
-                        isFile: false,
-                        onComplete: () {
-                          /// do something on complete
-                        },
-                        onPause: () {
-                          /// do something on pause
-                        },
-                        onPlaying: () {
-                          /// do something on playing
-                        },
-                        onError: (err) {
-                          /// do somethin on error
-                        },
-                      ),
-                      innerPadding: 12,
-                      cornerRadius: 20,
-                    ),
+                    GetBuilder<FeedbackController>(
+                        init: FeedbackController(),
+                        builder: (controllerf) {
+                          return VoiceMessageView(
+                            controller: VoiceController(
+                              audioSrc: controllerf.file!.path.toString(),
+                              maxDuration: const Duration(seconds: 10),
+                              isFile: true,
+                              onComplete: () {
+                                /// do something on complete
+                              },
+                              onPause: () {
+                                /// do something on pause
+                              },
+                              onPlaying: () {
+                                /// do something on playing
+                              },
+                              onError: (err) {
+                                /// do somethin on error
+                              },
+                            ),
+                            innerPadding: 12,
+                            cornerRadius: 20,
+                          );
+                        }),
+                    GetBuilder<FeedbackController>(
+                        init: FeedbackController(),
+                        builder: (controllerf) {
+                          return ButtonAll(
+                              isloading: controllerf.isLoadingadd,
+                              function: () {
+                                controllerf.addFeedbackVoice(
+                                    clientId: 678133, voice: _audioPath);
+                              },
+                              title: 'add');
+                        }),
+                    GetBuilder<FeedbackController>(
+                        init: FeedbackController(),
+                        builder: (controllerf) {
+                          return ButtonAll(
+                              isloading: controllerf.isLoadingadd,
+                              function: () {
+                                controllerf.downloadFeedbackVoice("121");
+                              },
+                              title: 'add');
+                        }),
+                    SizedBox(
+                      height: 20,
+                    )
                   ],
                 ),
               ),
