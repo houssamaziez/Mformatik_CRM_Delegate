@@ -6,7 +6,6 @@ import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.d
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
-import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/feedback/feedback_profile_screen.dart';
@@ -38,8 +37,21 @@ class _HomeFeedbackState extends State<HomeFeedback> {
   final FeedbackController feedbackController = Get.put(
     FeedbackController(),
   );
+
+  late ScrollController scrollController;
+  var homeController = Get.put(HomeController());
+
+  void _scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      homeController.upadteshowcontaneClos();
+    }
+  }
+
   @override
   void initState() {
+    scrollController = ScrollController();
+    scrollController.addListener(_scrollListener);
     feedbackController.fetchFeedbacks(
         Get.put(CompanyController()).selectCompany == null
             ? 0.toString()
@@ -121,6 +133,8 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                 init: HomeController(),
                 builder: (controller) {
                   return SingleChildScrollView(
+                    controller:
+                        scrollController, // Attach the scrollController here
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
@@ -370,9 +384,14 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 15,
+                        )
                       ],
                     ),
                   ).addRefreshIndicator(onRefresh: () {
+                    homeController.upadteshowcontanerOpen();
+
                     startDateMissions = null;
                     endDateMissions = null;
                     startDateTextMissions = '';

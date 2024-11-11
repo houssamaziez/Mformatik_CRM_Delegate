@@ -5,10 +5,13 @@
         "screen update feedback ",
         "all app ",
         "Status Mission ",
-        "splash screen"
+        "splash screen",
+        "client Profile"
     ],
     "cSpell.words": [
         "Lengt",
+        "listiconhomemeneu",
         "upadteisloading"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

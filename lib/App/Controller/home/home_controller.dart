@@ -7,6 +7,16 @@ class HomeController extends GetxController {
     update();
   }
 
+  upadteshowcontanerOpen() {
+    showContainers = true;
+    update();
+  }
+
+  upadteshowcontaneClos() {
+    showContainers = false;
+    update();
+  }
+
   int indexBottomBar = 0;
   updateindexBottomBar(index) {
     indexBottomBar = index;

@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/home/Widgets/homeMenu_select.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Containers/container_blue.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../../../Model/client.dart';
+import '../../../../Util/Lanch_url/call.dart';
 import '../screenMissions/createmission/cretate_screen.dart';
 
 class ClientProfileScreen extends StatelessWidget {
@@ -105,7 +107,16 @@ class ClientProfileScreen extends StatelessWidget {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-          _buildContactRow(Icons.phone, 'Phone'.tr, client.phone ?? 'N/A'),
+          InkWell(
+              onTap: () => launchUrlString("tel://${client.tel}"),
+              child:
+                  _buildContactRow(Icons.phone, 'Tel'.tr, client.tel ?? 'N/A')),
+          InkWell(
+              onTap: () => client.phone != null
+                  ? launchUrlString("tel://${client.phone}")
+                  : null,
+              child: _buildContactRow(Icons.phone_android_rounded, 'Phone'.tr,
+                  client.phone ?? 'N/A')),
           _buildContactRow(Icons.email, 'Email', client.email ?? 'N/A'),
           _buildContactRow(
               Icons.location_on, 'Address'.tr, client.address ?? 'N/A'),

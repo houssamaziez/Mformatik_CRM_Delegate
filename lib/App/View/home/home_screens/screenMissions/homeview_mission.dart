@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/annex_controller.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
-import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/screenMissions/mission_all/mission_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
@@ -15,19 +13,40 @@ import '../../../../Controller/home/home_controller.dart';
 import '../clientview/client_list_screen.dart';
 import '../feedback/feedback_list_screen.dart';
 import 'mission_by_me/mission_list_screen_by_me.dart';
-import 'mission_details/profile_mission.dart';
 import '../../Widgets/status_button.dart';
 import '../../Widgets/add_mission_button.dart';
 import '../../Widgets/filter_annex_company.dart';
 import '../../Widgets/getSliderColor.dart';
 import '../../Widgets/homeMenuSelectScreens.dart';
 import '../../Widgets/homeMenu_select.dart';
-import 'widgets/getStatusColor.dart';
-import 'widgets/getStatusLabel.dart';
 import 'widgets/list_last_mission.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  late ScrollController scrollController;
+  var homeController = Get.put(HomeController());
+  @override
+  void initState() {
+    scrollController = ScrollController();
+
+    scrollController.addListener(_scrollListener);
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      print(scrollController.position.pixels);
+      homeController.upadteshowcontaneClos();
+    } // If you want to handle other conditions, use an else or else if here
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +55,6 @@ class Home extends StatelessWidget {
           title: "My Mission".tr,
           icon: "job-description.png",
           function: (context) {
-            // Go.to(context, CourseGridScreen(role: 'تنبيهات الحضور'));
             Go.to(context, const MissionListScreenByMe());
           }),
       HomeMenuSelect(
@@ -44,7 +62,6 @@ class Home extends StatelessWidget {
         icon: 'daily-task.png',
         function: (context) {
           Go.to(context, MissionListScreen());
-          // Go.to(context, const RequestForPermission());
         },
       ),
       HomeMenuSelect(
@@ -71,7 +88,6 @@ class Home extends StatelessWidget {
         icon: 'Messages, Chat.png',
         function: (context) {
           Go.to(context, FeedbackScreen());
-          // Go.to(context, const ScreeenFollowUpTeachers());
         },
       ),
     ];
@@ -168,6 +184,7 @@ class Home extends StatelessWidget {
                 init: HomeController(),
                 builder: (controller) {
                   return SingleChildScrollView(
+                    controller: scrollController,
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
@@ -206,12 +223,15 @@ class Home extends StatelessWidget {
                       ],
                     ),
                   ).addRefreshIndicator(onRefresh: () {
+                    homeController.upadteshowcontanerOpen();
+
                     startDateMissions = null;
                     endDateMissions = null;
                     startDateTextMissions = '';
                     final anex = Get.put(AnnexController()).selectAnnex!;
                     print(anex);
                     endDateTextMissions = '';
+
                     if (Get.put(CompanyController()).selectCompany == null) {
                       return Get.put(AnnexController()).updateannex(anex);
                     } else {
