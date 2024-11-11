@@ -24,14 +24,18 @@ class SpalshScreen extends StatefulWidget {
 GetStorage spalshscreenfirst = GetStorage();
 
 class _SpalshScreenState extends State<SpalshScreen> {
-  LocationDataModel? locationData;
-  void fetchLocation() async {
-    Get.put(AuthController()).getme(Get.context);
-    spalshscreenfirst.write('key', true);
-  }
-
+  AppUpdateInfo? _updateInfo;
+  bool _isUpdateAvailable = false;
   @override
   void initState() {
+    _checkForUpdate();
+
+    if (_isUpdateAvailable == false) {
+      if (spalshscreenfirst.read('key') == true) {
+        Get.put(AuthController()).getme(Get.context);
+      }
+    }
+
     super.initState();
     Timer(const Duration(seconds: 10), () {
       if (mounted) {
@@ -47,6 +51,112 @@ class _SpalshScreenState extends State<SpalshScreen> {
         );
       }
     });
+  }
+
+  Future<void> _checkForUpdate() async {
+    try {
+      final AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
+      setState(() {
+        _updateInfo = updateInfo;
+        _isUpdateAvailable =
+            updateInfo.updateAvailability == UpdateAvailability.updateAvailable;
+      });
+      if (_isUpdateAvailable == true) {
+        _showUpdateDialog();
+      }
+    } catch (e) {
+      print("Error checking for update: $e");
+    }
+  }
+
+  void _showUpdateDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Row(
+          children: [
+            Icon(Icons.update, color: Colors.blueAccent),
+            SizedBox(width: 10),
+            Text(
+              "Update Available",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "A new version of the app is available. Update now to enjoy the latest features and improvements."
+                  .tr,
+              style: const TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            const Icon(
+              Icons.new_releases,
+              color: Colors.blueAccent,
+              size: 60,
+            ),
+          ],
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actionsPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        actions: [
+          TextButton(
+            onPressed: () {
+              if (spalshscreenfirst.read('key') == true) {
+                Get.put(AuthController()).getme(Get.context);
+              }
+              Navigator.of(context).pop();
+            }, // غلق الـ Dialog
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.grey,
+              textStyle: const TextStyle(fontSize: 16),
+            ),
+            child: Text("Later".tr),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await _startFlexibleUpdate(); // بدء عملية التحديث
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blueAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              textStyle: const TextStyle(fontSize: 16),
+            ),
+            child: Text(
+              "Update Now".tr,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _startFlexibleUpdate() async {
+    if (_updateInfo?.updateAvailability == UpdateAvailability.updateAvailable) {
+      try {
+        await InAppUpdate.startFlexibleUpdate();
+        // Optionally, complete the update once download finishes
+        await InAppUpdate.completeFlexibleUpdate();
+      } catch (e) {
+        print("Error starting update: $e");
+      }
+    }
   }
 
   @override

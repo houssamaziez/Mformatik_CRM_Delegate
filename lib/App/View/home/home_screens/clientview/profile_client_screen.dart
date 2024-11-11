@@ -5,7 +5,7 @@ import 'package:mformatic_crm_delegate/App/View/home/Widgets/homeMenu_select.dar
 import 'package:mformatic_crm_delegate/App/View/widgets/Containers/container_blue.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../../Model/client.dart';
-import '../screenMissions/createmission/cretate_screen.dart';
+import '../home_mission/createmission/cretate_screen.dart';
 
 class ClientProfileScreen extends StatelessWidget {
   final Client client;
