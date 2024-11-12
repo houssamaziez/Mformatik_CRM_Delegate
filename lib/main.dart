@@ -1,20 +1,8 @@
-import 'dart:async';
-import 'dart:io';
-
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/feedback_controller.dart';
-import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
-import 'package:mformatic_crm_delegate/audio.dart';
-import 'package:mformatic_crm_delegate/audioController.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter/services.dart'; // For loading assets
-import 'package:record/record.dart'; // Import record package
-import 'package:path_provider/path_provider.dart';
 import 'package:voice_message_package/voice_message_package.dart';
-import 'package:flutter/material.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_storage/get_storage.dart';

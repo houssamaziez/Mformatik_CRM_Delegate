@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: Voice(),
+      home: SpalshScreen(),
     );
   }
 }
