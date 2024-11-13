@@ -267,8 +267,8 @@ class FeedbackController extends GetxController {
       required String lastLabel,
       required String Label,
       required String desc,
-      String? lat,
-      String? lng,
+      required String lat,
+      required String lng,
       String? requestDate,
       required int creatorId,
       required int clientId,
@@ -344,13 +344,18 @@ class FeedbackController extends GetxController {
         },
         body: jsonEncode(map),
       );
+      print("--------------------$lat---------------$lng-------------------");
+
       print(response.body);
       if (imagesAdd!.isNotEmpty) {
+        print("------------------------------------------------------");
         await updateFeedbackImage(
             feedbackId: feedbackId,
             lastLabel: lastLabel,
             label: lastLabel,
             desc: desc,
+            lat: lat!,
+            lng: lng!,
             creatorId: creatorId,
             clientId: clientId,
             feedbackModelId: feedbackModelId,
@@ -408,8 +413,8 @@ class FeedbackController extends GetxController {
     required String lastLabel,
     required String label,
     required String desc,
-    String? lat,
-    String? lng,
+    required String lat,
+    required String lng,
     String? requestDate,
     required int creatorId,
     required int clientId,
@@ -424,8 +429,8 @@ class FeedbackController extends GetxController {
       Map<String, dynamic> fields = {
         'label': lastLabel,
         'desc': desc,
-        'lat': lat ?? '',
-        'lng': lng ?? '',
+        'lat': lat,
+        'lng': lng,
         // "gallery": jsonEncode(imagpath), // Encode as JSON if needed
         // 'requestDate': requestDate ?? '',
         'feedbackModelId': feedbackModelId,
