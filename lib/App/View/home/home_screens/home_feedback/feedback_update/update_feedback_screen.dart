@@ -352,15 +352,24 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
               ],
 
               const SizedBox(height: 20),
-              GetBuilder<FeedbackController>(
-                  init: FeedbackController(),
-                  builder: (xontrolllerFeedback) {
-                    return ButtonAll(
-                      function: _handleUpdateFeedback,
-                      title: 'Update Feedback'.tr,
-                      isloading: xontrolllerFeedback.isLoadingadd,
-                    );
-                  }),
+              isCompressImage != true
+                  ? GetBuilder<FeedbackController>(
+                      init: FeedbackController(),
+                      builder: (xontrolllerFeedback) {
+                        return ButtonAll(
+                          function: _handleUpdateFeedback,
+                          title: 'Update Feedback'.tr,
+                          isloading: xontrolllerFeedback.isLoadingadd,
+                        );
+                      })
+                  : GetBuilder<FeedbackController>(
+                      init: FeedbackController(),
+                      builder: (xontrolllerFeedback) {
+                        return ButtonAll(
+                          function: () {},
+                          title: 'Update Feedback'.tr,
+                        );
+                      }),
             ],
           ),
         ),
