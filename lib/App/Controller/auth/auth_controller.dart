@@ -12,7 +12,6 @@ import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import '../../Model/user.dart';
 import '../../Util/app_exceptions/response_handler.dart';
 import '../../View/splashScreen/splash_screen.dart';
-import '../../View/splashScreen/splash_screen.dart';
 
 GetStorage token = GetStorage();
 
@@ -48,7 +47,6 @@ class AuthController extends GetxController {
           token.write("token", responseData['token']);
           await spalshscreenfirst.write('key', true);
 
-          await spalshscreenfirst.write('key', true);
           Go.clearAndTo(context, HomeScreen());
         } else {
           showMessage(context, title: "You are not allowed to enter.".tr);
@@ -100,16 +98,13 @@ class AuthController extends GetxController {
         if (user!.roleId == 4) {
           await spalshscreenfirst.write('key', true);
 
-          await spalshscreenfirst.write('key', true);
           Go.clearAndTo(context, HomeScreen());
         } else {
           Go.clearAndTo(context, ScreenAuth());
           showMessage(context, title: "You are not allowed to enter.".tr);
         }
       } else {
-        if (response.statusCode == 401 ||
-            response.statusCode == 403 ||
-            response.statusCode == 404) {
+        if (response.statusCode == 401 || response.statusCode == 403) {
           Go.clearAndTo(context, ScreenAuth());
         }
       }
