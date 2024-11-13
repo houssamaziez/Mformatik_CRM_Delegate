@@ -172,6 +172,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 5,
+                maxLength: 250,
                 onSaved: (value) {},
                 validator: (value) => AppValidator.validate(value, [
                   (val) => AppValidator.validateRequired(val,

@@ -71,11 +71,11 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
 
               const SizedBox(height: 32),
 
-              GetBuilder<MissionsController>(
-                  init: MissionsController(),
-                  builder: (controllercreateMission) {
+              GetBuilder<TaskController>(
+                  init: TaskController(),
+                  builder: (controllercreateTask) {
                     return ElevatedButton(
-                      onPressed: controllercreateMission.isLoading
+                      onPressed: controllercreateTask.isLoading
                           ? null
                           : () {
                               print(widget.clientID);
@@ -90,7 +90,7 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
 
-                                  controllercreateMission.createMission(
+                                  controllercreateTask.createMission(
                                       desc: desc,
                                       clientId: widget.clientID,
                                       context: context,
@@ -98,7 +98,7 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
                                 }
                               }
                             },
-                      child: controllercreateMission.isLoading
+                      child: controllercreateTask.isLoading
                           ? spinkit
                           : Text('Create Mission'.tr),
                     );

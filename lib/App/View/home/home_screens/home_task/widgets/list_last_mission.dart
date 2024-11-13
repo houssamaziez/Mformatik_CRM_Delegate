@@ -8,11 +8,11 @@ import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_all/mission_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
-import '../mission_details/profile_mission.dart';
+import '../mission_details/profile_task.dart';
 import 'getStatusColor.dart';
 import 'mission_card.dart';
 
-Padding listLastMission(BuildContext context) {
+Padding listLastTasks(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(
@@ -25,7 +25,7 @@ Padding listLastMission(BuildContext context) {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: "Last Missions".tr.style(
+              child: "Last Tasks".tr.style(
                   fontWeight: FontWeight.bold,
                   color: Colors.black54,
                   fontSize: 14),
@@ -37,7 +37,7 @@ Padding listLastMission(BuildContext context) {
                 children: [
                   const Flexible(
                     child: Icon(
-                      Icons.ads_click_sharp,
+                      Icons.assignment,
                       color: Colors.transparent,
                     ),
                   ),
@@ -70,7 +70,7 @@ Padding listLastMission(BuildContext context) {
                           .center()),
                   const Flexible(
                     child: Icon(
-                      Icons.ads_click_sharp,
+                      Icons.assignment,
                       color: Colors.transparent,
                     ),
                   ),
@@ -88,7 +88,7 @@ Padding listLastMission(BuildContext context) {
                                 child: Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
-                                    "No Missions found".tr,
+                                    "No Task found".tr,
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
@@ -111,7 +111,7 @@ Padding listLastMission(BuildContext context) {
                                       onTap: () {
                                         Go.to(
                                             context,
-                                            MissionProfileScreen(
+                                            TaskProfileScreen(
                                               missionId: mission.id,
                                             ));
                                       },
@@ -123,7 +123,7 @@ Padding listLastMission(BuildContext context) {
                                           children: [
                                             Flexible(
                                               child: Icon(
-                                                Icons.ads_click_sharp,
+                                                Icons.assignment,
                                                 color: Theme.of(context)
                                                     .primaryColor,
                                               ),
@@ -189,7 +189,7 @@ Padding listLastMission(BuildContext context) {
                       padding: EdgeInsets.only(
                           left: 20.0, right: 20, top: 5, bottom: 5),
                       child: Text(
-                        "View All Missions".tr,
+                        "View All Task".tr,
                         style: TextStyle(color: Colors.white, fontSize: 13),
                       ),
                     ),

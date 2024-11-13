@@ -21,22 +21,20 @@ import '../../Widgets/homeMenuSelectScreens.dart';
 import '../../Widgets/homeMenu_select.dart';
 import 'widgets/list_last_mission.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomeViewTask extends StatefulWidget {
+  const HomeViewTask({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomeViewTask> createState() => _HomeViewTaskState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeViewTaskState extends State<HomeViewTask> {
   late ScrollController scrollController;
   var homeController = Get.put(HomeController());
   @override
   void initState() {
     scrollController = ScrollController();
-
     scrollController.addListener(_scrollListener);
-    // TODO: implement initState
     super.initState();
   }
 
@@ -45,7 +43,7 @@ class _HomeState extends State<Home> {
         scrollController.position.maxScrollExtent) {
       print(scrollController.position.pixels);
       homeController.upadteshowcontaneClos();
-    } // If you want to handle other conditions, use an else or else if here
+    }
   }
 
   @override
@@ -103,9 +101,6 @@ class _HomeState extends State<Home> {
                   return SingleChildScrollView(
                     child: Column(
                       children: [
-                        FilterCompany(
-                          controller: controller,
-                        ),
                         const SizedBox(
                           height: 150,
                         ),
@@ -123,9 +118,6 @@ class _HomeState extends State<Home> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
-                        FilterCompany(
-                          controller: controller,
-                        ),
                         const SizedBox(
                           height: 200,
                         ),
@@ -188,13 +180,6 @@ class _HomeState extends State<Home> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
-                        FilterCompany(
-                          controller: controller,
-                        ),
-                        homeMenuSelectScreens(
-                          context,
-                          data: _listiconhomemeneu,
-                        ),
                         const SizedBox(
                           height: 14,
                         ),
@@ -205,12 +190,11 @@ class _HomeState extends State<Home> {
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                statuseAndLatenessButton(
-                                    context, getSliderColor),
+                                statuseTaskButton(context, getSliderColor),
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                const AddMissionbutton(),
+                                const AddTaskbutton(),
                                 const SizedBox(
                                   width: 8,
                                 ),
@@ -219,7 +203,7 @@ class _HomeState extends State<Home> {
                         const SizedBox(
                           height: 10,
                         ),
-                        listLastMission(context),
+                        listLastTasks(context),
                       ],
                     ),
                   ).addRefreshIndicator(onRefresh: () {

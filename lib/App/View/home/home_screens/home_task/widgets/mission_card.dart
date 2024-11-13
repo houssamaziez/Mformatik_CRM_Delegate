@@ -6,7 +6,7 @@ import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 
 import '../../../../../Model/mission.dart';
-import '../mission_details/profile_mission.dart';
+import '../mission_details/profile_task.dart';
 
 class MissionCard extends StatelessWidget {
   final Mission mission;
@@ -20,7 +20,7 @@ class MissionCard extends StatelessWidget {
       onTap: () {
         Go.to(
           context,
-          MissionProfileScreen(missionId: mission.id),
+          TaskProfileScreen(missionId: mission.id),
         );
       },
       child: Padding(

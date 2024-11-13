@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/task_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
@@ -14,17 +15,17 @@ import '../../home_feedback/create_feedback/cretate_screen.dart';
 import '../widgets/getStatusColor.dart';
 import '../widgets/getStatusLabel.dart';
 
-class MissionProfileScreen extends StatefulWidget {
+class TaskProfileScreen extends StatefulWidget {
   final int missionId;
 
-  MissionProfileScreen({Key? key, required this.missionId}) : super(key: key);
+  TaskProfileScreen({Key? key, required this.missionId}) : super(key: key);
 
   @override
-  State<MissionProfileScreen> createState() => _MissionProfileScreenState();
+  State<TaskProfileScreen> createState() => _TaskProfileScreenState();
 }
 
-class _MissionProfileScreenState extends State<MissionProfileScreen> {
-  final missionController = Get.put(MissionsController());
+class _TaskProfileScreenState extends State<TaskProfileScreen> {
+  final missionController = Get.put(TaskController());
 
   @override
   void initState() {
@@ -46,8 +47,8 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
         centerTitle: true,
         backgroundColor: theme.primaryColor,
       ),
-      body: GetBuilder<MissionsController>(
-        init: MissionsController(),
+      body: GetBuilder<TaskController>(
+        init: TaskController(),
         builder: (controller) {
           if (controller.isLoadingProfile) {
             return const Center(child: spinkit);
@@ -368,7 +369,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
   }
 
   Widget _buildMissionStatusSection(
-      ThemeData theme, int statusId, MissionsController controller) {
+      ThemeData theme, int statusId, TaskController controller) {
     String statusLabel = getStatusLabel(statusId);
     Color statusColor = getStatusColor(statusId);
 

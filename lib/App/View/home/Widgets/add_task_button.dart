@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/createTask/create_tesk.dart';
 
 import '../../../Controller/home/company_controller.dart';
 import '../../../Util/Route/Go.dart';
 import '../../../Util/Style/stylecontainer.dart';
 import '../home_screens/clientview/client_list_add_all/client_list_screen_add.dart';
 
-class AddTaskbutton extends StatelessWidget {
-  const AddTaskbutton({
+class AddMissionbutton extends StatelessWidget {
+  const AddMissionbutton({
     super.key,
   });
 
@@ -20,7 +19,14 @@ class AddTaskbutton extends StatelessWidget {
             builder: (companyController) {
               return InkWell(
                 onTap: () {
-                  Go.to(context, ScreenCreateTask());
+                  Go.to(
+                      context,
+                      ClientListScreenAddMission(
+                        companyid:
+                            companyController.selectCompany!.id.toString(),
+                        isback: true,
+                        role: "mission",
+                      ));
                 },
                 child: Container(
                   decoration: StyleContainer.stylecontainer(
@@ -36,7 +42,7 @@ class AddTaskbutton extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        "Add \n Task".tr,
+                        "Add \n Mission".tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,

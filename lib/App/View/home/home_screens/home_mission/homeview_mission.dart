@@ -205,12 +205,11 @@ class _HomeState extends State<Home> {
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                statuseAndLatenessButton(
-                                    context, getSliderColor),
+                                statuseMissionButton(context, getSliderColor),
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                const AddMissionbutton(),
+                                const AddTaskbutton(),
                                 const SizedBox(
                                   width: 8,
                                 ),
