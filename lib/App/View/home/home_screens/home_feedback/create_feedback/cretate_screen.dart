@@ -12,6 +12,7 @@ import '../../../../../Controller/widgetsController/date_controller.dart';
 import '../../../../../Service/AppValidator/AppValidator.dart';
 import '../../../../../Service/Location/get_location.dart';
 import '../../../../../Util/Date/formatDate.dart';
+import '../../../../widgets/Buttons/buttonall.dart';
 import '../../../../widgets/Date/date_picker.dart';
 import '../../../../widgets/Dialog/showExitConfirmationDialog.dart';
 import '../widgets/reason_selector_feedback.dart';
@@ -221,7 +222,8 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                       )),
                 ],
               ),
-              if (_compressionProgress > 0 && _compressionProgress < 100) ...[
+              if (_compressionProgress > 0 && _compressionProgress < 100 ||
+                  isCompressImage) ...[
                 const SizedBox(height: 16),
                 Text(
                     'Loading images: ${_compressionProgress.toStringAsFixed(0)}%'),
@@ -267,90 +269,111 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                 ),
               ],
               const SizedBox(height: 32),
-              GetBuilder<FeedbackController>(
-                init: FeedbackController(),
-                builder: (controllercreateFeedback) {
-                  return ElevatedButton(
-                    onPressed: controllercreateFeedback.isLoadingadd
-                        ? null
-                        : () async {
-                            if (controllerisreq.selectedItem.value == null) {
-                              showMessage(context, title: 'Select Reasons'.tr);
-                              return;
-                            }
-                            if (widget.missionID != null) {
-                              showExitConfirmationDialog(context,
-                                  onPressed: () async {
-                                Get.back();
-                                controllercreateFeedback.upadteisloading(true);
-
-                                var location =
-                                    await LocationService.getCurrentLocation(
-                                        context);
-                                if (location.isPermissionGranted) {
+              isCompressImage != true
+                  ? GetBuilder<FeedbackController>(
+                      init: FeedbackController(),
+                      builder: (controllercreateFeedback) {
+                        return ElevatedButton(
+                          onPressed: controllercreateFeedback.isLoadingadd
+                              ? null
+                              : () async {
                                   if (controllerisreq.selectedItem.value ==
                                       null) {
                                     showMessage(context,
                                         title: 'Select Reasons'.tr);
-                                  } else if (controllerisreq
-                                          .selectedItem.value!.isDescRequired ==
-                                      true) {
-                                    if (_formKey.currentState!.validate()) {
-                                      _formKey.currentState!.save();
-                                      post(controllercreateFeedback, location);
+                                    return;
+                                  }
+                                  if (widget.missionID != null) {
+                                    showExitConfirmationDialog(context,
+                                        onPressed: () async {
+                                      Get.back();
+                                      controllercreateFeedback
+                                          .upadteisloading(true);
 
-                                      return;
+                                      var location = await LocationService
+                                          .getCurrentLocation(context);
+                                      if (location.isPermissionGranted) {
+                                        if (controllerisreq
+                                                .selectedItem.value ==
+                                            null) {
+                                          showMessage(context,
+                                              title: 'Select Reasons'.tr);
+                                        } else if (controllerisreq.selectedItem
+                                                .value!.isDescRequired ==
+                                            true) {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            _formKey.currentState!.save();
+                                            post(controllercreateFeedback,
+                                                location);
+
+                                            return;
+                                          }
+                                        } else {
+                                          post(controllercreateFeedback,
+                                              location);
+
+                                          return;
+                                        }
+                                      }
+                                      controllercreateFeedback
+                                          .upadteisloading(false);
+                                    },
+                                        details:
+                                            'Are you sure to complete the Mission?'
+                                                .tr,
+                                        title: 'Confirmation'.tr);
+                                  } else {
+                                    controllercreateFeedback
+                                        .updateIsLoading(true);
+                                    var location = await LocationService
+                                        .getCurrentLocation(context);
+                                    if (location.isPermissionGranted) {
+                                      if (controllerisreq.selectedItem.value ==
+                                          null) {
+                                        showMessage(context,
+                                            title: 'Select Reasons'.tr);
+                                      } else if (controllerisreq.selectedItem
+                                              .value!.isDescRequired ==
+                                          true) {
+                                        if (_formKey.currentState!.validate()) {
+                                          _formKey.currentState!.save();
+
+                                          post(controllercreateFeedback,
+                                              location);
+
+                                          return;
+                                        } else {
+                                          showMessage(context,
+                                              title:
+                                                  'Please enter a description'
+                                                      .tr);
+                                        }
+                                      } else {
+                                        post(
+                                            controllercreateFeedback, location);
+
+                                        return;
+                                      }
                                     }
-                                  } else {
-                                    post(controllercreateFeedback, location);
-
-                                    return;
+                                    controllercreateFeedback
+                                        .updateIsLoading(false);
                                   }
-                                }
-                                controllercreateFeedback.upadteisloading(false);
-                              },
-                                  details:
-                                      'Are you sure to complete the Mission?'
-                                          .tr,
-                                  title: 'Confirmation'.tr);
-                            } else {
-                              controllercreateFeedback.updateIsLoading(true);
-                              var location =
-                                  await LocationService.getCurrentLocation(
-                                      context);
-                              if (location.isPermissionGranted) {
-                                if (controllerisreq.selectedItem.value ==
-                                    null) {
-                                  showMessage(context,
-                                      title: 'Select Reasons'.tr);
-                                } else if (controllerisreq
-                                        .selectedItem.value!.isDescRequired ==
-                                    true) {
-                                  if (_formKey.currentState!.validate()) {
-                                    _formKey.currentState!.save();
-
-                                    post(controllercreateFeedback, location);
-
-                                    return;
-                                  } else {
-                                    showMessage(context,
-                                        title: 'Please enter a description'.tr);
-                                  }
-                                } else {
-                                  post(controllercreateFeedback, location);
-
-                                  return;
-                                }
-                              }
-                              controllercreateFeedback.updateIsLoading(false);
-                            }
-                          },
-                    child: controllercreateFeedback.isLoadingadd
-                        ? spinkitwhite
-                        : Text('Create Feedback'.tr),
-                  );
-                },
-              ),
+                                },
+                          child: controllercreateFeedback.isLoadingadd
+                              ? spinkitwhite
+                              : Text('Create Feedback'.tr),
+                        );
+                      },
+                    )
+                  : GetBuilder<FeedbackController>(
+                      init: FeedbackController(),
+                      builder: (xontrolllerFeedback) {
+                        return ButtonAll(
+                          function: () {},
+                          title: 'Create Feedback'.tr,
+                        );
+                      }),
             ],
           ),
         ),
