@@ -424,25 +424,29 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   }
 
   post() async {
-    final List<XFile> xFiles =
-        _compressedImages!.map((file) => XFile(file.path)).toList();
-    await feedbackController
-        .updateFeedbacks(
-      imagesAdd: xFiles,
-      feedbackId: widget.feedback.id.toString(),
-      lastLabel: expandableController.controllerTextEditingController!.text,
-      Label: widget.feedback.label.toString(),
-      desc: descController.text,
-      requestDate:
-          formatDate(Get.put(DateController()).selectedDate.value.toString()),
-      clientId: int.parse(clientIdController.text),
-      feedbackModelId: int.parse(widget.feedback.feedbackModelId.toString()),
-      creatorId: widget.feedback.creatorId!,
-      images: images,
-    )
-        .then((success) {
-      LocationService.getCurrentLocation(context);
-    });
+    feedbackController.updateIsLoading(true);
+    var location = await LocationService.getCurrentLocation(context);
+    if (location.isPermissionGranted) {
+      final List<XFile> xFiles =
+          _compressedImages!.map((file) => XFile(file.path)).toList();
+
+      await feedbackController.updateFeedbacks(
+        imagesAdd: xFiles,
+        lat: location.latitude.toString(),
+        lng: location.longitude.toString(),
+        feedbackId: widget.feedback.id.toString(),
+        lastLabel: expandableController.controllerTextEditingController!.text,
+        Label: widget.feedback.label.toString(),
+        desc: descController.text,
+        requestDate:
+            formatDate(Get.put(DateController()).selectedDate.value.toString()),
+        clientId: int.parse(clientIdController.text),
+        feedbackModelId: int.parse(widget.feedback.feedbackModelId.toString()),
+        creatorId: widget.feedback.creatorId!,
+        images: images,
+      );
+    }
+    feedbackController.updateIsLoading(false);
   }
 }
 

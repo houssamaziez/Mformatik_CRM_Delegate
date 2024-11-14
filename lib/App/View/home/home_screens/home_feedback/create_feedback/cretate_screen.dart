@@ -197,54 +197,32 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                             : Container()
                         : Container();
                   }),
-              InkWell(
-                onTap: _selectImagesFromGallery,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.image_outlined,
-                      color: Colors.green,
-                    ),
-                    SizedBox(width: 10),
-                    Text("Photos")
-                  ],
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Selected Images'.tr,
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Spacer(),
+                  IconButton(
+                      onPressed: _takePhoto,
+                      icon: Icon(
+                        Icons.camera,
+                        color: Theme.of(context).primaryColor,
+                      )),
+                  const SizedBox(width: 8),
+                  IconButton(
+                      onPressed: _selectImagesFromGallery,
+                      color: Theme.of(context).primaryColor,
+                      icon: Icon(
+                        Icons.image,
+                      )),
+                ],
               ),
-              SizedBox(
-                height: 10,
-              ),
-              InkWell(
-                onTap: _takePhoto,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.camera_alt,
-                      color: Colors.blue,
-                    ),
-                    SizedBox(width: 10),
-                    Text("Camera")
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              InkWell(
-                onTap: () {},
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.mic,
-                      color: Colors.red,
-                    ),
-                    SizedBox(width: 10),
-                    Text("Vocal")
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              if (_compressionProgress > 0 && _compressionProgress < 100 ||
-                  isCompressImage) ...[
+              if (_compressionProgress > 0 && _compressionProgress < 100) ...[
                 const SizedBox(height: 16),
                 Text(
                     'Loading images: ${_compressionProgress.toStringAsFixed(0)}%'),
@@ -290,14 +268,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                 ),
               ],
               const SizedBox(height: 32),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: isCompressImage != true
-          ? Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GetBuilder<FeedbackController>(
+              GetBuilder<FeedbackController>(
                 init: FeedbackController(),
                 builder: (controllercreateFeedback) {
                   return ElevatedButton(
@@ -381,18 +352,10 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                   );
                 },
               ),
-            )
-          : Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GetBuilder<FeedbackController>(
-                  init: FeedbackController(),
-                  builder: (xontrolllerFeedback) {
-                    return ButtonAll(
-                      function: () {},
-                      title: 'Create Feedback'.tr,
-                    );
-                  }),
-            ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

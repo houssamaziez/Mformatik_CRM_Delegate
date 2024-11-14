@@ -36,14 +36,14 @@ class _MissionListScreenByReasonState extends State<MissionListScreenByReason> {
   @override
   void initState() {
     controller1.getAllMission(
-        context,
-        Get.put(CompanyController()).selectCompany == null
-            ? 0
-            : Get.put(CompanyController()).selectCompany!.id,
-        endingDate: endDateTextMissionByReason,
-        startingDate: startDateTextMissionByReason,
-        statusId: widget.statusId,
-        creatorId: Get.put(AuthController()).user!.id.toString());
+      context,
+      Get.put(CompanyController()).selectCompany == null
+          ? 0
+          : Get.put(CompanyController()).selectCompany!.id,
+      endingDate: endDateTextMissionByReason,
+      startingDate: startDateTextMissionByReason,
+      statusId: widget.statusId,
+    );
     scrollController = ScrollController();
     scrollController.addListener(_scrollListener);
     super.initState();
@@ -54,11 +54,12 @@ class _MissionListScreenByReasonState extends State<MissionListScreenByReason> {
         scrollController.position.maxScrollExtent) {
       if (controller1.offset <= controller1.missionslength) {
         print("object");
-        controller1.loadingMoreMission(context,
-            endingDate: endDateTextMissionByReason,
-            startingDate: startDateTextMissionByReason,
-            statusId: widget.statusId,
-            creatorId: Get.put(AuthController()).user!.id.toString());
+        controller1.loadingMoreMission(
+          context,
+          endingDate: endDateTextMissionByReason,
+          startingDate: startDateTextMissionByReason,
+          statusId: widget.statusId,
+        );
       }
     }
   }
@@ -144,23 +145,19 @@ class _MissionListScreenByReasonState extends State<MissionListScreenByReason> {
                             }
                           },
                         ).addRefreshIndicator(
-                            onRefresh: () => Get.put(MissionsControllerAll())
-                                .getAllMission(
-                                    context,
-                                    Get.put(CompanyController())
-                                                .selectCompany ==
-                                            null
-                                        ? 0
-                                        : Get.put(CompanyController())
-                                            .selectCompany!
-                                            .id,
-                                    endingDate: endDateTextMissionByReason,
-                                    statusId: widget.statusId,
-                                    startingDate: startDateTextMissionByReason,
-                                    creatorId: Get.put(AuthController())
-                                        .user!
-                                        .id
-                                        .toString()));
+                            onRefresh: () =>
+                                Get.put(MissionsControllerAll()).getAllMission(
+                                  context,
+                                  Get.put(CompanyController()).selectCompany ==
+                                          null
+                                      ? 0
+                                      : Get.put(CompanyController())
+                                          .selectCompany!
+                                          .id,
+                                  endingDate: endDateTextMissionByReason,
+                                  statusId: widget.statusId,
+                                  startingDate: startDateTextMissionByReason,
+                                ));
                       }
                     },
                   ),
