@@ -63,6 +63,9 @@ dependencies:
   ez_validator: ^0.3.6
   voice_message_package: ^2.2.1
   sizer: ^3.0.4
+  avatar_glow: ^3.0.1
+  vibration: ^2.0.1
+  flutter_sound: ^9.6.0
 
 flutter_icons:
   android: true

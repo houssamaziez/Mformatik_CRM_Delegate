@@ -7,12 +7,17 @@ import 'package:record/record.dart';
 
 class RecordController extends GetxController {
   bool isRecording = false;
+  bool animate = false;
   bool isPlaying = false;
   String audioPath = '';
   Duration audioDuration = Duration.zero;
   final AudioRecorder _record = AudioRecorder();
   final AudioPlayer _play = AudioPlayer();
   late Timer _timer;
+  updateisRcord(bool value) {
+    animate = value;
+    update();
+  }
 
   // Method to toggle recording
   void toggleRecording() async {

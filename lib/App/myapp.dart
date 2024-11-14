@@ -3,9 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../main.dart';
 import 'Util/Theme/theme_light.dart';
 import 'Util/localizations/localizations.dart';
-import 'View/splashScreen/splash_screen.dart';
 
 void main() async {
   await GetStorage.init(); // Initialize GetStorage
@@ -14,7 +14,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     final GetStorage storage = GetStorage();
@@ -38,7 +37,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const SpalshScreen(),
+      home: Voice(),
     );
   }
 }
