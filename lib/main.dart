@@ -8,7 +8,6 @@ import 'App/myapp.dart';
 void main() async {
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
-
   print(spalshscreenfirst.read('key'));
   runApp(const MyApp());
 }
