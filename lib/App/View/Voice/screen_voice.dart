@@ -2,6 +2,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/RecordController.dart';
+import 'package:mformatic_crm_delegate/App/View/Voice/noises.dart';
 import 'package:vibration/vibration.dart';
 import 'package:voice_message_package/src/helpers/play_status.dart';
 import 'package:voice_message_package/src/helpers/utils.dart';
@@ -183,7 +184,7 @@ class VoiceMessageViewMy extends StatelessWidget {
                           child: Text(
                             controller.remindingTime,
                             style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold),
+                                fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                         )),
                         SizedBox(
@@ -222,7 +223,7 @@ class VoiceMessageViewMy extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             /// noises
-            Noises(
+            NoisesMy(
               rList: controller.randoms!,
               activeSliderColor: activeSliderColor,
             ),

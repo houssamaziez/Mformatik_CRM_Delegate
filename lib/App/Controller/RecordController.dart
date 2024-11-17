@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
+import 'package:voice_message_package/voice_message_package.dart';
 
 class RecordController extends GetxController {
   bool isRecording = false;
@@ -14,7 +15,12 @@ class RecordController extends GetxController {
   final AudioRecorder _record = AudioRecorder();
   final AudioPlayer _play = AudioPlayer();
   late Timer _timer;
-  updateisRcord(bool value) {
+  updateisRcord() {
+    animate = !animate;
+    update();
+  }
+
+  updateisRcordfa(bool value) {
     animate = value;
     update();
   }
