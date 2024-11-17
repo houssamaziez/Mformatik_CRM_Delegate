@@ -235,7 +235,12 @@ class FeedbackController extends GetxController {
         }
       }
       var response = await request.send();
-      print(response.statusCode);
+      var responseBody = await response.stream.bytesToString();
+      print(responseBody);
+      if (response.statusCode == 406) {
+        showMessage(Get.context,
+            title: "A mission can only have one associated feedback entry.".tr);
+      }
       if (response.statusCode == 200) {
         Get.back();
         Get.back();
@@ -250,7 +255,6 @@ class FeedbackController extends GetxController {
             title: 'Feedback added successfully'.tr, color: Colors.green);
 
         print('Feedback added successfully');
-        // Optionally refresh the feedbacks list or perform other actions
       } else {
         throw Exception('Failed to add feedback');
       }
