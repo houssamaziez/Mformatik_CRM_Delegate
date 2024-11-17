@@ -464,24 +464,17 @@ class FeedbackController extends GetxController {
 
       // Check the response status
       if (response.statusCode == 204) {
-        // fetchFeedbacks(
-        //     Get.put(CompanyController()).selectCompany!.id.toString(),
-        //     creatorId.toString());
-        // showMessage(Get.context,
-        //     title: 'Feedback updated successfully', color: Colors.green);
         print('Feedback updated successfully');
       } else {
-        // showMessage(Get.context,
-        //     title: 'Failed to update feedback', color: Colors.orange);
+        showMessage(Get.context, title: "Failed to update feedback");
         print('Failed to update feedback: $responseBody');
       }
     } on SocketException catch (e) {
-      // showMessage(Get.context,
-      //     title: 'No Internet Connection', color: Colors.red);
       print('Network error: $e');
+      showMessage(Get.context, title: "Failed to update feedback");
     } catch (e) {
-      // showMessage(Get.context, title: 'Unexpected Error', color: Colors.red);
       print('Unexpected error: $e');
+      showMessage(Get.context, title: "Failed to update feedback");
     } finally {}
   }
 }
