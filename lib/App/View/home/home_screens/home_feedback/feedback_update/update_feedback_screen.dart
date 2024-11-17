@@ -219,8 +219,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                 'Gallery'.tr,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.blueGrey,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
               const SizedBox(height: 10),

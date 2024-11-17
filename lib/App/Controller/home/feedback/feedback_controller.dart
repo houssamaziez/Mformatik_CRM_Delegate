@@ -255,6 +255,8 @@ class FeedbackController extends GetxController {
         throw Exception('Failed to add feedback');
       }
     } catch (e) {
+      showMessage(Get.context, title: 'Connection problem'.tr);
+
       print('Error: $e');
     } finally {
       isLoadingadd = false;
