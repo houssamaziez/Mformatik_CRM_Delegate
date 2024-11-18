@@ -36,23 +36,21 @@ class ClientMission {
   // Factory constructor to create a Client object from a JSON map
   factory ClientMission.fromJson(Map<String, dynamic> json) {
     return ClientMission(
-      id: json['id'] ?? 0, // Default to 0 if null
-      localId: json['localId'] ?? 0,
-      fullName: json['fullName'] ?? '',
+      id: json['id'], // Default to 0 if null
+      localId: json['localId'],
+      fullName: json['fullName'],
       email: json['email'] ?? '',
       address: json['address'] ?? '',
       phone: json['phone'] ?? '',
       tel: json['tel'] ?? '',
       region: json['region'] ?? '',
-      cashingIn: json['cashingIn'] ?? '', // Default to empty string if null
-      sold: json['sold'] ?? '',
-      potential: json['potential'] ?? '',
-      turnover: json['turnover'] ?? '',
-      companyId: json['companyId'] ?? 0,
-      createdAt:
-          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
-      updatedAt:
-          json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
+      cashingIn: json['cashingIn'], // Default to empty string if null
+      sold: json['sold'],
+      potential: json['potential'],
+      turnover: json['turnover'],
+      companyId: json['companyId'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
     );
   }
 

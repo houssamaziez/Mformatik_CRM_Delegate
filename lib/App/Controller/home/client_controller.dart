@@ -26,7 +26,9 @@ class ClientController extends GetxController {
       update();
       final currentOffset = offsetValue ?? offset.value;
       update();
-
+      if (id == "0") {
+        return;
+      }
       final response = await http.get(
         Uri.parse(Endpoint.apiCients).replace(
           queryParameters: {
