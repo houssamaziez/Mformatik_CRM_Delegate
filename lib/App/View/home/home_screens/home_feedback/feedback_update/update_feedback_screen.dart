@@ -47,8 +47,12 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   final _formKey = GlobalKey<FormState>();
   List<dynamic> images = [];
   FeedbackMission? feedbacklocal;
+//  to do fix le mam list send
+
+  int feedbackinitlanght = 0;
   @override
   void initState() {
+    feedbackinitlanght = widget.feedback.gallery.length;
     feedbacklocal = widget.feedback;
     print(feedbacklocal!.feedbackModelId.toString());
     super.initState();
@@ -135,9 +139,6 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // // if (widget.feedback.feedbackModelId == 1)
-              // ReasonsSelectorFeedbackupd(
-              //     id: widget.feedback.feedbackModelId.toString()),
               GetBuilder<ExpandableControllerFeedback>(
                 builder: (controller) {
                   return ReasonsSelectorFeedbackupd(
@@ -148,13 +149,9 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                   );
                 },
               ),
-
               const SizedBox(
                 height: 20,
               ),
-              // _buildTextField(
-              //     descController, 'Description', 'Enter a description',
-              //     maxLines: 3),
               GetBuilder<ExpandableControllerFeedback>(
                   init: ExpandableControllerFeedback(),
                   builder: (controllerExp) {
@@ -196,7 +193,6 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                       minLength: 5, fieldName: 'Description'),
                 ]),
               ),
-
               SizedBox(
                 height: 10,
               ),
@@ -219,8 +215,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                 'Gallery'.tr,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.blueGrey,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
               const SizedBox(height: 10),
@@ -278,7 +273,6 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                       'No Images available'.tr,
                       style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                     ),
-
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -350,7 +344,6 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                   },
                 ),
               ],
-
               const SizedBox(height: 20),
               isCompressImage != true
                   ? GetBuilder<FeedbackController>(
@@ -405,6 +398,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
     //       backgroundColor: Colors.red, colorText: Colors.white);
     //   return;
     // }
+
     if (isCompressImage) {
       return;
     }
@@ -432,6 +426,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
 
       await feedbackController.updateFeedbacks(
         imagesAdd: xFiles,
+        beforimages: feedbackinitlanght,
         lat: location.latitude.toString(),
         lng: location.longitude.toString(),
         feedbackId: widget.feedback.id.toString(),
