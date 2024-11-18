@@ -235,7 +235,12 @@ class FeedbackController extends GetxController {
         }
       }
       var response = await request.send();
-      print(response.statusCode);
+      var responseBody = await response.stream.bytesToString();
+      print(responseBody);
+      if (response.statusCode == 406) {
+        showMessage(Get.context,
+            title: "A mission can only have one associated feedback entry.".tr);
+      }
       if (response.statusCode == 200) {
         Get.back();
         Get.back();
@@ -250,7 +255,6 @@ class FeedbackController extends GetxController {
             title: 'Feedback added successfully'.tr, color: Colors.green);
 
         print('Feedback added successfully');
-        // Optionally refresh the feedbacks list or perform other actions
       } else {
         throw Exception('Failed to add feedback');
       }
@@ -264,108 +268,88 @@ class FeedbackController extends GetxController {
     }
   }
 
-  Future<void> updateFeedbacks(
-      {required String feedbackId,
-      required String lastLabel,
-      required String Label,
-      required String desc,
-      required String lat,
-      required String lng,
-      String? requestDate,
-      required int creatorId,
-      required int clientId,
-      required List<XFile>? imagesAdd,
-      required int feedbackModelId,
-      required List<dynamic> images}) async {
+  Future<void> updateFeedbacks({
+    required String feedbackId,
+    required String lastLabel,
+    required String Label,
+    required String desc,
+    required String lat,
+    required String lng,
+    String? requestDate,
+    required int creatorId,
+    required int clientId,
+    required List<XFile>? imagesAdd,
+    required int feedbackModelId,
+    required List<dynamic> images,
+    required int beforimages,
+  }) async {
     isLoadingadd = true;
     update();
-    var location = await LocationService.getCurrentLocation(Get.context);
-    if (!location.isPermissionGranted) {
-      return;
-    }
-    ExpandableControllerFeedback expandableControllerFeedback =
-        Get.put(ExpandableControllerFeedback());
-    // Indicate loading state
 
     try {
-      // return;
-      final List imagpath = [];
-      for (var i = 0; i < images.length; i++) {
-        // print(images[i]["id"]);
-        for (var i = 0; i < images.length; i++) {
-          imagpath.add({
-            "id": images[i]["id"].toString(),
-            "path": images[i]["id"].toString()
-          });
-        }
+      // Check location permissions
+      var location = await LocationService.getCurrentLocation(Get.context);
+      if (!location.isPermissionGranted) {
+        return;
       }
-      final url =
-          Uri.parse('${Endpoint.apiFeedbacks}/$feedbackId'); // Endpoint URL
 
+      // Get feedback model filter logic
+      ExpandableControllerFeedback expandableControllerFeedback =
+          Get.put(ExpandableControllerFeedback());
       String feedbackModelFilter = '0';
-
-      if (expandableControllerFeedback.selectedItem.value.isNull == true) {
-        if (lastLabel == Label) {
-          feedbackModelFilter = feedbackModelId.toString();
-        } else {
-          feedbackModelFilter = "1".toString();
-        }
-        update();
+      if (expandableControllerFeedback.selectedItem.value == null) {
+        feedbackModelFilter =
+            (lastLabel == Label) ? feedbackModelId.toString() : "1";
       } else {
         feedbackModelFilter =
             expandableControllerFeedback.selectedItem.value!.id.toString();
-        update();
-      }
-      if (feedbackModelFilter == "1".toString()) {
-        print(lastLabel);
-        if (lastLabel.isEmpty || lastLabel.length <= 2) {
-          showMessage(Get.context, title: 'Please specify'.tr);
-          return;
-        }
       }
 
-      Map<String, Object?> map = {
+      if (feedbackModelFilter == "1" &&
+          (lastLabel.isEmpty || lastLabel.length <= 2)) {
+        showMessage(Get.context, title: 'Please specify'.tr);
+        return;
+      }
+
+      // Prepare gallery field
+      final List<Map<String, String>> imagpath = images
+          .map((img) =>
+              {"id": img["id"].toString(), "path": img["path"].toString()})
+          .toList();
+
+      // Construct API request
+      final url = Uri.parse('${Endpoint.apiFeedbacks}/$feedbackId');
+      var request = http.MultipartRequest('PUT', url);
+      request.headers['x-auth-token'] = token.read("token").toString();
+
+      // Add fields
+      request.fields.addAll({
         'label': lastLabel,
         'desc': desc,
         'lat': lat,
         'lng': lng,
-        'requestDate': requestDate,
-        // 'clientId': clientId,
+        'requestDate': requestDate ?? '',
         'feedbackModelId': feedbackModelFilter,
-        'gallery': imagpath,
-      };
-      print("==========================");
-      print(map);
-      print("==========================");
-
-      final response = await http.put(
-        url,
-        headers: {
-          'x-auth-token': token.read("token").toString(),
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(map),
-      );
-      print("--------------------$lat---------------$lng-------------------");
-
-      print(response.body);
-      if (imagesAdd!.isNotEmpty) {
-        print("------------------------------------------------------");
-        await updateFeedbackImage(
-            feedbackId: feedbackId,
-            lastLabel: lastLabel,
-            label: lastLabel,
-            desc: desc,
-            lat: lat!,
-            lng: lng!,
-            creatorId: creatorId,
-            clientId: clientId,
-            feedbackModelId: feedbackModelId,
-            imagesAdd: imagesAdd,
-            images: images);
+      });
+      if (images.length != beforimages) {
+        for (var i = 0; i < imagpath.length; i++) {
+          request.fields['gallery[$i][id]'] = imagpath[i]['id']!;
+          request.fields['gallery[$i][path]'] = imagpath[i]['path']!;
+        }
       }
 
-      // Handle response based on status code
+      if (imagesAdd != null) {
+        for (var image in imagesAdd) {
+          request.files
+              .add(await http.MultipartFile.fromPath('img', image.path));
+        }
+      }
+
+      // Send request
+      var response = await request.send();
+      final responseBody = await response.stream.bytesToString();
+
+      // Handle response
       if (response.statusCode == 204) {
         fetchFeedbacks(
             Get.put(CompanyController()).selectCompany!.id.toString(),
@@ -385,26 +369,16 @@ class FeedbackController extends GetxController {
           title: 'Failed to update feedback'.tr,
           color: Colors.orange,
         );
-        print('Failed to update feedback: ${response.body}');
+        print('Failed to update feedback: $responseBody');
       }
     } on SocketException catch (e) {
-      // Handle network-related errors
-      showMessage(
-        Get.context,
-        title: 'No Internet Connection'.tr,
-        color: Colors.red,
-      );
+      showMessage(Get.context,
+          title: 'No Internet Connection'.tr, color: Colors.red);
       print('Network error: $e');
     } catch (e) {
-      // Handle other types of errors
-      showMessage(
-        Get.context,
-        title: 'No Internet Connection'.tr,
-        color: Colors.red,
-      );
+      showMessage(Get.context, title: 'Unexpected Error'.tr, color: Colors.red);
       print('Unexpected error: $e');
     } finally {
-      // Reset loading state
       isLoadingadd = false;
       update();
     }
@@ -464,17 +438,24 @@ class FeedbackController extends GetxController {
 
       // Check the response status
       if (response.statusCode == 204) {
+        // fetchFeedbacks(
+        //     Get.put(CompanyController()).selectCompany!.id.toString(),
+        //     creatorId.toString());
+        // showMessage(Get.context,
+        //     title: 'Feedback updated successfully', color: Colors.green);
         print('Feedback updated successfully');
       } else {
-        showMessage(Get.context, title: "Failed to update feedback");
+        // showMessage(Get.context,
+        //     title: 'Failed to update feedback', color: Colors.orange);
         print('Failed to update feedback: $responseBody');
       }
     } on SocketException catch (e) {
+      // showMessage(Get.context,
+      //     title: 'No Internet Connection', color: Colors.red);
       print('Network error: $e');
-      showMessage(Get.context, title: "Failed to update feedback");
     } catch (e) {
+      // showMessage(Get.context, title: 'Unexpected Error', color: Colors.red);
       print('Unexpected error: $e');
-      showMessage(Get.context, title: "Failed to update feedback");
     } finally {}
   }
 }

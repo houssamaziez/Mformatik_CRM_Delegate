@@ -132,35 +132,63 @@ class FilterCompany extends StatelessWidget {
                           itemCount: companyController.companies.length,
                           itemBuilder: (context, index) {
                             final company = companyController.companies[index];
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: InkWell(
-                                onTap: () {
-                                  companyController.updateannex(company);
-                                },
-                                child: containerwithblue(context,
-                                    color: companyController.selectCompany !=
-                                            company
-                                        ? Theme.of(context).primaryColor
-                                        : Colors.white,
-                                    backgColor:
-                                        companyController.selectCompany ==
-                                                company
-                                            ? Theme.of(context).primaryColor
-                                            : Colors.white,
-                                    widget: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, right: 8),
-                                      child: Center(
-                                          child: company.label.style(
-                                              color: companyController
-                                                          .selectCompany !=
-                                                      company
-                                                  ? Theme.of(context)
-                                                      .primaryColor
-                                                  : Colors.white)),
-                                    )),
-                              ),
+                            return Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      companyController.updateannex(company);
+                                    },
+                                    child: containerwithblue(context,
+                                        color:
+                                            companyController.selectCompany !=
+                                                    company
+                                                ? Theme.of(context).primaryColor
+                                                : Colors.white,
+                                        backgColor:
+                                            companyController.selectCompany ==
+                                                    company
+                                                ? Theme.of(context).primaryColor
+                                                : Colors.white,
+                                        widget: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8),
+                                          child: Center(
+                                              child: company.label.style(
+                                                  color: companyController
+                                                              .selectCompany !=
+                                                          company
+                                                      ? Theme.of(context)
+                                                          .primaryColor
+                                                      : Colors.white)),
+                                        )),
+                                  ),
+                                ),
+                                if (company.newMissionsCounts != 0)
+                                  Positioned(
+                                      right: 10,
+                                      top: 5,
+                                      child: Container(
+                                        width: 13,
+                                        height: 13,
+                                        decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius:
+                                                BorderRadius.circular(200)),
+                                        child: Center(
+                                          child: Text(
+                                            company.newMissionsCounts! > 99
+                                                ? 99.toString()
+                                                : company.newMissionsCounts!
+                                                    .toString(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 8),
+                                          ),
+                                        ),
+                                      ))
+                              ],
                             );
                           });
                 }),

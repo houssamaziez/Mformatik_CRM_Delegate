@@ -51,6 +51,8 @@ const Map<String, String> fr = {
   "Feedbacks": "Feedbacks",
   "Yes": "Oui",
   "No feedback available.": "Aucun Feedback disponible.",
+  "A mission can only have one associated feedback entry.":
+      "Une mission ne peut avoir qu'une seule entrée de retour associée.",
   "Feedback": "Feedback",
   "Exit App": "Quitter l'application",
   "My FeedBack": "Mon Feedback",
