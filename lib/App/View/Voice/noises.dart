@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mformatic_crm_delegate/App/View/Voice/single.noise.dart';
-import 'package:voice_message_package/src/widgets/single_noise.dart';
 
 /// A widget that represents a collection of noises.
 ///

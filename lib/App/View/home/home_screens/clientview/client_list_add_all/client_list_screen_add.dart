@@ -34,6 +34,7 @@ class _ClientListScreenAddMissionState
   @override
   void initState() {
     clientController.fetchClients(widget.companyid!, fullName: '');
+    _onSearchChanged("");
     scrollController.addListener(_scrollListener);
     super.initState();
   }
@@ -71,7 +72,7 @@ class _ClientListScreenAddMissionState
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
     _debounce = Timer(Duration(milliseconds: 500), () async {
-      await clientController.search(widget.companyid!, fullName: value);
+      await clientController.search(widget.companyid!, fullName: value.trim());
       setState(() {
         selctserach = value;
       });

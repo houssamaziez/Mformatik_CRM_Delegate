@@ -18,4 +18,5 @@ class Endpoint {
   static String apiMissionCounts = '$url/v1/statistics/status-rate';
   static String apiFssionsShangeStatus = '$url/v1/missions/change-status-to';
   static String apipersonsUpdate = '$url/v1/persons/me';
+  static String apiPersons = '$url/v1/persons';
 }

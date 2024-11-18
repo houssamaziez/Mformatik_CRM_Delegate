@@ -1,12 +1,18 @@
+import 'dart:io';
+
+import 'package:image/image.dart' as img; // For image compression
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/persons/screen_list_persons.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:vibration/vibration.dart';
 import 'package:voice_message_package/voice_message_package.dart';
 
 import '../../../../../Controller/RecordController.dart';
+import '../../../../../Controller/home/Person/controller_person.dart';
 import '../../../../../Service/permission_handler/mic_handler.dart';
 import '../../../../Voice/screen_voice.dart';
 
@@ -21,9 +27,85 @@ class ScreenCreateTask extends StatefulWidget {
 class _ScreenCreateTaskState extends State<ScreenCreateTask> {
   TextEditingController controller = TextEditingController();
   final RecordController recordController = Get.put(RecordController());
+  int reasonId = 0;
+  final _formKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
+  double? lat;
+  double? lng;
+  DateTime? requestDate;
+  double _compressionProgress = 0.0;
+  List<File>? _compressedImages = [];
+  bool isCompressImage = false;
+  Future<File> _compressImage(XFile file) async {
+    setState(() {
+      isCompressImage = true;
+    });
+    final bytes = await file.readAsBytes();
+    final img.Image? image = img.decodeImage(bytes);
+
+    final img.Image resized = img.copyResize(image!, width: 500);
+    final compressedBytes = img.encodeJpg(resized, quality: 85);
+
+    final compressedImageFile = File('${file.path}_compressed.jpg');
+    await compressedImageFile.writeAsBytes(compressedBytes);
+
+    setState(() {
+      isCompressImage = false;
+    });
+    return compressedImageFile;
+  }
+
+  Future<void> _takePhoto() async {
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    if (photo != null) {
+      File compressedImage = await _compressImage(photo);
+      setState(() {
+        _compressedImages!.add(compressedImage);
+      });
+    }
+  }
+
+  Future<void> _selectImagesFromGallery() async {
+    final List<XFile>? pickedFiles = await _picker.pickMultiImage();
+    if (pickedFiles != null) {
+      for (int i = 0; i < pickedFiles.length; i++) {
+        File compressedImage = await _compressImage(pickedFiles[i]);
+        _compressedImages!.add(compressedImage);
+
+        setState(() {
+          _compressionProgress = ((i + 1) / pickedFiles.length) * 100;
+        });
+      }
+      setState(() {
+        _compressedImages = _compressedImages;
+        _compressionProgress = 0.0;
+      });
+    }
+  }
+
+  Future<void> _selectDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: requestDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        requestDate = pickedDate;
+      });
+    }
+  }
 
   bool _animate = false;
   bool showContainers = false;
+  @override
+  void dispose() {
+    Get.delete<ControllerPerson>();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RecordController>(builder: (controllerVoice) {
@@ -69,10 +151,16 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                   height: 3,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Go.to(
+                        context,
+                        const ScreenListPersons(
+                          tag: "Responsable",
+                        ));
+                  },
                   child: Container(
                     width: double.infinity,
-                    height: 45,
+                    height: 50,
                     decoration: BoxDecoration(
                       color: Colors.white, // Background color
                       border: Border.all(
@@ -85,17 +173,50 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Text(
-                            "Select Responsable",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: GetBuilder<ControllerPerson>(
+                                  init: ControllerPerson(),
+                                  builder: (personController) {
+                                    return Text(
+                                      personController.responsable == null
+                                          ? "Select Responsable"
+                                          : personController
+                                                  .responsable!.firstName +
+                                              " " +
+                                              personController
+                                                  .responsable!.firstName,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: personController.responsable ==
+                                                null
+                                            ? Colors.grey
+                                            : Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15,
+                                      ),
+                                    );
+                                  }),
                             ),
-                          ),
+                            Spacer(),
+                            GetBuilder<ControllerPerson>(
+                                init: ControllerPerson(),
+                                builder: (personController) {
+                                  return personController.responsable != null
+                                      ? IconButton(
+                                          onPressed: () {
+                                            personController
+                                                .closePerson("Responsable");
+                                          },
+                                          icon: Icon(
+                                            Icons.close,
+                                            size: 14,
+                                          ))
+                                      : SizedBox.shrink();
+                                })
+                          ],
                         ),
                       ],
                     ),
@@ -114,10 +235,16 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                   height: 3,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Go.to(
+                        context,
+                        const ScreenListPersons(
+                          tag: "Observator",
+                        ));
+                  },
                   child: Container(
                     width: double.infinity,
-                    height: 45,
+                    height: 50,
                     decoration: BoxDecoration(
                       color: Colors.white, // Background color
                       border: Border.all(
@@ -130,17 +257,50 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Text(
-                            "Select Observator",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: GetBuilder<ControllerPerson>(
+                                  init: ControllerPerson(),
+                                  builder: (personController) {
+                                    return Text(
+                                      personController.observator == null
+                                          ? "Select Observator"
+                                          : personController
+                                                  .observator!.firstName +
+                                              " " +
+                                              personController
+                                                  .observator!.lastName,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: personController.observator ==
+                                                null
+                                            ? Colors.grey
+                                            : Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15,
+                                      ),
+                                    );
+                                  }),
                             ),
-                          ),
+                            Spacer(),
+                            GetBuilder<ControllerPerson>(
+                                init: ControllerPerson(),
+                                builder: (personController) {
+                                  return personController.observator != null
+                                      ? IconButton(
+                                          onPressed: () {
+                                            personController
+                                                .closePerson("Observator");
+                                          },
+                                          icon: Icon(
+                                            Icons.close,
+                                            size: 14,
+                                          ))
+                                      : SizedBox.shrink();
+                                })
+                          ],
                         ),
                       ],
                     ),
@@ -225,8 +385,8 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                   },
                 ),
                 InkWell(
-                  onTap: () {},
-                  child: Row(
+                  onTap: _selectImagesFromGallery,
+                  child: const Row(
                     children: [
                       Icon(
                         Icons.image_outlined,
@@ -237,12 +397,12 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 InkWell(
-                  onTap: () {},
-                  child: Row(
+                  onTap: _takePhoto,
+                  child: const Row(
                     children: [
                       Icon(
                         Icons.camera_alt,
@@ -253,7 +413,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 InkWell(
@@ -262,7 +422,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                       showContainers = !showContainers; // Toggle animation
                     });
                   },
-                  child: Row(
+                  child: const Row(
                     children: [
                       Icon(
                         Icons.mic,
@@ -272,6 +432,9 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                       Text("Vocal")
                     ],
                   ),
+                ), // ___________________________________________________vocal____________________________________________________
+                SizedBox(
+                  height: 10,
                 ),
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 500),
@@ -376,6 +539,62 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                       ),
                     ),
                   ),
+                ),
+
+                const SizedBox(
+                  height: 10,
+                ),
+                if (_compressionProgress > 0 && _compressionProgress < 100) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                      'Loading images: ${_compressionProgress.toStringAsFixed(0)}%'),
+                  const SizedBox(height: 8),
+                  LinearProgressIndicator(
+                    value: _compressionProgress / 100,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ],
+                if (_compressedImages != null &&
+                    _compressedImages!.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                    ),
+                    itemCount: _compressedImages!.length,
+                    itemBuilder: (context, index) {
+                      return Stack(
+                        children: [
+                          Image.file(
+                            _compressedImages![index],
+                            fit: BoxFit.cover,
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _compressedImages!
+                                      .remove(_compressedImages![index]);
+                                });
+                              },
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ))
+                        ],
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  )
+                ],
+                SizedBox(
+                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),

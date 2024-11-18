@@ -345,7 +345,6 @@ class FeedbackController extends GetxController {
         }
       }
 
-      // Send request
       var response = await request.send();
       final responseBody = await response.stream.bytesToString();
 
