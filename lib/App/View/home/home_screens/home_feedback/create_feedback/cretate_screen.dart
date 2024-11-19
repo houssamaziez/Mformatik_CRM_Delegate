@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,11 +9,15 @@ import 'package:mformatic_crm_delegate/App/Controller/widgetsController/expandab
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
+import 'package:vibration/vibration.dart';
+import 'package:voice_message_package/voice_message_package.dart';
+import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/widgetsController/date_controller.dart';
 import '../../../../../Service/AppValidator/AppValidator.dart';
 import '../../../../../Service/Location/get_location.dart';
+import '../../../../../Service/permission_handler/mic_handler.dart';
 import '../../../../../Util/Date/formatDate.dart';
-import '../../../../widgets/Buttons/buttonall.dart';
+import '../../../../Voice/screen_voice.dart';
 import '../../../../widgets/Date/date_picker.dart';
 import '../../../../widgets/Dialog/showExitConfirmationDialog.dart';
 import '../widgets/reason_selector_feedback.dart';
@@ -107,184 +112,395 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
     }
   }
 
+  final RecordController recordController = Get.put(RecordController());
+
   @override
   void initState() {
     super.initState();
   }
 
+  bool _animate = false;
+  bool _iShowVocal = false;
+
   @override
   void dispose() {
     Get.delete<ExpandableControllerFeedback>();
     Get.delete<DateController>();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final controllerisreq = Get.put(ExpandableControllerFeedback());
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Create Feedback'.tr),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              const SizedBox(height: 16),
-              ReasonsSelectorFeedback(),
-              const SizedBox(height: 16),
-              GetBuilder<ExpandableControllerFeedback>(
-                  init: ExpandableControllerFeedback(),
-                  builder: (controllerExp) {
-                    return Row(
-                      children: [
-                        'Description'.tr.style(fontSize: 16),
-                        Text(
-                          (controllerExp.selectedItem.value != null
-                              ? controllerExp
-                                          .selectedItem.value!.isDescRequired !=
-                                      null
-                                  ? controllerExp.selectedItem.value!
-                                              .isDescRequired ==
-                                          true
-                                      ? ' *'
-                                      : ''
-                                  : ''
-                              : ''),
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ],
-                    );
-                  }),
-              SizedBox(
-                height: 8,
-              ),
-              TextFormField(
-                controller: controller,
-                decoration: InputDecoration(
-                  labelText: 'Description'.tr,
-                  alignLabelWithHint: true, // لتعيين العنوان في الأعلى
+    return GetBuilder<RecordController>(builder: (controllerVoice) {
+      final controlledVoiceMessageViewMy = VoiceController(
+        audioSrc: controllerVoice.audioPath,
+        maxDuration: Duration(seconds: controllerVoice.audioDuration.inSeconds),
+        isFile: true,
+        onComplete: () {
+          // Do something on complete
+        },
+        onPause: () {
+          // Do something on pause
+        },
+        onPlaying: () {
+          // Do something on playing
+        },
+        onError: (err) {
+          // Handle error
+        },
+      );
 
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 5,
-                maxLength: 250,
-                onSaved: (value) {},
-                validator: (value) => AppValidator.validate(value, [
-                  (val) => AppValidator.validateRequired(val,
-                      fieldName: 'Description'),
-                  // You can add more validators here if needed, e.g., for length
-                  (val) => AppValidator.validateLength(val,
-                      minLength: 5, fieldName: 'Description'),
-                ]),
-              ),
-              GetBuilder<ExpandableControllerFeedback>(
-                  init: ExpandableControllerFeedback(),
-                  builder: (controllerexp) {
-                    return controllerexp.selectedItem.value != null
-                        ? controllerexp.selectedItem.value!
-                                    .isRequestDateRequired !=
-                                null
-                            ? controllerexp.selectedItem.value!
-                                        .isRequestDateRequired ==
-                                    true
-                                ? DatePickerWidget()
-                                : Container()
-                            : Container()
-                        : Container();
-                  }),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Selected Images'.tr,
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Spacer(),
-                  IconButton(
-                      onPressed: _takePhoto,
-                      icon: Icon(
-                        Icons.camera,
-                        color: Theme.of(context).primaryColor,
-                      )),
-                  const SizedBox(width: 8),
-                  IconButton(
-                      onPressed: _selectImagesFromGallery,
-                      color: Theme.of(context).primaryColor,
-                      icon: Icon(
-                        Icons.image,
-                      )),
-                ],
-              ),
-              if (_compressionProgress > 0 && _compressionProgress < 100) ...[
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Create Feedback'.tr),
+          centerTitle: true,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
                 const SizedBox(height: 16),
-                Text(
-                    'Loading images: ${_compressionProgress.toStringAsFixed(0)}%'),
-                const SizedBox(height: 8),
-                LinearProgressIndicator(
-                  value: _compressionProgress / 100,
-                  color: Theme.of(context).primaryColor,
+                ReasonsSelectorFeedback(),
+                const SizedBox(height: 16),
+                GetBuilder<ExpandableControllerFeedback>(
+                    init: ExpandableControllerFeedback(),
+                    builder: (controllerExp) {
+                      return Row(
+                        children: [
+                          'Description'.tr.style(fontSize: 16),
+                          Text(
+                            (controllerExp.selectedItem.value != null
+                                ? controllerExp.selectedItem.value!
+                                            .isDescRequired !=
+                                        null
+                                    ? controllerExp.selectedItem.value!
+                                                .isDescRequired ==
+                                            true
+                                        ? ' *'
+                                        : ''
+                                    : ''
+                                : ''),
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ],
+                      );
+                    }),
+                SizedBox(
+                  height: 8,
                 ),
-              ],
-              if (_compressedImages != null &&
-                  _compressedImages!.isNotEmpty) ...[
-                const SizedBox(height: 8),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
-                  ),
-                  itemCount: _compressedImages!.length,
-                  itemBuilder: (context, index) {
-                    return Stack(
-                      children: [
-                        Image.file(
-                          _compressedImages![index],
-                          fit: BoxFit.cover,
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _compressedImages!
-                                    .remove(_compressedImages![index]);
-                              });
-                            },
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ))
-                      ],
-                    );
-                  },
-                ),
-              ],
-              const SizedBox(height: 32),
-              GetBuilder<FeedbackController>(
-                init: FeedbackController(),
-                builder: (controllercreateFeedback) {
-                  return ElevatedButton(
-                    onPressed: controllercreateFeedback.isLoadingadd
-                        ? null
-                        : () async {
-                            if (controllerisreq.selectedItem.value == null) {
-                              showMessage(context, title: 'Select Reasons'.tr);
-                              return;
-                            }
-                            if (widget.missionID != null) {
-                              showExitConfirmationDialog(context,
-                                  onPressed: () async {
-                                Get.back();
-                                controllercreateFeedback.upadteisloading(true);
+                TextFormField(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    labelText: 'Description'.tr,
+                    alignLabelWithHint: true, // لتعيين العنوان في الأعلى
 
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 5,
+                  maxLength: 250,
+                  onSaved: (value) {},
+                  validator: (value) => AppValidator.validate(value, [
+                    (val) => AppValidator.validateRequired(val,
+                        fieldName: 'Description'),
+                    // You can add more validators here if needed, e.g., for length
+                    (val) => AppValidator.validateLength(val,
+                        minLength: 5, fieldName: 'Description'),
+                  ]),
+                ),
+                GetBuilder<ExpandableControllerFeedback>(
+                    init: ExpandableControllerFeedback(),
+                    builder: (controllerexp) {
+                      return controllerexp.selectedItem.value != null
+                          ? controllerexp.selectedItem.value!
+                                      .isRequestDateRequired !=
+                                  null
+                              ? controllerexp.selectedItem.value!
+                                          .isRequestDateRequired ==
+                                      true
+                                  ? DatePickerWidget()
+                                  : Container()
+                              : Container()
+                          : Container();
+                    }),
+                InkWell(
+                  onTap: _selectImagesFromGallery,
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.image_outlined,
+                        color: Colors.green,
+                      ),
+                      SizedBox(width: 10),
+                      Text("Photos")
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                InkWell(
+                  onTap: _takePhoto,
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.camera_alt,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(width: 10),
+                      Text("Camera")
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                InkWell(
+                  onTap: () async {
+                    setState(() {
+                      _iShowVocal = !_iShowVocal;
+
+                      // showContainers = !showContainers; // Toggle animation
+                    });
+                    if (_iShowVocal) {
+                      bool isGranted = await isMicrophonePermissionGranted();
+                      if (isGranted) {
+                        setState(() => _animate = true);
+                        controllerVoice.toggleRecording();
+                        if (await Vibration.hasVibrator() ?? false) {
+                          Vibration.vibrate(duration: 100);
+                        }
+                      } else {
+                        setState(() => _animate = false);
+                        await requestMicrophonePermission(context);
+                      }
+                    }
+                  },
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.mic,
+                        color: Colors.red,
+                      ),
+                      SizedBox(width: 10),
+                      Text("Vocal")
+                    ],
+                  ),
+                ), // ___________________________________________________vocal____________________________________________________
+                SizedBox(
+                  height: 10,
+                ),
+                if (_iShowVocal == true)
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut, // Smooth transition curve
+                    height: 110, // Adjust height based on toggle
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white, // Background color
+                          border: Border.all(
+                            color:
+                                Theme.of(context).primaryColor, // Border color
+                            width: 1.0, // Border width
+                          ),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Spacer(),
+                            Container(
+                              height: 90,
+                              child: VoiceMessageViewMy(
+                                activeSliderColor:
+                                    Theme.of(context).primaryColor,
+                                circlesColor: Theme.of(context).primaryColor,
+                                controller: controlledVoiceMessageViewMy,
+                                innerPadding: 12,
+                                cornerRadius: 20,
+                                size: 50,
+                              ),
+                            ),
+                            const Spacer(),
+                            controllerVoice.audioPath.isEmpty ||
+                                    controllerVoice.isRecording == true
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: AvatarGlow(
+                                      animate: _animate,
+                                      glowColor: Theme.of(context).primaryColor,
+                                      child: Material(
+                                        elevation: 20.0,
+                                        shape: const CircleBorder(),
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.grey[100],
+                                          radius: 30.0,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              bool isGranted =
+                                                  await isMicrophonePermissionGranted();
+                                              if (isGranted) {
+                                                setState(
+                                                    () => _animate = !_animate);
+                                                controllerVoice
+                                                    .toggleRecording();
+                                                if (await Vibration
+                                                        .hasVibrator() ??
+                                                    false) {
+                                                  Vibration.vibrate(
+                                                      duration: 100);
+                                                }
+                                              } else {
+                                                setState(
+                                                    () => _animate = false);
+                                                await requestMicrophonePermission(
+                                                    context);
+                                              }
+                                            },
+                                            child: Icon(controllerVoice
+                                                        .isRecording !=
+                                                    true
+                                                ? Icons.mic
+                                                : Icons.stop_circle_outlined),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox.shrink(),
+                            SizedBox(
+                              child: controllerVoice.audioPath.isNotEmpty &&
+                                      controllerVoice.isRecording == false
+                                  ? IconButton(
+                                      onPressed: controllerVoice
+                                              .audioPath.isEmpty
+                                          ? null
+                                          : () async {
+                                              setState(() {
+                                                _iShowVocal =
+                                                    !_iShowVocal; // Toggle animation
+                                              });
+                                              await controlledVoiceMessageViewMy
+                                                  .stopPlaying();
+                                              controllerVoice.deleteRecording();
+                                            },
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ))
+                                  : const SizedBox.shrink(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                if (_compressionProgress > 0 && _compressionProgress < 100) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                      'Loading images: ${_compressionProgress.toStringAsFixed(0)}%'),
+                  const SizedBox(height: 8),
+                  LinearProgressIndicator(
+                    value: _compressionProgress / 100,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ],
+                if (_compressedImages != null &&
+                    _compressedImages!.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                    ),
+                    itemCount: _compressedImages!.length,
+                    itemBuilder: (context, index) {
+                      return Stack(
+                        children: [
+                          Image.file(
+                            _compressedImages![index],
+                            fit: BoxFit.cover,
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _compressedImages!
+                                      .remove(_compressedImages![index]);
+                                });
+                              },
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ))
+                        ],
+                      );
+                    },
+                  ),
+                ],
+                const SizedBox(height: 32),
+                GetBuilder<FeedbackController>(
+                  init: FeedbackController(),
+                  builder: (controllercreateFeedback) {
+                    return ElevatedButton(
+                      onPressed: controllercreateFeedback.isLoadingadd
+                          ? null
+                          : () async {
+                              if (controllerisreq.selectedItem.value == null) {
+                                showMessage(context,
+                                    title: 'Select Reasons'.tr);
+                                return;
+                              }
+                              if (widget.missionID != null) {
+                                showExitConfirmationDialog(context,
+                                    onPressed: () async {
+                                  Get.back();
+                                  controllercreateFeedback
+                                      .upadteisloading(true);
+
+                                  var location =
+                                      await LocationService.getCurrentLocation(
+                                          context);
+                                  if (location.isPermissionGranted) {
+                                    if (controllerisreq.selectedItem.value ==
+                                        null) {
+                                      showMessage(context,
+                                          title: 'Select Reasons'.tr);
+                                    } else if (controllerisreq.selectedItem
+                                            .value!.isDescRequired ==
+                                        true) {
+                                      if (_formKey.currentState!.validate()) {
+                                        _formKey.currentState!.save();
+                                        post(
+                                            controllercreateFeedback, location);
+
+                                        return;
+                                      }
+                                    } else {
+                                      post(controllercreateFeedback, location);
+
+                                      return;
+                                    }
+                                  }
+                                  controllercreateFeedback
+                                      .upadteisloading(false);
+                                },
+                                    details:
+                                        'Are you sure to complete the Mission?'
+                                            .tr,
+                                    title: 'Confirmation'.tr);
+                              } else {
+                                controllercreateFeedback.updateIsLoading(true);
                                 var location =
                                     await LocationService.getCurrentLocation(
                                         context);
@@ -298,9 +514,14 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                       true) {
                                     if (_formKey.currentState!.validate()) {
                                       _formKey.currentState!.save();
+
                                       post(controllercreateFeedback, location);
 
                                       return;
+                                    } else {
+                                      showMessage(context,
+                                          title:
+                                              'Please enter a description'.tr);
                                     }
                                   } else {
                                     post(controllercreateFeedback, location);
@@ -308,55 +529,21 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                     return;
                                   }
                                 }
-                                controllercreateFeedback.upadteisloading(false);
-                              },
-                                  details:
-                                      'Are you sure to complete the Mission?'
-                                          .tr,
-                                  title: 'Confirmation'.tr);
-                            } else {
-                              controllercreateFeedback.updateIsLoading(true);
-                              var location =
-                                  await LocationService.getCurrentLocation(
-                                      context);
-                              if (location.isPermissionGranted) {
-                                if (controllerisreq.selectedItem.value ==
-                                    null) {
-                                  showMessage(context,
-                                      title: 'Select Reasons'.tr);
-                                } else if (controllerisreq
-                                        .selectedItem.value!.isDescRequired ==
-                                    true) {
-                                  if (_formKey.currentState!.validate()) {
-                                    _formKey.currentState!.save();
-
-                                    post(controllercreateFeedback, location);
-
-                                    return;
-                                  } else {
-                                    showMessage(context,
-                                        title: 'Please enter a description'.tr);
-                                  }
-                                } else {
-                                  post(controllercreateFeedback, location);
-
-                                  return;
-                                }
+                                controllercreateFeedback.updateIsLoading(false);
                               }
-                              controllercreateFeedback.updateIsLoading(false);
-                            }
-                          },
-                    child: controllercreateFeedback.isLoadingadd
-                        ? spinkitwhite
-                        : Text('Create Feedback'.tr),
-                  );
-                },
-              ),
-            ],
+                            },
+                      child: controllercreateFeedback.isLoadingadd
+                          ? spinkitwhite
+                          : Text('Create Feedback'.tr),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   post(

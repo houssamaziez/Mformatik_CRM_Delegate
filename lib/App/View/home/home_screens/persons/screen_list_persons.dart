@@ -26,8 +26,8 @@ class _ScreenListPersonsState extends State<ScreenListPersons> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       personController.fetchPersons();
+      scrollController.addListener(_scrollListener);
     });
-    scrollController.addListener(_scrollListener);
     super.initState();
   }
 
@@ -46,11 +46,11 @@ class _ScreenListPersonsState extends State<ScreenListPersons> {
     }
   }
 
-  Future<void> _loadMoreClients() async {
+  _loadMoreClients() {
     setState(() {
       isLoadingMore = true;
     });
-    await personController.fetchClientsaddOffset();
+    personController.fetchClientsaddOffset();
     setState(() {
       isLoadingMore = false;
     });
@@ -71,8 +71,6 @@ class _ScreenListPersonsState extends State<ScreenListPersons> {
   String selctserach = "";
   @override
   Widget build(BuildContext context) {
-    personController.fetchPersons();
-
     return Scaffold(
       appBar: AppBar(
         title: Text("All Persons".tr),

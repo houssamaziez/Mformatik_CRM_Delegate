@@ -29,11 +29,16 @@ class ControllerPerson extends GetxController {
           queryParameters: {
             'offset': currentOffset.toString(), // Add offset
             'limit': limit.toString(), // Add limit
+
+            'attributes[]': ['id', 'firstName', 'lastName'],
           },
         ),
         headers: {"x-auth-token": token.read("token").toString()},
       );
+      print("-----------------------------");
       print(json.decode(response.body));
+      print("-----------------------------");
+
       if (response.statusCode == 200) {
         List<dynamic> responseData = json.decode(response.body);
 
@@ -72,8 +77,9 @@ class ControllerPerson extends GetxController {
       final response = await http.get(
         Uri.parse(Endpoint.apiPersons).replace(
           queryParameters: {
-            'offset': currentOffset.toString(), // Add offset
-            'limit': limit.toString(), // Add limit
+            'offset': currentOffset.toString(),
+            'limit': limit.toString(),
+            'attributes[]': ['id', 'firstName', 'lastName'],
           },
         ),
         headers: {"x-auth-token": token.read("token").toString()},
@@ -115,8 +121,9 @@ class ControllerPerson extends GetxController {
       update();
       // If no offset is passed, use the current offset value
       // Create a base map for query parameters
-      Map<String, String> queryParams = {
+      Map<String, dynamic> queryParams = {
         'limit': '20', // Set limit to 20
+        'attributes[]': ['id', 'firstName', 'lastName'],
       };
 
       // Conditionally add 'fullName' to the queryParams map

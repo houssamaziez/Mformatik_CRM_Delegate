@@ -99,7 +99,8 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
   }
 
   bool _animate = false;
-  bool showContainers = false;
+  bool _iShowVocal = false;
+
   @override
   void dispose() {
     Get.delete<ControllerPerson>();
@@ -141,6 +142,9 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: 10,
+                ),
                 Text(
                   "Select Responsable",
                   style: TextStyle(
@@ -148,7 +152,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
-                  height: 3,
+                  height: 10,
                 ),
                 InkWell(
                   onTap: () {
@@ -232,7 +236,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
-                  height: 3,
+                  height: 10,
                 ),
                 InkWell(
                   onTap: () {
@@ -316,7 +320,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
-                  height: 3,
+                  height: 10,
                 ),
                 TextFormField(
                   controller: controller,
@@ -354,7 +358,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
-                  height: 3,
+                  height: 10,
                 ),
                 TextFormField(
                   minLines: 5, maxLength: 250, maxLines: 6,
@@ -417,10 +421,25 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                   height: 10,
                 ),
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
                     setState(() {
-                      showContainers = !showContainers; // Toggle animation
+                      _iShowVocal = !_iShowVocal;
+
+                      // showContainers = !showContainers; // Toggle animation
                     });
+                    if (_iShowVocal) {
+                      bool isGranted = await isMicrophonePermissionGranted();
+                      if (isGranted) {
+                        setState(() => _animate = true);
+                        controllerVoice.toggleRecording();
+                        if (await Vibration.hasVibrator() ?? false) {
+                          Vibration.vibrate(duration: 100);
+                        }
+                      } else {
+                        setState(() => _animate = false);
+                        await requestMicrophonePermission(context);
+                      }
+                    }
                   },
                   child: const Row(
                     children: [
@@ -436,110 +455,115 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                 SizedBox(
                   height: 10,
                 ),
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut, // Smooth transition curve
-                  height:
-                      showContainers ? 110 : 0, // Adjust height based on toggle
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white, // Background color
-                        border: Border.all(
-                          color: Theme.of(context).primaryColor, // Border color
-                          width: 1.0, // Border width
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Spacer(),
-                          Container(
-                            height: 90,
-                            child: VoiceMessageViewMy(
-                              activeSliderColor: Theme.of(context).primaryColor,
-                              circlesColor: Theme.of(context).primaryColor,
-                              controller: controlledVoiceMessageViewMy,
-                              innerPadding: 12,
-                              cornerRadius: 20,
-                              size: 50,
-                            ),
+                if (_iShowVocal == true)
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut, // Smooth transition curve
+                    height: 110, // Adjust height based on toggle
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white, // Background color
+                          border: Border.all(
+                            color:
+                                Theme.of(context).primaryColor, // Border color
+                            width: 1.0, // Border width
                           ),
-                          const Spacer(),
-                          controllerVoice.audioPath.isEmpty ||
-                                  controllerVoice.isRecording == true
-                              ? Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: AvatarGlow(
-                                    animate: _animate,
-                                    glowColor: Theme.of(context).primaryColor,
-                                    child: Material(
-                                      elevation: 20.0,
-                                      shape: const CircleBorder(),
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.grey[100],
-                                        radius: 30.0,
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            bool isGranted =
-                                                await isMicrophonePermissionGranted();
-                                            if (isGranted) {
-                                              setState(
-                                                  () => _animate = !_animate);
-                                              controllerVoice.toggleRecording();
-                                              if (await Vibration
-                                                      .hasVibrator() ??
-                                                  false) {
-                                                Vibration.vibrate(
-                                                    duration: 100);
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Spacer(),
+                            Container(
+                              height: 90,
+                              child: VoiceMessageViewMy(
+                                activeSliderColor:
+                                    Theme.of(context).primaryColor,
+                                circlesColor: Theme.of(context).primaryColor,
+                                controller: controlledVoiceMessageViewMy,
+                                innerPadding: 12,
+                                cornerRadius: 20,
+                                size: 50,
+                              ),
+                            ),
+                            const Spacer(),
+                            controllerVoice.audioPath.isEmpty ||
+                                    controllerVoice.isRecording == true
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: AvatarGlow(
+                                      animate: _animate,
+                                      glowColor: Theme.of(context).primaryColor,
+                                      child: Material(
+                                        elevation: 20.0,
+                                        shape: const CircleBorder(),
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.grey[100],
+                                          radius: 30.0,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              bool isGranted =
+                                                  await isMicrophonePermissionGranted();
+                                              if (isGranted) {
+                                                setState(
+                                                    () => _animate = !_animate);
+                                                controllerVoice
+                                                    .toggleRecording();
+                                                if (await Vibration
+                                                        .hasVibrator() ??
+                                                    false) {
+                                                  Vibration.vibrate(
+                                                      duration: 100);
+                                                }
+                                              } else {
+                                                setState(
+                                                    () => _animate = false);
+                                                await requestMicrophonePermission(
+                                                    context);
                                               }
-                                            } else {
-                                              setState(() => _animate = false);
-                                              await requestMicrophonePermission(
-                                                  context);
-                                            }
-                                          },
-                                          child: Icon(
-                                              controllerVoice.isRecording !=
-                                                      true
-                                                  ? Icons.mic
-                                                  : Icons.stop_circle_outlined),
+                                            },
+                                            child: Icon(controllerVoice
+                                                        .isRecording !=
+                                                    true
+                                                ? Icons.mic
+                                                : Icons.stop_circle_outlined),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                )
-                              : const SizedBox.shrink(),
-                          SizedBox(
-                            child: controllerVoice.audioPath.isNotEmpty &&
-                                    controllerVoice.isRecording == false
-                                ? IconButton(
-                                    onPressed: controllerVoice.audioPath.isEmpty
-                                        ? null
-                                        : () async {
-                                            setState(() {
-                                              showContainers =
-                                                  !showContainers; // Toggle animation
-                                            });
-                                            await controlledVoiceMessageViewMy
-                                                .stopPlaying();
-                                            controllerVoice.deleteRecording();
-                                          },
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ))
+                                  )
                                 : const SizedBox.shrink(),
-                          ),
-                        ],
+                            SizedBox(
+                              child: controllerVoice.audioPath.isNotEmpty &&
+                                      controllerVoice.isRecording == false
+                                  ? IconButton(
+                                      onPressed: controllerVoice
+                                              .audioPath.isEmpty
+                                          ? null
+                                          : () async {
+                                              setState(() {
+                                                _iShowVocal =
+                                                    !_iShowVocal; // Toggle animation
+                                              });
+                                              await controlledVoiceMessageViewMy
+                                                  .stopPlaying();
+                                              controllerVoice.deleteRecording();
+                                            },
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ))
+                                  : const SizedBox.shrink(),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
 
                 const SizedBox(
                   height: 10,
