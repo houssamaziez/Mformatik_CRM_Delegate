@@ -66,6 +66,8 @@ dependencies:
   avatar_glow: ^3.0.1
   vibration: ^2.0.1
   flutter_sound: ^9.6.0
+  ffmpeg_kit_flutter: ^6.0.3
+   
 
 flutter_icons:
   android: true

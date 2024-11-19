@@ -8,8 +8,8 @@ import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_details/profile_mission.dart';
-import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
+import 'package:voice_message_package/voice_message_package.dart';
 import '../../../../../Controller/home/feedback/feedback_controller.dart';
 import '../../../../../Model/feedback.dart';
 import '../../../../widgets/Containers/container_blue.dart';
@@ -80,7 +80,51 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(
+                  height: 20,
+                ),
+                if (feedback.voice != null)
+                  Container(
+                    height: 90,
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Background color
+                      border: Border.all(
+                        color: Theme.of(context).primaryColor, // Border color
+                        width: 1.0, // Border width
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Center(
+                      child: GetBuilder<FeedbackController>(
+                          init: FeedbackController(),
+                          builder: (feedbackControllerr) {
+                            return feedbackControllerr.voicedownloadLoading !=
+                                    true
+                                ? Container(
+                                    child: VoiceMessageView(
+                                      activeSliderColor:
+                                          Theme.of(context).primaryColor,
+                                      circlesColor:
+                                          Theme.of(context).primaryColor,
+                                      controller: VoiceController(
+                                        audioSrc: feedbackControllerr.pahtFile!,
+                                        maxDuration: Duration(minutes: 10),
+                                        isFile: true,
+                                        onComplete: () {},
+                                        onPause: () {},
+                                        onPlaying: () {},
+                                        onError: (err) {},
+                                      ),
+                                      innerPadding: 12,
+                                      cornerRadius: 20,
+                                      size: 50,
+                                    ),
+                                  )
+                                : spinkit;
+                          }),
+                    ),
+                  ),
+
                 // Date and Location
                 feedback.requestDate == null
                     ? Container()
@@ -100,7 +144,6 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                         ],
                       ),
                 const SizedBox(height: 10),
-                const SizedBox(height: 20),
                 // Creator Information
 
                 _buildContactSection("Client".tr, feedback.client!),

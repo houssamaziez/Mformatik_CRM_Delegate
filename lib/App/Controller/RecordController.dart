@@ -38,7 +38,9 @@ class RecordController extends GetxController {
     } else {
       audioPath = await _getAudioPath();
       final config = RecordConfig(
-        encoder: AudioEncoder.aacEld,
+        androidConfig: AndroidRecordConfig(),
+        noiseSuppress: true,
+        encoder: AudioEncoder.aacLc,
         bitRate: 128000,
         sampleRate: 44100,
       );
@@ -51,7 +53,7 @@ class RecordController extends GetxController {
 
   // Method to start the recording timer
   void _startRecordingTimer() {
-    audioDuration = Duration(seconds: 0);
+    audioDuration = const Duration(seconds: 0);
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       audioDuration = Duration(seconds: timer.tick);
       update();
@@ -96,6 +98,9 @@ class RecordController extends GetxController {
 
   Future<String> _getAudioPath() async {
     final directory = await getApplicationDocumentsDirectory();
-    return '${directory.path}/audio_file.mp3';
+    print("--------------------------------");
+    print(directory.path);
+
+    return '${directory.path}/audio_file.mpga';
   }
 }

@@ -87,6 +87,7 @@ class AuthController extends GetxController {
           .get(url, headers: {"x-auth-token": token.read("token").toString()});
       print(response.body);
       final responseData = ResponseHandler.processResponse(response);
+
       if (response.statusCode == 200) {
         user = User.fromJson(responseData['user']);
         update();
@@ -104,7 +105,9 @@ class AuthController extends GetxController {
           showMessage(context, title: "You are not allowed to enter.".tr);
         }
       } else {
-        if (response.statusCode == 401 || response.statusCode == 403) {
+        if (response.statusCode == 401 ||
+            response.statusCode == 403 ||
+            response.statusCode == 406) {
           Go.clearAndTo(context, ScreenAuth());
         }
       }

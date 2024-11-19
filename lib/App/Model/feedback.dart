@@ -89,31 +89,32 @@ class FeedbackMission {
   final List<dynamic> gallery;
   final Mission? mission;
   final Decision? decision;
+  final String? voice;
 
-  FeedbackMission({
-    required this.id,
-    this.label,
-    this.desc,
-    this.requestDate,
-    this.lat,
-    this.lng,
-    this.creatorUsername,
-    this.creatorRoleId,
-    this.editorUsername,
-    this.editorRoleId,
-    this.creatorId,
-    this.editorId,
-    this.clientId,
-    this.missionId,
-    this.feedbackModelId,
-    this.decisionId,
-    this.createdAt,
-    this.updatedAt,
-    this.client,
-    required this.gallery,
-    this.mission,
-    this.decision,
-  });
+  FeedbackMission(
+      {required this.id,
+      this.label,
+      this.desc,
+      this.requestDate,
+      this.lat,
+      this.lng,
+      this.creatorUsername,
+      this.creatorRoleId,
+      this.editorUsername,
+      this.editorRoleId,
+      this.creatorId,
+      this.editorId,
+      this.clientId,
+      this.missionId,
+      this.feedbackModelId,
+      this.decisionId,
+      this.createdAt,
+      this.updatedAt,
+      this.client,
+      required this.gallery,
+      this.mission,
+      this.decision,
+      this.voice});
 
   factory FeedbackMission.fromJson(Map<String, dynamic> json) {
     return FeedbackMission(
@@ -134,6 +135,7 @@ class FeedbackMission {
       feedbackModelId: json['feedbackModelId'] ?? 0,
       decisionId: json['decisionId'],
       createdAt: json['createdAt'],
+      voice: json['voice'],
       updatedAt: json['updatedAt'],
       client: json['client'] != null
           ? Clientfeedback.fromJson(json['client'])
