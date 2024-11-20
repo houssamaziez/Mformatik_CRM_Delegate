@@ -138,22 +138,22 @@ class VoiceMessageViewPlay extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Spacer(),
+                    const Spacer(),
                     _noises(newTHeme),
-                    Spacer(),
+                    const Spacer(),
                   ],
                 ),
               ),
               const SizedBox(width: 12),
               Column(
                 children: [
-                  Spacer(
+                  const Spacer(
                     flex: 10,
                   ),
                   _changeSpeedButton(color),
-                  Spacer(),
+                  const Spacer(),
                   Text(controller.remindingTime, style: counterTextStyle),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   )
                 ],

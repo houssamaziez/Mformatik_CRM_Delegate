@@ -49,6 +49,8 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
   @override
   void dispose() {
     Get.delete<RecordController>();
+    Get.delete<FeedbackMission>();
+
     _voiceController?.stopPlaying();
 
     super.dispose();
@@ -75,7 +77,6 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Title and Description
                 Text(
                   feedback.label ?? 'No Title'.tr,
                   style: TextStyle(
@@ -87,14 +88,17 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                 const SizedBox(height: 8),
                 if (feedback.desc != null)
                   Text(
-                    feedback.desc ?? 'No Description available'.tr,
-                    style: const TextStyle(
+                    feedback.desc == null || feedback.desc == ""
+                        ? 'No Description available'.tr
+                        : feedback.desc!,
+                    style: TextStyle(
                       fontSize: 18,
-                      color: Colors.black87,
+                      color: feedback.desc == null || feedback.desc == ""
+                          ? Colors.grey
+                          : Colors.black87,
                     ),
                   ),
-                if (feedback.desc != null) const SizedBox(height: 8),
-
+                const SizedBox(height: 8),
                 if (feedback.voice != null)
                   Row(
                     children: [
@@ -123,7 +127,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                               builder: (feedbackController) {
                                 if (!feedbackController.voicedownloadLoading) {
                                   // Initialize the VoiceController if not already done.
-                                  _voiceController ??= VoiceController(
+                                  _voiceController = VoiceController(
                                     audioSrc: feedbackController.pahtFile!,
                                     maxDuration: Duration(minutes: 10),
                                     noiseCount: 50,
@@ -139,7 +143,16 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                                         Theme.of(context).primaryColor,
                                     circlesColor:
                                         Theme.of(context).primaryColor,
-                                    controller: _voiceController!,
+                                    controller: VoiceController(
+                                      audioSrc: feedbackController.pahtFile!,
+                                      maxDuration: Duration.zero,
+                                      noiseCount: 50,
+                                      isFile: true,
+                                      onComplete: () {},
+                                      onPause: () {},
+                                      onPlaying: () {},
+                                      onError: (err) {},
+                                    ),
                                     innerPadding: 0,
                                     cornerRadius: 20,
                                   );
@@ -259,27 +272,34 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                 const SizedBox(height: 20),
 
                 // Edit Button
-                Center(
-                  child: ElevatedButton.icon(
-                    icon: const Icon(Icons.edit),
-                    label: Text('Edit Feedback'.tr),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 12),
-                      textStyle: const TextStyle(fontSize: 16),
-                    ),
-                    onPressed: () {
-                      Go.to(
-                          context,
-                          UpdateFeedbackScreen(
-                            feedback: feedback,
-                          ));
-                      // Navigate to EditFeedbackScreen
-                      // Get.to(EditFeedbackScreen(feedbackId: feedback.id));
-                    },
-                  ),
-                ),
+                GetBuilder<FeedbackController>(
+                    init: FeedbackController(),
+                    builder: (feedbackController) {
+                      return Center(
+                        child: ElevatedButton.icon(
+                          icon: const Icon(Icons.edit),
+                          label: Text('Edit Feedback'.tr),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 12),
+                            textStyle: const TextStyle(fontSize: 16),
+                          ),
+                          onPressed: () {
+                            Go.to(
+                                context,
+                                UpdateFeedbackScreen(
+                                  feedback: feedback,
+                                  pathVoice: feedbackController.pahtFile == null
+                                      ? ""
+                                      : feedbackController.pahtFile,
+                                ));
+                            // Navigate to EditFeedbackScreen
+                            // Get.to(EditFeedbackScreen(feedbackId: feedback.id));
+                          },
+                        ),
+                      );
+                    }),
               ],
             ),
           ).addRefreshIndicator(

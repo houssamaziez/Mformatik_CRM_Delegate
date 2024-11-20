@@ -159,12 +159,15 @@ class FeedbackController extends GetxController {
       print(response.statusCode);
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print('object');
+
         print(data);
         feedbackprofile =
             FeedbackMission.fromJson(data); // Return the feedback object
         update();
-
+        file = null;
+        update();
+        pahtFile = null;
+        update();
         if (feedbackprofile!.voice != null) {
           downloadFeedbackVoice(feedbackId);
         }
@@ -450,7 +453,10 @@ class FeedbackController extends GetxController {
   bool voicedownloadLoading = false;
   String? pahtFile;
   downloadFeedbackVoice(String feedbackId) async {
+    file = null;
+    update();
     pahtFile = null;
+    update();
 
     try {
       voicedownloadLoading = true;

@@ -114,11 +114,6 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
 
   final RecordController recordController = Get.put(RecordController());
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   VoiceController? controlledVoiceMessageViewMy;
   bool _animate = false;
   bool _iShowVocal = false;
@@ -139,18 +134,10 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
         audioSrc: controllerVoice.audioPath,
         maxDuration: Duration(seconds: controllerVoice.audioDuration.inSeconds),
         isFile: true,
-        onComplete: () {
-          // Do something on complete
-        },
-        onPause: () {
-          // Do something on pause
-        },
-        onPlaying: () {
-          // Do something on playing
-        },
-        onError: (err) {
-          // Handle error
-        },
+        onComplete: () {},
+        onPause: () {},
+        onPlaying: () {},
+        onError: (err) {},
       );
 
       return Scaffold(
@@ -332,40 +319,37 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                 const Spacer(),
                                 controllerVoice.audioPath.isEmpty ||
                                         controllerVoice.isRecording == true
-                                    ? Padding(
-                                        padding: const EdgeInsets.all(0.0),
-                                        child: AvatarGlow(
-                                          animate: _animate,
-                                          glowColor:
-                                              Theme.of(context).primaryColor,
-                                          child: Material(
-                                            elevation: 20.0,
-                                            shape: const CircleBorder(),
-                                            child: CircleAvatar(
-                                              backgroundColor: Colors.grey[100],
-                                              radius: 30.0,
-                                              child: GestureDetector(
-                                                onTap: () async {
-                                                  bool isGranted =
-                                                      await isMicrophonePermissionGranted();
-                                                  if (isGranted) {
-                                                    setState(() =>
-                                                        _animate = !_animate);
-                                                    controllerVoice
-                                                        .toggleRecording();
-                                                    if (await Vibration
-                                                            .hasVibrator() ??
-                                                        false) {
-                                                      Vibration.vibrate(
-                                                          duration: 100);
-                                                    }
-                                                  } else {
-                                                    setState(
-                                                        () => _animate = false);
-                                                    await requestMicrophonePermission(
-                                                        context);
-                                                  }
-                                                },
+                                    ? GestureDetector(
+                                        onTap: () async {
+                                          bool isGranted =
+                                              await isMicrophonePermissionGranted();
+                                          if (isGranted) {
+                                            setState(
+                                                () => _animate = !_animate);
+                                            controllerVoice.toggleRecording();
+                                            if (await Vibration.hasVibrator() ??
+                                                false) {
+                                              Vibration.vibrate(duration: 100);
+                                            }
+                                          } else {
+                                            setState(() => _animate = false);
+                                            await requestMicrophonePermission(
+                                                context);
+                                          }
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: AvatarGlow(
+                                            animate: _animate,
+                                            glowColor:
+                                                Theme.of(context).primaryColor,
+                                            child: Material(
+                                              elevation: 20.0,
+                                              shape: const CircleBorder(),
+                                              child: CircleAvatar(
+                                                backgroundColor:
+                                                    Colors.grey[100],
+                                                radius: 30.0,
                                                 child: Icon(controllerVoice
                                                             .isRecording !=
                                                         true

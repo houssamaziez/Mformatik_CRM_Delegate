@@ -11,11 +11,15 @@
         "feedback Profile"
     ],
     "cSpell.words": [
+        "feedbacklocal",
         "feedbackprofile",
         "Lengt",
         "listiconhomemeneu",
         "Loadingprofile",
-        "upadteisloading"
+        "upadteisloading",
+        "vocalafter",
+        "vocalbefor",
+        "Voicepath"
     ],
     "java.configuration.updateBuildConfiguration": "interactive"
 }
