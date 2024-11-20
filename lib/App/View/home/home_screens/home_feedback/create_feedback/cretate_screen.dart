@@ -119,11 +119,13 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
     super.initState();
   }
 
+  VoiceController? controlledVoiceMessageViewMy;
   bool _animate = false;
   bool _iShowVocal = false;
 
   @override
   void dispose() {
+    controlledVoiceMessageViewMy!.stopPlaying();
     Get.delete<ExpandableControllerFeedback>();
     Get.delete<DateController>();
     super.dispose();
@@ -133,7 +135,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
   Widget build(BuildContext context) {
     final controllerisreq = Get.put(ExpandableControllerFeedback());
     return GetBuilder<RecordController>(builder: (controllerVoice) {
-      final controlledVoiceMessageViewMy = VoiceController(
+      controlledVoiceMessageViewMy = VoiceController(
         audioSrc: controllerVoice.audioPath,
         maxDuration: Duration(seconds: controllerVoice.audioDuration.inSeconds),
         isFile: true,
@@ -268,7 +270,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                       if (_iShowVocal) {
                         bool isGranted = await isMicrophonePermissionGranted();
                         if (isGranted) {
-                          await controlledVoiceMessageViewMy.stopPlaying();
+                          await controlledVoiceMessageViewMy!.stopPlaying();
                           controllerVoice.deleteRecording();
                         } else {
                           setState(() => _animate = false);
@@ -321,7 +323,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                         Theme.of(context).primaryColor,
                                     circlesColor:
                                         Theme.of(context).primaryColor,
-                                    controller: controlledVoiceMessageViewMy,
+                                    controller: controlledVoiceMessageViewMy!,
                                     innerPadding: 12,
                                     cornerRadius: 20,
                                     size: 50,
@@ -388,7 +390,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                                         _iShowVocal =
                                                             !_iShowVocal; // Toggle animation
                                                       });
-                                                      await controlledVoiceMessageViewMy
+                                                      await controlledVoiceMessageViewMy!
                                                           .stopPlaying();
                                                       controllerVoice
                                                           .deleteRecording();
@@ -401,10 +403,13 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
                                 ),
                               ],
                             ),
-                            if (controllerVoice.audioPath.isEmpty ||
-                                controllerVoice.isRecording == true)
+                            if (controllerVoice.audioPath.isEmpty &&
+                                controllerVoice.isRecording != true)
                               IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.close)),
+                                  onPressed: () {
+                                    setState(() => _iShowVocal = false);
+                                  },
+                                  icon: Icon(Icons.close)),
                           ],
                         ),
                       ),

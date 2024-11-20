@@ -9,7 +9,9 @@ import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_details/profile_mission.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/voice_vocal_view/voice_play.dart';
 import 'package:voice_message_package/voice_message_package.dart';
+import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/home/feedback/feedback_controller.dart';
 import '../../../../../Model/feedback.dart';
 import '../../../../widgets/Containers/container_blue.dart';
@@ -40,6 +42,16 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
     if (date == null) return 'No Date Available'.tr;
     final DateTime parsedDate = DateTime.parse(date);
     return DateFormat('yyyy-MM-dd').format(parsedDate);
+  }
+
+  VoiceController? _voiceController;
+
+  @override
+  void dispose() {
+    Get.delete<RecordController>();
+    _voiceController?.stopPlaying();
+
+    super.dispose();
   }
 
   @override
@@ -73,75 +85,101 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  feedback.desc ?? 'No Description available'.tr,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.black87,
+                if (feedback.desc != null)
+                  Text(
+                    feedback.desc ?? 'No Description available'.tr,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.black87,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
+                if (feedback.desc != null) const SizedBox(height: 8),
+
                 if (feedback.voice != null)
-                  Container(
-                    height: 90,
-                    decoration: BoxDecoration(
-                      color: Colors.white, // Background color
-                      border: Border.all(
-                        color: Theme.of(context).primaryColor, // Border color
-                        width: 1.0, // Border width
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 1,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Center(
-                      child: GetBuilder<FeedbackController>(
-                          init: FeedbackController(),
-                          builder: (feedbackControllerr) {
-                            return feedbackControllerr.voicedownloadLoading !=
-                                    true
-                                ? Container(
-                                    child: VoiceMessageView(
-                                      activeSliderColor:
-                                          Theme.of(context).primaryColor,
-                                      circlesColor:
-                                          Theme.of(context).primaryColor,
-                                      controller: VoiceController(
-                                        audioSrc: feedbackControllerr.pahtFile!,
-                                        maxDuration: Duration(minutes: 10),
-                                        isFile: true,
-                                        onComplete: () {},
-                                        onPause: () {},
-                                        onPlaying: () {},
-                                        onError: (err) {},
-                                      ),
-                                      innerPadding: 12,
-                                      cornerRadius: 20,
-                                      size: 50,
-                                    ),
-                                  )
-                                : spinkit;
-                          }),
-                    ),
+                      Center(
+                        child: Container(
+                          height: 90,
+                          width: MediaQuery.of(context).size.width * 0.91,
+                          decoration: BoxDecoration(
+                            color: Colors.white, // Background color
+                            border: Border.all(
+                              color: Theme.of(context)
+                                  .primaryColor, // Border color
+                              width: 1.0, // Border width
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Center(
+                            child: GetBuilder<FeedbackController>(
+                              init: FeedbackController(),
+                              builder: (feedbackController) {
+                                if (!feedbackController.voicedownloadLoading) {
+                                  // Initialize the VoiceController if not already done.
+                                  _voiceController ??= VoiceController(
+                                    audioSrc: feedbackController.pahtFile!,
+                                    maxDuration: Duration(minutes: 10),
+                                    noiseCount: 50,
+                                    isFile: true,
+                                    onComplete: () {},
+                                    onPause: () {},
+                                    onPlaying: () {},
+                                    onError: (err) {},
+                                  );
+
+                                  return VoiceMessageViewPlay(
+                                    activeSliderColor:
+                                        Theme.of(context).primaryColor,
+                                    circlesColor:
+                                        Theme.of(context).primaryColor,
+                                    controller: _voiceController!,
+                                    innerPadding: 0,
+                                    cornerRadius: 20,
+                                  );
+                                } else {
+                                  return spinkit;
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: 1,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ],
                   ),
 
                 // Date and Location
                 feedback.requestDate == null
                     ? Container()
-                    : Row(
-                        children: [
-                          Icon(Icons.date_range,
-                              color: Theme.of(context).primaryColor),
-                          const SizedBox(width: 8),
-                          Flexible(
-                            child: Text(
-                              'Request Date:'.tr +
-                                  " ${formatDate(feedback.requestDate)}",
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.grey[600]),
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.date_range,
+                                color: Theme.of(context).primaryColor),
+                            const SizedBox(width: 8),
+                            Flexible(
+                              child: Text(
+                                'Request Date:'.tr +
+                                    " ${formatDate(feedback.requestDate)}",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.grey[600]),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                 const SizedBox(height: 10),
                 // Creator Information
