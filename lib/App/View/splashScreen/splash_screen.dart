@@ -29,7 +29,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
   @override
   void initState() {
     _checkForUpdate();
-
+*
     if (_isUpdateAvailable == false) {
       if (spalshscreenfirst.read('key') == true) {
         Get.put(AuthController()).getme(Get.context);

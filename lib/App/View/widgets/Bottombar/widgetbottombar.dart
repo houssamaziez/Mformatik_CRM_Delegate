@@ -17,9 +17,9 @@ buttonnavigationbar(context) {
                   controller),
               _buildNavItem(
                   context, 1, Icons.feed_outlined, 'Feedbacks'.tr, controller),
-              _buildNavItem(
-                  context, 2, Icons.assignment, 'Task'.tr, controller),
-              _buildNavItem(context, 3, Icons.person, 'Profile'.tr, controller),
+              // _buildNavItem(
+              //     context, 2, Icons.assignment, 'Task'.tr, controller),
+              _buildNavItem(context, 2, Icons.person, 'Profile'.tr, controller),
             ],
           ),
         );

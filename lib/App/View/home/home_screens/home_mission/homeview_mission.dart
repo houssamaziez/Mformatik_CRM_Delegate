@@ -223,6 +223,7 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ).addRefreshIndicator(onRefresh: () {
+                    // Get.put(AnnexController()).fetchAnnexes();
                     homeController.upadteshowcontanerOpen();
 
                     startDateMissions = null;

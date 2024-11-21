@@ -87,7 +87,7 @@ class AuthController extends GetxController {
           .get(url, headers: {"x-auth-token": token.read("token").toString()});
       print(response.body);
       final responseData = ResponseHandler.processResponse(response);
-
+      print(response.statusCode);
       if (response.statusCode == 200) {
         user = User.fromJson(responseData['user']);
         update();
@@ -107,7 +107,7 @@ class AuthController extends GetxController {
       } else {
         if (response.statusCode == 401 ||
             response.statusCode == 403 ||
-            response.statusCode == 406) {
+            response.statusCode == 404) {
           Go.clearAndTo(context, ScreenAuth());
         }
       }

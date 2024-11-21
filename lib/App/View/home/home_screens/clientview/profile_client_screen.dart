@@ -5,6 +5,7 @@ import 'package:mformatic_crm_delegate/App/View/home/Widgets/homeMenu_select.dar
 import 'package:mformatic_crm_delegate/App/View/widgets/Containers/container_blue.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../../Model/client.dart';
+import '../home_feedback/create_feedback/cretate_screen.dart';
 import '../home_mission/createmission/cretate_screen.dart';
 
 class ClientProfileScreen extends StatelessWidget {
@@ -19,20 +20,36 @@ class ClientProfileScreen extends StatelessWidget {
         title: Text(client.fullName ?? 'Client Profile'.tr),
         centerTitle: true,
       ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   backgroundColor: Theme.of(context).primaryColor,
+      //   onPressed: () {
+      //     Go.to(
+      //         context,
+      //         CreateMissionScreen(
+      //           clientID: client.id!,
+      //         ));
+      //   },
+      //   label: Text(
+      //     "Add Mission".tr,
+      //     style: TextStyle(color: Colors.white),
+      //   ),
+      // ),
+
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {
-          Go.to(
-              context,
-              CreateMissionScreen(
-                clientID: client.id!,
-              ));
-        },
-        label: Text(
-          "Add Mission".tr,
+        label: const Text(
+          "Actions",
           style: TextStyle(color: Colors.white),
         ),
+        icon: const Icon(
+          Icons.menu,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          _showActionSheet(context);
+        },
       ),
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -41,7 +58,7 @@ class ClientProfileScreen extends StatelessWidget {
             children: [
               // Client Basic Information
               // _buildProfileHeader(client),
-              const SizedBox(height: 20),
+              // const SizedBox(height: 20),
               // Contact Details Section
               _buildContactSection(client),
               const SizedBox(height: 20),
@@ -210,6 +227,50 @@ class ClientProfileScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 16)),
         ],
       ),
+    );
+  }
+
+  void _showActionSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 12),
+            Container(
+              height: 5,
+              width: 40,
+              decoration: BoxDecoration(
+                color: Colors.grey[400],
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: const Icon(Icons.add_circle, color: Colors.green),
+              title: const Text("Add Mission"),
+              onTap: () {
+                Get.to(() => CreateMissionScreen(clientID: client.id!));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.add_circle, color: Colors.green),
+              title: const Text("Add Feedback"),
+              onTap: () {
+                Get.to(() => CreateFeedBackScreen(
+                      clientID: client.id!,
+                      missionID: null,
+                      feedbackModelID: 0,
+                    ));
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -29,8 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screen = [
     Home(),
     HomeFeedback(),
-    HomeViewTask(),
+
     ProfileUserScreen(),
+    // HomeViewTask(),
   ];
   final MissionsController controller = Get.put(MissionsController());
 

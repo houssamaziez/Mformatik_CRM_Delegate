@@ -66,7 +66,6 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   @override
   void initState() {
     feedbackVoicepathB = widget.feedback.voice;
-    _iShowVocalBefort = widget.feedback.voice != "";
     feedbackinitlanght = widget.feedback.gallery.length;
     feedbacklocal = widget.feedback;
     print(feedbacklocal!.feedbackModelId.toString());
@@ -141,7 +140,6 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   VoiceController? controlledVoiceMessageViewMy;
   bool _animate = false;
   bool _iShowVocal = false;
-  bool _iShowVocalBefort = false;
 
   @override
   void dispose() {
@@ -186,15 +184,15 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                 height: 10,
               ),
               _selectImages(),
-              if (_iShowVocal == false) selectVocaltitle(context),
-              SizedBox(
-                height: 10,
-              ),
-              if (feedbackVoicepathB != null) vocalbefor(context),
-              SizedBox(
-                height: 10,
-              ),
-              if (_iShowVocal == true) vocalafter(context),
+              // if (_iShowVocal == false) selectVocaltitle(context),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              // if (feedbackVoicepathB != null) vocalbefor(context),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              // if (_iShowVocal == true) vocalafter(context),
               if (_compressionProgress > 0 && _compressionProgress < 100 ||
                   isCompressImage) ...[
                 const SizedBox(height: 16),
@@ -437,63 +435,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
 
   Row vocalbefor(BuildContext context) {
     return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 1,
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
-        Center(
-          child: Container(
-            height: 90,
-            width: MediaQuery.of(context).size.width * 0.91,
-            decoration: BoxDecoration(
-              color: Colors.white, // Background color
-              border: Border.all(
-                color: Theme.of(context).primaryColor, // Border color
-                width: 1.0, // Border width
-              ),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Center(
-              child: GetBuilder<FeedbackController>(
-                init: FeedbackController(),
-                builder: (feedbackController) {
-                  if (!feedbackController.voicedownloadLoading) {
-                    _voiceController ??= VoiceController(
-                      audioSrc: widget.pathVoice!,
-                      maxDuration: Duration(minutes: 10),
-                      noiseCount: 50,
-                      isFile: true,
-                      onComplete: () {},
-                      onPause: () {},
-                      onPlaying: () {},
-                      onError: (err) {},
-                    );
-
-                    return VoiceMessageViewPlay(
-                      activeSliderColor: Theme.of(context).primaryColor,
-                      circlesColor: Theme.of(context).primaryColor,
-                      controller: _voiceController!,
-                      innerPadding: 0,
-                      cornerRadius: 20,
-                    );
-                  } else {
-                    return spinkit;
-                  }
-                },
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Container(
-            height: 1,
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
-      ],
+      children: [],
     );
   }
 

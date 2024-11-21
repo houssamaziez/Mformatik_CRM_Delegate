@@ -7,6 +7,7 @@ import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_feedback/
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../../Controller/home/client_controller.dart';
 
+import '../../home_mission/createmission/cretate_screen.dart';
 import '../profile_client_screen.dart';
 
 class ClientListScreenAddMission extends StatefulWidget {
@@ -138,7 +139,9 @@ class _ClientListScreenAddMissionState
                     child: InkWell(
                       onTap: () {
                         if (widget.role == "mission") {
-                          Get.to(() => ClientProfileScreen(client: client));
+                          Get.to(
+                              () => CreateMissionScreen(clientID: client.id!));
+                          // Get.to(() => ClientProfileScreen(client: client));
                         } else {
                           Get.to(() => CreateFeedBackScreen(
                                 clientID: client.id!,
