@@ -29,12 +29,6 @@ class _SpalshScreenState extends State<SpalshScreen> {
   @override
   void initState() {
     _checkForUpdate();
-*
-    if (_isUpdateAvailable == false) {
-      if (spalshscreenfirst.read('key') == true) {
-        Get.put(AuthController()).getme(Get.context);
-      }
-    }
 
     super.initState();
     Timer(const Duration(seconds: 10), () {
@@ -61,11 +55,20 @@ class _SpalshScreenState extends State<SpalshScreen> {
         _isUpdateAvailable =
             updateInfo.updateAvailability == UpdateAvailability.updateAvailable;
       });
-      if (_isUpdateAvailable == true) {
-        _showUpdateDialog();
-      }
     } catch (e) {
       print("Error checking for update: $e");
+    } finally {
+      if (_isUpdateAvailable == true) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _showUpdateDialog();
+        });
+      } else {
+        if (_isUpdateAvailable == false) {
+          if (spalshscreenfirst.read('key') == true) {
+            Get.put(AuthController()).getme(Get.context);
+          }
+        }
+      }
     }
   }
 
