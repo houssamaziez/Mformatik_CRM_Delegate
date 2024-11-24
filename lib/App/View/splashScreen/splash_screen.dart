@@ -28,7 +28,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
   bool _isUpdateAvailable = false;
   @override
   void initState() {
-    _checkForUpdate();
+    _checkForUpdate().then((onValue) {});
 
     super.initState();
     Timer(const Duration(seconds: 10), () {
