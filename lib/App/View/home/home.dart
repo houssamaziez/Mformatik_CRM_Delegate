@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/home_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/homeview_task.dart';
 
 import '../../Controller/auth/auth_controller.dart';
 import '../../Controller/home/annex_controller.dart';
