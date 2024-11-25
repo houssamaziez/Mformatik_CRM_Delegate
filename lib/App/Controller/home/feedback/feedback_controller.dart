@@ -157,6 +157,11 @@ class FeedbackController extends GetxController {
         headers: {"x-auth-token": token.read("token").toString()},
       );
       print(response.statusCode);
+      if (response.statusCode == 404) {
+        feedbackprofile = null;
+        update();
+        return;
+      }
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
 
@@ -366,6 +371,9 @@ class FeedbackController extends GetxController {
         'requestDate': requestDate ?? '',
         'feedbackModelId': feedbackModelFilter,
       });
+      if (images.isEmpty) {
+        request.fields.addAll({'gallery[]': ''});
+      }
       if (images.length != beforimages) {
         for (var i = 0; i < imagpath.length; i++) {
           request.fields['gallery[$i][id]'] = imagpath[i]['id']!;
@@ -430,6 +438,10 @@ class FeedbackController extends GetxController {
         headers: {"x-auth-token": token.read("token").toString()},
       );
       print(response.statusCode);
+      if (response.statusCode == 404) {
+        feedbackprofile = null;
+        update();
+      }
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('object');

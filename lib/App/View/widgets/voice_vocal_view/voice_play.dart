@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:voice_message_package/src/helpers/play_status.dart';
-import 'package:voice_message_package/src/helpers/utils.dart';
-import 'package:voice_message_package/src/voice_controller.dart';
-import 'package:voice_message_package/src/widgets/noises.dart';
-import 'package:voice_message_package/src/widgets/play_pause_button.dart';
+// import 'package:voice_message_package/src/helpers/play_status.dart';
+// import 'package:voice_message_package/src/helpers/utils.dart';
+// import 'package:voice_message_package/src/voice_controller.dart';
+// import 'package:voice_message_package/src/widgets/noises.dart';
+// import 'package:voice_message_package/src/widgets/play_pause_button.dart';
 
 class VoiceMessageViewPlay extends StatelessWidget {
   const VoiceMessageViewPlay(
@@ -47,7 +47,7 @@ class VoiceMessageViewPlay extends StatelessWidget {
       : super(key: key);
 
   /// The controller for the voice message view.
-  final VoiceController controller;
+  final controller;
 
   /// The background color of the voice message view.
   final Color backgroundColor;
@@ -110,7 +110,7 @@ class VoiceMessageViewPlay extends StatelessWidget {
     );
 
     return Container(
-      width: 160 + (controller.noiseCount * .72.w()),
+      // width: 160 + (controller.noiseCount * .72.w()),
       padding: EdgeInsets.all(innerPadding),
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -122,17 +122,17 @@ class VoiceMessageViewPlay extends StatelessWidget {
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              PlayPauseButton(
-                controller: controller,
-                color: color,
-                loadingColor: playPauseButtonLoadingColor,
-                size: size,
-                refreshIcon: refreshIcon,
-                pauseIcon: pauseIcon,
-                playIcon: playIcon,
-                stopDownloadingIcon: stopDownloadingIcon,
-                buttonDecoration: playPauseButtonDecoration,
-              ),
+              // PlayPauseButton(
+              //   controller: controller,
+              //   color: color,
+              //   loadingColor: playPauseButtonLoadingColor,
+              //   size: size,
+              //   refreshIcon: refreshIcon,
+              //   pauseIcon: pauseIcon,
+              //   playIcon: playIcon,
+              //   stopDownloadingIcon: stopDownloadingIcon,
+              //   buttonDecoration: playPauseButtonDecoration,
+              // ),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(
@@ -173,10 +173,10 @@ class VoiceMessageViewPlay extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             /// noises
-            Noises(
-              rList: controller.randoms!,
-              activeSliderColor: activeSliderColor,
-            ),
+            // Noises(
+            //   rList: controller.randoms!,
+            //   activeSliderColor: activeSliderColor,
+            // ),
 
             /// slider
             AnimatedBuilder(
@@ -189,7 +189,7 @@ class VoiceMessageViewPlay extends StatelessWidget {
                   left: controller.animController.value,
                   child: Container(
                     width: controller.noiseWidth,
-                    height: 6.w(),
+                    // height: 6.w(),
                     color:
                         notActiveSliderColor ?? backgroundColor.withOpacity(.4),
                   ),

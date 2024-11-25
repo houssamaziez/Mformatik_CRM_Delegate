@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:get/get.dart';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:record/record.dart';
+// import 'package:record/record.dart';
 
 class RecordController extends GetxController {
   bool isRecording = false;
@@ -11,8 +11,8 @@ class RecordController extends GetxController {
   bool isPlaying = false;
   String audioPath = '';
   Duration audioDuration = Duration.zero;
-  final AudioRecorder _record = AudioRecorder();
-  final AudioPlayer _play = AudioPlayer();
+  // final AudioRecorder _record = AudioRecorder();
+  // final AudioPlayer _play = AudioPlayer();
   late Timer _timer;
   updateisRcord() {
     animate = !animate;
@@ -27,24 +27,24 @@ class RecordController extends GetxController {
   // Method to toggle recording
   void toggleRecording() async {
     if (isRecording == true) {
-      final path = await _record.stop();
-      if (path != null) {
-        audioPath = path;
-      }
+      // final path = await _record.stop();
+      // if (path != null) {
+      //   audioPath = path;
+      // }
       isRecording = false;
       update();
       _timer.cancel();
       update();
     } else {
       audioPath = await _getAudioPath();
-      final config = RecordConfig(
-        androidConfig: AndroidRecordConfig(),
-        noiseSuppress: true,
-        encoder: AudioEncoder.aacLc,
-        bitRate: 128000,
-        sampleRate: 44100,
-      );
-      await _record.start(config, path: audioPath);
+      // final config = RecordConfig(
+      //   androidConfig: AndroidRecordConfig(),
+      //   noiseSuppress: true,
+      //   encoder: AudioEncoder.aacLc,
+      //   bitRate: 128000,
+      //   sampleRate: 44100,
+      // );
+      // await _record.start(config, path: audioPath);
       isRecording = true;
       _startRecordingTimer();
       update();
@@ -63,19 +63,19 @@ class RecordController extends GetxController {
   // Method to play the audio
   void playAudio() async {
     if (audioPath.isNotEmpty) {
-      await _play.play(DeviceFileSource(audioPath));
+      // await _play.play(DeviceFileSource(audioPath));
       isPlaying = true;
       update();
-      _play.onPlayerComplete.listen((_) {
-        isPlaying = false;
-        update();
-      });
+      // _play.onPlayerComplete.listen((_) {
+      //   isPlaying = false;
+      //   update();
+      // });
     }
   }
 
   // Method to cancel the recording
   void cancelRecording() async {
-    await _record.cancel();
+    // await _record.cancel();
     isRecording = false;
     audioPath = '';
     _timer.cancel();

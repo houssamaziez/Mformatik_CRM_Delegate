@@ -10,7 +10,7 @@ import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import 'package:vibration/vibration.dart';
-import 'package:voice_message_package/voice_message_package.dart';
+// import 'package:voice_message_package/voice_message_package.dart';
 import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/widgetsController/date_controller.dart';
 import '../../../../../Service/AppValidator/AppValidator.dart';
@@ -114,13 +114,13 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
 
   final RecordController recordController = Get.put(RecordController());
 
-  VoiceController? controlledVoiceMessageViewMy;
+  // VoiceController? controlledVoiceMessageViewMy;
   bool _animate = false;
   bool _iShowVocal = false;
 
   @override
   void dispose() {
-    controlledVoiceMessageViewMy!.stopPlaying();
+    // controlledVoiceMessageViewMy!.stopPlaying();
     Get.delete<ExpandableControllerFeedback>();
     Get.delete<DateController>();
     super.dispose();
@@ -130,15 +130,15 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
   Widget build(BuildContext context) {
     final controllerisreq = Get.put(ExpandableControllerFeedback());
     return GetBuilder<RecordController>(builder: (controllerVoice) {
-      controlledVoiceMessageViewMy = VoiceController(
-        audioSrc: controllerVoice.audioPath,
-        maxDuration: Duration(seconds: controllerVoice.audioDuration.inSeconds),
-        isFile: true,
-        onComplete: () {},
-        onPause: () {},
-        onPlaying: () {},
-        onError: (err) {},
-      );
+      // controlledVoiceMessageViewMy = VoiceController(
+      //   audioSrc: controllerVoice.audioPath,
+      //   maxDuration: Duration(seconds: controllerVoice.audioDuration.inSeconds),
+      //   isFile: true,
+      //   onComplete: () {},
+      //   onPause: () {},
+      //   onPlaying: () {},
+      //   onError: (err) {},
+      // );
 
       return Scaffold(
         appBar: AppBar(

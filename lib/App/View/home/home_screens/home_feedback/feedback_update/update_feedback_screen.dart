@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:vibration/vibration.dart';
-import 'package:voice_message_package/voice_message_package.dart';
+// import 'package:voice_message_package/voice_message_package.dart';
 import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/home/feedback/feedback_controller.dart';
 import '../../../../../Controller/home/reasons_feedback_controller.dart';
@@ -137,7 +137,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
 
   final RecordController recordController = Get.put(RecordController());
 
-  VoiceController? controlledVoiceMessageViewMy;
+  // VoiceController? controlledVoiceMessageViewMy;
   bool _animate = false;
   bool _iShowVocal = false;
 
@@ -148,7 +148,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
     super.dispose();
   }
 
-  VoiceController? _voiceController;
+  // VoiceController? _voiceController;
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +229,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
           if (_iShowVocal) {
             bool isGranted = await isMicrophonePermissionGranted();
             if (isGranted) {
-              await controlledVoiceMessageViewMy!.stopPlaying();
+              // await controlledVoiceMessageViewMy!.stopPlaying();
               controllerVoice.deleteRecording();
             } else {
               setState(() => _animate = false);
@@ -328,16 +328,16 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: GetBuilder<RecordController>(builder: (controllerVoice) {
-            controlledVoiceMessageViewMy = VoiceController(
-              audioSrc: controllerVoice.audioPath,
-              maxDuration:
-                  Duration(seconds: controllerVoice.audioDuration.inSeconds),
-              isFile: true,
-              onComplete: () {},
-              onPause: () {},
-              onPlaying: () {},
-              onError: (err) {},
-            );
+            // controlledVoiceMessageViewMy = VoiceController(
+            //   audioSrc: controllerVoice.audioPath,
+            //   maxDuration:
+            //       Duration(seconds: controllerVoice.audioDuration.inSeconds),
+            //   isFile: true,
+            //   onComplete: () {},
+            //   onPause: () {},
+            //   onPlaying: () {},
+            //   onError: (err) {},
+            // );
 
             return Stack(
               children: [
@@ -345,17 +345,17 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      height: 90,
-                      child: VoiceMessageViewMy(
-                        activeSliderColor: Theme.of(context).primaryColor,
-                        circlesColor: Theme.of(context).primaryColor,
-                        controller: controlledVoiceMessageViewMy!,
-                        innerPadding: 12,
-                        cornerRadius: 20,
-                        size: 50,
-                      ),
-                    ),
+                    // Container(
+                    //   height: 90,
+                    //   child: VoiceMessageViewMy(
+                    //     activeSliderColor: Theme.of(context).primaryColor,
+                    //     circlesColor: Theme.of(context).primaryColor,
+                    //     controller: controlledVoiceMessageViewMy!,
+                    //     innerPadding: 12,
+                    //     cornerRadius: 20,
+                    //     size: 50,
+                    //   ),
+                    // ),
                     const Spacer(),
                     controllerVoice.audioPath.isEmpty ||
                             controllerVoice.isRecording == true
@@ -406,8 +406,8 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                                         _iShowVocal =
                                             !_iShowVocal; // Toggle animation
                                       });
-                                      await controlledVoiceMessageViewMy!
-                                          .stopPlaying();
+                                      // await controlledVoiceMessageViewMy!
+                                      //     .stopPlaying();
                                       controllerVoice.deleteRecording();
                                     },
                               icon: const Icon(

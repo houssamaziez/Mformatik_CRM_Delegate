@@ -9,7 +9,7 @@ import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/persons/screen_list_persons.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:vibration/vibration.dart';
-import 'package:voice_message_package/voice_message_package.dart';
+// import 'package:voice_message_package/voice_message_package.dart';
 
 import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/home/Person/controller_person.dart';
@@ -110,23 +110,23 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RecordController>(builder: (controllerVoice) {
-      final controlledVoiceMessageViewMy = VoiceController(
-        audioSrc: controllerVoice.audioPath,
-        maxDuration: Duration(seconds: controllerVoice.audioDuration.inSeconds),
-        isFile: true,
-        onComplete: () {
-          // Do something on complete
-        },
-        onPause: () {
-          // Do something on pause
-        },
-        onPlaying: () {
-          // Do something on playing
-        },
-        onError: (err) {
-          // Handle error
-        },
-      );
+      // final controlledVoiceMessageViewMy = VoiceController(
+      //   audioSrc: controllerVoice.audioPath,
+      //   maxDuration: Duration(seconds: controllerVoice.audioDuration.inSeconds),
+      //   isFile: true,
+      //   onComplete: () {
+      //     // Do something on complete
+      //   },
+      //   onPause: () {
+      //     // Do something on pause
+      //   },
+      //   onPlaying: () {
+      //     // Do something on playing
+      //   },
+      //   onError: (err) {
+      //     // Handle error
+      //   },
+      // );
 
       return Scaffold(
         appBar: AppBar(
@@ -478,18 +478,18 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Spacer(),
-                            Container(
-                              height: 90,
-                              child: VoiceMessageViewMy(
-                                activeSliderColor:
-                                    Theme.of(context).primaryColor,
-                                circlesColor: Theme.of(context).primaryColor,
-                                controller: controlledVoiceMessageViewMy,
-                                innerPadding: 12,
-                                cornerRadius: 20,
-                                size: 50,
-                              ),
-                            ),
+                            // Container(
+                            //   height: 90,
+                            //   child: VoiceMessageViewMy(
+                            //     activeSliderColor:
+                            //         Theme.of(context).primaryColor,
+                            //     circlesColor: Theme.of(context).primaryColor,
+                            //     controller: controlledVoiceMessageViewMy,
+                            //     innerPadding: 12,
+                            //     cornerRadius: 20,
+                            //     size: 50,
+                            //   ),
+                            // ),
                             const Spacer(),
                             controllerVoice.audioPath.isEmpty ||
                                     controllerVoice.isRecording == true
@@ -549,8 +549,8 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                                                 _iShowVocal =
                                                     !_iShowVocal; // Toggle animation
                                               });
-                                              await controlledVoiceMessageViewMy
-                                                  .stopPlaying();
+                                              // await controlledVoiceMessageViewMy
+                                              //     .stopPlaying();
                                               controllerVoice.deleteRecording();
                                             },
                                       icon: const Icon(

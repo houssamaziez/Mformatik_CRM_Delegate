@@ -10,7 +10,7 @@ import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_details/profile_mission.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/voice_vocal_view/voice_play.dart';
-import 'package:voice_message_package/voice_message_package.dart';
+// import 'package:voice_message_package/voice_message_package.dart';
 import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/home/feedback/feedback_controller.dart';
 import '../../../../../Model/feedback.dart';
@@ -44,14 +44,14 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
     return DateFormat('yyyy-MM-dd').format(parsedDate);
   }
 
-  VoiceController? _voiceController;
+  // VoiceController? _voiceController;
 
   @override
   void dispose() {
     Get.delete<RecordController>();
     Get.delete<FeedbackMission>();
 
-    _voiceController?.stopPlaying();
+    // _voiceController?.stopPlaying();
 
     super.dispose();
   }
@@ -73,6 +73,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
           }
           final feedback = controller.feedbackprofile!;
           return SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
