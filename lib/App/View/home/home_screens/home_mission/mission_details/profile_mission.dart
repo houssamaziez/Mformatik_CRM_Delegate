@@ -119,12 +119,10 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                   if (mission.feedback!.id != 0)
                     InkWell(
                       onTap: () {
-                        if (mission.feedback!.id != 1) {
-                          Go.to(
-                              context,
-                              FeedbackDetailScreen(
-                                  feedbackId: mission.feedback!.id.toString()));
-                        }
+                        Go.to(
+                            context,
+                            FeedbackDetailScreen(
+                                feedbackId: mission.feedback.id.toString()));
                       },
                       child: _buildMissionInfoSection(
                           'Feedback'.tr,

@@ -55,8 +55,10 @@ class AuthController extends GetxController {
         print('person in as: ${person?.firstName}');
         print('user in as: ${user?.username}');
       } else {}
+      // ------------------------
 
       print(response.body);
+      // ------------------------
       if (response.statusCode == 401) {
         showMessage(context,
             title:
