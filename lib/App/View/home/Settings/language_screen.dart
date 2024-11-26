@@ -57,7 +57,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
       ),
-      body: Padding(=
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           children: [
@@ -103,7 +103,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                         ),
                       ),
                       trailing: isSelected
-                          ? Icon(Icons.check, color: Colors.blue)
+                          ? const Icon(Icons.check, color: Colors.blue)
                           : null,
                       tileColor:
                           isSelected ? Colors.blue.withOpacity(0.1) : null,
@@ -112,13 +112,13 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 );
               },
             ),
-            Spacer(),
+            const Spacer(),
             ButtonAll(
                 function: () {
                   Get.back();
                 },
                 title: 'Save'.tr),
-            Spacer(),
+            const Spacer(),
           ],
         ),
       ),

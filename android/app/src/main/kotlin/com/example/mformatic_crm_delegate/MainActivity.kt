@@ -1,4 +1,4 @@
-package com.mformatik.delegate
+package com.mformatik.crireporting
 
 import io.flutter.embedding.android.FlutterActivity
 

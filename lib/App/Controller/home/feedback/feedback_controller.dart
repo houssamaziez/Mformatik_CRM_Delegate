@@ -222,13 +222,6 @@ class FeedbackController extends GetxController {
       print(voice);
       if (voice != null) {
         mp3FilePath = "${voice!.path}";
-
-        // Convert the audio file to MP3 using FFmpeg
-        // final session =
-        //     await FFmpegKit.execute("-i ${voice!.path} $mp3FilePath");
-
-        // Wait for the conversion process to finish
-        // final returnCode = await session.getReturnCode();
         print(mp3FilePath);
       }
 

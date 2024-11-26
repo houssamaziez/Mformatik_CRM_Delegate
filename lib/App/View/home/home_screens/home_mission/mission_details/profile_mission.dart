@@ -109,7 +109,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
               child: ListView(
                 children: [
                   _buildMissionHeader(context, mission),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   InkWell(
                     child: _buildMissionInfoSectionClient('Clinet'.tr,
                         mission.client!, Icons.person_pin, theme.primaryColor),

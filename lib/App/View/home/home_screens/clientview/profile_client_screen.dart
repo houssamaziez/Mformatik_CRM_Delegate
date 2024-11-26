@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Widgets/homeMenu_select.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Containers/container_blue.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../../Model/client.dart';
@@ -20,21 +18,6 @@ class ClientProfileScreen extends StatelessWidget {
         title: Text(client.fullName ?? 'Client Profile'.tr),
         centerTitle: true,
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   backgroundColor: Theme.of(context).primaryColor,
-      //   onPressed: () {
-      //     Go.to(
-      //         context,
-      //         CreateMissionScreen(
-      //           clientID: client.id!,
-      //         ));
-      //   },
-      //   label: Text(
-      //     "Add Mission".tr,
-      //     style: TextStyle(color: Colors.white),
-      //   ),
-      // ),
-
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Theme.of(context).primaryColor,
         label: const Text(
@@ -49,7 +32,6 @@ class ClientProfileScreen extends StatelessWidget {
           _showActionSheet(context);
         },
       ),
-
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -120,11 +102,13 @@ class ClientProfileScreen extends StatelessWidget {
         children: [
           Text(
             'Contact Details'.tr,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           InkWell(
-              onTap: () => launchUrlString("tel://${client.tel}"),
+              onTap: () => client.tel != null
+                  ? launchUrlString("tel://${client.tel}")
+                  : null,
               child:
                   _buildContactRow(Icons.phone, 'Tel'.tr, client.tel ?? 'N/A')),
           InkWell(
@@ -177,7 +161,7 @@ class ClientProfileScreen extends StatelessWidget {
           children: [
             Text(
               'Business Information'.tr,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             _buildInfoRow('Sold:'.tr, client.sold!),
@@ -217,7 +201,7 @@ class ClientProfileScreen extends StatelessWidget {
         children: [
           Text(
             'Other Details'.tr,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Text('Region:'.tr + " ${client.region ?? 'N/A'}",
@@ -252,14 +236,14 @@ class ClientProfileScreen extends StatelessWidget {
             const SizedBox(height: 16),
             ListTile(
               leading: const Icon(Icons.add_circle, color: Colors.green),
-              title: const Text("Add Mission"),
+              title: Text("Add Mission".tr),
               onTap: () {
                 Get.to(() => CreateMissionScreen(clientID: client.id!));
               },
             ),
             ListTile(
               leading: const Icon(Icons.add_circle, color: Colors.green),
-              title: const Text("Add Feedback"),
+              title: Text("Add Feedback".tr),
               onTap: () {
                 Get.to(() => CreateFeedBackScreen(
                       clientID: client.id!,
