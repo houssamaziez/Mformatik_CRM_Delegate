@@ -198,36 +198,54 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                         style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                       ),
                 const SizedBox(height: 20),
-
-                // Edit Button
-                GetBuilder<FeedbackController>(
-                    init: FeedbackController(),
-                    builder: (feedbackController) {
-                      return Center(
-                        child: ElevatedButton.icon(
-                          icon: const Icon(Icons.edit),
-                          label: Text('Edit Feedback'.tr),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 12),
-                            textStyle: const TextStyle(fontSize: 16),
+                if (feedback.decisionId == null)
+                  GetBuilder<FeedbackController>(
+                      init: FeedbackController(),
+                      builder: (feedbackController) {
+                        return Center(
+                          child: ElevatedButton.icon(
+                            icon: const Icon(Icons.edit),
+                            label: Text('Edit Feedback'.tr),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 12),
+                              textStyle: const TextStyle(fontSize: 16),
+                            ),
+                            onPressed: () {
+                              Go.to(
+                                  context,
+                                  UpdateFeedbackScreen(
+                                    feedback: feedback,
+                                    pathVoice:
+                                        feedbackController.pahtFile == null
+                                            ? ""
+                                            : feedbackController.pahtFile,
+                                  ));
+                              // Navigate to EditFeedbackScreen
+                              // Get.to(EditFeedbackScreen(feedbackId: feedback.id));
+                            },
                           ),
-                          onPressed: () {
-                            Go.to(
-                                context,
-                                UpdateFeedbackScreen(
-                                  feedback: feedback,
-                                  pathVoice: feedbackController.pahtFile == null
-                                      ? ""
-                                      : feedbackController.pahtFile,
-                                ));
-                            // Navigate to EditFeedbackScreen
-                            // Get.to(EditFeedbackScreen(feedbackId: feedback.id));
-                          },
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                if (feedback.decisionId != null)
+                  Center(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.edit),
+                      label: Text('Feedback cannot be edited'.tr,
+                          textAlign: TextAlign.center),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 12),
+                        textStyle: const TextStyle(fontSize: 16),
+                      ),
+                      onPressed: () {
+                        // Navigate to EditFeedbackScreen
+                        // Get.to(EditFeedbackScreen(feedbackId: feedback.id));
+                      },
+                    ),
+                  ),
               ],
             ),
           ).addRefreshIndicator(

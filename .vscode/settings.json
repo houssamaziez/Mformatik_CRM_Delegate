@@ -10,21 +10,27 @@
         "add task",
         "feedback Profile",
         "mission details ",
-        "Auth"
+        "Auth",
+        "language_screen"
     ],
     "cSpell.words": [
+        "Commencer",
         "cupertino",
         "feedbacklocal",
         "feedbackprofile",
+        "getme",
         "Lengt",
         "listiconhomemeneu",
         "Loadingprofile",
+        "mformatic",
         "mformatik",
+        "showsnack",
         "upadteisloading",
         "upadteshowcontaner",
         "vocalafter",
         "vocalbefor",
-        "Voicepath"
+        "Voicepath",
+        "Vous"
     ],
     "java.configuration.updateBuildConfiguration": "interactive"
 }

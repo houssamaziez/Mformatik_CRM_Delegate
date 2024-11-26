@@ -38,6 +38,7 @@ class AnnexController extends GetxController {
     } catch (e) {
       showMessage(Get.context, title: 'Something went wrong'.tr);
     } finally {
+      // ignore: invalid_use_of_protected_member
       updateannex(annexList.value.first);
 
       isLoading(false);

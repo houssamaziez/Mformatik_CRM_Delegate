@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 
 class LanguageScreen extends StatefulWidget {
   const LanguageScreen({Key? key}) : super(key: key);
@@ -13,10 +14,16 @@ class _LanguageScreenState extends State<LanguageScreen> {
   final GetStorage _storage = GetStorage();
   late String _selectedLanguage;
 
-  // Supported languages
-  final Map<String, String> _languages = {
-    'en': 'English',
-    'fr': 'Français',
+  // Supported languages with associated images
+  final Map<String, Map<String, String>> _languages = {
+    'en': {
+      'name': 'English',
+      'image': 'assets/icons/EN.png'
+    }, // Add image path here
+    'fr': {
+      'name': 'Français',
+      'image': 'assets/icons/fr.png'
+    }, // Add image path here
   };
 
   @override
@@ -50,13 +57,11 @@ class _LanguageScreenState extends State<LanguageScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
       ),
-      body: Padding(
+      body: Padding(=
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           children: [
-            SizedBox(
-              height: 60,
-            ),
+            const SizedBox(height: 60),
             Text(
               'Choose your preferred language to make it easier for you to use the application'
                   .tr,
@@ -64,70 +69,56 @@ class _LanguageScreenState extends State<LanguageScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: _languages.entries.map((entry) {
-                final bool isSelected = _selectedLanguage == entry.key;
-                return GestureDetector(
-                  onTap: () => _onLanguageSelected(entry.key),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    width: 130,
-                    height: 130,
+
+            // List of languages with images
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: _languages.length,
+              itemBuilder: (context, index) {
+                String languageCode = _languages.keys.elementAt(index);
+                String languageName = _languages[languageCode]!['name']!;
+                String imagePath = _languages[languageCode]!['image']!;
+                bool isSelected = _selectedLanguage == languageCode;
+
+                return Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Container(
                     decoration: BoxDecoration(
-                      color: isSelected
-                          ? Theme.of(context).primaryColor
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(15),
                       border: Border.all(
-                        color: isSelected
-                            ? Theme.of(context).primaryColor
-                            : Colors.grey.shade300,
-                        width: 2,
+                        color: Theme.of(context).primaryColor,
                       ),
-                      boxShadow: [
-                        if (isSelected)
-                          BoxShadow(
-                            color:
-                                Theme.of(context).primaryColor.withOpacity(0.2),
-                            spreadRadius: 4,
-                            blurRadius: 8,
-                          ),
-                      ],
                     ),
-                    child: Center(
-                      child: Text(
-                        entry.value,
+                    child: ListTile(
+                      onTap: () => _onLanguageSelected(languageCode),
+                      leading: CircleAvatar(
+                        backgroundImage:
+                            AssetImage(imagePath), // Language flag icon
+                      ),
+                      title: Text(
+                        languageName,
                         style: TextStyle(
-                          color: isSelected ? Colors.white : Colors.black87,
-                          fontSize: 18,
+                          color: isSelected ? Colors.blue : Colors.black,
                           fontWeight: FontWeight.w600,
                         ),
-                        textAlign: TextAlign.center,
                       ),
+                      trailing: isSelected
+                          ? Icon(Icons.check, color: Colors.blue)
+                          : null,
+                      tileColor:
+                          isSelected ? Colors.blue.withOpacity(0.1) : null,
                     ),
                   ),
                 );
-              }).toList(),
+              },
             ),
-            const SizedBox(height: 40),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Get.back();
-            //   },
-            //   style: ElevatedButton.styleFrom(
-            //     padding:
-            //         const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
-            //     backgroundColor: Colors.teal,
-            //     shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(10),
-            //     ),
-            //   ),
-            //   child: Text(
-            //     'save'.tr,
-            //     style: const TextStyle(fontSize: 18),
-            //   ),
-            // ),
+            Spacer(),
+            ButtonAll(
+                function: () {
+                  Get.back();
+                },
+                title: 'Save'.tr),
+            Spacer(),
           ],
         ),
       ),

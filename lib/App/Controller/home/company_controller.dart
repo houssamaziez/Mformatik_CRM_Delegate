@@ -49,6 +49,7 @@ class CompanyController extends GetxController {
       update();
     } finally {
       if (companies.isNotEmpty) {
+        // ignore: invalid_use_of_protected_member
         updateannex(companies.value.first);
       } else {
         print("object");
