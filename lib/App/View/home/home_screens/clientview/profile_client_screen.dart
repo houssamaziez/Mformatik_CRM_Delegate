@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Widgets/homeMenu_select.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Containers/container_blue.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../../Model/client.dart';
+import '../home_feedback/create_feedback/cretate_screen.dart';
 import '../home_mission/createmission/cretate_screen.dart';
 
 class ClientProfileScreen extends StatelessWidget {
@@ -21,17 +20,17 @@ class ClientProfileScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {
-          Go.to(
-              context,
-              CreateMissionScreen(
-                clientID: client.id!,
-              ));
-        },
-        label: Text(
-          "Add Mission".tr,
+        label: const Text(
+          "Actions",
           style: TextStyle(color: Colors.white),
         ),
+        icon: const Icon(
+          Icons.menu,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          _showActionSheet(context);
+        },
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -41,7 +40,7 @@ class ClientProfileScreen extends StatelessWidget {
             children: [
               // Client Basic Information
               // _buildProfileHeader(client),
-              const SizedBox(height: 20),
+              // const SizedBox(height: 20),
               // Contact Details Section
               _buildContactSection(client),
               const SizedBox(height: 20),
@@ -103,11 +102,13 @@ class ClientProfileScreen extends StatelessWidget {
         children: [
           Text(
             'Contact Details'.tr,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           InkWell(
-              onTap: () => launchUrlString("tel://${client.tel}"),
+              onTap: () => client.tel != null
+                  ? launchUrlString("tel://${client.tel}")
+                  : null,
               child:
                   _buildContactRow(Icons.phone, 'Tel'.tr, client.tel ?? 'N/A')),
           InkWell(
@@ -160,7 +161,7 @@ class ClientProfileScreen extends StatelessWidget {
           children: [
             Text(
               'Business Information'.tr,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             _buildInfoRow('Sold:'.tr, client.sold!),
@@ -200,7 +201,7 @@ class ClientProfileScreen extends StatelessWidget {
         children: [
           Text(
             'Other Details'.tr,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Text('Region:'.tr + " ${client.region ?? 'N/A'}",
@@ -210,6 +211,50 @@ class ClientProfileScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 16)),
         ],
       ),
+    );
+  }
+
+  void _showActionSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 12),
+            Container(
+              height: 5,
+              width: 40,
+              decoration: BoxDecoration(
+                color: Colors.grey[400],
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: const Icon(Icons.add_circle, color: Colors.green),
+              title: Text("Add Mission".tr),
+              onTap: () {
+                Get.to(() => CreateMissionScreen(clientID: client.id!));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.add_circle, color: Colors.green),
+              title: Text("Add Feedback".tr),
+              onTap: () {
+                Get.to(() => CreateFeedBackScreen(
+                      clientID: client.id!,
+                      missionID: null,
+                      feedbackModelID: 0,
+                    ));
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

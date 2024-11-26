@@ -7,12 +7,30 @@
         "Status Mission ",
         "splash screen",
         "client Profile",
-        "create feedback"
+        "add task",
+        "feedback Profile",
+        "mission details ",
+        "Auth",
+        "language_screen"
     ],
     "cSpell.words": [
+        "Commencer",
+        "cupertino",
+        "feedbacklocal",
+        "feedbackprofile",
+        "getme",
         "Lengt",
         "listiconhomemeneu",
-        "upadteisloading"
+        "Loadingprofile",
+        "mformatic",
+        "mformatik",
+        "showsnack",
+        "upadteisloading",
+        "upadteshowcontaner",
+        "vocalafter",
+        "vocalbefor",
+        "Voicepath",
+        "Vous"
     ],
     "java.configuration.updateBuildConfiguration": "interactive"
 }

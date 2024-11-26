@@ -109,7 +109,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
               child: ListView(
                 children: [
                   _buildMissionHeader(context, mission),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   InkWell(
                     child: _buildMissionInfoSectionClient('Clinet'.tr,
                         mission.client!, Icons.person_pin, theme.primaryColor),
@@ -119,12 +119,10 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                   if (mission.feedback!.id != 0)
                     InkWell(
                       onTap: () {
-                        if (mission.feedback!.id != 1) {
-                          Go.to(
-                              context,
-                              FeedbackDetailScreen(
-                                  feedbackId: mission.feedback!.id.toString()));
-                        }
+                        Go.to(
+                            context,
+                            FeedbackDetailScreen(
+                                feedbackId: mission.feedback.id.toString()));
                       },
                       child: _buildMissionInfoSection(
                           'Feedback'.tr,

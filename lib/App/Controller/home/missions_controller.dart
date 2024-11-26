@@ -290,7 +290,11 @@ class MissionsController extends GetxController {
         headers: {"x-auth-token": token.read("token").toString()},
       ).timeout(const Duration(seconds: 50));
       print(response.body);
-
+      print(response.statusCode);
+      if (response.statusCode == 404) {
+        mission = null;
+        update();
+      }
       if (response.statusCode == 200) {
         final responseData = ResponseHandler.processResponse(response);
         mission =

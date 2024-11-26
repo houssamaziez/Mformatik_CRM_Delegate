@@ -49,8 +49,11 @@ const Map<String, String> fr = {
   "Select Date": "Sélectionner la date",
   "Profile": "Profil",
   "Feedbacks": "Feedbacks",
+  "Feedback cannot be edited": "Feedback ne peut pas être modifié.",
   "Yes": "Oui",
   "No feedback available.": "Aucun Feedback disponible.",
+  "A mission can only have one associated feedback entry.":
+      "Une mission ne peut avoir qu'une seule entrée de retour associée.",
   "Feedback": "Feedback",
   "Exit App": "Quitter l'application",
   "My FeedBack": "Mon Feedback",

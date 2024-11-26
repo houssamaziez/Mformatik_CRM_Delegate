@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,11 +9,15 @@ import 'package:mformatic_crm_delegate/App/Controller/widgetsController/expandab
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
+import 'package:vibration/vibration.dart';
+// import 'package:voice_message_package/voice_message_package.dart';
+import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/widgetsController/date_controller.dart';
 import '../../../../../Service/AppValidator/AppValidator.dart';
 import '../../../../../Service/Location/get_location.dart';
+import '../../../../../Service/permission_handler/mic_handler.dart';
 import '../../../../../Util/Date/formatDate.dart';
-import '../../../../widgets/Buttons/buttonall.dart';
+import '../../../../Voice/screen_voice.dart';
 import '../../../../widgets/Date/date_picker.dart';
 import '../../../../widgets/Dialog/showExitConfirmationDialog.dart';
 import '../widgets/reason_selector_feedback.dart';
@@ -107,278 +112,279 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  final RecordController recordController = Get.put(RecordController());
+
+  // VoiceController? controlledVoiceMessageViewMy;
+  bool _animate = false;
+  bool _iShowVocal = false;
 
   @override
   void dispose() {
+    // controlledVoiceMessageViewMy!.stopPlaying();
     Get.delete<ExpandableControllerFeedback>();
     Get.delete<DateController>();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final controllerisreq = Get.put(ExpandableControllerFeedback());
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Create Feedback'.tr),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              const SizedBox(height: 16),
-              ReasonsSelectorFeedback(),
-              const SizedBox(height: 16),
-              GetBuilder<ExpandableControllerFeedback>(
-                  init: ExpandableControllerFeedback(),
-                  builder: (controllerExp) {
-                    return Row(
-                      children: [
-                        'Description'.tr.style(fontSize: 16),
-                        Text(
-                          (controllerExp.selectedItem.value != null
-                              ? controllerExp
-                                          .selectedItem.value!.isDescRequired !=
-                                      null
-                                  ? controllerExp.selectedItem.value!
-                                              .isDescRequired ==
-                                          true
-                                      ? ' *'
-                                      : ''
-                                  : ''
-                              : ''),
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ],
-                    );
-                  }),
-              SizedBox(
-                height: 8,
-              ),
-              TextFormField(
-                controller: controller,
-                decoration: InputDecoration(
-                  labelText: 'Description'.tr,
-                  alignLabelWithHint: true, // لتعيين العنوان في الأعلى
+    return GetBuilder<RecordController>(builder: (controllerVoice) {
+      // controlledVoiceMessageViewMy = VoiceController(
+      //   audioSrc: controllerVoice.audioPath,
+      //   maxDuration: Duration(seconds: controllerVoice.audioDuration.inSeconds),
+      //   isFile: true,
+      //   onComplete: () {},
+      //   onPause: () {},
+      //   onPlaying: () {},
+      //   onError: (err) {},
+      // );
 
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 5,
-                onSaved: (value) {},
-                validator: (value) => AppValidator.validate(value, [
-                  (val) => AppValidator.validateRequired(val,
-                      fieldName: 'Description'),
-                  // You can add more validators here if needed, e.g., for length
-                  (val) => AppValidator.validateLength(val,
-                      minLength: 5, fieldName: 'Description'),
-                ]),
-              ),
-              const SizedBox(height: 16),
-              GetBuilder<ExpandableControllerFeedback>(
-                  init: ExpandableControllerFeedback(),
-                  builder: (controllerexp) {
-                    return controllerexp.selectedItem.value != null
-                        ? controllerexp.selectedItem.value!
-                                    .isRequestDateRequired !=
-                                null
-                            ? controllerexp.selectedItem.value!
-                                        .isRequestDateRequired ==
-                                    true
-                                ? DatePickerWidget()
-                                : Container()
-                            : Container()
-                        : Container();
-                  }),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Selected Images'.tr,
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Spacer(),
-                  IconButton(
-                      onPressed: _takePhoto,
-                      icon: Icon(
-                        Icons.camera,
-                        color: Theme.of(context).primaryColor,
-                      )),
-                  const SizedBox(width: 8),
-                  IconButton(
-                      onPressed: _selectImagesFromGallery,
-                      color: Theme.of(context).primaryColor,
-                      icon: Icon(
-                        Icons.image,
-                      )),
-                ],
-              ),
-              if (_compressionProgress > 0 && _compressionProgress < 100 ||
-                  isCompressImage) ...[
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Create Feedback'.tr),
+          centerTitle: true,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
                 const SizedBox(height: 16),
-                Text(
-                    'Loading images: ${_compressionProgress.toStringAsFixed(0)}%'),
-                const SizedBox(height: 8),
-                LinearProgressIndicator(
-                  value: _compressionProgress / 100,
-                  color: Theme.of(context).primaryColor,
+                ReasonsSelectorFeedback(),
+                const SizedBox(height: 16),
+                GetBuilder<ExpandableControllerFeedback>(
+                    init: ExpandableControllerFeedback(),
+                    builder: (controllerExp) {
+                      return Row(
+                        children: [
+                          'Description'.tr.style(fontSize: 16),
+                          Text(
+                            (controllerExp.selectedItem.value != null
+                                ? controllerExp.selectedItem.value!
+                                            .isDescRequired !=
+                                        null
+                                    ? controllerExp.selectedItem.value!
+                                                .isDescRequired ==
+                                            true
+                                        ? ' *'
+                                        : ''
+                                    : ''
+                                : ''),
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ],
+                      );
+                    }),
+                SizedBox(
+                  height: 8,
                 ),
-              ],
-              if (_compressedImages != null &&
-                  _compressedImages!.isNotEmpty) ...[
-                const SizedBox(height: 8),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
+                TextFormField(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    labelText: 'Description'.tr,
+                    alignLabelWithHint: true, // لتعيين العنوان في الأعلى
+
+                    border: OutlineInputBorder(),
                   ),
-                  itemCount: _compressedImages!.length,
-                  itemBuilder: (context, index) {
-                    return Stack(
-                      children: [
-                        Image.file(
-                          _compressedImages![index],
-                          fit: BoxFit.cover,
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _compressedImages!
-                                    .remove(_compressedImages![index]);
-                              });
-                            },
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ))
-                      ],
-                    );
-                  },
+                  maxLines: 5,
+                  maxLength: 250,
+                  onSaved: (value) {},
+                  validator: (value) => AppValidator.validate(value, [
+                    (val) => AppValidator.validateRequired(val,
+                        fieldName: 'Description'),
+                    // You can add more validators here if needed, e.g., for length
+                    (val) => AppValidator.validateLength(val,
+                        minLength: 5, fieldName: 'Description'),
+                  ]),
                 ),
-              ],
-              const SizedBox(height: 32),
-              isCompressImage != true
-                  ? GetBuilder<FeedbackController>(
-                      init: FeedbackController(),
-                      builder: (controllercreateFeedback) {
-                        return ElevatedButton(
-                          onPressed: controllercreateFeedback.isLoadingadd
-                              ? null
-                              : () async {
-                                  if (controllerisreq.selectedItem.value ==
-                                      null) {
-                                    showMessage(context,
-                                        title: 'Select Reasons'.tr);
-                                    return;
-                                  }
-                                  if (widget.missionID != null) {
-                                    showExitConfirmationDialog(context,
-                                        onPressed: () async {
-                                      Get.back();
-                                      controllercreateFeedback
-                                          .upadteisloading(true);
+                GetBuilder<ExpandableControllerFeedback>(
+                    init: ExpandableControllerFeedback(),
+                    builder: (controllerexp) {
+                      return controllerexp.selectedItem.value != null
+                          ? controllerexp.selectedItem.value!
+                                      .isRequestDateRequired !=
+                                  null
+                              ? controllerexp.selectedItem.value!
+                                          .isRequestDateRequired ==
+                                      true
+                                  ? DatePickerWidget()
+                                  : Container()
+                              : Container()
+                          : Container();
+                    }),
+                InkWell(
+                  onTap: _selectImagesFromGallery,
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.image_outlined,
+                        color: Colors.green,
+                      ),
+                      SizedBox(width: 10),
+                      Text("Photos")
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                InkWell(
+                  onTap: _takePhoto,
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.camera_alt,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(width: 10),
+                      Text("Camera")
+                    ],
+                  ),
+                ),
+                if (_compressionProgress > 0 && _compressionProgress < 100) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                      'Loading images: ${_compressionProgress.toStringAsFixed(0)}%'),
+                  const SizedBox(height: 8),
+                  LinearProgressIndicator(
+                    value: _compressionProgress / 100,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ],
+                if (_compressedImages != null &&
+                    _compressedImages!.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                    ),
+                    itemCount: _compressedImages!.length,
+                    itemBuilder: (context, index) {
+                      return Stack(
+                        children: [
+                          Image.file(
+                            _compressedImages![index],
+                            fit: BoxFit.cover,
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _compressedImages!
+                                      .remove(_compressedImages![index]);
+                                });
+                              },
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ))
+                        ],
+                      );
+                    },
+                  ),
+                ],
+                const SizedBox(height: 32),
+                GetBuilder<FeedbackController>(
+                  init: FeedbackController(),
+                  builder: (controllercreateFeedback) {
+                    return ElevatedButton(
+                      onPressed: controllercreateFeedback.isLoadingadd
+                          ? null
+                          : () async {
+                              if (controllerisreq.selectedItem.value == null) {
+                                showMessage(context,
+                                    title: 'Select Reasons'.tr);
+                                return;
+                              }
+                              if (widget.missionID != null) {
+                                showExitConfirmationDialog(context,
+                                    onPressed: () async {
+                                  Get.back();
+                                  controllercreateFeedback
+                                      .upadteisloading(true);
 
-                                      var location = await LocationService
-                                          .getCurrentLocation(context);
-                                      if (location.isPermissionGranted) {
-                                        if (controllerisreq
-                                                .selectedItem.value ==
-                                            null) {
-                                          showMessage(context,
-                                              title: 'Select Reasons'.tr);
-                                        } else if (controllerisreq.selectedItem
-                                                .value!.isDescRequired ==
-                                            true) {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            _formKey.currentState!.save();
-                                            post(controllercreateFeedback,
-                                                location);
-
-                                            return;
-                                          }
-                                        } else {
-                                          post(controllercreateFeedback,
-                                              location);
-
-                                          return;
-                                        }
-                                      }
-                                      controllercreateFeedback
-                                          .upadteisloading(false);
-                                    },
-                                        details:
-                                            'Are you sure to complete the Mission?'
-                                                .tr,
-                                        title: 'Confirmation'.tr);
-                                  } else {
-                                    controllercreateFeedback
-                                        .updateIsLoading(true);
-                                    var location = await LocationService
-                                        .getCurrentLocation(context);
-                                    if (location.isPermissionGranted) {
-                                      if (controllerisreq.selectedItem.value ==
-                                          null) {
-                                        showMessage(context,
-                                            title: 'Select Reasons'.tr);
-                                      } else if (controllerisreq.selectedItem
-                                              .value!.isDescRequired ==
-                                          true) {
-                                        if (_formKey.currentState!.validate()) {
-                                          _formKey.currentState!.save();
-
-                                          post(controllercreateFeedback,
-                                              location);
-
-                                          return;
-                                        } else {
-                                          showMessage(context,
-                                              title:
-                                                  'Please enter a description'
-                                                      .tr);
-                                        }
-                                      } else {
+                                  var location =
+                                      await LocationService.getCurrentLocation(
+                                          context);
+                                  if (location.isPermissionGranted) {
+                                    if (controllerisreq.selectedItem.value ==
+                                        null) {
+                                      showMessage(context,
+                                          title: 'Select Reasons'.tr);
+                                    } else if (controllerisreq.selectedItem
+                                            .value!.isDescRequired ==
+                                        true) {
+                                      if (_formKey.currentState!.validate()) {
+                                        _formKey.currentState!.save();
                                         post(
                                             controllercreateFeedback, location);
 
                                         return;
                                       }
+                                    } else {
+                                      post(controllercreateFeedback, location);
+
+                                      return;
                                     }
-                                    controllercreateFeedback
-                                        .updateIsLoading(false);
                                   }
+                                  controllercreateFeedback
+                                      .upadteisloading(false);
                                 },
-                          child: controllercreateFeedback.isLoadingadd
-                              ? spinkitwhite
-                              : Text('Create Feedback'.tr),
-                        );
-                      },
-                    )
-                  : GetBuilder<FeedbackController>(
-                      init: FeedbackController(),
-                      builder: (xontrolllerFeedback) {
-                        return ButtonAll(
-                          function: () {},
-                          title: 'Create Feedback'.tr,
-                        );
-                      }),
-            ],
+                                    details:
+                                        'Are you sure to complete the Mission?'
+                                            .tr,
+                                    title: 'Confirmation'.tr);
+                              } else {
+                                controllercreateFeedback.updateIsLoading(true);
+                                var location =
+                                    await LocationService.getCurrentLocation(
+                                        context);
+                                if (location.isPermissionGranted) {
+                                  if (controllerisreq.selectedItem.value ==
+                                      null) {
+                                    showMessage(context,
+                                        title: 'Select Reasons'.tr);
+                                  } else if (controllerisreq
+                                          .selectedItem.value!.isDescRequired ==
+                                      true) {
+                                    if (_formKey.currentState!.validate()) {
+                                      _formKey.currentState!.save();
+
+                                      post(controllercreateFeedback, location);
+
+                                      return;
+                                    } else {
+                                      showMessage(context,
+                                          title:
+                                              'Please enter a description'.tr);
+                                    }
+                                  } else {
+                                    post(controllercreateFeedback, location);
+
+                                    return;
+                                  }
+                                }
+                                controllercreateFeedback.updateIsLoading(false);
+                              }
+                            },
+                      child: controllercreateFeedback.isLoadingadd
+                          ? spinkitwhite
+                          : Text('Create Feedback'.tr),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   post(
@@ -388,20 +394,20 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
     controllercreateFeedback.upadteisloading(true);
     controllercreateFeedback
         .addFeedback(
-      label: Get.put(ExpandableControllerFeedback())
-          .controllerTextEditingController!
-          .text,
-      desc: controller!.text,
-      lat: location.latitude.toString(),
-      lng: location.longitude.toString(),
-      requestDate:
-          formatDate(Get.put(DateController()).selectedDate.value.toString()),
-      clientId: widget.clientID,
-      missionId: widget.missionID,
-      feedbackModelId:
-          Get.put(ExpandableControllerFeedback()).selectedItem.value!.id!,
-      images: xFiles,
-    )
+            label: Get.put(ExpandableControllerFeedback())
+                .controllerTextEditingController!
+                .text,
+            desc: controller!.text,
+            lat: location.latitude.toString(),
+            lng: location.longitude.toString(),
+            requestDate: formatDate(
+                Get.put(DateController()).selectedDate.value.toString()),
+            clientId: widget.clientID,
+            missionId: widget.missionID,
+            feedbackModelId:
+                Get.put(ExpandableControllerFeedback()).selectedItem.value!.id!,
+            images: xFiles,
+            path: Get.put(RecordController()).audioPath)
         .then((onValue) {
       controllercreateFeedback.upadteisloading(false);
     });

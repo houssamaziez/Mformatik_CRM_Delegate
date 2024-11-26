@@ -1,4 +1,4 @@
-package com.example.mformatic_crm_delegate
+package com.mformatik.crireporting
 
 import io.flutter.embedding.android.FlutterActivity
 

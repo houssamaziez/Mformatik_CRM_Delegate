@@ -132,7 +132,7 @@ class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
           isPassword: false,
           validator: (value) => AppValidator.validate(value, [
             (v) => AppValidator.validateRequired(v, fieldName: 'First Name'),
-            (v) => AppValidator.validateLength(v, minLength: 3, maxLength: 15),
+            (v) => AppValidator.validateLength(v, minLength: 3, maxLength: 30),
           ]),
         ),
         MyTextfield(
@@ -142,7 +142,7 @@ class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
           isPassword: false,
           validator: (value) => AppValidator.validate(value, [
             (v) => AppValidator.validateRequired(v, fieldName: 'Last Name'),
-            (v) => AppValidator.validateLength(v, minLength: 3, maxLength: 15),
+            (v) => AppValidator.validateLength(v, minLength: 3, maxLength: 30),
           ]),
         ),
       ],

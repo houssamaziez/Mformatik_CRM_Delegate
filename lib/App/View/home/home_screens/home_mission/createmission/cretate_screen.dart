@@ -57,6 +57,7 @@ class _CreateMissionScreenState extends State<CreateMissionScreen> {
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 5,
+                maxLength: 250,
                 onSaved: (value) {
                   desc = value!;
                 },

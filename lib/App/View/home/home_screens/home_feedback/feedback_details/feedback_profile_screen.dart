@@ -8,8 +8,10 @@ import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_details/profile_mission.dart';
-import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/voice_vocal_view/voice_play.dart';
+// import 'package:voice_message_package/voice_message_package.dart';
+import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/home/feedback/feedback_controller.dart';
 import '../../../../../Model/feedback.dart';
 import '../../../../widgets/Containers/container_blue.dart';
@@ -42,6 +44,18 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
     return DateFormat('yyyy-MM-dd').format(parsedDate);
   }
 
+  // VoiceController? _voiceController;
+
+  @override
+  void dispose() {
+    Get.delete<RecordController>();
+    Get.delete<FeedbackMission>();
+
+    // _voiceController?.stopPlaying();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,11 +73,11 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
           }
           final feedback = controller.feedbackprofile!;
           return SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Title and Description
                 Text(
                   feedback.label ?? 'No Title'.tr,
                   style: TextStyle(
@@ -73,34 +87,42 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  feedback.desc ?? 'No Description available'.tr,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.black87,
+                if (feedback.desc != null)
+                  Text(
+                    feedback.desc == null || feedback.desc == ""
+                        ? 'No Description available'.tr
+                        : feedback.desc!,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: feedback.desc == null || feedback.desc == ""
+                          ? Colors.grey
+                          : Colors.black87,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 8),
+
                 // Date and Location
                 feedback.requestDate == null
                     ? Container()
-                    : Row(
-                        children: [
-                          Icon(Icons.date_range,
-                              color: Theme.of(context).primaryColor),
-                          const SizedBox(width: 8),
-                          Flexible(
-                            child: Text(
-                              'Request Date:'.tr +
-                                  " ${formatDate(feedback.requestDate)}",
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.grey[600]),
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.date_range,
+                                color: Theme.of(context).primaryColor),
+                            const SizedBox(width: 8),
+                            Flexible(
+                              child: Text(
+                                'Request Date:'.tr +
+                                    " ${formatDate(feedback.requestDate)}",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.grey[600]),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                 const SizedBox(height: 10),
-                const SizedBox(height: 20),
                 // Creator Information
 
                 _buildContactSection("Client".tr, feedback.client!),
@@ -176,29 +198,54 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                         style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                       ),
                 const SizedBox(height: 20),
-
-                // Edit Button
-                Center(
-                  child: ElevatedButton.icon(
-                    icon: const Icon(Icons.edit),
-                    label: Text('Edit Feedback'.tr),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 12),
-                      textStyle: const TextStyle(fontSize: 16),
+                if (feedback.decisionId == null)
+                  GetBuilder<FeedbackController>(
+                      init: FeedbackController(),
+                      builder: (feedbackController) {
+                        return Center(
+                          child: ElevatedButton.icon(
+                            icon: const Icon(Icons.edit),
+                            label: Text('Edit Feedback'.tr),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 12),
+                              textStyle: const TextStyle(fontSize: 16),
+                            ),
+                            onPressed: () {
+                              Go.to(
+                                  context,
+                                  UpdateFeedbackScreen(
+                                    feedback: feedback,
+                                    pathVoice:
+                                        feedbackController.pahtFile == null
+                                            ? ""
+                                            : feedbackController.pahtFile,
+                                  ));
+                              // Navigate to EditFeedbackScreen
+                              // Get.to(EditFeedbackScreen(feedbackId: feedback.id));
+                            },
+                          ),
+                        );
+                      }),
+                if (feedback.decisionId != null)
+                  Center(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.edit),
+                      label: Text('Feedback cannot be edited'.tr,
+                          textAlign: TextAlign.center),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 12),
+                        textStyle: const TextStyle(fontSize: 16),
+                      ),
+                      onPressed: () {
+                        // Navigate to EditFeedbackScreen
+                        // Get.to(EditFeedbackScreen(feedbackId: feedback.id));
+                      },
                     ),
-                    onPressed: () {
-                      Go.to(
-                          context,
-                          UpdateFeedbackScreen(
-                            feedback: feedback,
-                          ));
-                      // Navigate to EditFeedbackScreen
-                      // Get.to(EditFeedbackScreen(feedbackId: feedback.id));
-                    },
                   ),
-                ),
               ],
             ),
           ).addRefreshIndicator(

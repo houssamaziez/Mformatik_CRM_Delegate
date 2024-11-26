@@ -48,7 +48,7 @@ class ClientMission {
       sold: json['sold'] ?? '',
       potential: json['potential'] ?? '',
       turnover: json['turnover'] ?? '',
-      companyId: json['companyId'] ?? 0,
+      companyId: json['companyId'],
       createdAt:
           json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt:
@@ -122,7 +122,7 @@ class FeedbackMission {
   // Factory constructor to create a Feedback object from a JSON map
   factory FeedbackMission.fromJson(Map<String, dynamic> json) {
     return FeedbackMission(
-      id: json['id'] ?? 0,
+      id: json['id'],
       label: json['label'] ?? '',
       desc: json['desc'],
       requestDate: json['requestDate'] != null

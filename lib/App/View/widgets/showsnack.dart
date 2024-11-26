@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 showMessage(context, {required String title, Color color = Colors.red}) {
+  ScaffoldMessenger.of(context).clearSnackBars();
+
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       behavior: SnackBarBehavior.floating,
       content: Text(title.tr),
       backgroundColor: color,
-      duration: Duration(milliseconds: 1200), // تعيين المدة بـ 200 ميلي ثانية
+      duration: Duration(milliseconds: 1200),
     ),
   );
 }

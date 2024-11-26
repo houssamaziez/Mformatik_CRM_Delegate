@@ -82,9 +82,9 @@ class Person {
   final String firstName;
   final String lastName;
   final String? img;
-  final int userId;
-  final String createdAt;
-  final String updatedAt;
+  final int? userId;
+  final String? createdAt;
+  final String? updatedAt;
   final User? user;
 
   Person({

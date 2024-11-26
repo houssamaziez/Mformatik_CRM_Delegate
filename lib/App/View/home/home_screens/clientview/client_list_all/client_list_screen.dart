@@ -62,7 +62,7 @@ class _ClientListScreenState extends State<ClientListScreen> {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
     _debounce = Timer(Duration(milliseconds: 500), () async {
-      await clientController.search(widget.companyid!, fullName: value);
+      await clientController.search(widget.companyid!, fullName: value.trim());
       setState(() {
         selctserach = value;
       });

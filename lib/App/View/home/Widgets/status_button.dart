@@ -27,7 +27,7 @@ import '../../widgets/flutter_slider.dart';
 ///
 /// This widget is used in the [HomeScreen] to display the statistics of the missions.
 ///
-Expanded statuseAndLatenessButton(
+Expanded statuseMissionButton(
     BuildContext context, Color Function(int value) getSliderColor) {
   return Expanded(
       flex: 3,
@@ -48,12 +48,12 @@ Expanded statuseAndLatenessButton(
                             children: [
                               Text(
                                 "Statistics Missions".tr,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black54,
                                     fontSize: 12),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               InkWell(
                                 onTap: () {
                                   Go.to(
@@ -72,7 +72,7 @@ Expanded statuseAndLatenessButton(
                                       color: Theme.of(context).primaryColor),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               )
                             ],
@@ -88,7 +88,7 @@ Expanded statuseAndLatenessButton(
                                 color: const Color.fromARGB(255, 199, 199, 199),
                                 widget: Row(
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     InkWell(
@@ -100,22 +100,23 @@ Expanded statuseAndLatenessButton(
                                       },
                                       child: Row(
                                         children: [
-                                          CircleAvatar(
+                                          const CircleAvatar(
                                             radius: 4,
                                             backgroundColor: Color(0XffD12525),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 5,
                                           ),
                                           Text(
                                             "Canceled".tr +
                                                 " ${missionsController.canceled}",
-                                            style: TextStyle(fontSize: 10),
+                                            style:
+                                                const TextStyle(fontSize: 10),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     InkWell(
                                       onTap: () {
                                         Go.to(
@@ -125,22 +126,23 @@ Expanded statuseAndLatenessButton(
                                       },
                                       child: Row(
                                         children: [
-                                          CircleAvatar(
+                                          const CircleAvatar(
                                             radius: 4,
                                             backgroundColor: Color(0XffE3A105),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 5,
                                           ),
                                           Text(
                                             "In Progress".tr +
                                                 " ${missionsController.inProgress}",
-                                            style: TextStyle(fontSize: 10),
+                                            style:
+                                                const TextStyle(fontSize: 10),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     InkWell(
                                       onTap: () {
                                         Go.to(
@@ -150,22 +152,23 @@ Expanded statuseAndLatenessButton(
                                       },
                                       child: Row(
                                         children: [
-                                          CircleAvatar(
+                                          const CircleAvatar(
                                             radius: 5,
                                             backgroundColor: Color(0Xff26931D),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 4,
                                           ),
                                           Text(
                                             "Completed".tr +
                                                 " ${missionsController.completed} ",
-                                            style: TextStyle(fontSize: 10),
+                                            style:
+                                                const TextStyle(fontSize: 10),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                   ],
                                 ),
                               )),
@@ -174,7 +177,7 @@ Expanded statuseAndLatenessButton(
                           ),
                           Text(
                             "Percentage".tr,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w300, fontSize: 12),
                           ),
                           InkWell(
@@ -311,7 +314,298 @@ Expanded statuseAndLatenessButton(
                   )
                 : Container(
                     decoration: StyleContainer.style1,
-                    child: Center(child: spinkit));
+                    child: const Center(child: spinkit));
+          }));
+}
+
+Expanded statuseTaskButton(
+    BuildContext context, Color Function(int value) getSliderColor) {
+  return Expanded(
+      flex: 3,
+      child: GetBuilder<MissionsController>(
+          init: MissionsController(),
+          builder: (missionsController) {
+            return missionsController.isLoading == false
+                ? Container(
+                    decoration: StyleContainer.style1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 5.0, right: 4, top: 8, bottom: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Statistics Tasks".tr,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black54,
+                                    fontSize: 12),
+                              ),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  Go.to(
+                                      context,
+                                      MissionListScreenByReason(
+                                          statusId: 1.toString()));
+                                },
+                                child: Text(
+                                  "New".tr +
+                                      "(" +
+                                      missionsController.created.toString() +
+                                      ")",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12,
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          SizedBox(
+                              height: 24,
+                              width: double.infinity,
+                              child: containerwithblue(
+                                context,
+                                color: const Color.fromARGB(255, 199, 199, 199),
+                                widget: Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Go.to(
+                                            context,
+                                            MissionListScreenByReason(
+                                                statusId: 4.toString()));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          const CircleAvatar(
+                                            radius: 4,
+                                            backgroundColor: Color(0XffD12525),
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "Canceled".tr +
+                                                " ${missionsController.canceled}",
+                                            style:
+                                                const TextStyle(fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    InkWell(
+                                      onTap: () {
+                                        Go.to(
+                                            context,
+                                            MissionListScreenByReason(
+                                                statusId: 2.toString()));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          const CircleAvatar(
+                                            radius: 4,
+                                            backgroundColor: Color(0XffE3A105),
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "In Progress".tr +
+                                                " ${missionsController.inProgress}",
+                                            style:
+                                                const TextStyle(fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    InkWell(
+                                      onTap: () {
+                                        Go.to(
+                                            context,
+                                            MissionListScreenByReason(
+                                                statusId: 3.toString()));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          const CircleAvatar(
+                                            radius: 5,
+                                            backgroundColor: Color(0Xff26931D),
+                                          ),
+                                          const SizedBox(
+                                            width: 4,
+                                          ),
+                                          Text(
+                                            "Completed".tr +
+                                                " ${missionsController.completed} ",
+                                            style:
+                                                const TextStyle(fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                  ],
+                                ),
+                              )),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            "Percentage".tr,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w300, fontSize: 12),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Go.to(
+                                  context,
+                                  MissionListScreenByReason(
+                                      statusId: 3.toString()));
+                            },
+                            child: SizedBox(
+                              height: 24,
+                              child: Row(
+                                children: [
+                                  flutterSlider(
+                                      getSliderColor,
+                                      missionsController.missionslength
+                                          .toDouble(),
+                                      missionsController.completed.toDouble(),
+                                      Colors.green),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  missionsController.completed == 0
+                                      ? 0.toString().style()
+                                      : ((missionsController.completed * 100) /
+                                              missionsController.missionslength)
+                                          .toStringAsFixed(2)
+                                          .style(),
+                                  "%".style(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Go.to(
+                                  context,
+                                  MissionListScreenByReason(
+                                      statusId: 2.toString()));
+                            },
+                            child: SizedBox(
+                              height: 24,
+                              child: Row(
+                                children: [
+                                  flutterSlider(
+                                      getSliderColor,
+                                      missionsController.missionslength
+                                          .toDouble(),
+                                      missionsController.inProgress.toDouble(),
+                                      Colors.orange),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  missionsController.inProgress == 0
+                                      ? 0.toString().style()
+                                      : ((missionsController.inProgress * 100) /
+                                              missionsController.missionslength)
+                                          .toStringAsFixed(2)
+                                          .style(),
+                                  "%".style(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Go.to(
+                                  context,
+                                  MissionListScreenByReason(
+                                      statusId: 4.toString()));
+                            },
+                            child: SizedBox(
+                              height: 24,
+                              child: Row(
+                                children: [
+                                  flutterSlider(
+                                      getSliderColor,
+                                      missionsController.missionslength
+                                          .toDouble(),
+                                      missionsController.canceled.toDouble(),
+                                      Colors.red),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  missionsController.canceled == 0
+                                      ? 0.toString().style()
+                                      : ((missionsController.canceled * 100) /
+                                              missionsController.missionslength)
+                                          .toStringAsFixed(2)
+                                          .style(),
+                                  "%".style(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Go.to(
+                                  context,
+                                  MissionListScreenByReason(
+                                      statusId: 1.toString()));
+                            },
+                            child: SizedBox(
+                              height: 24,
+                              child: Row(
+                                children: [
+                                  flutterSlider(
+                                      getSliderColor,
+                                      missionsController.missionslength
+                                          .toDouble(),
+                                      missionsController.created.toDouble(),
+                                      Theme.of(context).primaryColor),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  missionsController.created == 0
+                                      ? 0.toString().style()
+                                      : ((missionsController.created * 100) /
+                                              missionsController.missionslength)
+                                          .toStringAsFixed(2)
+                                          .style(),
+                                  "%".style(),
+                                  // " ".style(),
+                                  // "New".tr.style(
+                                  //     fontSize: 10,
+                                  //     color: Theme.of(context).primaryColor),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                : Container(
+                    decoration: StyleContainer.style1,
+                    child: const Center(child: spinkit));
           }));
 }
 
@@ -336,12 +630,12 @@ Expanded statuseFeddbackAndLatenessButton(
                             children: [
                               Text(
                                 "Statistics Feedback".tr,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black54,
                                     fontSize: 12),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               // Text(
                               //   "All".tr +
                               //       "(" +
@@ -353,7 +647,7 @@ Expanded statuseFeddbackAndLatenessButton(
                               //       fontSize: 12,
                               //       color: Theme.of(context).primaryColor),
                               // ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               )
                             ],
@@ -369,7 +663,7 @@ Expanded statuseFeddbackAndLatenessButton(
                                 color: const Color.fromARGB(255, 199, 199, 199),
                                 widget: Row(
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     InkWell(
@@ -382,22 +676,23 @@ Expanded statuseFeddbackAndLatenessButton(
                                       },
                                       child: Row(
                                         children: [
-                                          CircleAvatar(
+                                          const CircleAvatar(
                                             radius: 4,
                                             backgroundColor: Color(0XffD12525),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 5,
                                           ),
                                           Text(
                                             "With Out Mission".tr +
                                                 " ${missionsController.feedbacksWithOutMission}",
-                                            style: TextStyle(fontSize: 10),
+                                            style:
+                                                const TextStyle(fontSize: 10),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     InkWell(
                                       onTap: () {
                                         Go.to(
@@ -408,22 +703,23 @@ Expanded statuseFeddbackAndLatenessButton(
                                       },
                                       child: Row(
                                         children: [
-                                          CircleAvatar(
+                                          const CircleAvatar(
                                             radius: 5,
                                             backgroundColor: Color(0Xff26931D),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 4,
                                           ),
                                           Text(
                                             "With Mission".tr +
                                                 " ${missionsController.feedbacksWithMission}",
-                                            style: TextStyle(fontSize: 10),
+                                            style:
+                                                const TextStyle(fontSize: 10),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                   ],
                                 ),
                               )),
@@ -432,7 +728,7 @@ Expanded statuseFeddbackAndLatenessButton(
                           ),
                           Text(
                             "Percentage".tr,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w300, fontSize: 12),
                           ),
                           InkWell(
@@ -519,13 +815,13 @@ Expanded statuseFeddbackAndLatenessButton(
                               ),
                             ),
                           ),
-                          Spacer()
+                          const Spacer()
                         ],
                       ),
                     ),
                   )
                 : Container(
                     decoration: StyleContainer.style1,
-                    child: Center(child: spinkit));
+                    child: const Center(child: spinkit));
           }));
 }

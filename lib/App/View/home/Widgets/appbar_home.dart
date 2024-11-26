@@ -18,7 +18,8 @@ AppBar appbarHome(
         child: GetBuilder<HomeController>(
             init: HomeController(),
             builder: (homeController) {
-              return homeController.indexBottomBar == 2
+              return homeController.indexBottomBar == 3 ||
+                      homeController.indexBottomBar == 2
                   ? Container()
                   : InkWell(
                       onTap: () {

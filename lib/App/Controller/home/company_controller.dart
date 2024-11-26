@@ -22,7 +22,6 @@ class CompanyController extends GetxController {
     try {
       isLoading.value = true;
       update();
-      print("=================================================$id");
       if (id == "0".toString()) {
         showMessage(Get.context, title: "No companies found.");
         return;
@@ -50,6 +49,7 @@ class CompanyController extends GetxController {
       update();
     } finally {
       if (companies.isNotEmpty) {
+        // ignore: invalid_use_of_protected_member
         updateannex(companies.value.first);
       } else {
         print("object");
@@ -83,5 +83,33 @@ class CompanyController extends GetxController {
     ).fetchFeedbacks(selectCompany!.id.toString(),
         Get.put(AuthController()).user!.id.toString());
     await clientController.search(selectCompany!.id.toString(), fullName: '');
+  }
+
+  Future<void> updateCompanies(String id) async {
+    try {
+      if (id == "0".toString()) {
+        showMessage(Get.context, title: "No companies found.");
+        return;
+      }
+      final response = await http.get(
+        Uri.parse(Endpoint.apiCompanies).replace(
+          queryParameters: {
+            'annexId': id.toString(),
+          },
+        ),
+        headers: {"x-auth-token": token.read("token").toString()},
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> responseData = json.decode(response.body);
+        companies.value = responseData
+            .map((item) => Company.fromJson(item))
+            .toList()
+            .cast<Company>();
+        update();
+      }
+    } catch (e) {
+      print("Error fetching companies: $e");
+    } finally {}
   }
 }

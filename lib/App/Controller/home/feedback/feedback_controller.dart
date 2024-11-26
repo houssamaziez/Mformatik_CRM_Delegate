@@ -1,5 +1,6 @@
 import 'dart:io';
 
+// import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -7,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
+import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 
 import '../../../Model/feedback.dart';
@@ -155,13 +157,25 @@ class FeedbackController extends GetxController {
         headers: {"x-auth-token": token.read("token").toString()},
       );
       print(response.statusCode);
+      if (response.statusCode == 404) {
+        feedbackprofile = null;
+        update();
+        return;
+      }
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print('object');
+
         print(data);
         feedbackprofile =
             FeedbackMission.fromJson(data); // Return the feedback object
         update();
+        file = null;
+        update();
+        pahtFile = null;
+        update();
+        if (feedbackprofile!.voice != null) {
+          downloadFeedbackVoice(feedbackId);
+        }
         print(feedbackprofile);
       } else {
         throw Exception('Failed to load feedback');
@@ -194,10 +208,23 @@ class FeedbackController extends GetxController {
     int? missionId,
     required int feedbackModelId,
     List<XFile>? images,
+    String? path,
   }) async {
+    XFile? voice;
+    if (path!.isNotEmpty) {
+      voice = XFile(path);
+    }
     isLoadingadd = true;
     update();
+
     try {
+      String? mp3FilePath;
+      print(voice);
+      if (voice != null) {
+        mp3FilePath = "${voice!.path}";
+        print(mp3FilePath);
+      }
+
       var request = http.MultipartRequest(
         'POST',
         Uri.parse(Endpoint.apiFeedbacks), // Adjust the endpoint as needed
@@ -234,8 +261,19 @@ class FeedbackController extends GetxController {
           ));
         }
       }
+      if (voice != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'voice', // Change to the correct field name expected by your API
+          mp3FilePath!,
+        ));
+      }
       var response = await request.send();
-      print(response.statusCode);
+      var responseBody = await response.stream.bytesToString();
+      print(responseBody);
+      if (response.statusCode == 406) {
+        showMessage(Get.context,
+            title: "A mission can only have one associated feedback entry.".tr);
+      }
       if (response.statusCode == 200) {
         Get.back();
         Get.back();
@@ -250,11 +288,12 @@ class FeedbackController extends GetxController {
             title: 'Feedback added successfully'.tr, color: Colors.green);
 
         print('Feedback added successfully');
-        // Optionally refresh the feedbacks list or perform other actions
       } else {
         throw Exception('Failed to add feedback');
       }
     } catch (e) {
+      showMessage(Get.context, title: 'Connection problem'.tr);
+
       print('Error: $e');
     } finally {
       isLoadingadd = false;
@@ -262,108 +301,90 @@ class FeedbackController extends GetxController {
     }
   }
 
-  Future<void> updateFeedbacks(
-      {required String feedbackId,
-      required String lastLabel,
-      required String Label,
-      required String desc,
-      required String lat,
-      required String lng,
-      String? requestDate,
-      required int creatorId,
-      required int clientId,
-      required List<XFile>? imagesAdd,
-      required int feedbackModelId,
-      required List<dynamic> images}) async {
+  Future<void> updateFeedbacks({
+    required String feedbackId,
+    required String lastLabel,
+    required String Label,
+    required String desc,
+    required String lat,
+    required String lng,
+    String? requestDate,
+    required int creatorId,
+    required int clientId,
+    required List<XFile>? imagesAdd,
+    required int feedbackModelId,
+    required List<dynamic> images,
+    required int beforimages,
+  }) async {
     isLoadingadd = true;
     update();
-    var location = await LocationService.getCurrentLocation(Get.context);
-    if (!location.isPermissionGranted) {
-      return;
-    }
-    ExpandableControllerFeedback expandableControllerFeedback =
-        Get.put(ExpandableControllerFeedback());
-    // Indicate loading state
 
     try {
-      // return;
-      final List imagpath = [];
-      for (var i = 0; i < images.length; i++) {
-        // print(images[i]["id"]);
-        for (var i = 0; i < images.length; i++) {
-          imagpath.add({
-            "id": images[i]["id"].toString(),
-            "path": images[i]["id"].toString()
-          });
-        }
+      // Check location permissions
+      var location = await LocationService.getCurrentLocation(Get.context);
+      if (!location.isPermissionGranted) {
+        return;
       }
-      final url =
-          Uri.parse('${Endpoint.apiFeedbacks}/$feedbackId'); // Endpoint URL
 
+      // Get feedback model filter logic
+      ExpandableControllerFeedback expandableControllerFeedback =
+          Get.put(ExpandableControllerFeedback());
       String feedbackModelFilter = '0';
-
-      if (expandableControllerFeedback.selectedItem.value.isNull == true) {
-        if (lastLabel == Label) {
-          feedbackModelFilter = feedbackModelId.toString();
-        } else {
-          feedbackModelFilter = "1".toString();
-        }
-        update();
+      if (expandableControllerFeedback.selectedItem.value == null) {
+        feedbackModelFilter =
+            (lastLabel == Label) ? feedbackModelId.toString() : "1";
       } else {
         feedbackModelFilter =
             expandableControllerFeedback.selectedItem.value!.id.toString();
-        update();
-      }
-      if (feedbackModelFilter == "1".toString()) {
-        print(lastLabel);
-        if (lastLabel.isEmpty || lastLabel.length <= 2) {
-          showMessage(Get.context, title: 'Please specify'.tr);
-          return;
-        }
       }
 
-      Map<String, Object?> map = {
+      if (feedbackModelFilter == "1" &&
+          (lastLabel.isEmpty || lastLabel.length <= 2)) {
+        showMessage(Get.context, title: 'Please specify'.tr);
+        return;
+      }
+
+      // Prepare gallery field
+      final List<Map<String, String>> imagpath = images
+          .map((img) =>
+              {"id": img["id"].toString(), "path": img["path"].toString()})
+          .toList();
+
+      // Construct API request
+      final url = Uri.parse('${Endpoint.apiFeedbacks}/$feedbackId');
+      var request = http.MultipartRequest('PUT', url);
+      request.headers['x-auth-token'] = token.read("token").toString();
+
+      // Add fields
+      request.fields.addAll({
         'label': lastLabel,
         'desc': desc,
         'lat': lat,
         'lng': lng,
-        'requestDate': requestDate,
-        // 'clientId': clientId,
+        'requestDate': requestDate ?? '',
         'feedbackModelId': feedbackModelFilter,
-        'gallery': imagpath,
-      };
-      print("==========================");
-      print(map);
-      print("==========================");
-
-      final response = await http.put(
-        url,
-        headers: {
-          'x-auth-token': token.read("token").toString(),
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(map),
-      );
-      print("--------------------$lat---------------$lng-------------------");
-
-      print(response.body);
-      if (imagesAdd!.isNotEmpty) {
-        print("------------------------------------------------------");
-        await updateFeedbackImage(
-            feedbackId: feedbackId,
-            lastLabel: lastLabel,
-            label: lastLabel,
-            desc: desc,
-            lat: lat!,
-            lng: lng!,
-            creatorId: creatorId,
-            clientId: clientId,
-            feedbackModelId: feedbackModelId,
-            imagesAdd: imagesAdd,
-            images: images);
+      });
+      if (images.isEmpty) {
+        request.fields.addAll({'gallery[]': ''});
+      }
+      if (images.length != beforimages) {
+        for (var i = 0; i < imagpath.length; i++) {
+          request.fields['gallery[$i][id]'] = imagpath[i]['id']!;
+          request.fields['gallery[$i][path]'] = imagpath[i]['path']!;
+        }
       }
 
-      // Handle response based on status code
+      if (imagesAdd != null) {
+        for (var image in imagesAdd) {
+          request.files
+              .add(await http.MultipartFile.fromPath('img', image.path));
+        }
+      }
+
+      var response = await request.send();
+      final responseBody = await response.stream.bytesToString();
+
+      // Handle response
       if (response.statusCode == 204) {
         fetchFeedbacks(
             Get.put(CompanyController()).selectCompany!.id.toString(),
@@ -383,103 +404,101 @@ class FeedbackController extends GetxController {
           title: 'Failed to update feedback'.tr,
           color: Colors.orange,
         );
-        print('Failed to update feedback: ${response.body}');
+        print('Failed to update feedback: $responseBody');
       }
     } on SocketException catch (e) {
-      // Handle network-related errors
-      showMessage(
-        Get.context,
-        title: 'No Internet Connection'.tr,
-        color: Colors.red,
-      );
+      showMessage(Get.context,
+          title: 'No Internet Connection'.tr, color: Colors.red);
       print('Network error: $e');
     } catch (e) {
-      // Handle other types of errors
-      showMessage(
-        Get.context,
-        title: 'No Internet Connection'.tr,
-        color: Colors.red,
-      );
+      showMessage(Get.context, title: 'Unexpected Error'.tr, color: Colors.red);
       print('Unexpected error: $e');
     } finally {
-      // Reset loading state
       isLoadingadd = false;
       update();
     }
   }
 
-  Future<void> updateFeedbackImage({
-    required String feedbackId,
-    required String lastLabel,
-    required String label,
-    required String desc,
-    required String lat,
-    required String lng,
-    String? requestDate,
-    required int creatorId,
-    required int clientId,
-    required int feedbackModelId,
-    required List<XFile>? imagesAdd,
-    required List<dynamic> images,
-  }) async {
+  // ___________________________________________________
+
+  getVoiceById(String feedbackId) async {
+    isLoadingprofile = true;
+    update();
     try {
-      final url =
-          Uri.parse('${Endpoint.apiFeedbacks}/$feedbackId'); // Endpoint URL
-
-      Map<String, dynamic> fields = {
-        'label': lastLabel,
-        'desc': desc,
-        'lat': lat,
-        'lng': lng,
-        // "gallery": jsonEncode(imagpath), // Encode as JSON if needed
-        // 'requestDate': requestDate ?? '',
-        'feedbackModelId': feedbackModelId,
-      };
-
-      var request = http.MultipartRequest('PUT', url);
-      request.headers['x-auth-token'] = token.read("token").toString();
-
-      fields.forEach((key, value) {
-        request.fields[key] = value.toString(); // Ensure all values are strings
-      });
-
-      // Debugging output for images
-      if (imagesAdd != null) {
-        for (var image in imagesAdd) {
-          print("Adding image: ${image.path}"); // Debugging output
-          request.files.add(await http.MultipartFile.fromPath(
-            'img', // Change this to the correct field name expected by your API
-            image.path,
-          ));
-        }
+      final response = await http.get(
+        Uri.parse(
+            '${Endpoint.apiFeedbacks}/$feedbackId/voice'), // Adjust the endpoint as needed
+        headers: {"x-auth-token": token.read("token").toString()},
+      );
+      print(response.statusCode);
+      if (response.statusCode == 404) {
+        feedbackprofile = null;
+        update();
       }
-      var response = await request.send();
-
-      // Send the request and handle response
-      print("Response status code: ${response.statusCode}"); // Debugging output
-      final responseBody = await response.stream.bytesToString();
-      print("Response body: $responseBody"); // Debugging output
-
-      // Check the response status
-      if (response.statusCode == 204) {
-        // fetchFeedbacks(
-        //     Get.put(CompanyController()).selectCompany!.id.toString(),
-        //     creatorId.toString());
-        // showMessage(Get.context,
-        //     title: 'Feedback updated successfully', color: Colors.green);
-        print('Feedback updated successfully');
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('object');
+        print(data);
+        feedbackprofile =
+            FeedbackMission.fromJson(data); // Return the feedback object
+        update();
+        print(feedbackprofile);
       } else {
-        // showMessage(Get.context,
-        //     title: 'Failed to update feedback', color: Colors.orange);
-        print('Failed to update feedback: $responseBody');
+        throw Exception('Failed to load feedback');
       }
-    } on SocketException catch (e) {
-      // showMessage(Get.context,
-      //     title: 'No Internet Connection', color: Colors.red);
-      print('Network error: $e');
     } catch (e) {
-      // showMessage(Get.context, title: 'Unexpected Error', color: Colors.red);
-      print('Unexpected error: $e');
-    } finally {}
+      print('Error: $e');
+    } finally {
+      isLoadingprofile = false;
+      update();
+    }
+  }
+
+  File? file;
+  bool voicedownloadLoading = false;
+  String? pahtFile;
+  downloadFeedbackVoice(String feedbackId) async {
+    file = null;
+    update();
+    pahtFile = null;
+    update();
+
+    try {
+      voicedownloadLoading = true;
+      update();
+
+      final url = Uri.parse(
+          '${Endpoint.apiFeedbacks}/$feedbackId/voice'); // Adjust the endpoint as needed
+
+      // Send the GET request to download the file
+      final response = await http.get(
+        url,
+        headers: {"x-auth-token": token.read("token").toString()},
+      );
+
+      print('HTTP Response Code: ${response.statusCode}');
+
+      // Check if the request was successful
+      if (response.statusCode == 200) {
+        // Get the application's document directory to save the file
+        final directory = await getApplicationDocumentsDirectory();
+        final filePath =
+            '${directory.path}/feedback_voice_$feedbackId.mp3'; // Set the file path and name
+
+        // Write the response body to a file
+        final file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+        pahtFile = file.path;
+        update();
+        print('File saved to: ${file.path}');
+      } else {
+        print('Failed to download file. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('An error occurred during download: $e');
+    } finally {
+      voicedownloadLoading = false;
+      update();
+    }
   }
 }

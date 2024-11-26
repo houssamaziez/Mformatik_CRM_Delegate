@@ -18,7 +18,7 @@ class Go {
   }
 
   // Navigate to a new screen and clear the navigation stack
-  static void clearAndTo(BuildContext context, Widget screen) {
+  static void clearAndTo(context, Widget screen) {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => screen),

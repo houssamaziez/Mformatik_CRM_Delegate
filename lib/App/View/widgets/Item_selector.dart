@@ -45,7 +45,11 @@ class SelectReasdon extends StatelessWidget {
                 expandableController.selectedItem.value == null
                     ? 'Select Reasons'.tr
                     : expandableController.selectedItem.value!.label!,
-                style: TextStyle(fontSize: 16, color: Colors.black87),
+                style: TextStyle(
+                    fontSize: 16,
+                    color: expandableController.selectedItem.value == null
+                        ? Colors.grey
+                        : Colors.black87),
               ),
               trailing: Icon(
                 expandableController.isExpanded.value
