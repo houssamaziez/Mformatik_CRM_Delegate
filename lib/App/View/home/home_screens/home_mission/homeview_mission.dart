@@ -170,12 +170,14 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ).addRefreshIndicator(
-                    onRefresh: () => Get.put(AnnexController())
-                        .fetchAnnexes()
-                        .then((onValue) {
-                      companyController.updateannex(
-                          Get.put(CompanyController()).selectCompany);
-                    }),
+                    onRefresh: () {
+                      return Get.put(AnnexController())
+                          .fetchAnnexes()
+                          .then((onValue) {
+                        companyController.updateannex(
+                            Get.put(CompanyController()).selectCompany);
+                      });
+                    },
                   );
                 });
           }

@@ -10,7 +10,9 @@ import 'package:mformatic_crm_delegate/App/View/auth/screen_auth.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import '../../Model/user.dart';
+import '../../Service/auth_service.dart';
 import '../../Util/app_exceptions/response_handler.dart';
+import '../../Util/app_exceptions/response_handler/process_response_auth.dart';
 import '../../View/splashScreen/splash_screen.dart';
 
 GetStorage token = GetStorage();
@@ -25,21 +27,18 @@ class AuthController extends GetxController {
 
   Future<void> login(context,
       {required String username, required String password}) async {
-    Uri url = Uri.parse(Endpoint.apiLogin);
     if (namecontroller.text == '' || passwordcontroller.text == '') {
       showMessage(context, title: "Please fill in the blank fields.".tr);
       return;
     }
-    isLoading = true; // Set loading state
+    isLoading = true;
     update();
     try {
-      final response = await http.post(url, body: {
-        "username": username.trim(),
-        "password": password.trim(),
-      });
-      print(response.statusCode);
-      // Handle response and parse user data
-      final responseData = ResponseHandler.processResponse(response);
+      final responseData = await AuthService.login(
+        username: username.trim(),
+        password: password.trim(),
+      );
+
       if (responseData != null && responseData.containsKey('user')) {
         user = User.fromJson(responseData['user']);
         person = Person.fromJson(responseData['user']["person"]);
@@ -51,28 +50,11 @@ class AuthController extends GetxController {
         } else {
           showMessage(context, title: "You are not allowed to enter.".tr);
         }
-
-        print('person in as: ${person?.firstName}');
-        print('user in as: ${user?.username}');
-      } else {}
-      // ------------------------
-
-      print(response.body);
-      // ------------------------
-      if (response.statusCode == 401) {
-        showMessage(context,
-            title:
-                "Access Denied! You don't have permission to view this content."
-                    .tr);
-      }
-      if (response.statusCode == 400) {
-        showMessage(context, title: decodeResponseBody(response)[0]["message"]);
       }
     } catch (e) {
-      // Handle exceptions
       showMessage(context, title: 'Connection problem'.tr);
     } finally {
-      isLoading = false; // Reset loading state
+      isLoading = false;
       update();
     }
   }
@@ -81,15 +63,15 @@ class AuthController extends GetxController {
     context,
   ) async {
     Uri url = Uri.parse(Endpoint.apIme);
-
     isLoading = true;
     update();
+
     try {
       final response = await http
           .get(url, headers: {"x-auth-token": token.read("token").toString()});
-      print(response.body);
-      final responseData = ResponseHandler.processResponse(response);
-      print(response.statusCode);
+
+      final responseData = ResponseHandlerAuth.processResponseGetMe(response);
+
       if (response.statusCode == 200) {
         user = User.fromJson(responseData['user']);
         update();
@@ -105,12 +87,6 @@ class AuthController extends GetxController {
         } else {
           Go.clearAndTo(context, ScreenAuth());
           showMessage(context, title: "You are not allowed to enter.".tr);
-        }
-      } else {
-        if (response.statusCode == 401 ||
-            response.statusCode == 403 ||
-            response.statusCode == 404) {
-          Go.clearAndTo(context, ScreenAuth());
         }
       }
     } catch (e) {
