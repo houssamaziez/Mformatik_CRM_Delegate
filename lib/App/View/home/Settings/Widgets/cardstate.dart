@@ -11,7 +11,7 @@ import '../../../../Util/Style/stylecontainer.dart';
 List<Map<String, String>> listt = [
   {
     "title": "الاصدار".tr,
-    "suptitle": "1.0",
+    "suptitle": "1.0.0",
     "Image": "assets/icons/load.png",
   },
   {
@@ -28,7 +28,7 @@ List<Map<String, String>> listt = [
 List<Map<String, String>> listt2 = [
   {
     "title": " ".tr,
-    "suptitle": "1.0",
+    "suptitle": "",
     "Image": "assets/icons/connecting.png",
   },
   {
