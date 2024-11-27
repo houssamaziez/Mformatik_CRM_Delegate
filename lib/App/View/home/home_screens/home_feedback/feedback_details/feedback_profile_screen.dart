@@ -286,7 +286,7 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                       color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Text(
-                    "Full Name".tr + " ${client.fullName}",
+                    "Full Name".tr + ": ${client.fullName}",
                     style: const TextStyle(
                       color: Color.fromARGB(255, 48, 48, 48),
                       fontSize: 13,
@@ -303,8 +303,8 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                       color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Text(
-                    "Tel :".tr +
-                        " ${(client.tel == null || client.tel == "" ? 'N/A' : client.tel)}",
+                    "Tel".tr +
+                        ": ${(client.tel == null || client.tel == "" ? 'N/A' : client.tel)}",
                     style: const TextStyle(
                       color: Color.fromARGB(255, 48, 48, 48),
                       fontSize: 13,
@@ -321,8 +321,8 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                       color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Text(
-                    "Phone :".tr +
-                        " ${(client.phone == null || client.phone == "" ? 'N/A' : client.phone)}",
+                    "Phone".tr +
+                        ": ${(client.phone == null || client.phone == "" ? 'N/A' : client.phone)}",
                     style: const TextStyle(
                       color: Color.fromARGB(255, 48, 48, 48),
                       fontSize: 13,
@@ -340,8 +340,8 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                   const SizedBox(width: 4),
                   Flexible(
                     child: Text(
-                      "Address :".tr +
-                          " ${(client.address == "" ? 'N/A' : client.address)}",
+                      "Address".tr +
+                          ": ${(client.address == "" ? 'N/A' : client.address)}",
                       style: const TextStyle(
                         color: Color.fromARGB(255, 48, 48, 48),
                         fontSize: 13,

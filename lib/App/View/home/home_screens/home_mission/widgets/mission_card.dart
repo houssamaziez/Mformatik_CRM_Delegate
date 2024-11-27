@@ -87,7 +87,7 @@ class MissionCard extends StatelessWidget {
                                   size: 14),
                               const SizedBox(width: 4),
                               Text(
-                                'Status:'.tr +
+                                'Status'.tr +
                                     " ${getStatusLabel(mission.statusId!)}",
                                 style: TextStyle(
                                   fontSize: 13,
@@ -104,7 +104,7 @@ class MissionCard extends StatelessWidget {
                                   color: Colors.black, size: 18),
                               const SizedBox(width: 4),
                               Text(
-                                "Client: ${mission.client!.fullName}",
+                                "Client".tr + ": ${mission.client!.fullName}",
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
@@ -121,7 +121,8 @@ class MissionCard extends StatelessWidget {
                                   size: 18),
                               const SizedBox(width: 4),
                               Text(
-                                "Date: ${formatDate(mission.createdAt.toString())}",
+                                "Date:".tr +
+                                    " ${formatDate(mission.createdAt.toString())}",
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
@@ -196,14 +197,14 @@ class MissionCard extends StatelessWidget {
 String getStatusLabel(int statusId) {
   switch (statusId) {
     case 1:
-      return 'New';
+      return 'New'.tr;
     case 2:
-      return 'In Progress';
+      return 'In Progress'.tr;
     case 3:
-      return 'Completed';
+      return 'Completed'.tr;
     case 4:
-      return 'Canceled';
+      return 'Canceled'.tr;
     default:
-      return 'Unknown Status';
+      return 'Unknown Status'.tr;
   }
 }

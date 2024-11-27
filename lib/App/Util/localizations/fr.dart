@@ -119,11 +119,28 @@ const Map<String, String> fr = {
   "Make sure the password matches.":
       "Assurez-vous que le mot de passe correspond.",
   "Save": "Enregistrer",
+  "Re-enter New Password": "Ressaisir le nouveau mot de passe",
   "Contact Us": "Contactez-nous",
   "app dec": "découverte de l'application",
   "About the application": "À propos de l'application",
+  "Password must be at least 4 characters long":
+      "Le mot de passe doit comporter au moins 4 caractères",
+  "Select": "Sélectionner",
   "View All Missions": "Voir toutes les missions",
+  "The password field is incorrect": "Le champ du mot de passe est incorrect",
+  "is required.": "est requis.",
+  "Username is required": "Le nom d'utilisateur est requis",
   "No Missions found": "Aucune mission trouvée",
+  "The username field is invalid.":
+      "Le champ du nom d'utilisateur est invalide.",
+  "This user is blocked": "Cet utilisateur est bloqué.",
+  "Photos": "Photos",
+  "Password is required": "Le mot de passe est requis",
+  "Username must be at least 4 characters long":
+      "Le nom d'utilisateur doit comporter au moins 4 caractères",
+  "Camera": "Appareil photo",
+  "Actions": "Actions",
+  "Mission created successfully!": "Mission créée avec succès !",
   "Status": "Statut",
   "Creator": "Créateur",
   "Label": "Étiquette",
@@ -185,11 +202,15 @@ const Map<String, String> fr = {
   'No clients available.': 'Aucun client disponible.',
   "Select the client": "Sélectionnez le client",
   'No Email': 'Aucun email',
+  "Client": "Client",
   'No Title': 'Aucun titre',
+  "Email": "Email",
   "Add Mission": "Ajouter une mission",
   'Request Date:': 'Date de demande :',
   "Start Mission": "Démarrer la mission",
+  "Missions": "Missions",
   'Select End Date': 'Sélectionner la date de fin',
+  "Mission Details": "Détails de la mission",
   'Phone': 'Téléphone',
   'Address': 'Adresse',
   'Business Information': 'Informations sur l\'entreprise',
@@ -237,5 +258,6 @@ const Map<String, String> fr = {
   "Full Name": "Nom complet",
   "About the Application": "À propos de l'application",
   'We introduce an exclusive application designed for customer delegates, enabling them to effortlessly record their notes. This app facilitates the organization of information and the effective tracking of customer interactions, ultimately enhancing service quality and improving the overall customer experience.':
-      'Nous vous présentons une application exclusive conçue pour les délégués clients, leur permettant d\'enregistrer facilement leurs notes. Cette application facilite l\'organisation des informations et le suivi efficace des interactions avec les clients, améliorant ainsi la qualité du service et l\'expérience globale du client.'
+      'Nous vous présentons une application exclusive conçue pour les délégués clients, leur permettant d\'enregistrer facilement leurs notes. Cette application facilite l\'organisation des informations et le suivi efficace des interactions avec les clients, améliorant ainsi la qualité du service et l\'expérience globale du client.',
+  "Tel": "Téléphone"
 };

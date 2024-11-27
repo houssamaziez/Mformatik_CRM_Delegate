@@ -75,7 +75,7 @@ class _ClientListScreenState extends State<ClientListScreen> {
     return Scaffold(
       appBar: widget.isback
           ? AppBar(
-              title: Text("All Clinets".tr),
+              title: Text("All Clients".tr),
               centerTitle: true,
             )
           : null,

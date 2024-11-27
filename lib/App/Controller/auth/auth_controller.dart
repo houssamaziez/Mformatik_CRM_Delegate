@@ -78,8 +78,6 @@ class AuthController extends GetxController {
         person = Person.fromJson(responseData);
         update();
 
-        print('person in as: ${person?.firstName}');
-        print('user in as: ${user?.username}');
         if (user!.roleId == 4) {
           await spalshscreenfirst.write('key', true);
 
@@ -87,6 +85,10 @@ class AuthController extends GetxController {
         } else {
           Go.clearAndTo(context, ScreenAuth());
           showMessage(context, title: "You are not allowed to enter.".tr);
+        }
+      } else {
+        if (response.statusCode == 401 || response.statusCode == 404) {
+          Go.clearAndTo(context, ScreenAuth());
         }
       }
     } catch (e) {

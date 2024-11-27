@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
-import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
-import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../../Controller/auth/auth_controller.dart';
 import '../../../../../Controller/home/feedback/feedback_controller.dart';
-import '../../../../../Model/feedback.dart';
-import '../feedback_details/feedback_profile_screen.dart';
 import '../widgets/feedback_card.dart';
 
 class FeedbackScreen extends StatefulWidget {
@@ -233,7 +229,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Feedbacks".tr),
+        title: Text("All feedbacks".tr),
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),
@@ -317,7 +313,7 @@ Widget _buildDateSelection(
           child: Text(
             date != null
                 ? date.toLocal().toString().split(' ')[0]
-                : 'Select $label'.tr,
+                : 'Select'.tr + " $label",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Theme.of(context).primaryColor,

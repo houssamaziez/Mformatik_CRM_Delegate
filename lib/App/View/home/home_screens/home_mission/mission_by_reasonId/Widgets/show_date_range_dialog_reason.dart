@@ -184,7 +184,7 @@ Widget _buildDateSelection(
           child: Text(
             date != null
                 ? date.toLocal().toString().split(' ')[0]
-                : 'Select $label'.tr,
+                : 'Select'.tr + " $label".tr,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Theme.of(context).primaryColor,

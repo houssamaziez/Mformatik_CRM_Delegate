@@ -444,14 +444,14 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
       children: [
         InkWell(
           onTap: _selectImagesFromGallery,
-          child: const Row(
+          child: Row(
             children: [
               Icon(
                 Icons.image_outlined,
                 color: Colors.green,
               ),
               SizedBox(width: 10),
-              Text("Photos")
+              Text("Photos".tr)
             ],
           ),
         ),
@@ -460,14 +460,14 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
         ),
         InkWell(
           onTap: _takePhoto,
-          child: const Row(
+          child: Row(
             children: [
               Icon(
                 Icons.camera_alt,
                 color: Colors.blue,
               ),
               SizedBox(width: 10),
-              Text("Camera")
+              Text("Camera".tr)
             ],
           ),
         ),

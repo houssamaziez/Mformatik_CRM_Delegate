@@ -19,14 +19,14 @@ class FilterCompany extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
       height:
-          controller.showContainers ? 165 : 0, // Adjust height based on toggle
+          controller.showContainers ? 175 : 0, // Adjust height based on toggle
       width: double.infinity,
       child: Column(
         children: [
           AnimatedContainer(
             duration: const Duration(milliseconds: 500),
             height: controller.showContainers
-                ? 30
+                ? 35
                 : 0, // Adjust height based on toggle
             width: double.infinity,
             child: Padding(
@@ -96,7 +96,7 @@ class FilterCompany extends StatelessWidget {
           AnimatedContainer(
             duration: const Duration(milliseconds: 500),
             height: controller.showContainers
-                ? 30
+                ? 35
                 : 0, // Adjust height based on toggle
             width: double.infinity,
             child: Padding(

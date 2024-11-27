@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'CRM Report',
       theme: themeLight,
-
+      debugShowCheckedModeBanner: false,
       translations: Messages(), // Your translations
       locale: initialLocale, // Load the stored locale
       fallbackLocale: const Locale('en'), // Fallback locale
