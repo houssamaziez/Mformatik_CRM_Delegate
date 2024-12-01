@@ -31,7 +31,7 @@ class ScreenAuth extends StatelessWidget {
                     Hero(
                       tag: "logo",
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(0.0),
                         child: Image.asset(
                           "assets/icons/logo.png",
                           fit: BoxFit.cover,

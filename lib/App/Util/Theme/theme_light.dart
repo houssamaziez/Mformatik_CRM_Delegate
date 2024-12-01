@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../size/size_text.dart';
 
-const int _primaryValue = 0xff1073BA; // Your color in ARGB
+const int _primaryValue = 0xff2F80ED; // Your color in ARGB
 
 ThemeData themeLight = ThemeData(
   primarySwatch: MaterialColor(
