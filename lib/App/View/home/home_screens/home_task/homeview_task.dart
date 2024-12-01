@@ -5,12 +5,12 @@ import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Widgets/add_task_button.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_all/mission_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../Controller/home/company_controller.dart';
 import '../../../../Controller/home/home_controller.dart';
+import '../../../widgets/add_task_button.dart';
 import '../clientview/client_list_all/client_list_screen.dart';
 import '../home_feedback/feedback_list_all/feedback_list_screen.dart';
 import 'mission_by_me/mission_list_screen_by_me.dart';
@@ -22,22 +22,20 @@ import '../../Widgets/homeMenuSelectScreens.dart';
 import '../../Widgets/homeMenu_select.dart';
 import 'widgets/list_last_mission.dart';
 
-class HomeMission extends StatefulWidget {
-  const HomeMission({super.key});
+class HomeViewTask extends StatefulWidget {
+  const HomeViewTask({super.key});
 
   @override
-  State<HomeMission> createState() => _HomeMissionState();
+  State<HomeViewTask> createState() => _HomeViewTaskState();
 }
 
-class _HomeMissionState extends State<HomeMission> {
+class _HomeViewTaskState extends State<HomeViewTask> {
   late ScrollController scrollController;
   var homeController = Get.put(HomeController());
   @override
   void initState() {
     scrollController = ScrollController();
-
     scrollController.addListener(_scrollListener);
-    // TODO: implement initState
     super.initState();
   }
 
@@ -46,7 +44,7 @@ class _HomeMissionState extends State<HomeMission> {
         scrollController.position.maxScrollExtent) {
       print(scrollController.position.pixels);
       homeController.upadteshowcontaneClos();
-    } // If you want to handle other conditions, use an else or else if here
+    }
   }
 
   @override
@@ -104,9 +102,6 @@ class _HomeMissionState extends State<HomeMission> {
                   return SingleChildScrollView(
                     child: Column(
                       children: [
-                        FilterCompany(
-                          controller: controller,
-                        ),
                         const SizedBox(
                           height: 150,
                         ),
@@ -124,9 +119,6 @@ class _HomeMissionState extends State<HomeMission> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
-                        FilterCompany(
-                          controller: controller,
-                        ),
                         const SizedBox(
                           height: 200,
                         ),
@@ -170,14 +162,12 @@ class _HomeMissionState extends State<HomeMission> {
                       ],
                     ),
                   ).addRefreshIndicator(
-                    onRefresh: () {
-                      return Get.put(AnnexController())
-                          .fetchAnnexes()
-                          .then((onValue) {
-                        companyController.updateannex(
-                            Get.put(CompanyController()).selectCompany);
-                      });
-                    },
+                    onRefresh: () => Get.put(AnnexController())
+                        .fetchAnnexes()
+                        .then((onValue) {
+                      companyController.updateannex(
+                          Get.put(CompanyController()).selectCompany);
+                    }),
                   );
                 });
           }
@@ -191,13 +181,6 @@ class _HomeMissionState extends State<HomeMission> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
-                        FilterCompany(
-                          controller: controller,
-                        ),
-                        homeMenuSelectScreens(
-                          context,
-                          data: _listiconhomemeneu,
-                        ),
                         const SizedBox(
                           height: 14,
                         ),
@@ -208,11 +191,11 @@ class _HomeMissionState extends State<HomeMission> {
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                statuseMissionButton(context, getSliderColor),
+                                statuseTaskButton(context, getSliderColor),
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                const AddMissionbutton(),
+                                const AddTaskbutton(),
                                 const SizedBox(
                                   width: 8,
                                 ),
@@ -221,18 +204,17 @@ class _HomeMissionState extends State<HomeMission> {
                         const SizedBox(
                           height: 10,
                         ),
-                        listLastMission(context),
+                        listLastTasks(context),
                       ],
                     ),
                   ).addRefreshIndicator(onRefresh: () {
-                    // Get.put(AnnexController()).fetchAnnexes();
                     homeController.upadteshowcontanerOpen();
 
                     startDateMissions = null;
                     endDateMissions = null;
                     startDateTextMissions = '';
                     final anex = Get.put(AnnexController()).selectAnnex!;
-
+                    print(anex);
                     endDateTextMissions = '';
 
                     if (Get.put(CompanyController()).selectCompany == null) {

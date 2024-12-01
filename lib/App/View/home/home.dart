@@ -11,6 +11,7 @@ import '../widgets/bolck_screen.dart';
 import 'Widgets/appbar_home.dart';
 import 'home_screens/home_feedback/homeview_feedback.dart';
 import 'home_screens/home_mission/homeview_mission.dart';
+import 'home_screens/home_task/homeview_task.dart';
 import 'home_screens/profileUser/profile_user_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,11 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final List<Widget> _screen = [
-    Home(),
+    HomeMission(),
     HomeFeedback(),
-
+    HomeViewTask(),
     ProfileUserScreen(),
-    // HomeViewTask(),
   ];
   final MissionsController controller = Get.put(MissionsController());
 
