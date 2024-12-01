@@ -58,14 +58,22 @@ class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
                       const SizedBox(height: 10),
                       _buildUserInfo(person, user),
                       const SizedBox(height: 20),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Text(
-                          "Edit Information".tr,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: double.maxFinite,
+                            ),
+                            Text(
+                              "Edit Information".tr,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 10),

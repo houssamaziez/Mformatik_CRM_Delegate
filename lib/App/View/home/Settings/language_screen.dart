@@ -16,14 +16,9 @@ class _LanguageScreenState extends State<LanguageScreen> {
 
   // Supported languages with associated images
   final Map<String, Map<String, String>> _languages = {
-    'en': {
-      'name': 'English',
-      'image': 'assets/icons/EN.png'
-    }, // Add image path here
-    'fr': {
-      'name': 'Français',
-      'image': 'assets/icons/fr.png'
-    }, // Add image path here
+    'fr': {'name': 'Français', 'image': 'assets/icons/fr.png'},
+    'en': {'name': 'English', 'image': 'assets/icons/EN.png'},
+    'ar': {'name': 'عربية', 'image': 'assets/icons/Flag-Saudi-Arabia.png'},
   };
 
   @override
@@ -61,11 +56,14 @@ class _LanguageScreenState extends State<LanguageScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           children: [
-            const SizedBox(height: 60),
+            const SizedBox(height: 20),
             Text(
               'Choose your preferred language to make it easier for you to use the application'
                   .tr,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.grey),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
@@ -112,13 +110,20 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 );
               },
             ),
-            const Spacer(),
-            ButtonAll(
-                function: () {
-                  Get.back();
-                },
-                title: 'Save'.tr),
-            const Spacer(),
+            SizedBox(
+              height: 30,
+            ),
+            Container(
+              width: 150,
+              child: ButtonAll(
+                  function: () {
+                    Get.back();
+                  },
+                  title: 'Save'.tr),
+            ),
+            const Spacer(
+              flex: 4,
+            ),
           ],
         ),
       ),

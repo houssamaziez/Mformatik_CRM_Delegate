@@ -20,8 +20,8 @@ class ClientProfileScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Theme.of(context).primaryColor,
-        label: const Text(
-          "Actions",
+        label: Text(
+          "Actions".tr,
           style: TextStyle(color: Colors.white),
         ),
         icon: const Icon(
@@ -117,7 +117,7 @@ class ClientProfileScreen extends StatelessWidget {
                   : null,
               child: _buildContactRow(Icons.phone_android_rounded, 'Phone'.tr,
                   client.phone ?? 'N/A')),
-          _buildContactRow(Icons.email, 'Email', client.email ?? 'N/A'),
+          _buildContactRow(Icons.email, 'Email'.tr, client.email ?? 'N/A'),
           _buildContactRow(
               Icons.location_on, 'Address'.tr, client.address ?? 'N/A'),
         ],

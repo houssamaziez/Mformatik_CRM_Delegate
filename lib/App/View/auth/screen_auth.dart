@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
-import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
-import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
-import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../Controller/auth/auth_controller.dart';
-import '../../Util/Theme/colors.dart';
-import '../home/Settings/language_screen.dart';
 import '../widgets/TextField.dart';
 import '../widgets/image/svg_image.dart';
 
@@ -34,7 +28,6 @@ class ScreenAuth extends StatelessWidget {
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 2.6,
                     ),
-
                     Hero(
                       tag: "logo",
                       child: Padding(
@@ -94,95 +87,85 @@ class ScreenAuth extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    // GetBuilder<AuthController>(
-                    //     init: AuthController(),
-                    //     builder: (_controller) {
-                    //       return ButtonAll(
-                    //         function: () {
-                    //           _controller.login(context,
-                    //               username:
-                    //                   _controller.namecontroller.text.toString(),
-                    //               password: _controller.passwordcontroller.text
-                    //                   .toString());
-                    //         },
-                    //         title: "Logind".tr,
-                    //         islogin: _controller.isLoading,
-                    //       );
-                    //     }).paddingAll(),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.14,
                     ),
                   ],
                 ),
               ),
-              Positioned(
-                bottom: 20,
-                right: 0,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    children: [
-                      Spacer(),
-                      GetBuilder<AuthController>(
-                          init: AuthController(),
-                          builder: (_controller) {
-                            return SizedBox(
-                              width: 200,
-                              child: _controller.isLoading
-                                  ? spinkitwhite
-                                  : Padding(
-                                      padding: const EdgeInsets.only(bottom: 8),
-                                      child: InkWell(
-                                        onTap: () {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            _controller.login(context,
-                                                username: _controller
-                                                    .namecontroller.text
-                                                    .toString(),
-                                                password: _controller
-                                                    .passwordcontroller.text
-                                                    .toString());
-                                          }
-                                        },
-                                        child: Container(
-                                          height: 50, // Specify height
-                                          decoration: BoxDecoration(
-                                            color: Colors
-                                                .transparent, // Transparent background
-                                            border: Border.all(
-                                              color:
-                                                  Colors.white, // Border color
-                                              width: 1.0, // Border width
+              Directionality(
+                textDirection: TextDirection.ltr,
+                child: Positioned(
+                  bottom: 20,
+                  right: 0,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        Spacer(),
+                        GetBuilder<AuthController>(
+                            init: AuthController(),
+                            builder: (_controller) {
+                              return SizedBox(
+                                width: 200,
+                                child: _controller.isLoading
+                                    ? spinkitwhite
+                                    : Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8),
+                                        child: InkWell(
+                                          onTap: () {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              _controller.login(context,
+                                                  username: _controller
+                                                      .namecontroller.text
+                                                      .toString(),
+                                                  password: _controller
+                                                      .passwordcontroller.text
+                                                      .toString());
+                                            }
+                                          },
+                                          child: Container(
+                                            height: 50, // Specify height
+                                            decoration: BoxDecoration(
+                                              color: Colors
+                                                  .transparent, // Transparent background
+                                              border: Border.all(
+                                                color: Colors
+                                                    .white, // Border color
+                                                width: 1.0, // Border width
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10), // Rounded corners
                                             ),
-                                            borderRadius: BorderRadius.circular(
-                                                10), // Rounded corners
-                                          ),
-                                          child: Center(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                "Login".tr,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            55), // Text color
+                                            child: Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  "Login".tr,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height /
+                                                              55), // Text color
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                            );
-                          }),
-                      SizedBox(
-                        width: 10,
-                      ),
-                    ],
+                              );
+                            }),
+                        SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -15,6 +15,7 @@ class AuthService {
         "username": username.trim(),
         "password": password.trim(),
       });
+      print(response.body);
       return ResponseHandlerAuth.processResponseAuth(response);
     } catch (e) {
       if (kDebugMode) {

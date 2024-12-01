@@ -111,7 +111,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                   _buildMissionHeader(context, mission),
                   const SizedBox(height: 10),
                   InkWell(
-                    child: _buildMissionInfoSectionClient('Clinet'.tr,
+                    child: _buildMissionInfoSectionClient('Client'.tr,
                         mission.client!, Icons.person_pin, theme.primaryColor),
                   ),
                   _buildMissionStatusSection(
@@ -283,7 +283,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                       color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Text(
-                    "Tel :".tr + " ${(client.tel == "" ? 'N/A' : client.tel)}",
+                    "Tel".tr + " ${(client.tel == "" ? 'N/A' : client.tel)}",
                     style: const TextStyle(
                       color: Color.fromARGB(255, 48, 48, 48),
                       fontSize: 13,
@@ -300,7 +300,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                       color: Color.fromARGB(255, 48, 48, 48), size: 18),
                   const SizedBox(width: 4),
                   Text(
-                    "Phone :".tr +
+                    "Phone".tr +
                         " ${(client.phone == "" ? 'N/A' : client.phone)}",
                     style: const TextStyle(
                       color: Color.fromARGB(255, 48, 48, 48),
@@ -319,7 +319,7 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
                   const SizedBox(width: 4),
                   Flexible(
                     child: Text(
-                      "Address :".tr +
+                      "Address".tr +
                           " ${(client.address == "" ? 'N/A' : client.address)}",
                       style: const TextStyle(
                         color: Color.fromARGB(255, 48, 48, 48),

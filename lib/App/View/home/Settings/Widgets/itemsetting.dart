@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../Util/Route/Go.dart';
-import '../LanguageChangeScreen.dart';
 import '../AboutTheApplication/aboutTheApplication.dart';
 import '../Addedaccounts/addedaccounts.dart';
 import '../Notification/notificationscreen.dart';

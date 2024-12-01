@@ -32,6 +32,27 @@ class ResponseHandlerAuth {
 
       // Client errors
       case 400: // Bad request
+        if (decodedResponse?[0]["code"] == "badPassword") {
+          showMessage(
+            context,
+            title: "The password field is incorrect".tr,
+          );
+          break;
+        }
+        if (decodedResponse?[0]["code"] == "string.pattern.base") {
+          showMessage(
+            context,
+            title: "The username field is invalid.".tr,
+          );
+          break;
+        }
+        if (decodedResponse?[0]["code"] == "blockedUser") {
+          showMessage(
+            context,
+            title: "This user is blocked".tr,
+          );
+          break;
+        }
         showMessage(
           context,
           title: decodedResponse?[0]["message"] ?? "Invalid request.".tr,

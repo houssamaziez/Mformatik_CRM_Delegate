@@ -191,165 +191,172 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                         color: Colors.black54,
                                         fontSize: 14),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Flexible(
-                                          child: Icon(
-                                            Icons.feed,
-                                            color: Colors.transparent,
+                                  Directionality(
+                                    textDirection: TextDirection.ltr,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Flexible(
+                                            child: Icon(
+                                              Icons.feed,
+                                              color: Colors.transparent,
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          width: 1,
-                                        ),
-                                        Expanded(
-                                            flex: 4,
-                                            child: "Label".tr.style(
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 14)),
-                                        Flexible(
-                                            flex: 2,
-                                            child: "Clients"
-                                                .tr
-                                                .style(
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14)
-                                                .center()),
-                                        const Flexible(
-                                          child: Icon(
-                                            Icons.feed,
-                                            color: Colors.transparent,
+                                          const SizedBox(
+                                            width: 1,
                                           ),
-                                        ),
-                                      ],
+                                          Expanded(
+                                              flex: 4,
+                                              child: "Label".tr.style(
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14)),
+                                          Flexible(
+                                              flex: 2,
+                                              child: "Client"
+                                                  .tr
+                                                  .style(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 14)
+                                                  .center()),
+                                          const Flexible(
+                                            child: Icon(
+                                              Icons.feed,
+                                              color: Colors.transparent,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  GetBuilder<FeedbackController>(
-                                      init: FeedbackController(),
-                                      builder: (missionsController) {
-                                        return missionsController.isLoading ==
-                                                false
-                                            ? missionsController
-                                                        .feedbacks!.length ==
-                                                    0
-                                                ? Padding(
-                                                    padding:
-                                                        EdgeInsets.all(8.0),
-                                                    child: Center(
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.all(8.0),
-                                                        child: Text(
-                                                          "No Missions found"
-                                                              .tr,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.grey),
+                                  Directionality(
+                                    textDirection: TextDirection.ltr,
+                                    child: GetBuilder<FeedbackController>(
+                                        init: FeedbackController(),
+                                        builder: (missionsController) {
+                                          return missionsController.isLoading ==
+                                                  false
+                                              ? missionsController
+                                                          .feedbacks!.length ==
+                                                      0
+                                                  ? Padding(
+                                                      padding:
+                                                          EdgeInsets.all(8.0),
+                                                      child: Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  8.0),
+                                                          child: Text(
+                                                            "No Missions found"
+                                                                .tr,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .grey),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  )
-                                                : Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: ListView.builder(
-                                                        padding:
-                                                            EdgeInsets.zero,
-                                                        shrinkWrap: true,
-                                                        physics:
-                                                            const NeverScrollableScrollPhysics(),
-                                                        itemCount: missionsController
-                                                                    .feedbacks!
-                                                                    .length >
-                                                                7
-                                                            ? 6
-                                                            : missionsController
-                                                                .feedbacks!
-                                                                .length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          final feedback =
-                                                              missionsController
-                                                                      .feedbacks![
-                                                                  index];
-                                                          return InkWell(
-                                                            onTap: () {
-                                                              Go.to(
-                                                                  context,
-                                                                  FeedbackDetailScreen(
-                                                                    feedbackId:
-                                                                        feedback
-                                                                            .id
-                                                                            .toString(),
-                                                                  ));
-                                                            },
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      bottom:
-                                                                          16),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Flexible(
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .feed_outlined,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .primaryColor,
+                                                    )
+                                                  : Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: ListView.builder(
+                                                          padding:
+                                                              EdgeInsets.zero,
+                                                          shrinkWrap: true,
+                                                          physics:
+                                                              const NeverScrollableScrollPhysics(),
+                                                          itemCount: missionsController
+                                                                      .feedbacks!
+                                                                      .length >
+                                                                  7
+                                                              ? 6
+                                                              : missionsController
+                                                                  .feedbacks!
+                                                                  .length,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            final feedback =
+                                                                missionsController
+                                                                        .feedbacks![
+                                                                    index];
+                                                            return InkWell(
+                                                              onTap: () {
+                                                                Go.to(
+                                                                    context,
+                                                                    FeedbackDetailScreen(
+                                                                      feedbackId:
+                                                                          feedback
+                                                                              .id
+                                                                              .toString(),
+                                                                    ));
+                                                              },
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        bottom:
+                                                                            16),
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Flexible(
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .feed_outlined,
+                                                                        color: Theme.of(context)
+                                                                            .primaryColor,
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    width: 1,
-                                                                  ),
-                                                                  Expanded(
-                                                                      flex: 5,
-                                                                      child: feedback
-                                                                          .label!
-                                                                          .style(
-                                                                              textAlign: TextAlign.start)),
-                                                                  Flexible(
-                                                                      flex: 2,
-                                                                      child: feedback
-                                                                          .client!
-                                                                          .fullName!
-                                                                          .toString()
-                                                                          .style(
-                                                                              textAlign: TextAlign.center)
-                                                                          .center()),
-                                                                  Flexible(
-                                                                    flex: 1,
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .arrow_circle_right_outlined,
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          86,
-                                                                          209,
-                                                                          90),
+                                                                    const SizedBox(
+                                                                      width: 1,
                                                                     ),
-                                                                  ),
-                                                                ],
+                                                                    Expanded(
+                                                                        flex: 5,
+                                                                        child: feedback
+                                                                            .label!
+                                                                            .style(textAlign: TextAlign.start)),
+                                                                    Flexible(
+                                                                        flex: 2,
+                                                                        child: feedback
+                                                                            .client!
+                                                                            .fullName!
+                                                                            .toString()
+                                                                            .style(textAlign: TextAlign.center)
+                                                                            .center()),
+                                                                    Flexible(
+                                                                      flex: 1,
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .arrow_circle_right_outlined,
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            86,
+                                                                            209,
+                                                                            90),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ),
-                                                          );
-                                                        }),
-                                                  )
-                                            : spinkit.center();
-                                      }),
+                                                            );
+                                                          }),
+                                                    )
+                                              : spinkit.center();
+                                        }),
+                                  ),
                                   const SizedBox(
                                     height: 10,
                                   ),

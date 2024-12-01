@@ -66,7 +66,7 @@ class FeedbackCard extends StatelessWidget {
                           const SizedBox(width: 4),
                           Flexible(
                             child: Text(
-                              "Client: ${feedback.client!.fullName}",
+                              "Client".tr + ": ${feedback.client!.fullName}",
                               style: const TextStyle(
                                 color: Color.fromARGB(255, 37, 37, 37),
                                 fontSize: 13,

@@ -97,14 +97,14 @@ class LocationService {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: Text('Cancel'.tr),
             ),
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
                 await Geolocator.openLocationSettings();
               },
-              child: Text('Open Settings'),
+              child: Text('Open Settings'.tr),
             ),
           ],
         );

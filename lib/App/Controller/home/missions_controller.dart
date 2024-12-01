@@ -107,18 +107,11 @@ class MissionsController extends GetxController {
         Uri.parse("${Endpoint.apiMissionCounts}?companyId=$companyId"),
         headers: {"x-auth-token": token.read("token").toString()},
       );
-      print(responseCounts.body);
-      // if (responseCounts.statusCode == 200) {
-      //   created = jsonDecode(responseCounts.body)["NEW"];
-      //   update();
-      //   inProgress = jsonDecode(responseCounts.body)["IN_PROGRESS"];
-      //   update();
-      //   completed = jsonDecode(responseCounts.body)["COMPLETED"];
-      //   update();
-      //   canceled = jsonDecode(responseCounts.body)["CANCELED"];
-
-      //   update();
-      // }
+      print(
+          "------------------------------------------------------------------------");
+      print(response.body);
+      print(
+          "------------------------------------------------------------------------");
 
       if (responseCounts.statusCode == 200) {
         // Decode the JSON response into a list of maps

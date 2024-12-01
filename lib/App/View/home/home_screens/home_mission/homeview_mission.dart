@@ -232,7 +232,7 @@ class _HomeState extends State<Home> {
                     endDateMissions = null;
                     startDateTextMissions = '';
                     final anex = Get.put(AnnexController()).selectAnnex!;
-                    print(anex);
+
                     endDateTextMissions = '';
 
                     if (Get.put(CompanyController()).selectCompany == null) {

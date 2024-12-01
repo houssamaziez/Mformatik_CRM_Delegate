@@ -67,6 +67,11 @@ class FeedbackControllerFilter extends GetxController {
       );
       offset.value = 10;
 
+      print(
+          "------------------------------------------------------------------------");
+      print(json.decode(response.body)['rows']);
+      print(
+          "------------------------------------------------------------------------");
       if (response.statusCode == 200) {
         List<dynamic> responseData = json.decode(response.body)['rows'];
         update();
