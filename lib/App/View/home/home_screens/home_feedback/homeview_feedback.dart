@@ -288,69 +288,85 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                                 missionsController
                                                                         .feedbacks![
                                                                     index];
-                                                            return InkWell(
-                                                              onTap: () {
-                                                                Go.to(
-                                                                    context,
-                                                                    FeedbackDetailScreen(
-                                                                      feedbackId:
-                                                                          feedback
+                                                            return Column(
+                                                              children: [
+                                                                SizedBox(
+                                                                  height: 8,
+                                                                ),
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    Go.to(
+                                                                        context,
+                                                                        FeedbackDetailScreen(
+                                                                          feedbackId: feedback
                                                                               .id
                                                                               .toString(),
-                                                                    ));
-                                                              },
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
+                                                                        ));
+                                                                  },
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: const EdgeInsets
                                                                         .only(
                                                                         bottom:
                                                                             16),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Flexible(
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .feed_outlined,
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor,
-                                                                      ),
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Flexible(
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.feed_outlined,
+                                                                            color:
+                                                                                Theme.of(context).primaryColor,
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width:
+                                                                              1,
+                                                                        ),
+                                                                        Expanded(
+                                                                            flex:
+                                                                                5,
+                                                                            child:
+                                                                                feedback.label!.style(textAlign: TextAlign.start)),
+                                                                        Flexible(
+                                                                            flex:
+                                                                                2,
+                                                                            child:
+                                                                                feedback.client!.fullName!.toString().style(textAlign: TextAlign.center).center()),
+                                                                        Flexible(
+                                                                          flex:
+                                                                              1,
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.arrow_circle_right_outlined,
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                86,
+                                                                                209,
+                                                                                90),
+                                                                          ),
+                                                                        ),
+                                                                      ],
                                                                     ),
-                                                                    const SizedBox(
-                                                                      width: 1,
-                                                                    ),
-                                                                    Expanded(
-                                                                        flex: 5,
-                                                                        child: feedback
-                                                                            .label!
-                                                                            .style(textAlign: TextAlign.start)),
-                                                                    Flexible(
-                                                                        flex: 2,
-                                                                        child: feedback
-                                                                            .client!
-                                                                            .fullName!
-                                                                            .toString()
-                                                                            .style(textAlign: TextAlign.center)
-                                                                            .center()),
-                                                                    Flexible(
-                                                                      flex: 1,
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .arrow_circle_right_outlined,
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            86,
-                                                                            209,
-                                                                            90),
-                                                                      ),
-                                                                    ),
-                                                                  ],
+                                                                  ),
                                                                 ),
-                                                              ),
+                                                                if (missionsController
+                                                                        .feedbacks!
+                                                                        .length >
+                                                                    1)
+                                                                  Container(
+                                                                    height: 1,
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .withOpacity(
+                                                                            0.2),
+                                                                    width: double
+                                                                        .maxFinite,
+                                                                  )
+                                                              ],
                                                             );
                                                           }),
                                                     )

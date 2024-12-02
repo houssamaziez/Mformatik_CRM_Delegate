@@ -18,7 +18,7 @@ import 'mission_by_me/mission_list_screen_by_me.dart';
 import '../../Widgets/status_button.dart';
 import '../../Widgets/getSliderColor.dart';
 import '../../Widgets/homeMenu_select.dart';
-import 'widgets/list_last_mission.dart';
+import 'widgets/list_last_task.dart';
 
 class HomeViewTask extends StatefulWidget {
   const HomeViewTask({super.key});
@@ -121,12 +121,7 @@ class _HomeViewTaskState extends State<HomeViewTask> {
                       ],
                     ),
                   ).addRefreshIndicator(
-                    onRefresh: () => Get.put(AnnexController())
-                        .fetchAnnexes()
-                        .then((onValue) {
-                      companyController.updateannex(
-                          Get.put(CompanyController()).selectCompany);
-                    }),
+                    onRefresh: () => taskController.getAllTask(Get.context),
                   );
                 });
           }
@@ -167,21 +162,7 @@ class _HomeViewTaskState extends State<HomeViewTask> {
                       ],
                     ),
                   ).addRefreshIndicator(onRefresh: () {
-                    homeController.upadteshowcontanerOpen();
-
-                    startDateMissions = null;
-                    endDateMissions = null;
-                    startDateTextMissions = '';
-                    final anex = Get.put(AnnexController()).selectAnnex!;
-                    print(anex);
-                    endDateTextMissions = '';
-
-                    if (Get.put(CompanyController()).selectCompany == null) {
-                      return Get.put(AnnexController()).updateannex(anex);
-                    } else {
-                      return companyController.updateannex(
-                          Get.put(CompanyController()).selectCompany);
-                    }
+                    return taskController.getAllTask(Get.context);
                   });
                 }),
           );

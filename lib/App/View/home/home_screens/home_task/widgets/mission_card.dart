@@ -6,7 +6,8 @@ import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 
 import '../../../../../Model/mission.dart';
-import '../mission_details/profile_task.dart';
+import '../task_details/profile_task.dart';
+import 'getStatusColor.dart';
 
 class MissionCard extends StatelessWidget {
   final Mission mission;
@@ -83,7 +84,7 @@ class MissionCard extends StatelessWidget {
                           Row(
                             children: [
                               Icon(Icons.circle,
-                                  color: _getStatusColor(mission.statusId!),
+                                  color: getStatusColortask(mission.statusId!),
                                   size: 14),
                               const SizedBox(width: 4),
                               Text(
@@ -91,7 +92,7 @@ class MissionCard extends StatelessWidget {
                                     " ${getStatusLabel(mission.statusId!)}",
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: _getStatusColor(mission.statusId!),
+                                  color: getStatusColortask(mission.statusId!),
                                 ),
                               ),
                             ],
@@ -169,22 +170,6 @@ class MissionCard extends StatelessWidget {
     return const Color.fromARGB(255, 196, 196, 196); // Color for Unknown
   }
 
-  // Helper method to get color based on statusId
-  Color _getStatusColor(int statusId) {
-    switch (statusId) {
-      case 1:
-        return Colors.blue; // Color for Created
-      case 2:
-        return Colors.orange; // Color for In Progress
-      case 3:
-        return Colors.green; // Color for Completed
-      case 4:
-        return Colors.red; // Color for Canceled
-      default:
-        return Colors.grey; // Color for Unknown status
-    }
-  }
-
   // Helper method to format the date
   String _formatDate(String date) {
     DateTime parsedDate = DateTime.parse(date);
@@ -192,18 +177,18 @@ class MissionCard extends StatelessWidget {
   }
 }
 
-// Helper method to get status label based on statusId
+// Helper method to get status label based on statusId using the taskStatusEnumString
 String getStatusLabel(int statusId) {
-  switch (statusId) {
-    case 1:
-      return 'New';
-    case 2:
-      return 'In Progress';
-    case 3:
-      return 'Completed';
-    case 4:
-      return 'Canceled';
-    default:
-      return 'Unknown Status';
-  }
+  return taskStatusEnumString[statusId] ?? 'Unknown Status';
 }
+
+// Enum-like map for task statuses
+const taskStatusEnumString = {
+  1: 'New',
+  2: 'Start',
+  3: 'Owner Respond',
+  4: 'Responsible Respond',
+  5: 'Responsible close',
+  6: 'Close',
+  7: 'Canceled',
+};

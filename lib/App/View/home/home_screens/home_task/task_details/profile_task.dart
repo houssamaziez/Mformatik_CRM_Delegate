@@ -14,6 +14,7 @@ import '../../../../widgets/Dialog/showExitConfirmationDialog.dart';
 import '../../home_feedback/create_feedback/cretate_screen.dart';
 import '../widgets/getStatusColor.dart';
 import '../widgets/getStatusLabel.dart';
+import '../widgets/mission_card.dart';
 
 class TaskProfileScreen extends StatefulWidget {
   final int missionId;
@@ -371,7 +372,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
   Widget _buildMissionStatusSection(
       ThemeData theme, int statusId, TaskController controller) {
     String statusLabel = getStatusLabel(statusId);
-    Color statusColor = getStatusColor(statusId);
+    Color statusColor = getStatusColortask(statusId);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

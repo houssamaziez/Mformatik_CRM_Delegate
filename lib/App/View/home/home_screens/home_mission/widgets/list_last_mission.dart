@@ -114,68 +114,86 @@ Padding listLastMission(BuildContext context) {
                                     itemBuilder: (context, index) {
                                       final mission =
                                           missionsController.missions![index];
-                                      return InkWell(
-                                        onTap: () {
-                                          Go.to(
-                                              context,
-                                              MissionProfileScreen(
-                                                missionId: mission.id,
-                                              ));
-                                        },
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsets.only(bottom: 20.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Flexible(
-                                                child: Icon(
-                                                  Icons.ads_click_sharp,
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                ),
+                                      return Column(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Go.to(
+                                                  context,
+                                                  MissionProfileScreen(
+                                                    missionId: mission.id,
+                                                  ));
+                                            },
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: 8.0, top: 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Flexible(
+                                                    child: Icon(
+                                                      Icons.ads_click_sharp,
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 1,
+                                                  ),
+                                                  Expanded(
+                                                      flex: 2,
+                                                      child: mission.label!
+                                                          .style(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start)),
+                                                  Flexible(
+                                                      flex: 2,
+                                                      child: mission
+                                                          .creatorUsername!
+                                                          .style(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center)
+                                                          .center()),
+                                                  Flexible(
+                                                      flex: 2,
+                                                      child: getStatusLabel(
+                                                              mission.statusId!)
+                                                          .toString()
+                                                          .style(
+                                                              color: getStatusColor(
+                                                                  mission
+                                                                      .statusId!),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center)
+                                                          .center()),
+                                                  Flexible(
+                                                    flex: 1,
+                                                    child: Icon(
+                                                      Icons
+                                                          .arrow_circle_right_outlined,
+                                                      color: Color.fromARGB(
+                                                          255, 86, 209, 90),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              const SizedBox(
-                                                width: 1,
-                                              ),
-                                              Expanded(
-                                                  flex: 2,
-                                                  child: mission.label!.style(
-                                                      textAlign:
-                                                          TextAlign.start)),
-                                              Flexible(
-                                                  flex: 2,
-                                                  child: mission
-                                                      .creatorUsername!
-                                                      .style(
-                                                          textAlign:
-                                                              TextAlign.center)
-                                                      .center()),
-                                              Flexible(
-                                                  flex: 2,
-                                                  child: getStatusLabel(
-                                                          mission.statusId!)
-                                                      .toString()
-                                                      .style(
-                                                          color: getStatusColor(
-                                                              mission
-                                                                  .statusId!),
-                                                          textAlign:
-                                                              TextAlign.center)
-                                                      .center()),
-                                              Flexible(
-                                                flex: 1,
-                                                child: Icon(
-                                                  Icons
-                                                      .arrow_circle_right_outlined,
-                                                  color: Color.fromARGB(
-                                                      255, 86, 209, 90),
-                                                ),
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
+                                          if (missionsController
+                                                  .missions!.length >
+                                              1)
+                                            Container(
+                                              height: 1,
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              width: double.maxFinite,
+                                            )
+                                        ],
                                       );
                                     }),
                               )
