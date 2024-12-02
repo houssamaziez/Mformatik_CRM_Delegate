@@ -25,7 +25,7 @@ class TaskProfileScreen extends StatefulWidget {
 }
 
 class _TaskProfileScreenState extends State<TaskProfileScreen> {
-  final missionController = Get.put(TaskController());
+  final missionController = Get.put(MissionsController());
 
   @override
   void initState() {

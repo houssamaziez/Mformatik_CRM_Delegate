@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
+import 'package:mformatic_crm_delegate/App/Model/task.dart';
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
@@ -14,75 +17,102 @@ import '../auth/auth_controller.dart';
 import '../widgetsController/expandable_controller.dart';
 
 class TaskController extends GetxController {
-  List<Mission>? missions = [];
+  List<Task>? tasks = [];
   Mission? mission;
   List<Mission>? missionsfilter = [];
   bool isLoading = false;
+  bool isLoadingCreate = false;
   bool isLoadingProfile = false;
   bool isLoadingProfilebutton = false;
   bool isLoadingMore = false;
   int offset = 0;
   int limit = 7;
-  int missionslength = 0;
+  int tasklength = 0;
   int indexminu = 0;
   int inProgress = 0;
   int created = 0;
   int completed = 0;
   int canceled = 0;
-  onIndexChanged(indexselect) {
-    var controllerUser = Get.put(AuthController());
-    print(controllerUser.user!.roleId);
-    inProgress = 0;
+  onIndexChanged(indexselect) {}
+
+  Future<void> createTask({
+    required String label,
+    required String responsibleId,
+    required String observerId,
+    required String itemDescription,
+    List<String>? imgPaths, // Optional
+    List<String>? videoPaths, // Optional
+    List<String>? excelPaths, // Optional
+    List<String>? pdfPaths, // Optional
+  }) async {
+    isLoadingCreate = true;
     update();
-    completed = 0;
-    update();
-    canceled = 0;
-    update();
-    created = 0;
-    update();
-    missionsfilter!.clear();
-    missions!.forEach((action) {
-      if (indexselect == 1) {
-        if (action.creatorRoleId == controllerUser.user!.roleId) {
-          missionsfilter!.add(action);
-        }
-      } else {
-        if (action.creatorRoleId != controllerUser.user!.roleId) {
-          missionsfilter!.add(action);
-        }
+    try {
+      var headers = {
+        'x-auth-token': token.read("token").toString(),
+      };
+
+      var request = http.MultipartRequest('POST', Uri.parse(Endpoint.apiTask));
+      request.fields.addAll({
+        'label': label,
+        'responsibleId': responsibleId,
+        'observerId': observerId,
+        'items[0][desc]': itemDescription,
+      });
+
+      // Add files if the lists are provided and not empty
+      if (imgPaths != null && imgPaths.isNotEmpty) {
+        await _addFilesFromList(request, 'prImg', imgPaths);
       }
-    });
-    update();
-    print(missionsfilter);
-    indexminu = indexselect;
-    update();
-    print("----------------------");
-    print(inProgress.toString() +
-        " " +
-        completed.toString() +
-        " " +
-        canceled.toString());
-    print("----------------------");
+      if (videoPaths != null && videoPaths.isNotEmpty) {
+        await _addFilesFromList(request, 'prVideo', videoPaths);
+      }
+      if (excelPaths != null && excelPaths.isNotEmpty) {
+        await _addFilesFromList(request, 'prExcel', excelPaths);
+      }
+      if (pdfPaths != null && pdfPaths.isNotEmpty) {
+        await _addFilesFromList(request, 'prPdf', pdfPaths);
+      }
+
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        var decodedResponse = jsonDecode(responseBody);
+        print('Task created successfully: $decodedResponse');
+      } else {
+        throw Exception('Failed to create task: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Error while creating task: $e');
+    } finally {
+      isLoadingCreate = false;
+      update();
+    }
+  }
+
+  Future<void> _addFilesFromList(http.MultipartRequest request,
+      String fieldName, List<String> filePaths) async {
+    for (var filePath in filePaths) {
+      if (filePath.isNotEmpty && File(filePath).existsSync()) {
+        request.files
+            .add(await http.MultipartFile.fromPath(fieldName, filePath));
+      } else {
+        print('File for $fieldName not found or path is empty: $filePath');
+      }
+    }
   }
 
   // Fetch all missions
-  Future<void> getAllMission(context, int companyId,
-      {String? startingDate = "", String? endingDate = ""}) async {
-    missions!.clear();
-    update();
-
-    final uri = Uri.parse('${Endpoint.apiMissions}').replace(
-      queryParameters: {
-        'companyId': companyId.toString(),
-        'offset': 0.toString(),
-        'limit': limit.toString(),
-      },
+  Future<void> getAllTask(
+    context,
+  ) async {
+    final uri = Uri.parse('${Endpoint.apiTask}').replace(
+      queryParameters: {},
     );
 
-    // offset = 7;
-    if (companyId == 0) {
-      return;
-    }
     isLoading = true;
     update();
     try {
@@ -93,131 +123,11 @@ class TaskController extends GetxController {
       print(response.body);
       final responseData = ResponseHandler.processResponse(response);
       if (response.statusCode == 200) {
-        missions = MissionResponse.fromJson(responseData).rows;
+        tasks = TaskResponse.fromJson(responseData).rows;
         update();
 
-        missionslength = MissionResponse.fromJson(responseData).count;
+        tasklength = MissionResponse.fromJson(responseData).count;
         update();
-        // onIndexChanged(0);
-      } else {
-        missionsfilter!.clear();
-      }
-      final ff = jsonDecode(response.body);
-      final responseCounts = await http.get(
-        Uri.parse("${Endpoint.apiMissionCounts}?companyId=$companyId"),
-        headers: {"x-auth-token": token.read("token").toString()},
-      );
-      print(responseCounts.body);
-      // if (responseCounts.statusCode == 200) {
-      //   created = jsonDecode(responseCounts.body)["NEW"];
-      //   update();
-      //   inProgress = jsonDecode(responseCounts.body)["IN_PROGRESS"];
-      //   update();
-      //   completed = jsonDecode(responseCounts.body)["COMPLETED"];
-      //   update();
-      //   canceled = jsonDecode(responseCounts.body)["CANCELED"];
-
-      //   update();
-      // }
-
-      if (responseCounts.statusCode == 200) {
-        // Decode the JSON response into a list of maps
-        List<dynamic> responseData = jsonDecode(responseCounts.body);
-
-        // Iterate over the list to find the counts based on the labels
-        for (var item in responseData) {
-          switch (item["label"]) {
-            case "NEW":
-              created = item["count"];
-              break;
-            case "IN_PROGRESS":
-              inProgress = item["count"];
-              break;
-            case "COMPLETED":
-              completed = item["count"];
-              break;
-            case "CANCELED":
-              canceled = item["count"];
-              break;
-          }
-        }
-
-        // Call update once after all assignments
-        update();
-      }
-    } catch (e) {
-      showMessage(context, title: 'Connection problem'.tr);
-    } finally {
-      isLoading = false;
-      update();
-    }
-  }
-
-  // Create a new mission
-  Future<void> createMission(
-      {required String desc,
-      required int clientId,
-      required context,
-      required String text}) async {
-    isLoading = true;
-    update();
-    var reasonId;
-    final uri = Uri.parse('${Endpoint.apiMissions}');
-    final cilentID = Get.put(AuthController()).user!.id;
-    ExpandableControllerd controller = Get.put(ExpandableControllerd());
-    reasonId = controller.selectedItem.value!.id;
-
-    String label = "";
-
-    if (reasonId == null) {
-      showMessage(context, title: "Select Reasons");
-      isLoading = false;
-      update();
-      return;
-    }
-    // if (reasonId != 1) {
-    //   showMessage(context, title: "Complete the field");
-    //   isLoading = false;
-    //   update();
-    //   return;
-    // }
-    label = controller.controllerTextEditingController!.text;
-    if ((label == "" || label.length <= 3) && reasonId == 1) {
-      showMessage(Get.context, title: 'Please specify'.tr);
-      isLoading = false;
-      update();
-      return;
-    }
-
-    final body = {
-      "label": label.toString(),
-      "desc": desc,
-      "isSuccessful": null,
-      "clientId": clientId,
-      "responsibleId": cilentID,
-      "reasonId": reasonId,
-    };
-
-    try {
-      final response = await http.post(
-        uri,
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token.read("token").toString(),
-        },
-        body: jsonEncode(body),
-      );
-
-      if (response.statusCode == 200) {
-        showMessage(context,
-            title: 'Mission created successfully!'.tr, color: Colors.green);
-        // getAllMission(context); // Refresh the mission list after creation
-        // Navigator.of(context).popUntil();
-        getAllMission(context, Get.put(CompanyController()).selectCompany!.id);
-
-        Go.clearAndTo(context, HomeScreen());
-      } else {
-        showMessage(context, title: 'Failed to create mission'.tr);
       }
     } catch (e) {
       showMessage(context, title: 'Connection problem'.tr);
@@ -252,13 +162,6 @@ class TaskController extends GetxController {
       );
       if (response.statusCode == 200) {
         await getMissionById(Get.context, missionId, isLoding: true);
-        getAllMission(
-            Get.context, Get.put(CompanyController()).selectCompany!.id);
-        // showMessage(
-        //   Get.context,
-        //   title: 'Mission Status updated successfully',
-        //   color: Colors.green,
-        // );
       }
     } catch (e) {
       showMessage(

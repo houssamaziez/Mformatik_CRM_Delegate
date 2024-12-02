@@ -10,15 +10,13 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../Controller/home/company_controller.dart';
 import '../../../../Controller/home/home_controller.dart';
+import '../../../../Controller/home/task_controller.dart';
 import '../../../widgets/add_task_button.dart';
 import '../clientview/client_list_all/client_list_screen.dart';
 import '../home_feedback/feedback_list_all/feedback_list_screen.dart';
 import 'mission_by_me/mission_list_screen_by_me.dart';
 import '../../Widgets/status_button.dart';
-import '../../Widgets/add_mission_button.dart';
-import '../../Widgets/filter_annex_company.dart';
 import '../../Widgets/getSliderColor.dart';
-import '../../Widgets/homeMenuSelectScreens.dart';
 import '../../Widgets/homeMenu_select.dart';
 import 'widgets/list_last_mission.dart';
 
@@ -32,10 +30,13 @@ class HomeViewTask extends StatefulWidget {
 class _HomeViewTaskState extends State<HomeViewTask> {
   late ScrollController scrollController;
   var homeController = Get.put(HomeController());
+  TaskController taskController = Get.put(TaskController());
   @override
   void initState() {
     scrollController = ScrollController();
     scrollController.addListener(_scrollListener);
+
+    taskController.getAllTask(Get.context);
     super.initState();
   }
 
@@ -49,48 +50,6 @@ class _HomeViewTaskState extends State<HomeViewTask> {
 
   @override
   Widget build(BuildContext context) {
-    List<HomeMenuSelect> _listiconhomemeneu = [
-      HomeMenuSelect(
-          title: "My Mission".tr,
-          icon: "job-description.png",
-          function: (context) {
-            Go.to(context, const MissionListScreenByMe());
-          }),
-      HomeMenuSelect(
-        title: "All Missions".tr,
-        icon: 'daily-task.png',
-        function: (context) {
-          Go.to(context, MissionListScreen());
-        },
-      ),
-      HomeMenuSelect(
-        title: "All Clients".tr,
-        icon: 'item3.png',
-        function: (context) {
-          Go.to(
-              context,
-              GetBuilder<CompanyController>(
-                  init: CompanyController(),
-                  builder: (companyController) {
-                    return ClientListScreen(
-                      isback: true,
-                      companyid:
-                          Get.put(CompanyController()).selectCompany == null
-                              ? 0.toString()
-                              : companyController.selectCompany!.id.toString(),
-                    );
-                  }));
-        },
-      ),
-      HomeMenuSelect(
-        title: "My FeedBack".tr,
-        icon: 'Messages, Chat.png',
-        function: (context) {
-          Go.to(context, FeedbackScreen());
-        },
-      ),
-    ];
-
     return GetBuilder<CompanyController>(
         init: CompanyController(),
         builder: (companyController) {

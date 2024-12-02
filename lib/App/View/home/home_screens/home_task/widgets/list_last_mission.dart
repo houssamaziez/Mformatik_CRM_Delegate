@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/task_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
@@ -77,11 +78,11 @@ Padding listLastTasks(BuildContext context) {
                 ],
               ),
             ),
-            GetBuilder<MissionsController>(
-                init: MissionsController(),
+            GetBuilder<TaskController>(
+                init: TaskController(),
                 builder: (missionsController) {
                   return missionsController.isLoading == false
-                      ? missionsController.missions!.isEmpty
+                      ? missionsController.tasks!.isEmpty
                           ? Padding(
                               padding: EdgeInsets.only(bottom: 8.0),
                               child: Center(
@@ -101,18 +102,18 @@ Padding listLastTasks(BuildContext context) {
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount:
-                                      missionsController.missions!.length > 7
+                                      missionsController.tasks!.length > 7
                                           ? 6
-                                          : missionsController.missions!.length,
+                                          : missionsController.tasks!.length,
                                   itemBuilder: (context, index) {
-                                    final mission =
-                                        missionsController.missions![index];
+                                    final task =
+                                        missionsController.tasks![index];
                                     return InkWell(
                                       onTap: () {
                                         Go.to(
                                             context,
                                             TaskProfileScreen(
-                                              missionId: mission.id,
+                                              missionId: task.id,
                                             ));
                                       },
                                       child: Padding(
@@ -133,12 +134,12 @@ Padding listLastTasks(BuildContext context) {
                                             ),
                                             Expanded(
                                                 flex: 2,
-                                                child: mission.label!.style(
+                                                child: task.label!.style(
                                                     textAlign:
                                                         TextAlign.start)),
                                             Flexible(
                                                 flex: 2,
-                                                child: mission.creatorUsername!
+                                                child: task.observerUsername!
                                                     .style(
                                                         textAlign:
                                                             TextAlign.center)
@@ -146,11 +147,11 @@ Padding listLastTasks(BuildContext context) {
                                             Flexible(
                                                 flex: 2,
                                                 child: getStatusLabel(
-                                                        mission.statusId!)
+                                                        task.statusId!)
                                                     .toString()
                                                     .style(
                                                         color: getStatusColor(
-                                                            mission.statusId!),
+                                                            task.statusId!),
                                                         textAlign:
                                                             TextAlign.center)
                                                     .center()),

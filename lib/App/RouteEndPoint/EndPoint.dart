@@ -19,4 +19,5 @@ class Endpoint {
   static String apiFssionsShangeStatus = '$url/v1/missions/change-status-to';
   static String apipersonsUpdate = '$url/v1/persons/me';
   static String apiPersons = '$url/v1/persons';
+  static String apiTask = '$url/v1/tasks';
 }
