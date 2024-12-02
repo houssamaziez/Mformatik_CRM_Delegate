@@ -5,6 +5,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/task_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/persons/screen_list_persons.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
@@ -14,7 +15,6 @@ import 'package:vibration/vibration.dart';
 import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/home/Person/controller_person.dart';
 import '../../../../../Service/permission_handler/mic_handler.dart';
-import '../../../../Voice/screen_voice.dart';
 
 // ignore: must_be_immutable
 class ScreenCreateTask extends StatefulWidget {
@@ -25,7 +25,8 @@ class ScreenCreateTask extends StatefulWidget {
 }
 
 class _ScreenCreateTaskState extends State<ScreenCreateTask> {
-  TextEditingController controller = TextEditingController();
+  TextEditingController controllerdesc = TextEditingController();
+  TextEditingController controllerLabel = TextEditingController();
   final RecordController recordController = Get.put(RecordController());
   int reasonId = 0;
   final _formKey = GlobalKey<FormState>();
@@ -110,24 +111,6 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RecordController>(builder: (controllerVoice) {
-      // final controlledVoiceMessageViewMy = VoiceController(
-      //   audioSrc: controllerVoice.audioPath,
-      //   maxDuration: Duration(seconds: controllerVoice.audioDuration.inSeconds),
-      //   isFile: true,
-      //   onComplete: () {
-      //     // Do something on complete
-      //   },
-      //   onPause: () {
-      //     // Do something on pause
-      //   },
-      //   onPlaying: () {
-      //     // Do something on playing
-      //   },
-      //   onError: (err) {
-      //     // Handle error
-      //   },
-      // );
-
       return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -323,7 +306,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                   height: 10,
                 ),
                 TextFormField(
-                  controller: controller,
+                  controller: controllerLabel,
                   cursorColor: Theme.of(context)
                       .primaryColor, // Change the cursor color here
                   style: const TextStyle(color: Colors.black),
@@ -362,7 +345,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                 ),
                 TextFormField(
                   minLines: 5, maxLength: 250, maxLines: 6,
-                  controller: controller,
+                  controller: controllerdesc,
                   cursorColor: Theme.of(context)
                       .primaryColor, // Change the cursor color here
                   style: const TextStyle(color: Colors.black),
@@ -622,7 +605,26 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ButtonAll(function: () {}, title: 'add Task'),
+                  child: GetBuilder<TaskController>(
+                      init: TaskController(),
+                      builder: (taskController) {
+                        return ButtonAll(
+                            isloading: taskController.isLoadingCreate,
+                            function: () {
+                              taskController.createTask(
+                                  label: controllerLabel.text,
+                                  responsibleId: Get.put(ControllerPerson())
+                                      .responsable!
+                                      .id
+                                      .toString(),
+                                  observerId: Get.put(ControllerPerson())
+                                      .observator!
+                                      .id
+                                      .toString(),
+                                  itemDescription: controllerdesc.text);
+                            },
+                            title: 'add Task');
+                      }),
                 )
               ],
             ),

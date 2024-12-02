@@ -9,6 +9,7 @@ import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_feedback/
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../../Model/mission.dart';
+import '../../../../../Model/task.dart';
 import '../../../../widgets/Containers/container_blue.dart';
 import '../../../../widgets/Dialog/showExitConfirmationDialog.dart';
 import '../../home_feedback/create_feedback/cretate_screen.dart';
@@ -17,21 +18,21 @@ import '../widgets/getStatusLabel.dart';
 import '../widgets/mission_card.dart';
 
 class TaskProfileScreen extends StatefulWidget {
-  final int missionId;
+  final int taskId;
 
-  TaskProfileScreen({Key? key, required this.missionId}) : super(key: key);
+  TaskProfileScreen({Key? key, required this.taskId}) : super(key: key);
 
   @override
   State<TaskProfileScreen> createState() => _TaskProfileScreenState();
 }
 
 class _TaskProfileScreenState extends State<TaskProfileScreen> {
-  final missionController = Get.put(MissionsController());
+  TaskController taskController = Get.put(TaskController());
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      missionController.getMissionById(context, widget.missionId);
+      taskController.getTaskById(context, widget.taskId);
     });
     super.initState();
   }
@@ -54,16 +55,16 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
           if (controller.isLoadingProfile) {
             return const Center(child: spinkit);
           }
-          if (controller.mission == null) {
+          if (controller.task == null) {
             return Center(child: Text('Mission not found'.tr));
           }
-          final mission = controller.mission!;
+          final task = controller.task!;
 
           return Scaffold(
             floatingActionButton: Column(
               children: [
                 const Spacer(),
-                if (mission.statusId == 1)
+                if (task.statusId == 1)
                   FloatingActionButton.extended(
                       heroTag: "IN_PROGRESS", // Unique tag for the first button
                       backgroundColor: Colors.green,
@@ -73,7 +74,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                           Get.back();
 
                           await controller.changeStatuseMission(
-                              2, widget.missionId);
+                              2, widget.taskId);
                         },
                             details: 'Are you sure to Start the Mission?'.tr,
                             title: 'Cnfirmation'.tr);
@@ -85,20 +86,20 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                if (mission.statusId == 2)
+                if (task.statusId == 2)
                   FloatingActionButton.extended(
                       heroTag:
                           "addFeedback2", // Unique tag for the first button
 
                       backgroundColor: Theme.of(context).primaryColor,
                       onPressed: () {
-                        Go.to(
-                            context,
-                            CreateFeedBackScreen(
-                              clientID: mission.clientId,
-                              feedbackModelID: 16,
-                              missionID: mission.id,
-                            ));
+                        // Go.to(
+                        //     context,
+                        //     CreateFeedBackScreen(
+                        //       clientID: task.clientId,
+                        //       feedbackModelID: 16,
+                        //       missionID: task.id,
+                        //     ));
                       },
                       label: Text(
                         "Add Feedback".tr,
@@ -110,30 +111,29 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
               padding: const EdgeInsets.all(16.0),
               child: ListView(
                 children: [
-                  _buildMissionHeader(context, mission),
+                  _buildMissionHeader(context, task),
                   const SizedBox(height: 16),
-                  InkWell(
-                    child: _buildMissionInfoSectionClient('Clinet'.tr,
-                        mission.client!, Icons.person_pin, theme.primaryColor),
-                  ),
-                  _buildMissionStatusSection(
-                      theme, mission.statusId!, controller),
-                  if (mission.feedback!.id != 0)
-                    InkWell(
-                      onTap: () {
-                        if (mission.feedback!.id != 1) {
-                          Go.to(
-                              context,
-                              FeedbackDetailScreen(
-                                  feedbackId: mission.feedback!.id.toString()));
-                        }
-                      },
-                      child: _buildMissionInfoSection(
-                          'Feedback'.tr,
-                          mission.feedback!.label.toString(),
-                          Icons.feed,
-                          theme.primaryColor),
-                    ),
+                  // InkWell(
+                  //   child: _buildMissionInfoSectionClient('Clinet'.tr,
+                  //       task.client!, Icons.person_pin, theme.primaryColor),
+                  // ),
+                  _buildMissionStatusSection(theme, task.statusId!, controller),
+                  // if (task.feedback!.id != 0)
+                  //   InkWell(
+                  //     onTap: () {
+                  //       if (task.feedback!.id != 1) {
+                  //         Go.to(
+                  //             context,
+                  //             FeedbackDetailScreen(
+                  //                 feedbackId: task.feedback!.id.toString()));
+                  //       }
+                  //     },
+                  //     child: _buildMissionInfoSection(
+                  //         'Feedback'.tr,
+                  //         task.feedback!.label.toString(),
+                  //         Icons.feed,
+                  //         theme.primaryColor),
+                  //   ),
                   // _buildMissionInfoSection(
                   //     'Mission Description'.tr,
                   //     mission.desc ?? 'No description available'.tr,
@@ -141,17 +141,17 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                   //     theme.primaryColor),
                   _buildMissionInfoSection(
                       'Creator Username'.tr,
-                      mission.creatorUsername!,
+                      task.responsibleId!.toString(),
                       Icons.person,
                       theme.primaryColor),
                   _buildMissionInfoSection(
                       'Editor Username'.tr,
-                      mission.editorUsername ?? 'No editor assigned'.tr,
+                      task.observerUsername ?? 'No editor assigned'.tr,
                       Icons.edit,
                       theme.primaryColor),
                   _buildMissionInfoSection(
                       'Created At'.tr,
-                      formatDate(mission.createdAt.toString()),
+                      formatDate(task.createdAt.toString()),
                       Icons.date_range,
                       theme.primaryColor),
 
@@ -161,8 +161,8 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                 ],
                 // ignore: avoid_print
               ).addRefreshIndicator(
-                  onRefresh: () => missionController.getMissionById(
-                      context, widget.missionId)),
+                  onRefresh: () =>
+                      taskController.getTaskById(context, widget.taskId)),
             ),
           );
         },
@@ -170,7 +170,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
     );
   }
 
-  Widget _buildMissionHeader(BuildContext context, Mission mission) {
+  Widget _buildMissionHeader(BuildContext context, Task task) {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -178,7 +178,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            mission.label!,
+            task.label!,
             style: theme.textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color: theme.primaryColor,
@@ -186,7 +186,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            mission.desc ?? 'No description available'.tr,
+            task.label ?? 'No description available'.tr,
             style:
                 theme.textTheme.titleMedium?.copyWith(color: Colors.grey[700]),
           ),
@@ -406,8 +406,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                     showExitConfirmationDialog(context, onPressed: () async {
                       Get.back();
 
-                      await controller.changeStatuseMission(
-                          1, widget.missionId);
+                      await controller.changeStatuseMission(1, widget.taskId);
                     },
                         details: 'Are you sure to Stop the Mission?'.tr,
                         title: 'Cnfirmation'.tr);
@@ -424,7 +423,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                           Get.back();
 
                           await controller
-                              .changeStatuseMission(2, widget.missionId)
+                              .changeStatuseMission(2, widget.taskId)
                               .then((onValue) {});
                         },
                             details: 'Are you sure to Start the Mission?'.tr,

@@ -21,7 +21,7 @@ class MissionCard extends StatelessWidget {
       onTap: () {
         Go.to(
           context,
-          TaskProfileScreen(missionId: mission.id),
+          TaskProfileScreen(taskId: mission.id),
         );
       },
       child: Padding(

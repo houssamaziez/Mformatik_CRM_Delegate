@@ -18,7 +18,7 @@ import '../widgetsController/expandable_controller.dart';
 
 class TaskController extends GetxController {
   List<Task>? tasks = [];
-  Mission? mission;
+  Task? task;
   List<Mission>? missionsfilter = [];
   bool isLoading = false;
   bool isLoadingCreate = false;
@@ -60,7 +60,6 @@ class TaskController extends GetxController {
         'items[0][desc]': itemDescription,
       });
 
-      // Add files if the lists are provided and not empty
       if (imgPaths != null && imgPaths.isNotEmpty) {
         await _addFilesFromList(request, 'prImg', imgPaths);
       }
@@ -82,7 +81,13 @@ class TaskController extends GetxController {
         String responseBody = await response.stream.bytesToString();
         var decodedResponse = jsonDecode(responseBody);
         print('Task created successfully: $decodedResponse');
+
+        Go.back(Get!.context);
+        showMessage(Get.context,
+            title: "Task created successfully", color: Colors.green);
+        getAllTask(Get.context);
       } else {
+        showMessage(Get.context, title: "Failed to create task");
         throw Exception('Failed to create task: ${response.reasonPhrase}');
       }
     } catch (e) {
@@ -110,7 +115,10 @@ class TaskController extends GetxController {
     context,
   ) async {
     final uri = Uri.parse('${Endpoint.apiTask}').replace(
-      queryParameters: {},
+      queryParameters: {
+        'offset': offset.toString(), // Add offset
+        'limit': limit.toString(), // Add limit
+      },
     );
 
     isLoading = true;
@@ -161,7 +169,7 @@ class TaskController extends GetxController {
         }),
       );
       if (response.statusCode == 200) {
-        await getMissionById(Get.context, missionId, isLoding: true);
+        await getTaskById(Get.context, missionId, isLoding: true);
       }
     } catch (e) {
       showMessage(
@@ -174,8 +182,7 @@ class TaskController extends GetxController {
     }
   }
 
-  Future<void> getMissionById(context, int missionId,
-      {bool isLoding = false}) async {
+  Future<void> getTaskById(context, int taskId, {bool isLoding = false}) async {
     if (isLoding) {
       isLoadingProfilebutton = true;
       update();
@@ -184,8 +191,7 @@ class TaskController extends GetxController {
       update();
     }
 
-    final uri = Uri.parse(
-        '${Endpoint.apiMissions}/$missionId'); // Add API endpoint for single mission
+    final uri = Uri.parse('${Endpoint.apiTask}/$taskId');
     print("object");
     try {
       final response = await http.get(
@@ -196,9 +202,8 @@ class TaskController extends GetxController {
 
       if (response.statusCode == 200) {
         final responseData = ResponseHandler.processResponse(response);
-        mission =
-            Mission.fromJson(responseData); // Assuming mission is the model
-        update(); // Update the state to refresh the screen
+        task = Task.fromJson(responseData);
+        update();
       } else {
         showMessage(context, title: 'Error fetching mission data'.tr);
       }
