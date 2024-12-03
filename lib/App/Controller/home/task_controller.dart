@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home.dart';
 import 'dart:convert';
+import 'package:path_provider/path_provider.dart';
 
 import '../../Model/mission.dart';
 import '../../Util/app_exceptions/response_handler.dart';
@@ -219,4 +220,94 @@ class TaskController extends GetxController {
       update();
     }
   }
+
+  List ListImage = [];
+  List<File>? files;
+  bool voicedownloadLoading = false;
+  String? pahtFile;
+  Future downloadfile({
+    required String taskId,
+    required String taskItemId,
+    required String attachmentId,
+  }) async {
+    update();
+    pahtFile = null;
+    update();
+
+    try {
+      voicedownloadLoading = true;
+      update();
+
+      final url = Uri.parse(
+          'http://192.168.2.102:5500/api/v1/tasks/$taskId/items/$taskItemId/attachments/$attachmentId');
+
+      // Send the GET request to download the file
+      final response = await http.get(
+        url,
+        headers: {"x-auth-token": token.read("token").toString()},
+      );
+
+      if (response.statusCode == 200) {
+        // Extract content type from headers
+        final contentType = response.headers['content-type'];
+        if (contentType != null) {
+          print('Content-Type: $contentType');
+
+          if (imgFileTypes.any((type) => contentType.contains(type))) {
+            ListImage.add(response.bodyBytes);
+            print("The file is an image.");
+          } else if (voiceFileTypes.any((type) => contentType.contains(type))) {
+            print("The file is a voice file.");
+          } else if (videoFileTypes.any((type) => contentType.contains(type))) {
+            print("The file is a video.");
+          } else if (pdfFileTypes.any((type) => contentType.contains(type))) {
+            print("The file is a PDF.");
+          } else if (excelFileTypes.any((type) => contentType.contains(type))) {
+            print("The file is an Excel document.");
+          } else {
+            print("Unknown file type.");
+          }
+        } else {
+          print("Content-Type header is missing.");
+        }
+      } else {
+        print("Failed to download file. Status code: ${response.statusCode}");
+      }
+    } catch (e) {
+      print('An error occurred during download: $e');
+    } finally {
+      voicedownloadLoading = false;
+      update();
+    }
+  }
 }
+
+const imgFileTypes = ['png', 'jpg', 'gif', 'jpeg', 'tif', 'tiff', 'svg', 'BMP'];
+const voiceFileTypes = [
+  'wav',
+  'aiff',
+  'pcm',
+  'mp3',
+  'aac',
+  'ogg',
+  'wma',
+  'flac',
+  'alac',
+  'ape',
+  'm4a',
+  'opus',
+  'amr'
+];
+const videoFileTypes = [
+  'mp4',
+  'mkv',
+  'mov',
+  'avi',
+  'flv',
+  'wmv',
+  'webm',
+  'mpeg',
+  'mpg'
+];
+const excelFileTypes = ['xls', 'xlsx', 'xlsm', 'xlsb', 'xltx', 'xltm'];
+const pdfFileTypes = ['pdf'];

@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/task_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
-import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_feedback/feedback_details/feedback_profile_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../../Model/mission.dart';
 import '../../../../../Model/task.dart';
 import '../../../../widgets/Containers/container_blue.dart';
 import '../../../../widgets/Dialog/showExitConfirmationDialog.dart';
-import '../../home_feedback/create_feedback/cretate_screen.dart';
 import '../widgets/getStatusColor.dart';
-import '../widgets/getStatusLabel.dart';
 import '../widgets/mission_card.dart';
+import 'widgets/item_message.dart';
 
 class TaskProfileScreen extends StatefulWidget {
   final int taskId;
@@ -40,8 +37,6 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
-    // Fetch mission by ID on widget build
 
     return Scaffold(
       appBar: AppBar(
@@ -81,7 +76,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                       },
                       label: Text(
                         "Start Mission".tr,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       )),
                 const SizedBox(
                   height: 20,
@@ -92,74 +87,41 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                           "addFeedback2", // Unique tag for the first button
 
                       backgroundColor: Theme.of(context).primaryColor,
-                      onPressed: () {
-                        // Go.to(
-                        //     context,
-                        //     CreateFeedBackScreen(
-                        //       clientID: task.clientId,
-                        //       feedbackModelID: 16,
-                        //       missionID: task.id,
-                        //     ));
-                      },
+                      onPressed: () {},
                       label: Text(
                         "Add Feedback".tr,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       )),
               ],
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: ListView(
+                shrinkWrap: true,
                 children: [
                   _buildMissionHeader(context, task),
                   const SizedBox(height: 16),
-                  // InkWell(
-                  //   child: _buildMissionInfoSectionClient('Clinet'.tr,
-                  //       task.client!, Icons.person_pin, theme.primaryColor),
-                  // ),
-                  _buildMissionStatusSection(theme, task.statusId!, controller),
-                  // if (task.feedback!.id != 0)
-                  //   InkWell(
-                  //     onTap: () {
-                  //       if (task.feedback!.id != 1) {
-                  //         Go.to(
-                  //             context,
-                  //             FeedbackDetailScreen(
-                  //                 feedbackId: task.feedback!.id.toString()));
-                  //       }
-                  //     },
-                  //     child: _buildMissionInfoSection(
-                  //         'Feedback'.tr,
-                  //         task.feedback!.label.toString(),
-                  //         Icons.feed,
-                  //         theme.primaryColor),
-                  //   ),
-                  // _buildMissionInfoSection(
-                  //     'Mission Description'.tr,
-                  //     mission.desc ?? 'No description available'.tr,
-                  //     Icons.description,
-                  //     theme.primaryColor),
-                  _buildMissionInfoSection(
-                      'Creator Username'.tr,
-                      task.responsibleId!.toString(),
-                      Icons.person,
-                      theme.primaryColor),
-                  _buildMissionInfoSection(
-                      'Editor Username'.tr,
-                      task.observerUsername ?? 'No editor assigned'.tr,
-                      Icons.edit,
-                      theme.primaryColor),
-                  _buildMissionInfoSection(
-                      'Created At'.tr,
-                      formatDate(task.createdAt.toString()),
-                      Icons.date_range,
-                      theme.primaryColor),
-
-                  SizedBox(
-                    height: 75,
+                  _taskInformation(controller),
+                  const SizedBox(height: 16),
+                  Text(
+                    "commenter",
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    height: 1,
+                    width: double.maxFinite,
+                    color: Colors.grey.withOpacity(0.2),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  listItems(
+                    controller: controller,
                   )
                 ],
-                // ignore: avoid_print
               ).addRefreshIndicator(
                   onRefresh: () =>
                       taskController.getTaskById(context, widget.taskId)),
@@ -170,10 +132,112 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
     );
   }
 
+  Container _taskInformation(TaskController controller) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.grey)),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Task Information",
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              height: 1,
+              width: double.maxFinite,
+              color: Colors.grey.withOpacity(0.2),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                const Text(
+                  "Owner: ",
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  controller.task!.ownerUsername!,
+                  style: const TextStyle(
+                      fontSize: 13, fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                const Text(
+                  "Responsible: ",
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  controller.task!.responsibleUsername!,
+                  style: const TextStyle(
+                      fontSize: 13, fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                const Text(
+                  "Oobserver: ",
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  controller.task!.observerUsername!,
+                  style: const TextStyle(
+                      fontSize: 13, fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              height: 1,
+              width: double.maxFinite,
+              color: Colors.grey.withOpacity(0.2),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                const Text(
+                  "Status: ",
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  getStatusLabel(controller.task!.statusId),
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: getStatusColortask(controller.task!.statusId)),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildMissionHeader(BuildContext context, Task task) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(0.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -185,186 +249,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            task.label ?? 'No description available'.tr,
-            style:
-                theme.textTheme.titleMedium?.copyWith(color: Colors.grey[700]),
-          ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildBusinessDetailsSection(
-    context,
-    ClientMission client,
-  ) {
-    return containerwithblue(
-      context,
-      widget: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Business Information'.tr,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            _buildInfoRow('Sold:'.tr, client.sold!),
-            _buildInfoRow('Potential:'.tr, client.potential!),
-            _buildInfoRow('Turnover:'.tr, client.turnover!),
-            _buildInfoRow('Cashing In:'.tr, client.cashingIn!),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-          ),
-          Text(
-            value.isNotEmpty ? value : 'N/A',
-            style: TextStyle(fontSize: 13, color: Colors.grey[800]),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMissionInfoSectionClient(
-      String title, ClientMission client, IconData icon, Color iconColor) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.withOpacity(0.2)),
-        ),
-        child: ListTile(
-          title: Text(
-            title.toString(),
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: iconColor,
-            ),
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  Icon(Icons.person,
-                      color: Color.fromARGB(255, 48, 48, 48), size: 18),
-                  const SizedBox(width: 4),
-                  Text(
-                    "Full Name".tr + " ${client.fullName}",
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 48, 48, 48),
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  Icon(Icons.phone,
-                      color: Color.fromARGB(255, 48, 48, 48), size: 18),
-                  const SizedBox(width: 4),
-                  Text(
-                    "Tel :".tr + " ${(client.tel == "" ? 'N/A' : client.tel)}",
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 48, 48, 48),
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  Icon(Icons.phone_android_rounded,
-                      color: Color.fromARGB(255, 48, 48, 48), size: 18),
-                  const SizedBox(width: 4),
-                  Text(
-                    "Phone :".tr +
-                        " ${(client.phone == "" ? 'N/A' : client.phone)}",
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 48, 48, 48),
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  Icon(Icons.home,
-                      color: Color.fromARGB(255, 48, 48, 48), size: 18),
-                  const SizedBox(width: 4),
-                  Flexible(
-                    child: Text(
-                      "Address :".tr +
-                          " ${(client.address == "" ? 'N/A' : client.address)}",
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 48, 48, 48),
-                        fontSize: 13,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              _buildBusinessDetailsSection(context, client)
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMissionInfoSection(
-      String title, String content, IconData icon, Color iconColor) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.withOpacity(0.2)),
-        ),
-        child: ListTile(
-          leading: Icon(icon, color: iconColor),
-          title: Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: iconColor,
-            ),
-          ),
-          subtitle: Text(content),
-        ),
       ),
     );
   }
@@ -411,7 +296,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                         details: 'Are you sure to Stop the Mission?'.tr,
                         title: 'Cnfirmation'.tr);
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.stop_circle_outlined,
                     color: Colors.red,
                   ))
@@ -429,7 +314,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                             details: 'Are you sure to Start the Mission?'.tr,
                             title: 'Cnfirmation'.tr);
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.play_circle_outline_outlined,
                         color: Colors.green,
                       ))
@@ -440,5 +325,31 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
         ),
       ),
     );
+  }
+}
+
+class listItems extends StatelessWidget {
+  final TaskController controller;
+  const listItems({
+    super.key,
+    required this.controller,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: controller.task!.items.length,
+        itemBuilder: (context, indext) {
+          final comment = controller.task!.items[indext];
+          return itemMessage(
+            comment: comment,
+            attachmentId: controller.task!.items[indext].attachments.first["id"]
+                .toString(),
+            taskId: controller.task!.id.toString(),
+            taskItemId: controller.task!.items[indext].id.toString(),
+          );
+        });
   }
 }
