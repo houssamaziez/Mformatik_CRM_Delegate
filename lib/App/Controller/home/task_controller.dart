@@ -222,6 +222,23 @@ class TaskController extends GetxController {
   }
 
   List ListImage = [];
+  List ListPDF = [];
+  List ListExcel = [];
+  cleanListImage() {
+    ListImage = [];
+    update();
+  }
+
+  cleanListPDF() {
+    ListPDF = [];
+    update();
+  }
+
+  cleanListExcel() {
+    ListExcel = [];
+    update();
+  }
+
   List<File>? files;
   bool voicedownloadLoading = false;
   String? pahtFile;
@@ -230,10 +247,6 @@ class TaskController extends GetxController {
     required String taskItemId,
     required String attachmentId,
   }) async {
-    update();
-    pahtFile = null;
-    update();
-
     try {
       voicedownloadLoading = true;
       update();
@@ -261,8 +274,10 @@ class TaskController extends GetxController {
           } else if (videoFileTypes.any((type) => contentType.contains(type))) {
             print("The file is a video.");
           } else if (pdfFileTypes.any((type) => contentType.contains(type))) {
+            ListPDF.add(response.bodyBytes);
             print("The file is a PDF.");
           } else if (excelFileTypes.any((type) => contentType.contains(type))) {
+            ListExcel.add(response.bodyBytes);
             print("The file is an Excel document.");
           } else {
             print("Unknown file type.");
@@ -283,6 +298,20 @@ class TaskController extends GetxController {
 }
 
 const imgFileTypes = ['png', 'jpg', 'gif', 'jpeg', 'tif', 'tiff', 'svg', 'BMP'];
+
+const excelFileTypes = ['xls', 'xlsx', 'xlsm', 'xlsb', 'xltx', 'xltm', 'sheet'];
+const pdfFileTypes = ['pdf'];
+const videoFileTypes = [
+  'mp4',
+  'mkv',
+  'mov',
+  'avi',
+  'flv',
+  'wmv',
+  'webm',
+  'mpeg',
+  'mpg'
+];
 const voiceFileTypes = [
   'wav',
   'aiff',
@@ -298,16 +327,3 @@ const voiceFileTypes = [
   'opus',
   'amr'
 ];
-const videoFileTypes = [
-  'mp4',
-  'mkv',
-  'mov',
-  'avi',
-  'flv',
-  'wmv',
-  'webm',
-  'mpeg',
-  'mpg'
-];
-const excelFileTypes = ['xls', 'xlsx', 'xlsm', 'xlsb', 'xltx', 'xltm'];
-const pdfFileTypes = ['pdf'];

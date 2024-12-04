@@ -1,18 +1,17 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/task_controller.dart';
-import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/widgets/listItems.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
-import '../../../../../Model/mission.dart';
-import '../../../../../Model/task.dart';
-import '../../../../widgets/Containers/container_blue.dart';
 import '../../../../widgets/Dialog/showExitConfirmationDialog.dart';
-import '../widgets/getStatusColor.dart';
-import '../widgets/mission_card.dart';
-import 'widgets/item_message.dart';
+import 'widgets/buildTaskHeader.dart';
+import 'widgets/taskInformation.dart';
 
 class TaskProfileScreen extends StatefulWidget {
   final int taskId;
@@ -34,15 +33,187 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
     super.initState();
   }
 
+  TextEditingController _controller = TextEditingController();
+  List<File> _selectedImages = []; // Store selected images
+  List<File> _selectedFiles = []; // Store selected files
+
+  Future<void> _pickImage() async {
+    // Pick multiple images using image_picker package
+    final ImagePicker _picker = ImagePicker();
+    final List<XFile>? images = await _picker.pickMultiImage();
+
+    if (images != null && images.isNotEmpty) {
+      setState(() {
+        // Add selected images to the list
+        _selectedImages
+            .addAll(images.map((image) => File(image.path)).toList());
+      });
+    }
+  }
+
+  void _deleteImage(int index) {
+    setState(() {
+      _selectedImages.removeAt(index);
+    });
+  }
+
+  void _deleteFile(int index) {
+    setState(() {
+      _selectedFiles.removeAt(index);
+    });
+  }
+
+  Future<void> _pickFile() async {
+    // Open the file picker dialog with allowed extensions and multiple file selection
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx'],
+      allowMultiple: true, // Allow multiple file selection
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      setState(() {
+        // Add selected files to the list
+        _selectedFiles
+            .addAll(result.files.map((file) => File(file.path!)).toList());
+      });
+    }
+  }
+
+  void _sendMessage() {
+    if (_controller.text.isNotEmpty) {
+      print("Message sent: ${_controller.text}");
+      _controller.clear();
+    }
+
+    // Reset image and file selection
+    setState(() {
+      _selectedImages.clear();
+      _selectedFiles.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Mission Details'.tr),
         centerTitle: true,
-        backgroundColor: theme.primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      bottomSheet: Container(
+        height: (_selectedImages.isNotEmpty || _selectedFiles.isNotEmpty)
+            ? 190
+            : 70,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.photo),
+                  onPressed: _pickImage,
+                ),
+                IconButton(
+                  icon: Icon(Icons.attach_file),
+                  onPressed: _pickFile,
+                ),
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      hintText: 'Type a message...',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: _sendMessage,
+                ),
+              ],
+            ),
+            if (_selectedImages.isNotEmpty || _selectedFiles.isNotEmpty)
+              Container(
+                height: 120,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    ..._selectedImages.asMap().entries.map((entry) {
+                      int index = entry.key; // Index from asMap()
+                      File image = entry.value; // File from the list
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Stack(
+                          children: [
+                            Image.file(
+                              image,
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: IconButton(
+                                onPressed: () => _deleteImage(index),
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                    // Display selected files
+                    ..._selectedFiles.asMap().entries.map((entry) {
+                      int index = entry.key; // Index from asMap()
+                      File file = entry.value; // File from the list
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 5, vertical: 10),
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 100,
+                              child: Column(
+                                children: [
+                                  Icon(Icons.file_copy,
+                                      size: 20, color: Colors.blue),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    file.path.split('/').last,
+                                    maxLines: 1,
+                                    overflow: TextOverflow
+                                        .ellipsis, // Truncate long file names
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              right: 0,
+                              left: 0,
+                              top: 0,
+                              child: IconButton(
+                                icon: Icon(Icons.delete, color: Colors.red),
+                                onPressed: () =>
+                                    _deleteFile(index), // Call delete function
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                ),
+              ),
+          ],
+        ),
       ),
       body: GetBuilder<TaskController>(
         init: TaskController(),
@@ -94,262 +265,35 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                       )),
               ],
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  _buildMissionHeader(context, task),
-                  const SizedBox(height: 16),
-                  _taskInformation(controller),
-                  const SizedBox(height: 16),
-                  Text(
-                    "commenter",
-                    style: TextStyle(fontWeight: FontWeight.w500),
+            body: ListView(
+              shrinkWrap: true,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildTaskHeader(context, task),
+                      const SizedBox(height: 16),
+                      taskInformation(controller),
+                      const SizedBox(height: 16),
+                      Text(
+                        "commenter",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 1,
-                    width: double.maxFinite,
-                    color: Colors.grey.withOpacity(0.2),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  listItems(
-                    controller: controller,
-                  )
-                ],
-              ).addRefreshIndicator(
-                  onRefresh: () =>
-                      taskController.getTaskById(context, widget.taskId)),
-            ),
+                ),
+                listItems(
+                  controller: controller,
+                ),
+              ],
+            ).addRefreshIndicator(
+                onRefresh: () =>
+                    taskController.getTaskById(context, widget.taskId)),
           );
         },
       ),
     );
-  }
-
-  Container _taskInformation(TaskController controller) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.grey)),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Task Information",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 1,
-              width: double.maxFinite,
-              color: Colors.grey.withOpacity(0.2),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                const Text(
-                  "Owner: ",
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  controller.task!.ownerUsername!,
-                  style: const TextStyle(
-                      fontSize: 13, fontWeight: FontWeight.w500),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                const Text(
-                  "Responsible: ",
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  controller.task!.responsibleUsername!,
-                  style: const TextStyle(
-                      fontSize: 13, fontWeight: FontWeight.w500),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                const Text(
-                  "Oobserver: ",
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  controller.task!.observerUsername!,
-                  style: const TextStyle(
-                      fontSize: 13, fontWeight: FontWeight.w500),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 1,
-              width: double.maxFinite,
-              color: Colors.grey.withOpacity(0.2),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                const Text(
-                  "Status: ",
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  getStatusLabel(controller.task!.statusId),
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: getStatusColortask(controller.task!.statusId)),
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMissionHeader(BuildContext context, Task task) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.all(0.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            task.label!,
-            style: theme.textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.primaryColor,
-            ),
-          ),
-          const SizedBox(height: 8),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMissionStatusSection(
-      ThemeData theme, int statusId, TaskController controller) {
-    String statusLabel = getStatusLabel(statusId);
-    Color statusColor = getStatusColortask(statusId);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: statusColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: ListTile(
-          leading: Icon(
-            Icons.circle,
-            color: statusColor,
-          ),
-          title: Text(
-            'Status'.tr,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: theme.primaryColor,
-            ),
-          ),
-          subtitle: Text(
-            statusLabel,
-            style: TextStyle(
-              color: statusColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          trailing: statusId == 2
-              ? IconButton(
-                  onPressed: () {
-                    showExitConfirmationDialog(context, onPressed: () async {
-                      Get.back();
-
-                      await controller.changeStatuseMission(1, widget.taskId);
-                    },
-                        details: 'Are you sure to Stop the Mission?'.tr,
-                        title: 'Cnfirmation'.tr);
-                  },
-                  icon: const Icon(
-                    Icons.stop_circle_outlined,
-                    color: Colors.red,
-                  ))
-              : statusId == 1
-                  ? IconButton(
-                      onPressed: () {
-                        showExitConfirmationDialog(context,
-                            onPressed: () async {
-                          Get.back();
-
-                          await controller
-                              .changeStatuseMission(2, widget.taskId)
-                              .then((onValue) {});
-                        },
-                            details: 'Are you sure to Start the Mission?'.tr,
-                            title: 'Cnfirmation'.tr);
-                      },
-                      icon: const Icon(
-                        Icons.play_circle_outline_outlined,
-                        color: Colors.green,
-                      ))
-                  : Container(
-                      height: 4,
-                      width: 4,
-                    ),
-        ),
-      ),
-    );
-  }
-}
-
-class listItems extends StatelessWidget {
-  final TaskController controller;
-  const listItems({
-    super.key,
-    required this.controller,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: controller.task!.items.length,
-        itemBuilder: (context, indext) {
-          final comment = controller.task!.items[indext];
-          return itemMessage(
-            comment: comment,
-            attachmentId: controller.task!.items[indext].attachments.first["id"]
-                .toString(),
-            taskId: controller.task!.id.toString(),
-            taskItemId: controller.task!.items[indext].id.toString(),
-          );
-        });
   }
 }

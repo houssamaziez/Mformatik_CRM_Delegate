@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/task_controller.dart';
+import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/ShowExcel.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/ShowPDFs.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/showfile.dart';
 
 import '../../../../../../Controller/auth/auth_controller.dart';
 import '../../../../../../Model/task.dart';
@@ -15,16 +19,18 @@ class itemMessage extends StatelessWidget {
     required this.comment,
     required this.taskId,
     required this.taskItemId,
-    required this.attachmentId,
   });
 
   final Item comment;
   final String taskId;
   final String taskItemId;
-  final String attachmentId;
   int imagelanght = 0;
+  List imagepath = [];
   int pdflanght = 0;
+  List pdfpath = [];
+
   int exllanght = 0;
+  List exllpath = [];
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +38,17 @@ class itemMessage extends StatelessWidget {
       if (imgFileTypes
           .any((type) => action["path"].toString().contains(type))) {
         imagelanght = imagelanght + 1;
+        imagepath.add(action["path"].toString());
       }
       if (pdfFileTypes
           .any((type) => action["path"].toString().contains(type))) {
         pdflanght = pdflanght + 1;
+        pdfpath.add(action["path"].toString());
       }
       if (excelFileTypes
           .any((type) => action["path"].toString().contains(type))) {
         exllanght = exllanght + 1;
+        exllpath.add(action["path"].toString());
       }
     });
     print("imagelanght  " + imagelanght.toString());
@@ -54,81 +63,73 @@ class itemMessage extends StatelessWidget {
             children: [
               // Image.memory(cont.ListImage.first),
 
-              InkWell(
-                onTap: () {
-                  Get.put(TaskController()).downloadfile(
-                      taskId: taskId,
-                      taskItemId: taskItemId,
-                      attachmentId: attachmentId);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20, left: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(comment.creatorId !=
+              Padding(
+                padding: const EdgeInsets.only(right: 20, left: 20),
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(comment.creatorId !=
+                                  Get.put(AuthController()).user!.id
+                              ? 0
+                              : 15),
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                          bottomRight: Radius.circular(comment.creatorId ==
+                                  Get.put(AuthController()).user!.id
+                              ? 0
+                              : 15)),
+                      color: comment.creatorId ==
+                              Get.put(AuthController()).user!.id
+                          ? Theme.of(context).primaryColor
+                          : const Color.fromARGB(255, 231, 231, 231)),
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: comment.creatorId ==
                                     Get.put(AuthController()).user!.id
-                                ? 0
-                                : 15),
-                            topLeft: Radius.circular(15),
-                            topRight: Radius.circular(15),
-                            bottomRight: Radius.circular(comment.creatorId ==
-                                    Get.put(AuthController()).user!.id
-                                ? 0
-                                : 15)),
-                        color: comment.creatorId ==
-                                Get.put(AuthController()).user!.id
-                            ? Theme.of(context).primaryColor
-                            : const Color.fromARGB(255, 231, 231, 231)),
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: comment.creatorId ==
-                                      Get.put(AuthController()).user!.id
-                                  ? CrossAxisAlignment.start
-                                  : CrossAxisAlignment.start,
-                              children: [
-                                if (comment.creatorId !=
-                                    Get.put(AuthController()).user!.id)
-                                  Text(
-                                    "@" + comment.creatorUsername,
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                ? CrossAxisAlignment.start
+                                : CrossAxisAlignment.start,
+                            children: [
+                              if (comment.creatorId !=
+                                  Get.put(AuthController()).user!.id)
                                 Text(
-                                  comment.desc,
+                                  "@" + comment.creatorUsername,
                                   style: TextStyle(
-                                      color: comment.creatorId ==
-                                              Get.put(AuthController()).user!.id
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontSize: 14),
+                                      fontSize: 10,
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                Container(
-                                    child: Row(
-                                  children: [
-                                    Text(comment.creatorId.toString()),
-                                    Spacer(),
-                                    Text(
-                                      timeDifference(DateTime.parse(
-                                          comment.createdAt.toString())),
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                      ),
+                              Text(
+                                comment.desc,
+                                style: TextStyle(
+                                    color: comment.creatorId ==
+                                            Get.put(AuthController()).user!.id
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 14),
+                              ),
+                              Container(
+                                  child: Row(
+                                children: [
+                                  Text(comment.creatorId.toString()),
+                                  Spacer(),
+                                  Text(
+                                    timeDifference(DateTime.parse(
+                                        comment.createdAt.toString())),
+                                    style: TextStyle(
+                                      fontSize: 10,
                                     ),
-                                  ],
-                                )),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              )),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -140,51 +141,83 @@ class itemMessage extends StatelessWidget {
                   Row(
                     children: [
                       if (imagelanght != 0)
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                "assets/icons/photo.png",
-                                height: 17,
-                              ),
-                              Text(
-                                imagelanght.toString(),
-                                style: TextStyle(fontSize: 9),
-                              ),
-                            ],
+                        InkWell(
+                          onTap: () {
+                            Go.to(
+                                context,
+                                ShowImages(
+                                    listitem: comment.attachments,
+                                    taskId: taskId,
+                                    taskItemId: comment.id.toString()));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  "assets/icons/photo.png",
+                                  height: 17,
+                                ),
+                                Text(
+                                  imagelanght.toString(),
+                                  style: TextStyle(fontSize: 9),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       if (pdflanght != 0)
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                "assets/icons/pdf.png",
-                                height: 17,
-                              ),
-                              Text(
-                                pdflanght.toString(),
-                                style: TextStyle(fontSize: 9),
-                              ),
-                            ],
+                        InkWell(
+                          onTap: () {
+                            Go.to(
+                                context,
+                                ShowPDFs(
+                                    name: pdfpath,
+                                    listitem: comment.attachments,
+                                    taskId: taskId,
+                                    taskItemId: comment.id.toString()));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  "assets/icons/pdf.png",
+                                  height: 17,
+                                ),
+                                Text(
+                                  pdflanght.toString(),
+                                  style: TextStyle(fontSize: 9),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       if (exllanght != 0)
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                "assets/icons/excel.png",
-                                height: 17,
-                              ),
-                              Text(
-                                exllanght.toString(),
-                                style: TextStyle(fontSize: 9),
-                              ),
-                            ],
+                        InkWell(
+                          onTap: () {
+                            Go.to(
+                                context,
+                                ShowExcel(
+                                    name: exllpath,
+                                    listitem: comment.attachments,
+                                    taskId: taskId,
+                                    taskItemId: comment.id.toString()));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  "assets/icons/excel.png",
+                                  height: 17,
+                                ),
+                                Text(
+                                  exllanght.toString(),
+                                  style: TextStyle(fontSize: 9),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                     ],
