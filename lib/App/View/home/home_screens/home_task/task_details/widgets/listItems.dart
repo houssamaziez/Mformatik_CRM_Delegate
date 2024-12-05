@@ -13,7 +13,7 @@ class listItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromARGB(255, 245, 245, 245),
+      color: const Color.fromARGB(255, 247, 247, 247),
       child: Column(
         children: [
           SizedBox(

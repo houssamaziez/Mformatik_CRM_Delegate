@@ -69,6 +69,7 @@ dependencies:
   excel: ^4.0.6
   open_file: ^3.5.10
   file_picker: ^8.1.4
+  flutter_speed_dial: ^7.0.0
   # flutter_sound: ^9.6.0
   # ffmpeg_kit_flutter: ^6.0.3
    

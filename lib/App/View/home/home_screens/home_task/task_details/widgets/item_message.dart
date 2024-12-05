@@ -140,6 +140,21 @@ class itemMessage extends StatelessWidget {
                     Spacer(),
                   Row(
                     children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(180),
+                        child: comment.creatorId !=
+                                Get.put(AuthController()).user!.id
+                            ? CircleAvatar(
+                                radius: 10,
+                                child: Center(
+                                  child: Text(
+                                    comment.creatorUsername[0],
+                                    style: TextStyle(fontSize: 10),
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                      ),
                       if (imagelanght != 0)
                         InkWell(
                           onTap: () {
@@ -226,15 +241,7 @@ class itemMessage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(180),
                     child:
                         comment.creatorId != Get.put(AuthController()).user!.id
-                            ? CircleAvatar(
-                                radius: 10,
-                                child: Center(
-                                  child: Text(
-                                    comment.creatorUsername[0],
-                                    style: TextStyle(fontSize: 10),
-                                  ),
-                                ),
-                              )
+                            ? Container()
                             : _imageMessage(comment),
                   ),
                 ],

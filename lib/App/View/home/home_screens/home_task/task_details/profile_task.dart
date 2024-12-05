@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/task_controller.dart';
@@ -101,120 +102,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      bottomSheet: Container(
-        height: (_selectedImages.isNotEmpty || _selectedFiles.isNotEmpty)
-            ? 190
-            : 70,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.photo),
-                  onPressed: _pickImage,
-                ),
-                IconButton(
-                  icon: Icon(Icons.attach_file),
-                  onPressed: _pickFile,
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: 'Type a message...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: _sendMessage,
-                ),
-              ],
-            ),
-            if (_selectedImages.isNotEmpty || _selectedFiles.isNotEmpty)
-              Container(
-                height: 120,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    ..._selectedImages.asMap().entries.map((entry) {
-                      int index = entry.key; // Index from asMap()
-                      File image = entry.value; // File from the list
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Stack(
-                          children: [
-                            Image.file(
-                              image,
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                            ),
-                            Positioned(
-                              right: 0,
-                              top: 0,
-                              child: IconButton(
-                                onPressed: () => _deleteImage(index),
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                    // Display selected files
-                    ..._selectedFiles.asMap().entries.map((entry) {
-                      int index = entry.key; // Index from asMap()
-                      File file = entry.value; // File from the list
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5, vertical: 10),
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 100,
-                              child: Column(
-                                children: [
-                                  Icon(Icons.file_copy,
-                                      size: 20, color: Colors.blue),
-                                  SizedBox(height: 5),
-                                  Text(
-                                    file.path.split('/').last,
-                                    maxLines: 1,
-                                    overflow: TextOverflow
-                                        .ellipsis, // Truncate long file names
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              right: 0,
-                              left: 0,
-                              top: 0,
-                              child: IconButton(
-                                icon: Icon(Icons.delete, color: Colors.red),
-                                onPressed: () =>
-                                    _deleteFile(index), // Call delete function
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ],
-                ),
-              ),
-          ],
-        ),
-      ),
+      bottomSheet: bottomSheet(context),
       body: GetBuilder<TaskController>(
         init: TaskController(),
         builder: (controller) {
@@ -277,7 +165,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                       const SizedBox(height: 16),
                       taskInformation(controller),
                       const SizedBox(height: 16),
-                      Text(
+                      const Text(
                         "commenter",
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
@@ -296,4 +184,172 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
       ),
     );
   }
+
+  Container bottomSheet(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      height:
+          (_selectedImages.isNotEmpty || _selectedFiles.isNotEmpty) ? 200 : 80,
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              SpeedDial(
+                animatedIcon: AnimatedIcons.menu_close,
+                backgroundColor: Colors.transparent,
+                overlayColor: Colors.white,
+                overlayOpacity: 0.0,
+                spacing: 0,
+                elevation: 0,
+                spaceBetweenChildren: 8,
+                children: [
+                  SpeedDialChild(
+                    child: Icon(Icons.camera_alt, color: Colors.white),
+                    backgroundColor: Colors.grey,
+                    label: 'Camera',
+                    labelStyle: TextStyle(fontSize: 16.0),
+                    onTap: () => print('Camera Selected'),
+                  ),
+                  SpeedDialChild(
+                    child: Icon(Icons.photo, color: Colors.white),
+                    backgroundColor: Colors.grey,
+                    label: 'Gallery',
+                    labelStyle: TextStyle(fontSize: 16.0),
+                    onTap: _pickImage,
+                  ),
+                  SpeedDialChild(
+                    child: Icon(Icons.attach_file, color: Colors.white),
+                    backgroundColor: Colors.grey,
+                    label: 'File',
+                    labelStyle: TextStyle(fontSize: 16.0),
+                    onTap: _pickFile,
+                  ),
+                ],
+              ),
+              Expanded(
+                child: TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    hintText: 'Type a message...',
+                    border: OutlineInputBorder(
+                        // borderRadius: BorderRadius.circular(30),
+                        ),
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: Image.asset(
+                  "assets/icons/send.png",
+                  height: 20,
+                ),
+                onPressed: _sendMessage,
+              ),
+            ],
+          ),
+          if (_selectedImages.isNotEmpty || _selectedFiles.isNotEmpty)
+            Container(
+              color: Colors.white,
+              height: 120,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  ..._selectedImages.asMap().entries.map((entry) {
+                    int index = entry.key; // Index from asMap()
+                    File image = entry.value; // File from the list
+                    return Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Stack(
+                          children: [
+                            Image.file(
+                              image,
+                              fit: BoxFit.cover,
+                            ),
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: IconButton(
+                                onPressed: () => _deleteImage(index),
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  // Display selected files
+                  ..._selectedFiles.asMap().entries.map((entry) {
+                    int index = entry.key; // Index from asMap()
+                    File file = entry.value; // File from the list
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 120,
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    returnIconFile(file.path),
+                                    height: 50,
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    file.path.split('/').last,
+                                    maxLines: 1,
+                                    overflow: TextOverflow
+                                        .ellipsis, // Truncate long file names
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              left: 0,
+                              child: IconButton(
+                                icon:
+                                    const Icon(Icons.delete, color: Colors.red),
+                                onPressed: () =>
+                                    _deleteFile(index), // Call delete function
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+String returnIconFile(String path) {
+  if (imgFileTypes.any((type) => path.toString().contains(type))) {
+    return "assets/icons/photo.png";
+  }
+  if (pdfFileTypes.any((type) => path.toString().contains(type))) {
+    return "assets/icons/pdf.png";
+  }
+  if (excelFileTypes.any((type) => path.toString().contains(type))) {
+    return "assets/icons/excel.png";
+  }
+
+  return "assets/icons/photo.png";
 }
