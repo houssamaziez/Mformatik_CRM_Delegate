@@ -81,6 +81,17 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
     }
   }
 
+  Future<void> _takePhoto() async {
+    final ImagePicker _picker = ImagePicker();
+
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    if (photo != null) {
+      setState(() {
+        _selectedImages!.add(File(photo.path));
+      });
+    }
+  }
+
   void _sendMessage() {
     if (_controller.text.isNotEmpty) {
       print("Message sent: ${_controller.text}");
@@ -166,7 +177,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                       taskInformation(controller),
                       const SizedBox(height: 16),
                       const Text(
-                        "commenter",
+                        "Discussion",
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                     ],
@@ -200,7 +211,11 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                 animatedIcon: AnimatedIcons.menu_close,
                 backgroundColor: Colors.transparent,
                 overlayColor: Colors.white,
+                iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+                animatedIconTheme:
+                    IconThemeData(color: Theme.of(context).primaryColor),
                 overlayOpacity: 0.0,
+                activeIcon: IconData(1),
                 spacing: 0,
                 elevation: 0,
                 spaceBetweenChildren: 8,
@@ -210,7 +225,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                     backgroundColor: Colors.grey,
                     label: 'Camera',
                     labelStyle: TextStyle(fontSize: 16.0),
-                    onTap: () => print('Camera Selected'),
+                    onTap: _takePhoto,
                   ),
                   SpeedDialChild(
                     child: Icon(Icons.photo, color: Colors.white),
@@ -258,30 +273,33 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                   ..._selectedImages.asMap().entries.map((entry) {
                     int index = entry.key; // Index from asMap()
                     File image = entry.value; // File from the list
-                    return Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Stack(
-                          children: [
-                            Image.file(
-                              image,
-                              fit: BoxFit.cover,
-                            ),
-                            Positioned(
-                              right: 0,
-                              top: 0,
-                              child: IconButton(
-                                onPressed: () => _deleteImage(index),
-                                icon: const Icon(
-                                  Icons.delete,
-                                  color: Colors.red,
+                    return Card(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Stack(
+                            children: [
+                              Image.file(
+                                image,
+                                fit: BoxFit.cover,
+                                width: 120,
+                              ),
+                              Positioned(
+                                right: 0,
+                                top: 0,
+                                child: IconButton(
+                                  onPressed: () => _deleteImage(index),
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    size: 20,
+                                    color: Colors.red,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );
@@ -293,40 +311,42 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 10),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 120,
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    returnIconFile(file.path),
-                                    height: 50,
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    file.path.split('/').last,
-                                    maxLines: 1,
-                                    overflow: TextOverflow
-                                        .ellipsis, // Truncate long file names
-                                  ),
-                                ],
+                      child: Card(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: 120,
+                                child: Column(
+                                  children: [
+                                    Image.asset(
+                                      returnIconFile(file.path),
+                                      height: 50,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      file.path.split('/').last,
+                                      maxLines: 1,
+                                      overflow: TextOverflow
+                                          .ellipsis, // Truncate long file names
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Positioned(
-                              left: 0,
-                              child: IconButton(
-                                icon:
-                                    const Icon(Icons.delete, color: Colors.red),
-                                onPressed: () =>
-                                    _deleteFile(index), // Call delete function
+                              Positioned(
+                                left: 0,
+                                child: IconButton(
+                                  icon: const Icon(Icons.delete,
+                                      size: 20, color: Colors.red),
+                                  onPressed: () => _deleteFile(
+                                      index), // Call delete function
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );
