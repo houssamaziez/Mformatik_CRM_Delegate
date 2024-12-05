@@ -10,9 +10,7 @@ class InteractiveTextScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SelectableText.rich(
-      _buildTextSpan(
-          """S+6 + App inventory Besoins : - Production : N°lot auto incrément (Dans la liste Backlog). - lecture du Code à barre des lots lors de la création d'un BL (Besoin existe déjà) - Droit de timbre modifiable(a discuter avec le client ) - Raccourci de Matière première dans la liste des produits (Requête SQL) -Accès total dans la modifications des modèles d'impression avec DevExpress (Offerte au Client) N Telhttps://cri.hisbaerp.com/dashboard/missions  Monsieur Smara 0552316740 Localisation GPS : https://maps.app.goo.gl/YFQcwK4aEcE5rhh16 Net a payer : 608 326.81 TTC Montant du Chèque : 608 326.81 DA""",
-          context),
+      _buildTextSpan(description, context),
     );
   }
 
