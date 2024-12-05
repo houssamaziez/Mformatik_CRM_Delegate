@@ -14,6 +14,7 @@ import 'package:mformatic_crm_delegate/App/View/widgets/voice_vocal_view/voice_p
 import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/home/feedback/feedback_controller.dart';
 import '../../../../../Model/feedback.dart';
+import '../../../../../Util/Lanch_url/select_text.dart';
 import '../../../../widgets/Containers/container_blue.dart';
 import '../feedback_update/update_feedback_screen.dart';
 
@@ -88,17 +89,20 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                 ),
                 const SizedBox(height: 8),
                 if (feedback.desc != null)
-                  Text(
-                    feedback.desc == null || feedback.desc == ""
-                        ? 'No Description available'.tr
-                        : feedback.desc!,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: feedback.desc == null || feedback.desc == ""
-                          ? Colors.grey
-                          : Colors.black87,
-                    ),
-                  ),
+                  InteractiveTextScreen(
+                      description:
+                          feedback.desc ?? 'No description available'.tr),
+                // Text(
+                //   feedback.desc == null || feedback.desc == ""
+                //       ? 'No Description available'.tr
+                //       : feedback.desc!,
+                //   style: TextStyle(
+                //     fontSize: 18,
+                //     color: feedback.desc == null || feedback.desc == ""
+                //         ? Colors.grey
+                //         : Colors.black87,
+                //   ),
+                // ),
                 const SizedBox(height: 8),
 
                 // Date and Location
