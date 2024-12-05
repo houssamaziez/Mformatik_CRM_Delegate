@@ -8,6 +8,7 @@ import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_feedback/
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../../Model/mission.dart';
+import '../../../../../Util/Lanch_url/select_text.dart';
 import '../../../../widgets/Containers/container_blue.dart';
 import '../../../../widgets/Dialog/showExitConfirmationDialog.dart';
 import '../../home_feedback/create_feedback/cretate_screen.dart';
@@ -181,11 +182,13 @@ class _MissionProfileScreenState extends State<MissionProfileScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            mission.desc ?? 'No description available'.tr,
-            style:
-                theme.textTheme.titleMedium?.copyWith(color: Colors.grey[700]),
-          ),
+          InteractiveTextScreen(
+              description: mission.desc ?? 'No description available'.tr),
+          // Text(
+          //   mission.desc ?? 'No description available'.tr,
+          //   style:
+          //       theme.textTheme.titleMedium?.copyWith(color: Colors.grey[700]),
+          // ),
         ],
       ),
     );
