@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/Util/convert/convert_bytes.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/ShowExcel.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -16,7 +18,7 @@ class ShowPDFs extends StatefulWidget {
     required this.name,
   });
   final List name;
-  final List listitem;
+  final List<PdfModel> listitem;
   final String taskId, taskItemId;
 
   @override
@@ -34,13 +36,7 @@ class _ShowPDFsState extends State<ShowPDFs> {
       setState(() {
         islaoding = true;
       });
-      widget.listitem.forEach((action) {
-        taskController.downloadfile(
-          taskId: widget.taskId,
-          taskItemId: widget.taskItemId,
-          attachmentId: action["id"].toString(),
-        );
-      });
+
       setState(() {
         islaoding = false;
       });
@@ -66,64 +62,151 @@ class _ShowPDFsState extends State<ShowPDFs> {
       body: GetBuilder<TaskController>(
         init: TaskController(),
         builder: (taskController) {
-          if (taskController.ListPDF.isEmpty) {
-            return const Center(
-              child: spinkit,
-            );
-          }
-
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Two PDFs per row
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
+            child: ListView.builder(
               itemCount: widget.name.length,
               itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () =>
-                      _showPDFFullScreen(taskController.ListPDF[index]),
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 5,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: taskController.ListPDF.length > index
-                        ? Column(
+                        border: Border.all(color: Colors.grey[200]!),
+                        borderRadius: BorderRadius.circular(8.0)),
+                    height: 60,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
                             children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset("assets/icons/pdf.png"),
-                                ),
-                              ), // Show spinkit when the index is out of range
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    extractFileName(
-                                      widget.name.isNotEmpty &&
-                                              widget.name.length > index
-                                          ? widget.name[index]
-                                          : "",
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: TextStyle(fontSize: 12),
+                              Image.asset(
+                                "assets/icons/pdf.png",
+                                height: 30,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: Text(
+                                  extractFileName(
+                                    widget.listitem[index].name,
                                   ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               )
                             ],
-                          )
-                        : spinkit,
+                          ),
+                        ),
+                        Spacer(),
+                        IconButton(
+                            onPressed: () async {
+                              widget.listitem[index] = widget.listitem[index]
+                                  .copyWith(isdownload: true);
+
+                              final Uint8List ff =
+                                  await taskController.downloadFileStream(
+                                      taskId: widget.taskId,
+                                      taskItemId: widget.taskItemId,
+                                      attachmentId: widget.listitem[index].id,
+                                      index: index,
+                                      name: extractFileName(
+                                        widget.listitem[index].name,
+                                      ));
+                              widget.listitem[index] = widget.listitem[index]
+                                  .copyWith(isdownload: false);
+                              widget.listitem[index] =
+                                  widget.listitem[index].copyWith(baytes: ff);
+                            },
+                            icon: taskController.totalBytes == 0 ||
+                                    index != taskController.downloadselect
+                                ? const Icon(Icons.download)
+                                : Text(
+                                    convertBytes(taskController.totalBytes),
+                                  ))
+                      ],
+                    ),
+                    // child: GestureDetector(
+                    //   onTap: () async {
+                    //     widget.listitem[index] =
+                    //         widget.listitem[index].copyWith(isdownload: true);
+
+                    //     final Uint8List ff =
+                    //         await taskController.downloadfilereturn(
+                    //             taskId: widget.taskId,
+                    //             taskItemId: widget.taskItemId,
+                    //             attachmentId: widget.listitem[index].id,
+                    //             name: extractFileName(
+                    //               widget.listitem[index].name,
+                    //             ));
+                    //     widget.listitem[index] =
+                    //         widget.listitem[index].copyWith(isdownload: false);
+                    //     widget.listitem[index] =
+                    //         widget.listitem[index].copyWith(baytes: ff);
+                    //   },
+                    //   child: Container(
+                    //     decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(8.0),
+                    //       boxShadow: [
+                    //         BoxShadow(
+                    //           color: Colors.black.withOpacity(0.1),
+                    //           blurRadius: 5,
+                    //           offset: const Offset(0, 2),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     child: Column(
+                    //       children: [
+                    //         Expanded(
+                    //           child: Padding(
+                    //             padding: const EdgeInsets.all(8.0),
+                    //             child: Image.asset(
+                    //                 widget.listitem[index].isdownload == false
+                    //                     ? "assets/icons/pdf.png"
+                    //                     : "assets/icons/download.gif"),
+                    //           ),
+                    //         ),
+                    //         // Text indicating if the file has been downloaded
+                    //         Center(
+                    //           child: Padding(
+                    //             padding: const EdgeInsets.all(8.0),
+                    //             child: Column(
+                    //               children: [
+                    //                 Text(
+                    //                   extractFileName(
+                    //                     widget.listitem[index].name,
+                    //                   ),
+                    //                   overflow: TextOverflow.ellipsis,
+                    //                   maxLines: 1,
+                    //                   style: TextStyle(fontSize: 12),
+                    //                 ),
+                    //                 // Conditionally show "Downloaded" text if bytes are present
+                    //                 if (widget.listitem[index].baytes != null &&
+                    //                         widget.listitem[index].baytes!
+                    //                             .isNotEmpty ||
+                    //                     fileCache.containsKey(
+                    //                         '${widget.taskId}-${widget.taskItemId}-${widget.listitem[index].id}'))
+                    //                   Padding(
+                    //                     padding:
+                    //                         const EdgeInsets.only(top: 4.0),
+                    //                     child: Text(
+                    //                       'Downloaded',
+                    //                       style: TextStyle(
+                    //                         fontSize: 10,
+                    //                         color: Colors.green,
+                    //                       ),
+                    //                     ),
+                    //                   ),
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   ),
                 );
               },
@@ -149,6 +232,32 @@ class FullScreenPDF extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SfPdfViewer.memory(pdfBytes),
+    );
+  }
+}
+
+class PdfModel {
+  final String name;
+  final String id;
+  final bool isdownload;
+  final Uint8List? baytes;
+
+  PdfModel({
+    this.baytes,
+    required this.name,
+    required this.id,
+    this.isdownload = false,
+  });
+
+  PdfModel copyWith({
+    Uint8List? baytes,
+    bool? isdownload,
+  }) {
+    return PdfModel(
+      name: name ?? this.name,
+      baytes: baytes ?? this.baytes,
+      id: id ?? this.id,
+      isdownload: isdownload ?? this.isdownload,
     );
   }
 }

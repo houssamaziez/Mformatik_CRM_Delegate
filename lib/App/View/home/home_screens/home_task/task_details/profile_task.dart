@@ -10,6 +10,7 @@ import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/widgets/listItems.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
+import '../../../../../Util/extention/file.dart';
 import '../../../../widgets/Dialog/showExitConfirmationDialog.dart';
 import 'widgets/buildTaskHeader.dart';
 import 'widgets/taskInformation.dart';
@@ -215,7 +216,6 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                 animatedIconTheme:
                     IconThemeData(color: Theme.of(context).primaryColor),
                 overlayOpacity: 0.0,
-                activeIcon: IconData(1),
                 spacing: 0,
                 elevation: 0,
                 spaceBetweenChildren: 8,

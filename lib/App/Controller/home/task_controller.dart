@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
@@ -10,12 +12,17 @@ import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home.dart';
 import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../Model/mission.dart';
 import '../../Util/app_exceptions/response_handler.dart';
+import '../../Util/extention/file.dart';
+import '../../View/home/home_screens/home_task/task_details/ShowPDFs.dart';
 import '../../View/widgets/showsnack.dart';
 import '../auth/auth_controller.dart';
 import '../widgetsController/expandable_controller.dart';
+
+final Map<String, Map<String, dynamic>> fileCache = {};
 
 class TaskController extends GetxController {
   List<Task>? tasks = [];
@@ -295,35 +302,130 @@ class TaskController extends GetxController {
       update();
     }
   }
+
+  int totalBytes = 0; // Variable to track the total downloaded size
+  int downloadselect = 0; // Variable to track the total downloaded size
+
+// Cache to store downloaded files and timestamps
+  Future<Uint8List> downloadFileStream(
+      {required String taskId,
+      required String taskItemId,
+      required String attachmentId,
+      required int index,
+      required String name}) async {
+    try {
+      totalBytes = 0;
+      update();
+      voicedownloadLoading = true;
+      update();
+      downloadselect = index;
+      update();
+      // Generate a unique cache key for the file
+      final String cacheKey = '$taskId-$taskItemId-$attachmentId';
+
+      final url = Uri.parse(
+          'http://192.168.2.102:5500/api/v1/tasks/$taskId/items/$taskItemId/attachments/$attachmentId');
+
+      // Send the GET request to download the file using stream
+      final client = http.Client();
+      final request = await client.send(
+        http.Request('GET', url)
+          ..headers.addAll({
+            "x-auth-token": token.read("token").toString(),
+          }),
+      );
+
+      if (request.statusCode == 200) {
+        final List<int> bytes = [];
+
+        // Stream the response data
+        await for (var chunk in request.stream) {
+          bytes.addAll(chunk);
+          totalBytes += chunk.length; // Add the size of the current chunk
+          update();
+          print(
+              "Downloaded: $totalBytes bytes"); // Print the size after each chunk
+        }
+
+        // Cache the file with the download timestamp
+        fileCache[cacheKey] = {
+          'data': Uint8List.fromList(bytes),
+          'timestamp': DateTime.now(),
+        };
+
+        // Request storage permissions before saving the file
+        await _requestStoragePermissions();
+
+        // Save the file to the Downloads folder
+        await saveFile(Uint8List.fromList(bytes), name);
+
+        print("Download complete. Total size: $totalBytes bytes");
+        return Uint8List.fromList(bytes);
+      } else {
+        print("Failed to download file. Status code: ${request.statusCode}");
+      }
+    } catch (e) {
+      print('An error occurred during download: $e');
+    } finally {
+      voicedownloadLoading = false;
+      update();
+    }
+
+    // Return an empty Uint8List in case of failure
+    return Uint8List(0);
+  }
+
+  Future<void> _requestStoragePermissions() async {
+    // Requesting the necessary permission for Android
+    if (Platform.isAndroid) {
+      PermissionStatus status = await Permission.storage.request();
+      if (!status.isGranted) {
+        // If permission is not granted, you can show a message or handle it
+        print("Storage permission not granted.");
+      }
+    }
+  }
+
+  Future<void> saveFile(Uint8List fileBytes, String name) async {
+    try {
+      // Get the directory where you want to save the file
+      final directory =
+          await getExternalStorageDirectory(); // Get external storage directory
+      if (directory == null) {
+        print("Directory not found!");
+        return;
+      }
+
+      // Define initial directory path (you can set it to any desired folder)
+      final dirInstance = Directory(directory.path);
+      final fileName =
+          "$name-${DateTime.now().millisecondsSinceEpoch}.pdf"; // Modify as needed
+
+      // Show the file picker to save the file
+      final result = await FilePicker.platform.saveFile(
+        bytes: fileBytes,
+        type: FileType.any, // Set the file type
+        initialDirectory: dirInstance.path, // Directory to start file picker
+        fileName: fileName, // Name of the file
+      );
+
+      if (result != null) {
+        print("File saved at: $result");
+      } else {
+        print("No file was saved.");
+      }
+    } catch (e) {
+      print("Error saving file: $e");
+    }
+  }
+
+  DateTime? getDownloadTimestamp({
+    required String taskId,
+    required String taskItemId,
+    required String attachmentId,
+  }) {
+    final String cacheKey = '$taskId-$taskItemId-$attachmentId';
+    return fileCache[cacheKey]?['timestamp'] as DateTime?;
+  }
+  // Get the download timestamp for a specific file
 }
-
-const imgFileTypes = ['png', 'jpg', 'gif', 'jpeg', 'tif', 'tiff', 'svg', 'BMP'];
-
-const excelFileTypes = ['xls', 'xlsx', 'xlsm', 'xlsb', 'xltx', 'xltm', 'sheet'];
-const pdfFileTypes = ['pdf'];
-const videoFileTypes = [
-  'mp4',
-  'mkv',
-  'mov',
-  'avi',
-  'flv',
-  'wmv',
-  'webm',
-  'mpeg',
-  'mpg'
-];
-const voiceFileTypes = [
-  'wav',
-  'aiff',
-  'pcm',
-  'mp3',
-  'aac',
-  'ogg',
-  'wma',
-  'flac',
-  'alac',
-  'ape',
-  'm4a',
-  'opus',
-  'amr'
-];

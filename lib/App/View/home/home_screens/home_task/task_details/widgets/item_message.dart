@@ -11,6 +11,7 @@ import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task
 import '../../../../../../Controller/auth/auth_controller.dart';
 import '../../../../../../Model/task.dart';
 import '../../../../../../Util/Date/formatDate.dart';
+import '../../../../../../Util/extention/file.dart';
 import '../../../../../widgets/flutter_spinkit.dart';
 
 class itemMessage extends StatelessWidget {
@@ -31,7 +32,7 @@ class itemMessage extends StatelessWidget {
 
   int exllanght = 0;
   List exllpath = [];
-
+  List<PdfModel> listitem = [];
   @override
   Widget build(BuildContext context) {
     comment.attachments.forEach((action) {
@@ -50,7 +51,9 @@ class itemMessage extends StatelessWidget {
         exllanght = exllanght + 1;
         exllpath.add(action["path"].toString());
       }
+      listitem.add(PdfModel(name: action["path"], id: action["id"].toString()));
     });
+
     print("imagelanght  " + imagelanght.toString());
     return GetBuilder<TaskController>(
         init: TaskController(),
@@ -188,7 +191,7 @@ class itemMessage extends StatelessWidget {
                                 context,
                                 ShowPDFs(
                                     name: pdfpath,
-                                    listitem: comment.attachments,
+                                    listitem: listitem,
                                     taskId: taskId,
                                     taskItemId: comment.id.toString()));
                           },
