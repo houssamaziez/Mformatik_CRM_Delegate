@@ -255,7 +255,7 @@ class _HomeFeedbackState extends State<HomeFeedback> {
                                                               EdgeInsets.all(
                                                                   8.0),
                                                           child: Text(
-                                                            "No Missions found"
+                                                            "No feedbacks found"
                                                                 .tr,
                                                             style: TextStyle(
                                                                 color: Colors

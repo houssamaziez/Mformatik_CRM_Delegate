@@ -159,25 +159,8 @@ class MissionCard extends StatelessWidget {
       ),
     );
   }
-
-  // Helper method to get card background color based on isSuccessful
-  Color _getCardColor(bool? isSuccessful) {
-    if (isSuccessful == true) {
-      return const Color.fromARGB(255, 196, 196, 196); // Color for Successful
-    } else if (isSuccessful == false) {
-      return Colors.orange; // Color for Pending
-    }
-    return const Color.fromARGB(255, 196, 196, 196); // Color for Unknown
-  }
-
-  // Helper method to format the date
-  String _formatDate(String date) {
-    DateTime parsedDate = DateTime.parse(date);
-    return '${parsedDate.day}/${parsedDate.month}/${parsedDate.year}';
-  }
 }
 
-// Helper method to get status label based on statusId using the taskStatusEnumString
 String getStatusLabel(int statusId) {
   return taskStatusEnumString[statusId] ?? 'Unknown Status';
 }
