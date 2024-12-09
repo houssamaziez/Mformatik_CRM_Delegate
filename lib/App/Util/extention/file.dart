@@ -1,6 +1,14 @@
 const imgFileTypes = ['png', 'jpg', 'gif', 'jpeg', 'tif', 'tiff', 'svg', 'BMP'];
 
-const excelFileTypes = ['xls', 'xlsx', 'xlsm', 'xlsb', 'xltx', 'xltm', 'sheet'];
+const excelFileTypes = [
+  'xls',
+  'xlsx',
+  'xlsm',
+  'xlsb',
+  'xltx',
+  'xltm',
+  'xlam',
+];
 const pdfFileTypes = ['pdf'];
 const videoFileTypes = [
   'mp4',

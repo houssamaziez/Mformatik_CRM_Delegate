@@ -93,16 +93,57 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
     }
   }
 
-  void _sendMessage() {
+  _sendMessage() async {
+    List<String> listpathipdf = [];
+    List<String> listImage = [];
+    List<String> listExcel = [];
+
+    // Convert List<File> to List<String> containing file paths
+    List<String> imagePaths = _selectedImages.map((file) => file.path).toList();
+
+    if (_selectedFiles != null) {
+      _selectedFiles.forEach((action) {
+        if (imgFileTypes.any((type) => action.path.contains(type))) {
+          listImage.add(action.path.toString());
+          print("The file is an image.");
+        } else if (voiceFileTypes.any((type) => action.path.contains(type))) {
+          print("The file is a voice file.");
+        } else if (videoFileTypes.any((type) => action.path.contains(type))) {
+          print("The file is a video.");
+        } else if (pdfFileTypes.any((type) => action.path.contains(type))) {
+          listpathipdf.add(action.path.toString());
+
+          print("The file is a PDF.");
+        } else if (excelFileTypes.any((type) => action.path.contains(type))) {
+          listExcel.add(action.path.toString());
+
+          print("The file is an Excel document.");
+        } else {
+          print("Unknown file type.");
+        }
+      });
+    } else {
+      print("Content-Type header is missing.");
+    }
+    // Call the createItems method with the converted imagePaths
+    await taskController.createItems(
+      desc: _controller.text,
+      taskId: widget.taskId.toString(),
+      imgPaths: imagePaths,
+      excelPaths: listExcel,
+      pdfPaths: listpathipdf,
+    );
+
+    // Check if the description is not empty
     if (_controller.text.isNotEmpty) {
       print("Message sent: ${_controller.text}");
-      _controller.clear();
+      _controller.clear(); // Clear the text controller after sending
     }
 
     // Reset image and file selection
     setState(() {
-      _selectedImages.clear();
-      _selectedFiles.clear();
+      _selectedImages.clear(); // Clear the selected images
+      _selectedFiles.clear(); // Clear the selected files (if any)
     });
   }
 
@@ -127,44 +168,6 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
           final task = controller.task!;
 
           return Scaffold(
-            floatingActionButton: Column(
-              children: [
-                const Spacer(),
-                if (task.statusId == 1)
-                  FloatingActionButton.extended(
-                      heroTag: "IN_PROGRESS", // Unique tag for the first button
-                      backgroundColor: Colors.green,
-                      onPressed: () async {
-                        showExitConfirmationDialog(context,
-                            onPressed: () async {
-                          Get.back();
-
-                          await controller.changeStatuseMission(
-                              2, widget.taskId);
-                        },
-                            details: 'Are you sure to Start the Mission?'.tr,
-                            title: 'Cnfirmation'.tr);
-                      },
-                      label: Text(
-                        "Start Mission".tr,
-                        style: const TextStyle(color: Colors.white),
-                      )),
-                const SizedBox(
-                  height: 20,
-                ),
-                if (task.statusId == 2)
-                  FloatingActionButton.extended(
-                      heroTag:
-                          "addFeedback2", // Unique tag for the first button
-
-                      backgroundColor: Theme.of(context).primaryColor,
-                      onPressed: () {},
-                      label: Text(
-                        "Add Feedback".tr,
-                        style: const TextStyle(color: Colors.white),
-                      )),
-              ],
-            ),
             body: ListView(
               shrinkWrap: true,
               children: [
@@ -201,7 +204,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
     return Container(
       color: Colors.white,
       height:
-          (_selectedImages.isNotEmpty || _selectedFiles.isNotEmpty) ? 200 : 80,
+          (_selectedImages.isNotEmpty || _selectedFiles.isNotEmpty) ? 220 : 80,
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -254,64 +257,76 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                   ),
                 ),
               ),
-              IconButton(
-                icon: Image.asset(
-                  "assets/icons/send.png",
-                  height: 20,
-                ),
-                onPressed: _sendMessage,
-              ),
+              GetBuilder<TaskController>(
+                  init: TaskController(),
+                  builder: (teskbuildController) {
+                    return teskbuildController.issend
+                        ? spinkit
+                        : IconButton(
+                            icon: Image.asset(
+                              "assets/icons/send.png",
+                              height: 20,
+                            ),
+                            onPressed: _sendMessage,
+                          );
+                  }),
             ],
           ),
           if (_selectedImages.isNotEmpty || _selectedFiles.isNotEmpty)
-            Container(
-              color: Colors.white,
-              height: 120,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  ..._selectedImages.asMap().entries.map((entry) {
-                    int index = entry.key; // Index from asMap()
-                    File image = entry.value; // File from the list
-                    return Card(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Stack(
-                            children: [
-                              Image.file(
-                                image,
-                                fit: BoxFit.cover,
-                                width: 120,
-                              ),
-                              Positioned(
-                                right: 0,
-                                top: 0,
-                                child: IconButton(
-                                  onPressed: () => _deleteImage(index),
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    size: 20,
-                                    color: Colors.red,
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Container(
+                color: Colors.white,
+                height: 120,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    ..._selectedImages.asMap().entries.map((entry) {
+                      int index = entry.key; // Index from asMap()
+                      File image = entry.value; // File from the list
+                      return Card(
+                        color: Colors.white,
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Stack(
+                              children: [
+                                Image.file(
+                                  image,
+                                  fit: BoxFit.cover,
+                                  width: 120,
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: IconButton(
+                                    onPressed: () => _deleteImage(index),
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      size: 20,
+                                      color: Colors.red,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(),
-                  // Display selected files
-                  ..._selectedFiles.asMap().entries.map((entry) {
-                    int index = entry.key; // Index from asMap()
-                    File file = entry.value; // File from the list
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5, vertical: 10),
-                      child: Card(
+                      );
+                    }).toList(),
+                    // Display selected files
+                    ..._selectedFiles.asMap().entries.map((entry) {
+                      int index = entry.key; // Index from asMap()
+                      File file = entry.value; // File from the list
+                      return Card(
+                        color: Colors.white,
+                        elevation: 5,
                         child: Container(
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -321,6 +336,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                               Container(
                                 width: 120,
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Image.asset(
                                       returnIconFile(file.path),
@@ -337,7 +353,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                                 ),
                               ),
                               Positioned(
-                                left: 0,
+                                right: 0,
                                 child: IconButton(
                                   icon: const Icon(Icons.delete,
                                       size: 20, color: Colors.red),
@@ -348,10 +364,10 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                             ],
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(),
-                ],
+                      );
+                    }).toList(),
+                  ],
+                ),
               ),
             ),
         ],

@@ -4,12 +4,10 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Model/task.dart';
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
-import 'package:mformatic_crm_delegate/App/View/home/home.dart';
 import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -17,10 +15,8 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../Model/mission.dart';
 import '../../Util/app_exceptions/response_handler.dart';
 import '../../Util/extention/file.dart';
-import '../../View/home/home_screens/home_task/task_details/ShowPDFs.dart';
 import '../../View/widgets/showsnack.dart';
 import '../auth/auth_controller.dart';
-import '../widgetsController/expandable_controller.dart';
 
 final Map<String, Map<String, dynamic>> fileCache = {};
 
@@ -312,6 +308,7 @@ class TaskController extends GetxController {
       required String taskItemId,
       required String attachmentId,
       required int index,
+      required bool isShow,
       required String name}) async {
     try {
       totalBytes = 0;
@@ -322,9 +319,13 @@ class TaskController extends GetxController {
       update();
       // Generate a unique cache key for the file
       final String cacheKey = '$taskId-$taskItemId-$attachmentId';
+      if (fileCache.containsKey(cacheKey)) {
+        print("File retrieved from cache.");
 
+        return fileCache[cacheKey]!['data'] as Uint8List;
+      }
       final url = Uri.parse(
-          'http://192.168.2.102:5500/api/v1/tasks/$taskId/items/$taskItemId/attachments/$attachmentId');
+          '${Endpoint.apiTask}/$taskId/items/$taskItemId/attachments/$attachmentId');
 
       // Send the GET request to download the file using stream
       final client = http.Client();
@@ -357,7 +358,6 @@ class TaskController extends GetxController {
         await _requestStoragePermissions();
 
         // Save the file to the Downloads folder
-        await saveFile(Uint8List.fromList(bytes), name);
 
         print("Download complete. Total size: $totalBytes bytes");
         return Uint8List.fromList(bytes);
@@ -367,6 +367,8 @@ class TaskController extends GetxController {
     } catch (e) {
       print('An error occurred during download: $e');
     } finally {
+      totalBytes = 0;
+      update();
       voicedownloadLoading = false;
       update();
     }
@@ -386,7 +388,7 @@ class TaskController extends GetxController {
     }
   }
 
-  Future<void> saveFile(Uint8List fileBytes, String name) async {
+  Future<void> saveFile(Uint8List fileBytes, String name, String ext) async {
     try {
       // Get the directory where you want to save the file
       final directory =
@@ -399,7 +401,7 @@ class TaskController extends GetxController {
       // Define initial directory path (you can set it to any desired folder)
       final dirInstance = Directory(directory.path);
       final fileName =
-          "$name-${DateTime.now().millisecondsSinceEpoch}.pdf"; // Modify as needed
+          "$name-${DateTime.now().millisecondsSinceEpoch}.$ext"; // Modify as needed
 
       // Show the file picker to save the file
       final result = await FilePicker.platform.saveFile(
@@ -428,4 +430,84 @@ class TaskController extends GetxController {
     return fileCache[cacheKey]?['timestamp'] as DateTime?;
   }
   // Get the download timestamp for a specific file
+
+// Helper function to get the file type based on file extension
+  String? _getFileType(String filePath) {
+    if (filePath.endsWith('.jpg') || filePath.endsWith('.png')) {
+      return 'prImg'; // Image file type
+    } else if (filePath.endsWith('.pdf')) {
+      return 'prPdf'; // PDF file type
+    } else if (filePath.endsWith('.doc') || filePath.endsWith('.docx')) {
+      return 'prDoc'; // Word document file type
+    } else if (filePath.endsWith('.xls') || filePath.endsWith('.xlsx')) {
+      return 'prExcel'; // Excel file type
+    }
+    return null; // Unsupported file type
+  }
+
+  bool issend = false;
+  Future<void> createItems({
+    required String desc,
+    required String taskId,
+    List<String>? imgPaths, // Optional
+    List<String>? excelPaths, // Optional
+    List<String>? pdfPaths, // Optional
+  }) async {
+    issend = true;
+    update();
+    var headers = {
+      'x-auth-token': token.read("token").toString(),
+    };
+    try {
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('${Endpoint.apiTask}/$taskId/items'),
+      );
+      // Add description field
+      request.fields.addAll({'desc': '$desc'});
+      print(request.fields);
+      // Add image files (if any)
+      if (imgPaths != null) {
+        for (var filePath in imgPaths) {
+          request.files
+              .add(await http.MultipartFile.fromPath('prImg', filePath));
+        }
+      }
+
+      // Add PDF files (if any)
+      if (pdfPaths != null) {
+        for (var filePath in pdfPaths) {
+          request.files
+              .add(await http.MultipartFile.fromPath('prPdf', filePath));
+        }
+      }
+
+      // Add Excel files (if any)
+      if (excelPaths != null) {
+        for (var filePath in excelPaths) {
+          request.files
+              .add(await http.MultipartFile.fromPath('prExcel', filePath));
+        }
+      }
+
+      request.headers.addAll(headers);
+
+      // return;
+      // Send the request
+
+      http.StreamedResponse response = await request.send();
+      print(response.statusCode);
+      // Handle response
+      print(await response.stream.bytesToString());
+      if (response.statusCode == 200) {
+        getTaskById(Get.context, int.parse(taskId));
+      } else {
+        print('Error: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Request failed: $e');
+    } finally {}
+    issend = false;
+    update();
+  }
 }
