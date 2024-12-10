@@ -9,63 +9,62 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../../Controller/auth/auth_controller.dart';
 import '../../../../../Controller/home/annex_controller.dart';
 import '../../../../../Controller/home/missions_controllerAll.dart';
+import '../../../../../Controller/home/task_controller.dart';
 import '../../../../widgets/bolck_screen.dart';
-import '../widgets/mission_card.dart';
+import '../widgets/task_card.dart';
 
 DateTime? startDateMissions;
 DateTime? endDateMissions;
 String startDateTextMissions = '';
 String endDateTextMissions = '';
 
-class MissionListScreen extends StatefulWidget {
-  const MissionListScreen({Key? key}) : super(key: key);
+class TaskListScreen extends StatefulWidget {
+  const TaskListScreen({Key? key}) : super(key: key);
 
   @override
-  State<MissionListScreen> createState() => _MissionListScreenState();
+  State<TaskListScreen> createState() => _TaskListScreenState();
 }
 
-class _MissionListScreenState extends State<MissionListScreen> {
+class _TaskListScreenState extends State<TaskListScreen> {
+  String _userId = Get.put(AuthController()).user!.id.toString();
+
   // Initialize the MissionsController
-  final TaskControllerAll controller1 = Get.put(TaskControllerAll());
-  final ScrollController _scrollController = ScrollController();
+  final TaskController controller1 = Get.put(TaskController());
 
   late ScrollController scrollController;
   @override
   void initState() {
     // controller.getAllMission(context);
-    controller1.getAllMission(
-        context,
-        Get.put(CompanyController()).selectCompany == null
-            ? 0
-            : Get.put(CompanyController()).selectCompany!.id,
-        endingDate: endDateTextMissions,
-        startingDate: startDateTextMissions);
+    // controller1.getAllTask(Get.context,
+    //     observerId: controller1.isAssigned == 2 ? _userId : "",
+    //     responsibleId: controller1.isAssigned == 0 ? _userId : "",
+    //     ownerId: controller1.isAssigned == 1 ? _userId : "");
     scrollController = ScrollController();
-    scrollController.addListener(_scrollListener);
+    // scrollController.addListener(_scrollListener);
     super.initState();
   }
 
-  void _scrollListener() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      if (controller1.offset <= controller1.missionslength) {
-        print("object");
-        controller1.loadingMoreMission(
-          context,
-          endingDate: endDateTextMissions,
-          startingDate: startDateTextMissions,
-        );
-      }
+  // void _scrollListener() {
+  //   if (scrollController.position.pixels ==
+  //       scrollController.position.maxScrollExtent) {
+  //     if (controller1.offset <= controller1.missionslength) {
+  //       print("object");
+  //       controller1.loadingMoreMission(
+  //         context,
+  //         endingDate: endDateTextMissions,
+  //         startingDate: startDateTextMissions,
+  //       );
+  //     }
 
-      // if (Get.put(MissionsController()).offset <=
-      //     Get.put(MissionsController()).missionslength) {
+  //     // if (Get.put(MissionsController()).offset <=
+  //     //     Get.put(MissionsController()).missionslength) {
 
-      // }
-    }
-  }
+  //     // }
+  //   }
+  // }
 
   AuthController controllers = Get.put(AuthController());
-  bool _showContainers = false;
+
   final AnnexController annexController =
       Get.put(AnnexController(), permanent: true);
   final CompanyController companyController =
@@ -101,15 +100,15 @@ class _MissionListScreenState extends State<MissionListScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: GetBuilder<MissionsControllerAll>(
+                  child: GetBuilder<TaskController>(
                     builder: (controller) {
                       if (controller.isLoading) {
                         // Show a loading indicator while fetching data
                         return const Center(
                           child: spinkit,
                         );
-                      } else if (controller.missions == null ||
-                          controller.missions!.isEmpty) {
+                      } else if (controller.tasks == null ||
+                          controller.tasks!.isEmpty) {
                         // Show a message when there are no missions
                         return Column(
                           children: [
@@ -122,7 +121,7 @@ class _MissionListScreenState extends State<MissionListScreen> {
                             const Spacer(),
                             Center(
                               child: Text(
-                                'No missions available'.tr,
+                                'No Task available'.tr,
                                 style: const TextStyle(fontSize: 18),
                               ),
                             ),
@@ -136,29 +135,30 @@ class _MissionListScreenState extends State<MissionListScreen> {
                               scrollController, // Attach the scrollController here
 
                           shrinkWrap: true,
-                          itemCount: controller.missions!.length,
+                          itemCount: controller.tasks!.length,
                           itemBuilder: (context, index) {
                             print(index);
-                            if (index == controller.missions!.length - 1 &&
+                            if (index == controller.tasks!.length - 1 &&
                                 controller.isLoadingMore) {
                               // Show circular indicator at the bottom when loading more
                               return Center(child: spinkit);
                             } else {
-                              final mission = controller.missions![index];
-                              return MissionCard(
-                                mission: mission,
+                              final task = controller.tasks![index];
+                              return TaskCard(
+                                task: task,
                                 index: index,
                               );
                             }
                           },
                         ).addRefreshIndicator(
-                            onRefresh: () => controller.getAllMission(
-                                context,
-                                endingDate: endDateTextMissions,
-                                startingDate: startDateTextMissions,
-                                Get.put(CompanyController())
-                                    .selectCompany!
-                                    .id));
+                            onRefresh: () => controller.getAllTask(Get.context,
+                                observerId:
+                                    controller1.isAssigned == 2 ? _userId : "",
+                                responsibleId:
+                                    controller1.isAssigned == 0 ? _userId : "",
+                                ownerId: controller1.isAssigned == 1
+                                    ? _userId
+                                    : ""));
                       }
                     },
                   ),

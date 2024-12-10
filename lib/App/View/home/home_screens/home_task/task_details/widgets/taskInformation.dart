@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../Controller/home/task_controller.dart';
 import '../../../home_mission/widgets/getStatusLabel.dart';
 import '../../widgets/getStatusColor.dart';
+import '../../widgets/task_card.dart';
 
 Container taskInformation(TaskController controller) {
   return Container(
@@ -92,7 +93,7 @@ Container taskInformation(TaskController controller) {
                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
               ),
               Text(
-                getStatusLabel(controller.task!.statusId),
+                getStatusLabelTask(controller.task!.statusId),
                 style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,

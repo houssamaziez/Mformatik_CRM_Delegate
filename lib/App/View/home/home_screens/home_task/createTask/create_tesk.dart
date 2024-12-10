@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:image/image.dart' as img; // For image compression
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ import 'package:vibration/vibration.dart';
 import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/home/Person/controller_person.dart';
 import '../../../../../Service/permission_handler/mic_handler.dart';
+import '../../../../../Util/Const/constants.dart';
+import '../task_details/profile_task.dart';
 
 // ignore: must_be_immutable
 class ScreenCreateTask extends StatefulWidget {
@@ -36,24 +39,40 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
   DateTime? requestDate;
   double _compressionProgress = 0.0;
   List<File>? _compressedImages = [];
+
+  List<File> _selectedImages = []; // Store selected images
+  List<File> _selectedFiles = []; // Store selected files
   bool isCompressImage = false;
+
+  void _deleteFile(int index) {
+    setState(() {
+      _selectedFiles.removeAt(index);
+    });
+  }
+
+  void _deleteImage(int index) {
+    setState(() {
+      _compressedImages!.removeAt(index);
+    });
+  }
+
+  Future<void> _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx'],
+      allowMultiple: true, // Allow multiple file selection
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      setState(() {
+        _selectedFiles
+            .addAll(result.files.map((file) => File(file.path!)).toList());
+      });
+    }
+  }
+
   Future<File> _compressImage(XFile file) async {
-    setState(() {
-      isCompressImage = true;
-    });
-    final bytes = await file.readAsBytes();
-    final img.Image? image = img.decodeImage(bytes);
-
-    final img.Image resized = img.copyResize(image!, width: 500);
-    final compressedBytes = img.encodeJpg(resized, quality: 85);
-
-    final compressedImageFile = File('${file.path}_compressed.jpg');
-    await compressedImageFile.writeAsBytes(compressedBytes);
-
-    setState(() {
-      isCompressImage = false;
-    });
-    return compressedImageFile;
+    return File(file.path);
   }
 
   Future<void> _takePhoto() async {
@@ -83,24 +102,6 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
       });
     }
   }
-
-  Future<void> _selectDate() async {
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: requestDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-
-    if (pickedDate != null) {
-      setState(() {
-        requestDate = pickedDate;
-      });
-    }
-  }
-
-  bool _animate = false;
-  bool _iShowVocal = false;
 
   @override
   void dispose() {
@@ -404,204 +405,119 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                   height: 10,
                 ),
                 InkWell(
-                  onTap: () async {
-                    setState(() {
-                      _iShowVocal = !_iShowVocal;
-
-                      // showContainers = !showContainers; // Toggle animation
-                    });
-                    if (_iShowVocal) {
-                      bool isGranted = await isMicrophonePermissionGranted();
-                      if (isGranted) {
-                        setState(() => _animate = true);
-                        controllerVoice.toggleRecording();
-                        if (await Vibration.hasVibrator() ?? false) {
-                          Vibration.vibrate(duration: 100);
-                        }
-                      } else {
-                        setState(() => _animate = false);
-                        await requestMicrophonePermission(context);
-                      }
-                    }
-                  },
+                  onTap: _pickFile,
                   child: const Row(
                     children: [
                       Icon(
-                        Icons.mic,
-                        color: Colors.red,
+                        Icons.file_present_outlined,
+                        color: Colors.grey,
                       ),
                       SizedBox(width: 10),
-                      Text("Vocal")
+                      Text("Files")
                     ],
                   ),
-                ), // ___________________________________________________vocal____________________________________________________
-                SizedBox(
-                  height: 10,
                 ),
-                if (_iShowVocal == true)
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut, // Smooth transition curve
-                    height: 110, // Adjust height based on toggle
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white, // Background color
-                          border: Border.all(
-                            color:
-                                Theme.of(context).primaryColor, // Border color
-                            width: 1.0, // Border width
-                          ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Spacer(),
-                            // Container(
-                            //   height: 90,
-                            //   child: VoiceMessageViewMy(
-                            //     activeSliderColor:
-                            //         Theme.of(context).primaryColor,
-                            //     circlesColor: Theme.of(context).primaryColor,
-                            //     controller: controlledVoiceMessageViewMy,
-                            //     innerPadding: 12,
-                            //     cornerRadius: 20,
-                            //     size: 50,
-                            //   ),
-                            // ),
-                            const Spacer(),
-                            controllerVoice.audioPath.isEmpty ||
-                                    controllerVoice.isRecording == true
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: AvatarGlow(
-                                      animate: _animate,
-                                      glowColor: Theme.of(context).primaryColor,
-                                      child: Material(
-                                        elevation: 20.0,
-                                        shape: const CircleBorder(),
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.grey[100],
-                                          radius: 30.0,
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              bool isGranted =
-                                                  await isMicrophonePermissionGranted();
-                                              if (isGranted) {
-                                                setState(
-                                                    () => _animate = !_animate);
-                                                controllerVoice
-                                                    .toggleRecording();
-                                                if (await Vibration
-                                                        .hasVibrator() ??
-                                                    false) {
-                                                  Vibration.vibrate(
-                                                      duration: 100);
-                                                }
-                                              } else {
-                                                setState(
-                                                    () => _animate = false);
-                                                await requestMicrophonePermission(
-                                                    context);
-                                              }
-                                            },
-                                            child: Icon(controllerVoice
-                                                        .isRecording !=
-                                                    true
-                                                ? Icons.mic
-                                                : Icons.stop_circle_outlined),
+                if (_compressedImages!.isNotEmpty || _selectedFiles.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Container(
+                      color: Colors.white,
+                      height: 120,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          ..._compressedImages!.asMap().entries.map((entry) {
+                            int index = entry.key; // Index from asMap()
+                            File image = entry.value; // File from the list
+                            return Card(
+                              color: Colors.white,
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Stack(
+                                    children: [
+                                      Image.file(
+                                        image,
+                                        fit: BoxFit.cover,
+                                        width: 120,
+                                      ),
+                                      Positioned(
+                                        right: 0,
+                                        top: 0,
+                                        child: IconButton(
+                                          onPressed: () => _deleteImage(index),
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            size: 20,
+                                            color: Colors.red,
                                           ),
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          // Display selected files
+                          ..._selectedFiles.asMap().entries.map((entry) {
+                            int index = entry.key; // Index from asMap()
+                            File file = entry.value; // File from the list
+                            return Card(
+                              color: Colors.white,
+                              elevation: 5,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      width: 120,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            returnIconFile(file.path),
+                                            height: 50,
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            file.path.split('/').last,
+                                            maxLines: 1,
+                                            overflow: TextOverflow
+                                                .ellipsis, // Truncate long file names
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  )
-                                : const SizedBox.shrink(),
-                            SizedBox(
-                              child: controllerVoice.audioPath.isNotEmpty &&
-                                      controllerVoice.isRecording == false
-                                  ? IconButton(
-                                      onPressed: controllerVoice
-                                              .audioPath.isEmpty
-                                          ? null
-                                          : () async {
-                                              setState(() {
-                                                _iShowVocal =
-                                                    !_iShowVocal; // Toggle animation
-                                              });
-                                              // await controlledVoiceMessageViewMy
-                                              //     .stopPlaying();
-                                              controllerVoice.deleteRecording();
-                                            },
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ))
-                                  : const SizedBox.shrink(),
-                            ),
-                          ],
-                        ),
+                                    Positioned(
+                                      right: 0,
+                                      child: IconButton(
+                                        icon: const Icon(Icons.delete,
+                                            size: 20, color: Colors.red),
+                                        onPressed: () => _deleteFile(
+                                            index), // Call delete function
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ],
                       ),
                     ),
                   ),
-
                 const SizedBox(
                   height: 10,
-                ),
-                if (_compressionProgress > 0 && _compressionProgress < 100) ...[
-                  const SizedBox(height: 16),
-                  Text(
-                      'Loading images: ${_compressionProgress.toStringAsFixed(0)}%'),
-                  const SizedBox(height: 8),
-                  LinearProgressIndicator(
-                    value: _compressionProgress / 100,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ],
-                if (_compressedImages != null &&
-                    _compressedImages!.isNotEmpty) ...[
-                  const SizedBox(height: 8),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 8.0,
-                      mainAxisSpacing: 8.0,
-                    ),
-                    itemCount: _compressedImages!.length,
-                    itemBuilder: (context, index) {
-                      return Stack(
-                        children: [
-                          Image.file(
-                            _compressedImages![index],
-                            fit: BoxFit.cover,
-                          ),
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _compressedImages!
-                                      .remove(_compressedImages![index]);
-                                });
-                              },
-                              icon: Icon(
-                                Icons.delete,
-                                color: Colors.red,
-                              ))
-                        ],
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  )
-                ],
-                SizedBox(
-                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -611,16 +527,65 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                         return ButtonAll(
                             isloading: taskController.isLoadingCreate,
                             function: () {
+                              List<String> listpathipdf = [];
+                              List<String> listImage = [];
+                              List<String> listExcel = [];
+
+                              List<String> imagePaths = _compressedImages!
+                                  .map((file) => file.path)
+                                  .toList();
+
+                              if (_selectedFiles != null) {
+                                _selectedFiles.forEach((action) {
+                                  if (imgFileTypes.any(
+                                      (type) => action.path.contains(type))) {
+                                    listImage.add(action.path.toString());
+                                    print("The file is an image.");
+                                  } else if (pdfFileTypes.any(
+                                      (type) => action.path.contains(type))) {
+                                    listpathipdf.add(action.path.toString());
+
+                                    print("The file is a PDF.");
+                                  } else if (excelFileTypes.any(
+                                      (type) => action.path.contains(type))) {
+                                    listExcel.add(action.path.toString());
+
+                                    print("The file is an Excel document.");
+                                  } else {
+                                    print("Unknown file type.");
+                                  }
+                                });
+                              } else {
+                                print("Content-Type header is missing.");
+                              }
+
+                              print(Get.put(ControllerPerson())
+                                      .observator!
+                                      .user!
+                                      .id
+                                      .toString() +
+                                  " " +
+                                  Get.put(ControllerPerson())
+                                      .responsable!
+                                      .user!
+                                      .id
+                                      .toString());
+
                               taskController.createTask(
                                   label: controllerLabel.text,
                                   responsibleId: Get.put(ControllerPerson())
                                       .responsable!
+                                      .user!
                                       .id
                                       .toString(),
                                   observerId: Get.put(ControllerPerson())
                                       .observator!
+                                      .user!
                                       .id
                                       .toString(),
+                                  excelPaths: listExcel,
+                                  pdfPaths: listpathipdf,
+                                  imgPaths: imagePaths,
                                   itemDescription: controllerdesc.text);
                             },
                             title: 'add Task');

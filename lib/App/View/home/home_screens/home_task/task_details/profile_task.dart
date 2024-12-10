@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/task_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/widgets/listItems.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
+import '../../../../../Service/AppValidator/AppValidator.dart';
 import '../../../../../Util/extention/file.dart';
-import '../../../../widgets/Dialog/showExitConfirmationDialog.dart';
 import 'widgets/buildTaskHeader.dart';
 import 'widgets/taskInformation.dart';
 
@@ -66,7 +67,6 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
   }
 
   Future<void> _pickFile() async {
-    // Open the file picker dialog with allowed extensions and multiple file selection
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx'],
@@ -75,7 +75,6 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
 
     if (result != null && result.files.isNotEmpty) {
       setState(() {
-        // Add selected files to the list
         _selectedFiles
             .addAll(result.files.map((file) => File(file.path!)).toList());
       });
@@ -94,57 +93,56 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
   }
 
   _sendMessage() async {
-    List<String> listpathipdf = [];
-    List<String> listImage = [];
-    List<String> listExcel = [];
+    if (_formKey.currentState!.validate()) {
+      List<String> listpathipdf = [];
+      List<String> listImage = [];
+      List<String> listExcel = [];
 
-    // Convert List<File> to List<String> containing file paths
-    List<String> imagePaths = _selectedImages.map((file) => file.path).toList();
+      List<String> imagePaths =
+          _selectedImages.map((file) => file.path).toList();
 
-    if (_selectedFiles != null) {
-      _selectedFiles.forEach((action) {
-        if (imgFileTypes.any((type) => action.path.contains(type))) {
-          listImage.add(action.path.toString());
-          print("The file is an image.");
-        } else if (voiceFileTypes.any((type) => action.path.contains(type))) {
-          print("The file is a voice file.");
-        } else if (videoFileTypes.any((type) => action.path.contains(type))) {
-          print("The file is a video.");
-        } else if (pdfFileTypes.any((type) => action.path.contains(type))) {
-          listpathipdf.add(action.path.toString());
+      if (_selectedFiles != null) {
+        _selectedFiles.forEach((action) {
+          if (imgFileTypes.any((type) => action.path.contains(type))) {
+            listImage.add(action.path.toString());
+            print("The file is an image.");
+          } else if (voiceFileTypes.any((type) => action.path.contains(type))) {
+            print("The file is a voice file.");
+          } else if (videoFileTypes.any((type) => action.path.contains(type))) {
+            print("The file is a video.");
+          } else if (pdfFileTypes.any((type) => action.path.contains(type))) {
+            listpathipdf.add(action.path.toString());
 
-          print("The file is a PDF.");
-        } else if (excelFileTypes.any((type) => action.path.contains(type))) {
-          listExcel.add(action.path.toString());
+            print("The file is a PDF.");
+          } else if (excelFileTypes.any((type) => action.path.contains(type))) {
+            listExcel.add(action.path.toString());
 
-          print("The file is an Excel document.");
-        } else {
-          print("Unknown file type.");
-        }
+            print("The file is an Excel document.");
+          } else {
+            print("Unknown file type.");
+          }
+        });
+      } else {
+        print("Content-Type header is missing.");
+      }
+      await taskController.createItems(
+        desc: _controller.text,
+        taskId: widget.taskId.toString(),
+        imgPaths: imagePaths,
+        excelPaths: listExcel,
+        pdfPaths: listpathipdf,
+      );
+
+      if (_controller.text.isNotEmpty) {
+        print("Message sent: ${_controller.text}");
+        _controller.clear(); // Clear the text controller after sending
+      }
+
+      setState(() {
+        _selectedImages.clear(); // Clear the selected images
+        _selectedFiles.clear(); // Clear the selected files (if any)
       });
-    } else {
-      print("Content-Type header is missing.");
     }
-    // Call the createItems method with the converted imagePaths
-    await taskController.createItems(
-      desc: _controller.text,
-      taskId: widget.taskId.toString(),
-      imgPaths: imagePaths,
-      excelPaths: listExcel,
-      pdfPaths: listpathipdf,
-    );
-
-    // Check if the description is not empty
-    if (_controller.text.isNotEmpty) {
-      print("Message sent: ${_controller.text}");
-      _controller.clear(); // Clear the text controller after sending
-    }
-
-    // Reset image and file selection
-    setState(() {
-      _selectedImages.clear(); // Clear the selected images
-      _selectedFiles.clear(); // Clear the selected files (if any)
-    });
   }
 
   @override
@@ -155,7 +153,22 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      bottomSheet: bottomSheet(context),
+      bottomSheet: GetBuilder<TaskController>(
+          init: TaskController(),
+          builder: (controller) {
+            if (controller.isLoadingProfile) {
+              return SizedBox.shrink();
+            }
+            if (controller.task == null) {
+              return SizedBox.shrink();
+            }
+            final task = controller.task!;
+            if (controller.task!.observerId ==
+                Get.put(AuthController()).user!.id) {
+              return SizedBox.shrink();
+            }
+            return bottomSheet(context);
+          }),
       body: GetBuilder<TaskController>(
         init: TaskController(),
         builder: (controller) {
@@ -200,11 +213,13 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
     );
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   Container bottomSheet(BuildContext context) {
     return Container(
       color: Colors.white,
       height:
-          (_selectedImages.isNotEmpty || _selectedFiles.isNotEmpty) ? 220 : 80,
+          (_selectedImages.isNotEmpty || _selectedFiles.isNotEmpty) ? 230 : 90,
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -247,13 +262,22 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                 ],
               ),
               Expanded(
-                child: TextField(
-                  controller: _controller,
-                  decoration: InputDecoration(
-                    hintText: 'Type a message...',
-                    border: OutlineInputBorder(
-                        // borderRadius: BorderRadius.circular(30),
-                        ),
+                child: Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      hintText: 'Type a message...',
+                      border: OutlineInputBorder(
+                          // borderRadius: BorderRadius.circular(30),
+                          ),
+                    ),
+                    validator: (value) => AppValidator.validate(value, [
+                      (v) => AppValidator.validateRequired(v,
+                          fieldName: 'message'),
+                      (v) => AppValidator.validateLength(v,
+                          minLength: 3, maxLength: 30),
+                    ]),
                   ),
                 ),
               ),
@@ -261,7 +285,10 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                   init: TaskController(),
                   builder: (teskbuildController) {
                     return teskbuildController.issend
-                        ? spinkit
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: spinkit30,
+                          )
                         : IconButton(
                             icon: Image.asset(
                               "assets/icons/send.png",

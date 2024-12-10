@@ -29,15 +29,41 @@ class TaskController extends GetxController {
   bool isLoadingProfile = false;
   bool isLoadingProfilebutton = false;
   bool isLoadingMore = false;
+  int isAssigned = 0;
+
   int offset = 0;
   int limit = 7;
   int tasklength = 0;
-  int indexminu = 0;
   int inProgress = 0;
   int created = 0;
   int completed = 0;
   int canceled = 0;
-  onIndexChanged(indexselect) {}
+  onIndexChanged(int indexselect) {
+    final userid = Get.put(AuthController()).user!.id.toString();
+    isAssigned = indexselect;
+    update();
+
+    if (indexselect == 0) {
+      getAllTask(
+        Get.context,
+        responsibleId: userid,
+      );
+      return;
+    }
+    if (indexselect == 2) {
+      getAllTask(
+        Get.context,
+        observerId: userid,
+      );
+
+      return;
+    }
+    if (indexselect == 1) {
+      getAllTask(Get.context, ownerId: userid);
+
+      return;
+    }
+  }
 
   Future<void> createTask({
     required String label,
@@ -64,17 +90,27 @@ class TaskController extends GetxController {
         'items[0][desc]': itemDescription,
       });
 
-      if (imgPaths != null && imgPaths.isNotEmpty) {
-        await _addFilesFromList(request, 'prImg', imgPaths);
+      if (imgPaths != null) {
+        for (var filePath in imgPaths) {
+          request.files
+              .add(await http.MultipartFile.fromPath('prImg', filePath));
+        }
       }
-      if (videoPaths != null && videoPaths.isNotEmpty) {
-        await _addFilesFromList(request, 'prVideo', videoPaths);
+
+      // Add PDF files (if any)
+      if (pdfPaths != null) {
+        for (var filePath in pdfPaths) {
+          request.files
+              .add(await http.MultipartFile.fromPath('prPdf', filePath));
+        }
       }
-      if (excelPaths != null && excelPaths.isNotEmpty) {
-        await _addFilesFromList(request, 'prExcel', excelPaths);
-      }
-      if (pdfPaths != null && pdfPaths.isNotEmpty) {
-        await _addFilesFromList(request, 'prPdf', pdfPaths);
+
+      // Add Excel files (if any)
+      if (excelPaths != null) {
+        for (var filePath in excelPaths) {
+          request.files
+              .add(await http.MultipartFile.fromPath('prExcel', filePath));
+        }
       }
 
       request.headers.addAll(headers);
@@ -89,7 +125,11 @@ class TaskController extends GetxController {
         Go.back(Get!.context);
         showMessage(Get.context,
             title: "Task created successfully", color: Colors.green);
-        getAllTask(Get.context);
+
+        getAllTask(Get.context,
+            responsibleId: isAssigned == 2
+                ? ""
+                : Get.put(AuthController()).user!.id.toString());
       } else {
         showMessage(Get.context, title: "Failed to create task");
         throw Exception('Failed to create task: ${response.reasonPhrase}');
@@ -116,12 +156,19 @@ class TaskController extends GetxController {
 
   // Fetch all missions
   Future<void> getAllTask(
-    context,
-  ) async {
+    context, {
+    responsibleId = "",
+    observerId = "",
+    ownerId = "",
+  }) async {
     final uri = Uri.parse('${Endpoint.apiTask}').replace(
       queryParameters: {
         'offset': offset.toString(), // Add offset
         'limit': limit.toString(), // Add limit
+
+        if (responsibleId != "") ...{'responsibleId': responsibleId},
+        if (observerId != "") ...{'observerId': observerId},
+        if (ownerId != "") ...{'ownerId': ownerId},
       },
     );
 
@@ -149,14 +196,7 @@ class TaskController extends GetxController {
     }
   }
 
-  upadtestatus(int nex) async {
-    try {
-      final respons = await http.put(Uri.parse(Endpoint.apiChangeStatus));
-    } catch (e) {}
-  }
-
   bool changestatus = false;
-
   Future<void> changeStatuseMission(int id, int missionId) async {
     try {
       changestatus = true;

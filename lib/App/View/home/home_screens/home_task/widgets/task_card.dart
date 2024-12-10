@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:mformatic_crm_delegate/App/Model/task.dart';
 import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
@@ -9,9 +10,9 @@ import '../../../../../Model/mission.dart';
 import '../task_details/profile_task.dart';
 import 'getStatusColor.dart';
 
-class MissionCard extends StatelessWidget {
-  final Mission mission;
-  const MissionCard({Key? key, required this.mission, required this.index})
+class TaskCard extends StatelessWidget {
+  final Task task;
+  const TaskCard({Key? key, required this.task, required this.index})
       : super(key: key);
   final int index;
 
@@ -21,7 +22,7 @@ class MissionCard extends StatelessWidget {
       onTap: () {
         Go.to(
           context,
-          TaskProfileScreen(taskId: mission.id),
+          TaskProfileScreen(taskId: task.id),
         );
       },
       child: Padding(
@@ -39,7 +40,7 @@ class MissionCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "${(index + 1)}- " + mission.label!,
+                            "${(index + 1)}- " + task.label!,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -47,22 +48,19 @@ class MissionCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          Spacer(),
+                          if (task.isStart == true)
+                            Icon(
+                              Icons.pause_outlined,
+                              color: const Color.fromARGB(255, 0, 255, 8),
+                            ),
                         ],
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 8),
-                          if (mission.desc != null && mission.desc!.isNotEmpty)
-                            Text(
-                              mission.desc!,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          const SizedBox(height: 12),
+
                           Row(
                             children: [
                               Icon(Icons.person,
@@ -70,8 +68,7 @@ class MissionCard extends StatelessWidget {
                                   size: 18),
                               const SizedBox(width: 4),
                               Text(
-                                'Created by:'.tr +
-                                    " ${mission.creatorUsername}",
+                                'Created by:'.tr + " ${task.ownerUsername}",
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
@@ -84,15 +81,15 @@ class MissionCard extends StatelessWidget {
                           Row(
                             children: [
                               Icon(Icons.circle,
-                                  color: getStatusColortask(mission.statusId!),
+                                  color: getStatusColortask(task.statusId!),
                                   size: 14),
                               const SizedBox(width: 4),
                               Text(
                                 'Status:'.tr +
-                                    " ${getStatusLabel(mission.statusId!)}",
+                                    " ${getStatusLabelTask(task.statusId!)}",
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: getStatusColortask(mission.statusId!),
+                                  color: getStatusColortask(task.statusId!),
                                 ),
                               ),
                             ],
@@ -105,7 +102,7 @@ class MissionCard extends StatelessWidget {
                                   color: Colors.black, size: 18),
                               const SizedBox(width: 4),
                               Text(
-                                "Client: ${mission.client!.fullName}",
+                                "Responsible: ${task.responsibleUsername}",
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
@@ -122,7 +119,7 @@ class MissionCard extends StatelessWidget {
                                   size: 18),
                               const SizedBox(width: 4),
                               Text(
-                                "Date: ${formatDate(mission.createdAt.toString())}",
+                                "Date: ${formatDate(task.createdAt.toString())}",
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
@@ -139,7 +136,7 @@ class MissionCard extends StatelessWidget {
                               const SizedBox(width: 4),
                               Text(
                                 "Updated Date :".tr +
-                                    "${formatDate(mission.updatedAt.toString())}",
+                                    "${formatDate(task.updatedAt.toString())}",
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
@@ -161,7 +158,7 @@ class MissionCard extends StatelessWidget {
   }
 }
 
-String getStatusLabel(int statusId) {
+String getStatusLabelTask(int statusId) {
   return taskStatusEnumString[statusId] ?? 'Unknown Status';
 }
 

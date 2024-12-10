@@ -9,7 +9,7 @@ import '../../../../../Controller/auth/auth_controller.dart';
 import '../../../../../Controller/home/annex_controller.dart';
 import '../../../../../Controller/home/missions_controllerAll.dart';
 import '../../../../widgets/bolck_screen.dart';
-import '../widgets/mission_card.dart';
+import '../widgets/task_card.dart';
 import 'Widgets/show_date_range_dialog_reason.dart';
 
 DateTime? startDateMissionByReason;
@@ -94,7 +94,8 @@ class _MissionListScreenByReasonState extends State<MissionListScreenByReason> {
                   },
                 ),
               ],
-              title: Text("${getStatusLabel(int.parse(widget.statusId))}".tr),
+              title:
+                  Text("${getStatusLabelTask(int.parse(widget.statusId))}".tr),
               centerTitle: true,
             ),
             backgroundColor: ColorsApp.white,
@@ -137,10 +138,10 @@ class _MissionListScreenByReasonState extends State<MissionListScreenByReason> {
                               return Center(child: spinkit);
                             } else {
                               final mission = controller.missions![index];
-                              return MissionCard(
-                                mission: mission,
-                                index: index,
-                              );
+                              // return TaskCard(
+                              //   task: mission,
+                              //   index: index,
+                              // );
                             }
                           },
                         ).addRefreshIndicator(

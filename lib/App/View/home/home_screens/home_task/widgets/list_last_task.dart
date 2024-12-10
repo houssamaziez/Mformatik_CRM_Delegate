@@ -10,9 +10,10 @@ import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_all/mission_list_screen.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
+import '../task_all/task_list_screen.dart';
 import '../task_details/profile_task.dart';
 import 'getStatusColor.dart';
-import 'mission_card.dart';
+import 'task_card.dart';
 
 Padding listLastTasks(BuildContext context) {
   return Padding(
@@ -73,7 +74,7 @@ Padding listLastTasks(BuildContext context) {
                               .center()),
                       Container(
                           width: 60,
-                          child: "createdAt"
+                          child: "Since"
                               .tr
                               .style(
                                   color: Theme.of(context).primaryColor,
@@ -137,12 +138,21 @@ Padding listLastTasks(BuildContext context) {
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    Icon(
-                                                      Icons.assignment,
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
-                                                      size: 15,
-                                                    ),
+                                                    if (task.isStart != true)
+                                                      Icon(
+                                                        Icons.assignment,
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                        size: 15,
+                                                      ),
+                                                    if (task.isStart == true)
+                                                      Icon(
+                                                        size: 15,
+                                                        Icons.pause_outlined,
+                                                        color: const Color
+                                                            .fromARGB(
+                                                            255, 0, 255, 8),
+                                                      ),
                                                     const SizedBox(
                                                       width: 8,
                                                     ),
@@ -177,7 +187,7 @@ Padding listLastTasks(BuildContext context) {
                                                             SizedBox(
                                                               height: 9,
                                                             ),
-                                                            getStatusLabel(task
+                                                            getStatusLabelTask(task
                                                                     .statusId!)
                                                                 .toString()
                                                                 .style(
@@ -245,7 +255,7 @@ Padding listLastTasks(BuildContext context) {
                 const Spacer(),
                 InkWell(
                   onTap: () {
-                    Go.to(context, const MissionListScreen());
+                    Go.to(context, const TaskListScreen());
                   },
                   child: Container(
                     decoration: StyleContainer.stylecontainer(
