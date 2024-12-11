@@ -164,6 +164,7 @@ class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: ButtonAll(
+            color: Theme.of(context).primaryColor,
             isloading: updateController.isloading,
             function: () {
               if (_formKey.currentState!.validate()) {

@@ -6,9 +6,11 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/task_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/Task/task_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/history/screen_history.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/widgets/listItems.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../../Service/AppValidator/AppValidator.dart';
@@ -182,27 +184,85 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
             return Center(child: Text('Mission not found'.tr));
           }
           final task = teskController.task!;
-
           return Scaffold(
             body: ListView(
               shrinkWrap: true,
               children: [
                 filterlistSelectDetails(context),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (teskController.detailsSelect == 0)
+                if (teskController.detailsSelect == 0)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 16.0, left: 16.0, right: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         buildTaskHeader(context, task),
-                      if (teskController.detailsSelect == 0)
                         const SizedBox(height: 16),
-                      if (teskController.detailsSelect == 0)
                         taskInformation(teskController),
-                    ],
+                        SizedBox(
+                          height: 10,
+                        ),
+                        if (task.statusId == 1 &&
+                            task.responsibleId ==
+                                Get.put(AuthController()).user!.id)
+                          ButtonAll(
+                              color: Theme.of(context).primaryColor,
+                              function: () {
+                                taskController.updateTaskStatus(
+                                  taskId: task.id,
+                                  status: 2,
+                                );
+                              },
+                              title: 'Start'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        if (task.statusId != 1 &&
+                            task.ownerId ==
+                                Get.put(AuthController()).user!.id &&
+                            task.statusId != 6 &&
+                            task.statusId != 7)
+                          ButtonAll(
+                              color: Theme.of(context).primaryColor,
+                              function: () {
+                                taskController.updateTaskStatus(
+                                  taskId: task.id,
+                                  status: 6,
+                                );
+                              },
+                              title: 'Close'),
+                        if (task.statusId != 1 &&
+                            task.responsibleId ==
+                                Get.put(AuthController()).user!.id &&
+                            task.statusId != 6 &&
+                            task.statusId != 7 &&
+                            task.statusId != 5)
+                          ButtonAll(
+                              color: Theme.of(context).primaryColor,
+                              function: () {
+                                taskController.updateTaskStatus(
+                                  taskId: task.id,
+                                  status: 5,
+                                );
+                              },
+                              title: 'Close'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        if (task.statusId == 1)
+                          ButtonAll(
+                            function: () {
+                              taskController.updateTaskStatus(
+                                taskId: task.id,
+                                status: 7,
+                              );
+                            },
+                            title: 'Canceled',
+                            color: Colors.red,
+                          ),
+                      ],
+                    ),
                   ),
-                ),
                 if (teskController.detailsSelect == 1)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -210,6 +270,12 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                       controller: teskController,
                     ),
                   ),
+                if (teskController.detailsSelect == 2)
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.95,
+                    child: HistoryTimelineScreen(
+                        historyList: teskController.task!.histories),
+                  )
               ],
             ).addRefreshIndicator(
                 onRefresh: () =>

@@ -5,19 +5,22 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import 'package:mformatic_crm_delegate/App/myapp.dart';
 
 class ButtonAll extends StatelessWidget {
-  const ButtonAll(
+  ButtonAll(
       {super.key,
       required this.function,
       required this.title,
       this.height = 50,
-      this.isloading = false});
+      this.isloading = false,
+      required this.color});
 
   final Function function;
   final String title;
   final bool isloading;
   final double height;
+  Color color;
   @override
   Widget build(BuildContext context) {
+    color = Theme.of(Get.context!).primaryColor;
     return InkWell(
       onTap: () {
         if (isloading) {

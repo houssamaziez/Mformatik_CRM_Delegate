@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/task_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/Task/task_controller.dart';
 
 import '../../../../../widgets/flutter_spinkit.dart';
 

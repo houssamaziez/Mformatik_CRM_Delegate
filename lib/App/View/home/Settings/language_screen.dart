@@ -116,6 +116,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
             Container(
               width: 150,
               child: ButtonAll(
+                  color: Theme.of(context).primaryColor,
                   function: () {
                     Get.back();
                   },

@@ -6,7 +6,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/task_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/Task/task_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/persons/screen_list_persons.dart';
@@ -427,6 +427,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                       init: TaskController(),
                       builder: (taskController) {
                         return ButtonAll(
+                            color: Theme.of(context).primaryColor,
                             isloading: taskController.isLoadingCreate,
                             function: () {
                               List<String> listpathipdf = [];

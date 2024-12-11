@@ -12,11 +12,11 @@ import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../Model/mission.dart';
-import '../../Util/app_exceptions/response_handler.dart';
-import '../../Util/extention/file.dart';
-import '../../View/widgets/showsnack.dart';
-import '../auth/auth_controller.dart';
+import '../../../Model/mission.dart';
+import '../../../Util/app_exceptions/response_handler.dart';
+import '../../../Util/extention/file.dart';
+import '../../../View/widgets/showsnack.dart';
+import '../../auth/auth_controller.dart';
 
 final Map<String, Map<String, dynamic>> fileCache = {};
 
@@ -563,5 +563,38 @@ class TaskController extends GetxController {
     } finally {}
     issend = false;
     update();
+  }
+
+  Future<void> updateTaskStatus({
+    required int taskId,
+    required int status,
+  }) async {
+    String _userId = Get.put(AuthController()).user!.id.toString();
+
+    var url = Uri.parse('${Endpoint.apiTask}/$taskId/change-status/$status');
+    var headers = {
+      'x-auth-token': token.read("token").toString(),
+    };
+
+    var request = http.Request('PUT', url);
+    request.headers.addAll(headers);
+
+    try {
+      http.StreamedResponse response = await request.send();
+      print(response.statusCode);
+      if (response.statusCode == 204) {
+        getTaskById(Get.context, taskId);
+        getAllTask(Get.context,
+            observerId: isAssigned == 2 ? _userId : "",
+            responsibleId: isAssigned == 0 ? _userId : "",
+            ownerId: isAssigned == 1 ? _userId : "");
+        String responseBody = await response.stream.bytesToString();
+        print('Success: $responseBody');
+      } else {
+        print('Failed: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 }
