@@ -398,10 +398,19 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                     return null; // No error
                   },
                 ),
-                const SizedBox(
+                Text(
+                  "Deadline",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
                   height: 10,
                 ),
                 selectDeadline(context),
+                SizedBox(
+                  height: 10,
+                ),
                 SizedBox(
                   height: 10,
                 ),
