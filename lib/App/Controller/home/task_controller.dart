@@ -76,6 +76,8 @@ class TaskController extends GetxController {
     List<String>? excelPaths, // Optional
     List<String>? pdfPaths, // Optional
   }) async {
+    String _userId = Get.put(AuthController()).user!.id.toString();
+
     isLoadingCreate = true;
     update();
     try {
@@ -133,9 +135,9 @@ class TaskController extends GetxController {
             title: "Task created successfully", color: Colors.green);
 
         getAllTask(Get.context,
-            responsibleId: isAssigned == 2
-                ? ""
-                : Get.put(AuthController()).user!.id.toString());
+            observerId: isAssigned == 2 ? _userId : "",
+            responsibleId: isAssigned == 0 ? _userId : "",
+            ownerId: isAssigned == 1 ? _userId : "");
       } else {
         showMessage(Get.context, title: "Failed to create task");
         throw Exception('Failed to create task: ${response.reasonPhrase}');
