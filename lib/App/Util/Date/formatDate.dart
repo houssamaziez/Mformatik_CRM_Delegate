@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 
+final DateFormat formatter = DateFormat('yyyy-MM-dd');
 String formatDate(String dateString) {
   //TODO:study extension methods in dart
   try {
@@ -7,7 +8,7 @@ String formatDate(String dateString) {
     final DateTime dateTime = DateTime.parse(dateString);
 
     // Define the desired format
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
     // Format the date
     return formatter.format(dateTime.toLocal());
   } catch (e) {

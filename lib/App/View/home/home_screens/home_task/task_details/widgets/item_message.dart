@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/task_controller.dart';
+import 'package:mformatic_crm_delegate/App/Util/Lanch_url/select_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/widgets/ShowPDFs.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/widgets/showimage.dart';
@@ -89,11 +90,7 @@ class itemMessage extends StatelessWidget {
                                     color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Text(
-                                comment.desc,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 14),
-                              ),
+                              InteractiveTextScreen(description: comment.desc),
                               Row(
                                 children: [
                                   if (imagelanght != 0)

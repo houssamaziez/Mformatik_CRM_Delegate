@@ -70,6 +70,7 @@ class TaskController extends GetxController {
     required String responsibleId,
     required String observerId,
     required String itemDescription,
+    String? deadline,
     List<String>? imgPaths, // Optional
     List<String>? videoPaths, // Optional
     List<String>? excelPaths, // Optional
@@ -85,6 +86,9 @@ class TaskController extends GetxController {
       var request = http.MultipartRequest('POST', Uri.parse(Endpoint.apiTask));
       request.fields.addAll({
         'label': label,
+        if (deadline != "" && deadline != null) ...{
+          'deadline': deadline.toString()
+        },
         'responsibleId': responsibleId,
         'observerId': observerId,
         'items[0][desc]': itemDescription,
