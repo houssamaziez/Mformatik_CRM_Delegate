@@ -70,7 +70,7 @@ Container taskInformation(TaskController controller) {
                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
               ),
               Text(
-                controller.task!.observerUsername!,
+                controller.task!.observerUsername ?? "N/A",
                 style:
                     const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
               )

@@ -68,7 +68,7 @@ class TaskController extends GetxController {
   Future<void> createTask({
     required String label,
     required String responsibleId,
-    required String observerId,
+    String observerId = "",
     required String itemDescription,
     String? deadline,
     List<String>? imgPaths, // Optional
@@ -90,7 +90,9 @@ class TaskController extends GetxController {
           'deadline': deadline.toString()
         },
         'responsibleId': responsibleId,
-        'observerId': observerId,
+        if (observerId != "" && observerId != null) ...{
+          'observerId': observerId.toString()
+        },
         'items[0][desc]': itemDescription,
       });
 

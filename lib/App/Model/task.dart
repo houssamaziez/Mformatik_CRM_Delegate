@@ -9,9 +9,9 @@ class Task {
   final String responsibleUsername;
   final int responsibleRoleId;
   final int responsibleId;
-  final String observerUsername;
-  final int observerRoleId;
-  final int observerId;
+  final String? observerUsername;
+  final int? observerRoleId;
+  final int? observerId;
   final int statusId;
   final int lastStatusId;
   final DateTime createdAt;
@@ -32,9 +32,9 @@ class Task {
     required this.responsibleUsername,
     required this.responsibleRoleId,
     required this.responsibleId,
-    required this.observerUsername,
-    required this.observerRoleId,
-    required this.observerId,
+    this.observerUsername = "",
+    this.observerRoleId = 0,
+    this.observerId = 0,
     required this.statusId,
     required this.lastStatusId,
     required this.createdAt,

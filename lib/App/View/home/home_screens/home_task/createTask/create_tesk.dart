@@ -461,18 +461,6 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                                 print("Content-Type header is missing.");
                               }
 
-                              print(Get.put(ControllerPerson())
-                                      .observator!
-                                      .user!
-                                      .id
-                                      .toString() +
-                                  " " +
-                                  Get.put(ControllerPerson())
-                                      .responsable!
-                                      .user!
-                                      .id
-                                      .toString());
-
                               taskController.createTask(
                                   label: controllerLabel.text,
                                   responsibleId: Get.put(ControllerPerson())
@@ -480,11 +468,15 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                                       .user!
                                       .id
                                       .toString(),
-                                  observerId: Get.put(ControllerPerson())
-                                      .observator!
-                                      .user!
-                                      .id
-                                      .toString(),
+                                  observerId:
+                                      Get.put(ControllerPerson()).observator !=
+                                              null
+                                          ? Get.put(ControllerPerson())
+                                              .observator!
+                                              .user!
+                                              .id
+                                              .toString()
+                                          : "",
                                   deadline: Get.put(DateControllerCreate())
                                           .selectedDate ??
                                       "",
