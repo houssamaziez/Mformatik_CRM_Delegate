@@ -1,9 +1,8 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../task_details/profile_task.dart';
+import '../../task_details/details_task.dart';
 
 Padding showfile(_compressedImages, _deleteImage, _selectedFiles, _deleteFile) {
   return Padding(

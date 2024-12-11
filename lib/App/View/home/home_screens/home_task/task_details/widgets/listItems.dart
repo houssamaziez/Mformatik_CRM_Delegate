@@ -15,12 +15,12 @@ class listItems extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          SizedBox(
-            height: 10,
-          ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(0.0),
             child: ListView.builder(
+                padding: EdgeInsets.zero,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: controller.task!.items.length,

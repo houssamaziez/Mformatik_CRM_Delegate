@@ -19,7 +19,7 @@ import '../../../../../Controller/home/Person/controller_person.dart';
 import '../../../../../Controller/widgetsController/date_controller_create.dart';
 import '../../../../../Service/permission_handler/mic_handler.dart';
 import '../../../../../Util/Const/constants.dart';
-import '../task_details/profile_task.dart';
+import '../task_details/details_task.dart';
 import 'widgets/selectDeadline.dart';
 import 'widgets/select_file.dart';
 import 'widgets/show_list_file.dart';

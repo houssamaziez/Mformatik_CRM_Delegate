@@ -66,7 +66,7 @@ Container taskInformation(TaskController controller) {
           Row(
             children: [
               const Text(
-                "Oobserver: ",
+                "Observer: ",
                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
               ),
               Text(

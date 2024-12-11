@@ -20,6 +20,7 @@ class Task {
   final Responsible? responsible;
   final Observer? observer;
   final List<Item> items;
+  final List<History> histories;
 
   Task({
     required this.id,
@@ -43,6 +44,7 @@ class Task {
     this.responsible,
     this.observer,
     this.items = const [],
+    this.histories = const [],
   });
 
   /// Factory constructor to create a `Task` instance from JSON
@@ -76,6 +78,10 @@ class Task {
               ?.map((item) => Item.fromJson(item))
               .toList() ??
           [],
+      histories: (json['histories'] as List<dynamic>?)
+              ?.map((history) => History.fromJson(history))
+              .toList() ??
+          [],
     );
   }
 
@@ -103,6 +109,7 @@ class Task {
       'responsible': responsible?.toJson(),
       'observer': observer?.toJson(),
       'items': items.map((item) => item.toJson()).toList(),
+      'histories': histories.map((history) => history.toJson()).toList(),
     };
   }
 }
@@ -268,6 +275,34 @@ class TaskResponse {
     return {
       'count': count,
       'rows': rows.map((task) => task.toJson()).toList(),
+    };
+  }
+}
+
+class History {
+  final int id;
+  final int statusId;
+  final DateTime createdAt;
+
+  History({
+    required this.id,
+    required this.statusId,
+    required this.createdAt,
+  });
+
+  factory History.fromJson(Map<String, dynamic> json) {
+    return History(
+      id: json['id'],
+      statusId: json['statusId'],
+      createdAt: DateTime.parse(json['created_at']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'statusId': statusId,
+      'created_at': createdAt.toIso8601String(),
     };
   }
 }

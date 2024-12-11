@@ -9,7 +9,7 @@ import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../task_all/task_list_screen.dart';
-import '../task_details/profile_task.dart';
+import '../task_details/details_task.dart';
 import 'getStatusColor.dart';
 import 'task_card.dart';
 

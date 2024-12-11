@@ -7,7 +7,7 @@ import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 
 import '../../../../../Model/mission.dart';
-import '../task_details/profile_task.dart';
+import '../task_details/details_task.dart';
 import 'getStatusColor.dart';
 
 class TaskCard extends StatelessWidget {

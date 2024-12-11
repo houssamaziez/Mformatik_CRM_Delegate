@@ -14,6 +14,7 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../../../../../Service/AppValidator/AppValidator.dart';
 import '../../../../../Util/extention/file.dart';
 import 'widgets/buildTaskHeader.dart';
+import 'widgets/select_screen.dart';
 import 'widgets/taskInformation.dart';
 
 class TaskProfileScreen extends StatefulWidget {
@@ -149,14 +150,16 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mission Details'.tr),
+        title: Text('Task Details'.tr),
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
       ),
       bottomSheet: GetBuilder<TaskController>(
           init: TaskController(),
           builder: (controller) {
-            if (controller.isLoadingProfile) {
+            if (controller.isLoadingProfile ||
+                controller.detailsSelect == 0 ||
+                controller.detailsSelect == 2) {
               return SizedBox.shrink();
             }
             if (controller.task == null) {
@@ -171,38 +174,42 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
           }),
       body: GetBuilder<TaskController>(
         init: TaskController(),
-        builder: (controller) {
-          if (controller.isLoadingProfile) {
+        builder: (teskController) {
+          if (teskController.isLoadingProfile) {
             return const Center(child: spinkit);
           }
-          if (controller.task == null) {
+          if (teskController.task == null) {
             return Center(child: Text('Mission not found'.tr));
           }
-          final task = controller.task!;
+          final task = teskController.task!;
 
           return Scaffold(
             body: ListView(
               shrinkWrap: true,
               children: [
+                filterlistSelectDetails(context),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding:
+                      const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      buildTaskHeader(context, task),
-                      const SizedBox(height: 16),
-                      taskInformation(controller),
-                      const SizedBox(height: 16),
-                      const Text(
-                        "Discussion",
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      ),
+                      if (teskController.detailsSelect == 0)
+                        buildTaskHeader(context, task),
+                      if (teskController.detailsSelect == 0)
+                        const SizedBox(height: 16),
+                      if (teskController.detailsSelect == 0)
+                        taskInformation(teskController),
                     ],
                   ),
                 ),
-                listItems(
-                  controller: controller,
-                ),
+                if (teskController.detailsSelect == 1)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: listItems(
+                      controller: teskController,
+                    ),
+                  ),
               ],
             ).addRefreshIndicator(
                 onRefresh: () =>

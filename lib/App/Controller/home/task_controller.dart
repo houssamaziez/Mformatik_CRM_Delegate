@@ -30,6 +30,7 @@ class TaskController extends GetxController {
   bool isLoadingProfilebutton = false;
   bool isLoadingMore = false;
   int isAssigned = 0;
+  int detailsSelect = 0;
 
   int offset = 0;
   int limit = 7;
@@ -63,6 +64,11 @@ class TaskController extends GetxController {
 
       return;
     }
+  }
+
+  onIndexChangedSelect(int indexselect) {
+    detailsSelect = indexselect;
+    update();
   }
 
   Future<void> createTask({
