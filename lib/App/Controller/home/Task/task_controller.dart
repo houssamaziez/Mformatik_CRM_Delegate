@@ -36,10 +36,40 @@ class TaskController extends GetxController {
   int offset = 0;
   int limit = 7;
   int tasklength = 0;
-  int inProgress = 0;
-  int created = 0;
-  int completed = 0;
+
+  int news = 0;
+
   int canceled = 0;
+  int closed = 0;
+  int start = 0;
+
+  state(int status) {
+    switch (status) {
+      case 1:
+        news = news + 1;
+        break;
+      case 6:
+        closed = closed + 1;
+        break;
+      case 7:
+        canceled = canceled + 1;
+        break;
+
+      case 2:
+        start = start + 1;
+        break;
+      case 3:
+        start = start + 1;
+        break;
+      case 4:
+        start = start + 1;
+        break;
+      case 5:
+        start = start + 1;
+        break;
+    }
+  }
+
   onIndexChanged(int indexselect) {
     final userid = Get.put(AuthController()).user!.id.toString();
     isAssigned = indexselect;
@@ -201,6 +231,53 @@ class TaskController extends GetxController {
         update();
 
         tasklength = MissionResponse.fromJson(responseData).count;
+        update();
+
+        news = 0;
+        canceled = 0;
+        closed = 0;
+        start = 0;
+
+        tasks!.forEach((element) {
+          state(element.statusId!);
+        });
+        update();
+      }
+    } catch (e) {
+      showMessage(context, title: 'Connection problem'.tr);
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
+  // Fetch all missions
+  Future<void> getAllTaskstats(context) async {
+    final uri = Uri.parse('${Endpoint.apiTask}').replace(
+      queryParameters: {
+        'offset': offset.toString(), // Add offset
+        'limit': limit.toString(), // Add limit
+        'attributes[]': ['id', 'firstName', 'lastName'],
+      },
+    );
+
+    try {
+      final response = await http.get(
+        uri,
+        headers: {"x-auth-token": token.read("token").toString()},
+      ).timeout(const Duration(seconds: 50));
+      print(response.body);
+      final responseData = ResponseHandler.processResponse(response);
+      if (response.statusCode == 200) {
+        tasks = TaskResponse.fromJson(responseData).rows;
+        update();
+
+        tasklength = MissionResponse.fromJson(responseData).count;
+        update();
+
+        tasks!.forEach((element) {
+          state(element.statusId!);
+        });
         update();
       }
     } catch (e) {

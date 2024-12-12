@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/Task/task_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/feedback/feedback_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
@@ -322,10 +323,10 @@ Expanded statuseTaskButton(
     BuildContext context, Color Function(int value) getSliderColor) {
   return Expanded(
       flex: 3,
-      child: GetBuilder<MissionsController>(
-          init: MissionsController(),
-          builder: (missionsController) {
-            return missionsController.isLoading == false
+      child: GetBuilder<TaskController>(
+          init: TaskController(),
+          builder: (taskController) {
+            return taskController.isLoading == false
                 ? Container(
                     decoration: StyleContainer.style1,
                     child: Padding(
@@ -355,7 +356,7 @@ Expanded statuseTaskButton(
                                 child: Text(
                                   "New".tr +
                                       "(" +
-                                      missionsController.created.toString() +
+                                      taskController.news.toString() +
                                       ")",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w500,
@@ -400,7 +401,7 @@ Expanded statuseTaskButton(
                                           ),
                                           Text(
                                             "Canceled".tr +
-                                                " ${missionsController.canceled}",
+                                                " ${taskController.canceled}",
                                             style:
                                                 const TextStyle(fontSize: 10),
                                           ),
@@ -426,7 +427,7 @@ Expanded statuseTaskButton(
                                           ),
                                           Text(
                                             "In Progress".tr +
-                                                " ${missionsController.inProgress}",
+                                                " ${taskController.start}",
                                             style:
                                                 const TextStyle(fontSize: 10),
                                           ),
@@ -452,7 +453,7 @@ Expanded statuseTaskButton(
                                           ),
                                           Text(
                                             "Completed".tr +
-                                                " ${missionsController.completed} ",
+                                                " ${taskController.closed} ",
                                             style:
                                                 const TextStyle(fontSize: 10),
                                           ),
@@ -484,17 +485,16 @@ Expanded statuseTaskButton(
                                 children: [
                                   flutterSlider(
                                       getSliderColor,
-                                      missionsController.missionslength
-                                          .toDouble(),
-                                      missionsController.completed.toDouble(),
+                                      taskController.tasklength.toDouble(),
+                                      taskController.closed.toDouble(),
                                       Colors.green),
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  missionsController.completed == 0
+                                  taskController.closed == 0
                                       ? 0.toString().style()
-                                      : ((missionsController.completed * 100) /
-                                              missionsController.missionslength)
+                                      : ((taskController.closed * 100) /
+                                              taskController.tasklength)
                                           .toStringAsFixed(2)
                                           .style(),
                                   "%".style(),
@@ -515,17 +515,16 @@ Expanded statuseTaskButton(
                                 children: [
                                   flutterSlider(
                                       getSliderColor,
-                                      missionsController.missionslength
-                                          .toDouble(),
-                                      missionsController.inProgress.toDouble(),
+                                      taskController.tasklength.toDouble(),
+                                      taskController.start.toDouble(),
                                       Colors.orange),
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  missionsController.inProgress == 0
+                                  taskController.start == 0
                                       ? 0.toString().style()
-                                      : ((missionsController.inProgress * 100) /
-                                              missionsController.missionslength)
+                                      : ((taskController.start * 100) /
+                                              taskController.tasklength)
                                           .toStringAsFixed(2)
                                           .style(),
                                   "%".style(),
@@ -546,17 +545,16 @@ Expanded statuseTaskButton(
                                 children: [
                                   flutterSlider(
                                       getSliderColor,
-                                      missionsController.missionslength
-                                          .toDouble(),
-                                      missionsController.canceled.toDouble(),
+                                      taskController.tasklength.toDouble(),
+                                      taskController.canceled.toDouble(),
                                       Colors.red),
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  missionsController.canceled == 0
+                                  taskController.canceled == 0
                                       ? 0.toString().style()
-                                      : ((missionsController.canceled * 100) /
-                                              missionsController.missionslength)
+                                      : ((taskController.canceled * 100) /
+                                              taskController.tasklength)
                                           .toStringAsFixed(2)
                                           .style(),
                                   "%".style(),
@@ -577,17 +575,16 @@ Expanded statuseTaskButton(
                                 children: [
                                   flutterSlider(
                                       getSliderColor,
-                                      missionsController.missionslength
-                                          .toDouble(),
-                                      missionsController.created.toDouble(),
+                                      taskController.tasklength.toDouble(),
+                                      taskController.news.toDouble(),
                                       Theme.of(context).primaryColor),
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  missionsController.created == 0
+                                  taskController.news == 0
                                       ? 0.toString().style()
-                                      : ((missionsController.created * 100) /
-                                              missionsController.missionslength)
+                                      : ((taskController.news * 100) /
+                                              taskController.tasklength)
                                           .toStringAsFixed(2)
                                           .style(),
                                   "%".style(),
