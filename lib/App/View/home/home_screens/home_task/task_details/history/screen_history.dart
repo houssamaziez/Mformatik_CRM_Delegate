@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timelines/timelines.dart';
 
-import '../../../../../../Model/task.dart';
+import '../../../../../../Model/task_models/history.dart';
+import '../../../../../../Model/task_models/task.dart';
 import '../../widgets/getStatusColor.dart';
 
 const taskStatusEnumString = {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../Model/task.dart';
+import '../../../../../../Model/task_models/task.dart';
 
 Widget buildTaskHeader(BuildContext context, Task task) {
   final theme = Theme.of(context);

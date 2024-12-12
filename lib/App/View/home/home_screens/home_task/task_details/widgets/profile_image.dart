@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 
 import '../../../../../../Controller/auth/auth_controller.dart';
-import '../../../../../../Model/task.dart';
+import '../../../../../../Model/task_models/task.dart';
 import '../../../../../../Util/Const/constants.dart';
 import '../../../../../widgets/flutter_spinkit.dart';
 

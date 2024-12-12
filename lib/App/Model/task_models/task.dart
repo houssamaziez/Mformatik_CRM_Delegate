@@ -1,3 +1,9 @@
+import 'history.dart';
+import 'item_task.dart';
+import 'obsever.dart';
+import 'owner.dart';
+import 'responsible.dart';
+
 class Task {
   final int id;
   final String label;
@@ -114,69 +120,6 @@ class Task {
   }
 }
 
-class Owner {
-  final int id;
-  final Person? person;
-
-  Owner({required this.id, this.person});
-
-  factory Owner.fromJson(Map<String, dynamic> json) {
-    return Owner(
-      id: json['id'],
-      person: json['person'] != null ? Person.fromJson(json['person']) : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'person': person?.toJson(),
-    };
-  }
-}
-
-class Responsible {
-  final int id;
-  final Person? person;
-
-  Responsible({required this.id, this.person});
-
-  factory Responsible.fromJson(Map<String, dynamic> json) {
-    return Responsible(
-      id: json['id'],
-      person: json['person'] != null ? Person.fromJson(json['person']) : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'person': person?.toJson(),
-    };
-  }
-}
-
-class Observer {
-  final int id;
-  final Person? person;
-
-  Observer({required this.id, this.person});
-
-  factory Observer.fromJson(Map<String, dynamic> json) {
-    return Observer(
-      id: json['id'],
-      person: json['person'] != null ? Person.fromJson(json['person']) : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'person': person?.toJson(),
-    };
-  }
-}
-
 class Person {
   final String firstName;
   final String lastName;
@@ -197,112 +140,6 @@ class Person {
       'firstName': firstName,
       'lastName': lastName,
       'img': img,
-    };
-  }
-}
-
-class Item {
-  final int id;
-  final String desc;
-  final String creatorUsername;
-  final int creatorRoleId;
-  final int creatorId;
-  final int taskId;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final List<dynamic> attachments;
-
-  Item({
-    required this.id,
-    required this.desc,
-    required this.creatorUsername,
-    required this.creatorRoleId,
-    required this.creatorId,
-    required this.taskId,
-    required this.createdAt,
-    required this.updatedAt,
-    this.attachments = const [],
-  });
-
-  factory Item.fromJson(Map<String, dynamic> json) {
-    return Item(
-      id: json['id'],
-      desc: json['desc'],
-      creatorUsername: json['creatorUsername'],
-      creatorRoleId: json['creatorRoleId'],
-      creatorId: json['creatorId'],
-      taskId: json['taskId'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-      attachments: json['attachments'] ?? [],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'desc': desc,
-      'creatorUsername': creatorUsername,
-      'creatorRoleId': creatorRoleId,
-      'creatorId': creatorId,
-      'taskId': taskId,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
-      'attachments': attachments,
-    };
-  }
-}
-
-class TaskResponse {
-  final int count;
-  final List<Task> rows;
-
-  TaskResponse({
-    required this.count,
-    required this.rows,
-  });
-
-  /// Factory constructor to create a `TaskResponse` instance from JSON
-  factory TaskResponse.fromJson(Map<String, dynamic> json) {
-    return TaskResponse(
-      count: json['count'],
-      rows: List<Task>.from(json['rows'].map((task) => Task.fromJson(task))),
-    );
-  }
-
-  /// Method to convert a `TaskResponse` instance to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'count': count,
-      'rows': rows.map((task) => task.toJson()).toList(),
-    };
-  }
-}
-
-class History {
-  final int id;
-  final int statusId;
-  final DateTime createdAt;
-
-  History({
-    required this.id,
-    required this.statusId,
-    required this.createdAt,
-  });
-
-  factory History.fromJson(Map<String, dynamic> json) {
-    return History(
-      id: json['id'],
-      statusId: json['statusId'],
-      createdAt: DateTime.parse(json['created_at']),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'statusId': statusId,
-      'created_at': createdAt.toIso8601String(),
     };
   }
 }

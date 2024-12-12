@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Model/task.dart';
+import 'package:mformatic_crm_delegate/App/Model/task_models/task.dart';
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../Model/mission.dart';
+import '../../../Model/task_models/task_respones.dart';
 import '../../../Util/app_exceptions/response_handler.dart';
 import '../../../Util/extention/file.dart';
 import '../../../View/widgets/showsnack.dart';
