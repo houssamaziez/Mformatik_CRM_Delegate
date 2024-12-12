@@ -98,7 +98,7 @@ Container taskInformation(TaskController controller) {
                 style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
-                    color: getStatusColortask(controller.task!.statusId)),
+                    color: getStatusColorTask(controller.task!.statusId)),
               )
             ],
           ),

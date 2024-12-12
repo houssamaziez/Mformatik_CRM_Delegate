@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Color getStatusColortask(int statusId) {
+Color getStatusColorTask(int statusId) {
   switch (statusId) {
     case 1:
       return Colors.blue; // Color for NEW

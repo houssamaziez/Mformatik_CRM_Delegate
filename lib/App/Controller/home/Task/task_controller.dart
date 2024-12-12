@@ -592,6 +592,42 @@ class TaskController extends GetxController {
         String responseBody = await response.stream.bytesToString();
         print('Success: $responseBody');
       } else {
+        getTaskById(Get.context, taskId);
+
+        print('Failed: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  Future<void> revertCancellation({
+    required int taskId,
+  }) async {
+    String _userId = Get.put(AuthController()).user!.id.toString();
+
+    var url = Uri.parse('${Endpoint.apiTask}/$taskId/revert-cancellation');
+    var headers = {
+      'x-auth-token': token.read("token").toString(),
+    };
+
+    var request = http.Request('PUT', url);
+    request.headers.addAll(headers);
+
+    try {
+      http.StreamedResponse response = await request.send();
+      print(response.statusCode);
+      if (response.statusCode == 204) {
+        getTaskById(Get.context, taskId);
+        getAllTask(Get.context,
+            observerId: isAssigned == 2 ? _userId : "",
+            responsibleId: isAssigned == 0 ? _userId : "",
+            ownerId: isAssigned == 1 ? _userId : "");
+        String responseBody = await response.stream.bytesToString();
+        print('Success: $responseBody');
+      } else {
+        getTaskById(Get.context, taskId);
+
         print('Failed: ${response.reasonPhrase}');
       }
     } catch (e) {

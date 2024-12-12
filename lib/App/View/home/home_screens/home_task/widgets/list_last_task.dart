@@ -191,7 +191,7 @@ Padding listLastTasks(BuildContext context) {
                                                                 .style(
                                                                     fontSize:
                                                                         11,
-                                                                    color: getStatusColortask(task
+                                                                    color: getStatusColorTask(task
                                                                         .statusId!),
                                                                     textAlign:
                                                                         TextAlign
@@ -201,7 +201,7 @@ Padding listLastTasks(BuildContext context) {
                                                               timeDifference(task
                                                                   .updatedAt),
                                                               style: TextStyle(
-                                                                  color: getStatusColortask(
+                                                                  color: getStatusColorTask(
                                                                       task.statusId!),
                                                                   fontSize: 7),
                                                             )

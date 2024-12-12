@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:timelines/timelines.dart';
 
 import '../../../../../../Model/task_models/history.dart';
-import '../../../../../../Model/task_models/task.dart';
 import '../../widgets/getStatusColor.dart';
 
 const taskStatusEnumString = {
@@ -28,6 +27,7 @@ class HistoryTimelineScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(bottom: 80),
         child: Timeline.builder(
+          physics: NeverScrollableScrollPhysics(),
           itemCount: historyList.length,
           itemBuilder: (context, index) {
             final history = historyList[index];
@@ -35,85 +35,111 @@ class HistoryTimelineScreen extends StatelessWidget {
                 {'label': 'Unknown', 'icon': Icons.help};
             final statusText = statusInfo['label'];
             final statusIcon = statusInfo['icon'];
-            final statusColor = getStatusColortask(history.statusId);
+            final statusColor = getStatusColorTask(history.statusId);
 
-            return TimelineTile(
-              nodeAlign: TimelineNodeAlign.start,
-              contents: Card(
-                margin: const EdgeInsets.symmetric(vertical: 8.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                color: Colors.white,
-                elevation: 3,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            statusIcon as IconData?,
-                            color: statusColor,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            statusText.toString(),
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: statusColor,
-                            ),
-                          ),
-                        ],
+            return Stack(
+              children: [
+                if (index != 0)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 11,
+                    ),
+                    child: Transform.rotate(
+                      angle: 1.6,
+                      child: Text(
+                        timeDifference(historyList[index].createdAt,
+                            historyList[index - 1].createdAt),
+                        style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: getStatusColorTask(
+                                historyList[index - 1].statusId)),
                       ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.calendar_today,
-                            color: Colors.black54,
-                            size: 16,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            formatDate(history.createdAt),
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              node: TimelineNode(
-                indicator: DotIndicator(
-                  size: 24,
-                  color: statusColor,
-                  child: Tooltip(
-                    message: statusText.toString(),
-                    child: Icon(
-                      statusIcon as IconData?,
-                      color: Colors.white,
-                      size: 16,
                     ),
                   ),
+                TimelineTile(
+                  nodeAlign: TimelineNodeAlign.start,
+                  contents: Padding(
+                    padding: const EdgeInsets.only(top: 40.0),
+                    child: Card(
+                      margin: const EdgeInsets.symmetric(vertical: 8.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      color: Colors.white,
+                      elevation: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  statusIcon as IconData?,
+                                  color: statusColor,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  statusText.toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: statusColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.black54,
+                                  size: 16,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  formatDate(history.createdAt),
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  node: TimelineNode(
+                    indicator: DotIndicator(
+                      size: 24,
+                      color: statusColor,
+                      child: Tooltip(
+                        message: statusText.toString(),
+                        child: Icon(
+                          statusIcon as IconData?,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ),
+                    ),
+                    startConnector: index == 0
+                        ? null
+                        : SolidLineConnector(
+                            color: getStatusColorTask(
+                                historyList[index - 1].statusId)),
+                    endConnector: index == historyList.length - 1
+                        ? null
+                        : SolidLineConnector(
+                            color: getStatusColorTask(
+                                historyList[index].statusId)),
+                  ),
                 ),
-                startConnector: index == 0
-                    ? null
-                    : SolidLineConnector(
-                        color: getStatusColortask(
-                            historyList[index - 1].statusId)),
-                endConnector: index == historyList.length - 1
-                    ? null
-                    : SolidLineConnector(
-                        color: getStatusColortask(historyList[index].statusId)),
-              ),
+              ],
             );
           },
         ),
@@ -135,5 +161,21 @@ String formatDateWithDay(DateTime dateTime) {
     return DateFormat('EEEE').format(dateTime);
   } catch (e) {
     return 'Invalid Date';
+  }
+}
+
+String timeDifference(DateTime date1, DateTime date2) {
+  final difference = date1.difference(date2);
+
+  if (difference.inDays > 365) {
+    return '${(difference.inDays ~/ 365)} Y';
+  } else if (difference.inDays > 0) {
+    return '${difference.inDays} D';
+  } else if (difference.inHours > 0) {
+    return '${difference.inHours} H';
+  } else if (difference.inMinutes > 0) {
+    return '${difference.inMinutes} M';
+  } else {
+    return '${difference.inSeconds} S';
   }
 }

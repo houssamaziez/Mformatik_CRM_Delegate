@@ -14,8 +14,11 @@ import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../../Service/AppValidator/AppValidator.dart';
+import '../../../../../Service/Task/task_list_menu_helper.dart';
 import '../../../../../Util/extention/file.dart';
+import '../widgets/task_card.dart';
 import 'widgets/buildTaskHeader.dart';
+import 'widgets/returnIconFile.dart';
 import 'widgets/select_screen.dart';
 import 'widgets/taskInformation.dart';
 
@@ -202,9 +205,14 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        if (task.statusId == 1 &&
-                            task.responsibleId ==
-                                Get.put(AuthController()).user!.id)
+                        if (Workflow().isCanShow(
+                                getStatusLabelTask(task.statusId),
+                                teskController.task!.ownerId ==
+                                    Get.put(AuthController()).user!.id,
+                                (teskController.task!.responsibleId ==
+                                    Get.put(AuthController()).user!.id),
+                                "Start") ==
+                            true)
                           ButtonAll(
                               color: Theme.of(context).primaryColor,
                               function: () {
@@ -217,11 +225,14 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        if (task.statusId != 1 &&
-                            task.ownerId ==
-                                Get.put(AuthController()).user!.id &&
-                            task.statusId != 6 &&
-                            task.statusId != 7)
+                        if (Workflow().isCanShow(
+                                getStatusLabelTask(task.statusId),
+                                teskController.task!.ownerId ==
+                                    Get.put(AuthController()).user!.id,
+                                (teskController.task!.responsibleId ==
+                                    Get.put(AuthController()).user!.id),
+                                "Close") ==
+                            true)
                           ButtonAll(
                               color: Theme.of(context).primaryColor,
                               function: () {
@@ -231,12 +242,14 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                                 );
                               },
                               title: 'Close'),
-                        if (task.statusId != 1 &&
-                            task.responsibleId ==
-                                Get.put(AuthController()).user!.id &&
-                            task.statusId != 6 &&
-                            task.statusId != 7 &&
-                            task.statusId != 5)
+                        if (Workflow().isCanShow(
+                                getStatusLabelTask(task.statusId),
+                                teskController.task!.ownerId ==
+                                    Get.put(AuthController()).user!.id,
+                                (teskController.task!.responsibleId ==
+                                    Get.put(AuthController()).user!.id),
+                                'Responsible close') ==
+                            true)
                           ButtonAll(
                               color: Theme.of(context).primaryColor,
                               function: () {
@@ -245,11 +258,18 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                                   status: 5,
                                 );
                               },
-                              title: 'Close'),
+                              title: 'Responsible close'),
                         SizedBox(
                           height: 10,
                         ),
-                        if (task.statusId == 1)
+                        if (Workflow().isCanShow(
+                                getStatusLabelTask(task.statusId),
+                                teskController.task!.ownerId ==
+                                    Get.put(AuthController()).user!.id,
+                                (teskController.task!.responsibleId ==
+                                    Get.put(AuthController()).user!.id),
+                                'Canceled') ==
+                            true)
                           ButtonAll(
                             function: () {
                               taskController.updateTaskStatus(
@@ -258,6 +278,23 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                               );
                             },
                             title: 'Canceled',
+                            color: Colors.red,
+                          ),
+                        if (Workflow().isCanShow(
+                                getStatusLabelTask(task.statusId),
+                                teskController.task!.ownerId ==
+                                    Get.put(AuthController()).user!.id,
+                                (teskController.task!.responsibleId ==
+                                    Get.put(AuthController()).user!.id),
+                                'Revert cancellation') ==
+                            true)
+                          ButtonAll(
+                            function: () {
+                              taskController.revertCancellation(
+                                taskId: task.id,
+                              );
+                            },
+                            title: 'Revert cancellation',
                             color: Colors.red,
                           ),
                       ],
@@ -474,18 +511,4 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
       ),
     );
   }
-}
-
-String returnIconFile(String path) {
-  if (imgFileTypes.any((type) => path.toString().contains(type))) {
-    return "assets/icons/photo.png";
-  }
-  if (pdfFileTypes.any((type) => path.toString().contains(type))) {
-    return "assets/icons/pdf.png";
-  }
-  if (excelFileTypes.any((type) => path.toString().contains(type))) {
-    return "assets/icons/excel.png";
-  }
-
-  return "assets/icons/photo.png";
 }

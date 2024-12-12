@@ -81,7 +81,7 @@ class TaskCard extends StatelessWidget {
                           Row(
                             children: [
                               Icon(Icons.circle,
-                                  color: getStatusColortask(task.statusId!),
+                                  color: getStatusColorTask(task.statusId!),
                                   size: 14),
                               const SizedBox(width: 4),
                               Text(
@@ -89,7 +89,7 @@ class TaskCard extends StatelessWidget {
                                     " ${getStatusLabelTask(task.statusId!)}",
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: getStatusColortask(task.statusId!),
+                                  color: getStatusColorTask(task.statusId!),
                                 ),
                               ),
                             ],
