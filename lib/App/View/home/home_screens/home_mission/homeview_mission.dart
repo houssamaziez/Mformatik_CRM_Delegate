@@ -54,13 +54,13 @@ class _HomeMissionState extends State<HomeMission> {
     List<HomeMenuSelect> _listiconhomemeneu = [
       HomeMenuSelect(
           title: "My Mission".tr,
-          icon: "job-description.png",
+          icon: "surveyor.png",
           function: (context) {
             Go.to(context, const MissionListScreenByMe());
           }),
       HomeMenuSelect(
         title: "All Missions".tr,
-        icon: 'daily-task.png',
+        icon: 'checklist.png',
         function: (context) {
           Go.to(context, MissionListScreen());
         },
