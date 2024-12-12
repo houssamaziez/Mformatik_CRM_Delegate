@@ -13,7 +13,7 @@ class History {
     return History(
       id: json['id'],
       statusId: json['statusId'],
-      createdAt: DateTime.parse(json['created_at']),
+      createdAt: DateTime.parse(json['createdAt']),
     );
   }
 
@@ -21,7 +21,7 @@ class History {
     return {
       'id': id,
       'statusId': statusId,
-      'created_at': createdAt.toIso8601String(),
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 }

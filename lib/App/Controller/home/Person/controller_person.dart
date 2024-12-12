@@ -29,7 +29,7 @@ class ControllerPerson extends GetxController {
           queryParameters: {
             'offset': currentOffset.toString(), // Add offset
             'limit': limit.toString(), // Add limit
-
+            'isItForAssigne': true.toString(),
             'attributes[]': ['id', 'firstName', 'lastName'],
           },
         ),
@@ -79,6 +79,7 @@ class ControllerPerson extends GetxController {
           queryParameters: {
             'offset': currentOffset.toString(),
             'limit': limit.toString(),
+            'isItForAssigne': true.toString(),
             'attributes[]': ['id', 'firstName', 'lastName'],
           },
         ),

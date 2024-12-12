@@ -7,6 +7,7 @@ import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/widgets/showimage.dart';
 
 import '../../../../../../Controller/auth/auth_controller.dart';
+import '../../../../../../Model/task_models/item_task.dart';
 import '../../../../../../Model/task_models/task.dart';
 import '../../../../../../Util/Date/formatDate.dart';
 import '../../../../../../Util/extention/file.dart';
