@@ -32,7 +32,7 @@ class ButtonAll extends StatelessWidget {
         width: double.infinity,
         height: height,
         decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
+            color: color,
             borderRadius: const BorderRadius.all(Radius.circular(8))),
         child: Center(
           child: Row(

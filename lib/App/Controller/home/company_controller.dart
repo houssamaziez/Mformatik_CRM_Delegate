@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/Controller/home/client_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/feedback/feedback_controller.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/mission/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 import 'dart:convert';

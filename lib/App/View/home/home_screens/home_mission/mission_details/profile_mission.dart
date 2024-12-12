@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/mission/missions_controller.dart';
 import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';

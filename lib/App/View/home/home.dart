@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/home_controller.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/mission/missions_controller.dart';
 
 import '../../Controller/auth/auth_controller.dart';
 import '../../Controller/home/annex_controller.dart';

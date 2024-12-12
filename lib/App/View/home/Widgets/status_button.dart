@@ -7,7 +7,7 @@ import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_feedback/
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_by_reasonId/mission_list_screen_by_reasonId.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
-import '../../../Controller/home/missions_controller.dart';
+import '../../../Controller/home/mission/missions_controller.dart';
 import '../../../Util/Style/stylecontainer.dart';
 import '../../widgets/Containers/container_blue.dart';
 import '../../widgets/flutter_slider.dart';

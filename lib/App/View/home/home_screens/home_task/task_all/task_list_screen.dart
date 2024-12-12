@@ -8,7 +8,7 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../../Controller/auth/auth_controller.dart';
 import '../../../../../Controller/home/annex_controller.dart';
-import '../../../../../Controller/home/missions_controllerAll.dart';
+import '../../../../../Controller/home/mission/missions_controllerAll.dart';
 import '../../../../../Controller/home/Task/task_controller.dart';
 import '../../../../widgets/bolck_screen.dart';
 import '../widgets/task_card.dart';
