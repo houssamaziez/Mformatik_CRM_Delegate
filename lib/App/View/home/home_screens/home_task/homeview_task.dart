@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/widgets/getStatusColor.dart';
 import '../../../../Controller/auth/auth_controller.dart';
 import '../../../../Controller/home/company_controller.dart';
 import '../../../../Controller/home/home_controller.dart';
@@ -48,13 +49,13 @@ class _HomeViewTaskState extends State<HomeViewTask> {
                           height: 14,
                         ),
                         SizedBox(
-                            height: 210,
+                            height: 260,
                             child: Row(
                               children: [
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                statuseTaskButton(context, getSliderColor),
+                                statuseTaskButton(context, getStatusColorTask),
                                 const SizedBox(
                                   width: 10,
                                 ),

@@ -345,257 +345,19 @@ Expanded statuseTaskButton(
                                     color: Colors.black54,
                                     fontSize: 12),
                               ),
-                              const Spacer(),
-                              InkWell(
-                                onTap: () {
-                                  Go.to(
-                                      context,
-                                      MissionListScreenByReason(
-                                          statusId: 1.toString()));
-                                },
-                                child: Text(
-                                  "New".tr +
-                                      "(" +
-                                      taskController.news.toString() +
-                                      ")",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12,
-                                      color: Theme.of(context).primaryColor),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              )
                             ],
                           ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          SizedBox(
-                              height: 24,
-                              width: double.infinity,
-                              child: containerwithblue(
-                                context,
-                                color: const Color.fromARGB(255, 199, 199, 199),
-                                widget: Row(
-                                  children: [
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Go.to(
-                                            context,
-                                            MissionListScreenByReason(
-                                                statusId: 4.toString()));
-                                      },
-                                      child: Row(
-                                        children: [
-                                          const CircleAvatar(
-                                            radius: 4,
-                                            backgroundColor: Color(0XffD12525),
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            "Canceled".tr +
-                                                " ${taskController.canceled}",
-                                            style:
-                                                const TextStyle(fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    InkWell(
-                                      onTap: () {
-                                        Go.to(
-                                            context,
-                                            MissionListScreenByReason(
-                                                statusId: 2.toString()));
-                                      },
-                                      child: Row(
-                                        children: [
-                                          const CircleAvatar(
-                                            radius: 4,
-                                            backgroundColor: Color(0XffE3A105),
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            "In Progress".tr +
-                                                " ${taskController.start}",
-                                            style:
-                                                const TextStyle(fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    InkWell(
-                                      onTap: () {
-                                        Go.to(
-                                            context,
-                                            MissionListScreenByReason(
-                                                statusId: 3.toString()));
-                                      },
-                                      child: Row(
-                                        children: [
-                                          const CircleAvatar(
-                                            radius: 5,
-                                            backgroundColor: Color(0Xff26931D),
-                                          ),
-                                          const SizedBox(
-                                            width: 4,
-                                          ),
-                                          Text(
-                                            "Completed".tr +
-                                                " ${taskController.closed} ",
-                                            style:
-                                                const TextStyle(fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                  ],
-                                ),
-                              )),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            "Percentage".tr,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w300, fontSize: 12),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Go.to(
-                                  context,
-                                  MissionListScreenByReason(
-                                      statusId: 3.toString()));
-                            },
-                            child: SizedBox(
-                              height: 24,
-                              child: Row(
-                                children: [
-                                  flutterSlider(
-                                      getSliderColor,
-                                      taskController.tasklength.toDouble(),
-                                      taskController.closed.toDouble(),
-                                      Colors.green),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  taskController.closed == 0
-                                      ? 0.toString().style()
-                                      : ((taskController.closed * 100) /
-                                              taskController.tasklength)
-                                          .toStringAsFixed(2)
-                                          .style(),
-                                  "%".style(),
-                                ],
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Go.to(
-                                  context,
-                                  MissionListScreenByReason(
-                                      statusId: 2.toString()));
-                            },
-                            child: SizedBox(
-                              height: 24,
-                              child: Row(
-                                children: [
-                                  flutterSlider(
-                                      getSliderColor,
-                                      taskController.tasklength.toDouble(),
-                                      taskController.start.toDouble(),
-                                      Colors.orange),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  taskController.start == 0
-                                      ? 0.toString().style()
-                                      : ((taskController.start * 100) /
-                                              taskController.tasklength)
-                                          .toStringAsFixed(2)
-                                          .style(),
-                                  "%".style(),
-                                ],
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Go.to(
-                                  context,
-                                  MissionListScreenByReason(
-                                      statusId: 4.toString()));
-                            },
-                            child: SizedBox(
-                              height: 24,
-                              child: Row(
-                                children: [
-                                  flutterSlider(
-                                      getSliderColor,
-                                      taskController.tasklength.toDouble(),
-                                      taskController.canceled.toDouble(),
-                                      Colors.red),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  taskController.canceled == 0
-                                      ? 0.toString().style()
-                                      : ((taskController.canceled * 100) /
-                                              taskController.tasklength)
-                                          .toStringAsFixed(2)
-                                          .style(),
-                                  "%".style(),
-                                ],
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Go.to(
-                                  context,
-                                  MissionListScreenByReason(
-                                      statusId: 1.toString()));
-                            },
-                            child: SizedBox(
-                              height: 24,
-                              child: Row(
-                                children: [
-                                  flutterSlider(
-                                      getSliderColor,
-                                      taskController.tasklength.toDouble(),
-                                      taskController.news.toDouble(),
-                                      Theme.of(context).primaryColor),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  taskController.news == 0
-                                      ? 0.toString().style()
-                                      : ((taskController.news * 100) /
-                                              taskController.tasklength)
-                                          .toStringAsFixed(2)
-                                          .style(),
-                                  "%".style(),
-                                  // " ".style(),
-                                  // "New".tr.style(
-                                  //     fontSize: 10,
-                                  //     color: Theme.of(context).primaryColor),
-                                ],
-                              ),
-                            ),
-                          )
+                          newStatus(context, taskController, getSliderColor),
+                          closeStatus(context, taskController, getSliderColor),
+                          startStatus(context, taskController, getSliderColor),
+                          responsibleColsedStatus(
+                              context, taskController, getSliderColor),
+                          responsipleRespondStatus(
+                              context, taskController, getSliderColor),
+                          ownerRespondeStatus(
+                              context, taskController, getSliderColor),
+                          canceledStatus(
+                              context, taskController, getSliderColor),
                         ],
                       ),
                     ),
@@ -604,6 +366,294 @@ Expanded statuseTaskButton(
                     decoration: StyleContainer.style1,
                     child: const Center(child: spinkit));
           }));
+}
+
+InkWell newStatus(BuildContext context, TaskController taskController,
+    Color getSliderColor(int value)) {
+  return InkWell(
+    onTap: () {
+      Go.to(context, MissionListScreenByReason(statusId: 1.toString()));
+    },
+    child: Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              "New".tr + " ( ${taskController.news} )",
+              style: const TextStyle(fontSize: 10),
+            ),
+            Spacer(),
+            taskController.news == 0
+                ? 0.toString().style()
+                : ((taskController.news * 100) / taskController.tasklength)
+                    .toStringAsFixed(2)
+                    .style(),
+            "%".style(),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+          child: Row(
+            children: [
+              flutterSlider(
+                  getSliderColor,
+                  taskController.tasklength.toDouble(),
+                  taskController.news.toDouble(),
+                  Theme.of(context).primaryColor),
+              const SizedBox(
+                width: 5,
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+InkWell canceledStatus(BuildContext context, TaskController taskController,
+    Color getSliderColor(int value)) {
+  return InkWell(
+    onTap: () {
+      Go.to(context, MissionListScreenByReason(statusId: 4.toString()));
+    },
+    child: Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              "Canceled".tr + " ( ${taskController.canceled} )",
+              style: const TextStyle(fontSize: 10),
+            ),
+            Spacer(),
+            taskController.canceled == 0
+                ? 0.toString().style()
+                : ((taskController.canceled * 100) / taskController.tasklength)
+                    .toStringAsFixed(2)
+                    .style(),
+            "%".style(),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+          child: Row(
+            children: [
+              flutterSlider(
+                  getSliderColor,
+                  taskController.tasklength.toDouble(),
+                  taskController.canceled.toDouble(),
+                  Colors.red),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+InkWell startStatus(BuildContext context, TaskController taskController,
+    Color getSliderColor(int value)) {
+  return InkWell(
+    onTap: () {
+      Go.to(context, MissionListScreenByReason(statusId: 2.toString()));
+    },
+    child: Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              "Start".tr + " ( ${taskController.start} )",
+              style: const TextStyle(fontSize: 10),
+            ),
+            Spacer(),
+            taskController.start == 0
+                ? 0.toString().style()
+                : ((taskController.start * 100) / taskController.tasklength)
+                    .toStringAsFixed(2)
+                    .style(),
+            "%".style(),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+          child: Row(
+            children: [
+              flutterSlider(
+                  getSliderColor,
+                  taskController.tasklength.toDouble(),
+                  taskController.start.toDouble(),
+                  Colors.orange),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+InkWell closeStatus(BuildContext context, TaskController taskController,
+    Color getSliderColor(int value)) {
+  return InkWell(
+    onTap: () {
+      Go.to(context, MissionListScreenByReason(statusId: 3.toString()));
+    },
+    child: Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              "Closed".tr + " (  ${taskController.closed} )",
+              style: const TextStyle(fontSize: 10),
+            ),
+            Spacer(),
+            taskController.closed == 0
+                ? 0.toString().style()
+                : ((taskController.closed * 100) / taskController.tasklength)
+                    .toStringAsFixed(2)
+                    .style(),
+            "%".style(),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+          child: Row(
+            children: [
+              flutterSlider(
+                  getSliderColor,
+                  taskController.tasklength.toDouble(),
+                  taskController.closed.toDouble(),
+                  Colors.greenAccent),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+InkWell responsibleColsedStatus(BuildContext context,
+    TaskController taskController, Color getSliderColor(int value)) {
+  return InkWell(
+    onTap: () {
+      Go.to(context, MissionListScreenByReason(statusId: 3.toString()));
+    },
+    child: Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              "Responsible Closed".tr +
+                  " ( ${taskController.responsibleColsed} )",
+              style: const TextStyle(fontSize: 10),
+            ),
+            Spacer(),
+            taskController.responsibleColsed == 0
+                ? 0.toString().style()
+                : ((taskController.responsibleColsed * 100) /
+                        taskController.tasklength)
+                    .toStringAsFixed(2)
+                    .style(),
+            "%".style(),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+          child: Row(
+            children: [
+              flutterSlider(
+                  getSliderColor,
+                  taskController.tasklength.toDouble(),
+                  taskController.responsibleColsed.toDouble(),
+                  Colors.lightGreen),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+InkWell responsipleRespondStatus(BuildContext context,
+    TaskController taskController, Color getSliderColor(int value)) {
+  return InkWell(
+    onTap: () {
+      Go.to(context, MissionListScreenByReason(statusId: 3.toString()));
+    },
+    child: Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              "Responsible Respond".tr +
+                  " ( ${taskController.responsipleRespond} )",
+              style: const TextStyle(fontSize: 10),
+            ),
+            Spacer(),
+            taskController.responsipleRespond == 0
+                ? 0.toString().style()
+                : ((taskController.responsipleRespond * 100) /
+                        taskController.tasklength)
+                    .toStringAsFixed(2)
+                    .style(),
+            "%".style(),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+          child: Row(
+            children: [
+              flutterSlider(
+                  getSliderColor,
+                  taskController.tasklength.toDouble(),
+                  taskController.responsipleRespond.toDouble(),
+                  Colors.amber),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+InkWell ownerRespondeStatus(BuildContext context, TaskController taskController,
+    Color getSliderColor(int value)) {
+  return InkWell(
+    onTap: () {
+      Go.to(context, MissionListScreenByReason(statusId: 3.toString()));
+    },
+    child: Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              "Owner Respond".tr + " ( ${taskController.ownerRespond} )",
+              style: const TextStyle(fontSize: 10),
+            ),
+            Spacer(),
+            taskController.ownerRespond == 0
+                ? 0.toString().style()
+                : ((taskController.ownerRespond * 100) /
+                        taskController.tasklength)
+                    .toStringAsFixed(2)
+                    .style(),
+            "%".style(),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+          child: Row(
+            children: [
+              flutterSlider(
+                  getSliderColor,
+                  taskController.tasklength.toDouble(),
+                  taskController.ownerRespond.toDouble(),
+                  Colors.green),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 Expanded statuseFeddbackAndLatenessButton(

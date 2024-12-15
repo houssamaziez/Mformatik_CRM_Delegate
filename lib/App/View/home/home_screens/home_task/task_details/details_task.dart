@@ -7,12 +7,16 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/Task/task_controller.dart';
+import 'package:mformatic_crm_delegate/App/Model/user.dart';
+import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
+import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/createTask/edite_tesk.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/history/screen_history.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/widgets/listItems.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
+import '../../../../../Controller/home/Person/controller_person.dart';
 import '../../../../../Service/AppValidator/AppValidator.dart';
 import '../../../../../Service/Task/task_list_menu_helper.dart';
 import '../../../../../Util/extention/file.dart';
@@ -38,6 +42,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       taskController.getTaskById(context, widget.taskId);
+      taskController.onIndexChangedSelect(0);
     });
     super.initState();
   }
@@ -158,6 +163,56 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
         title: Text('Task Details'.tr),
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          GetBuilder<TaskController>(
+              init: TaskController(),
+              builder: (teskController) {
+                if (teskController.isLoadingProfile ||
+                    teskController.task!.ownerId !=
+                        Get.put(AuthController()).user!.id ||
+                    teskController.task!.statusId == 7 ||
+                    teskController.task!.statusId == 6 ||
+                    teskController.task!.statusId == 5) {
+                  return const Center();
+                }
+                if (teskController.task == null) {
+                  return Center();
+                }
+                final task = teskController.task!;
+                return IconButton(
+                    onPressed: () {
+                      Person? _observer;
+                      final ControllerPerson personController =
+                          Get.put(ControllerPerson());
+                      Person _responsible = Person(
+                        id: task.responsibleId,
+                        firstName: task.responsible!.person!.firstName!,
+                        lastName: task.responsible!.person!.lastName,
+                        userId: task.responsibleId,
+                      );
+                      if (task.observerId != null) {
+                        _observer = Person(
+                          id: task.observerId!,
+                          firstName: task.observer!.person!.firstName!,
+                          lastName: task.observer!.person!.lastName,
+                          userId: task.observerId,
+                        );
+                      }
+
+                      print(task.label);
+                      Go.to(
+                          context,
+                          EditeTaskOwner(
+                              libel: task.label,
+                              taskId: task.id,
+                              observer: _observer,
+                              deadling: task.deadline,
+                              status: task.statusId,
+                              responsible: _responsible));
+                    },
+                    icon: Icon(Icons.edit));
+              })
+        ],
       ),
       bottomSheet: GetBuilder<TaskController>(
           init: TaskController(),
@@ -262,14 +317,15 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        if (Workflow().isCanShow(
-                                getStatusLabelTask(task.statusId),
-                                teskController.task!.ownerId ==
-                                    Get.put(AuthController()).user!.id,
-                                (teskController.task!.responsibleId ==
-                                    Get.put(AuthController()).user!.id),
-                                'Canceled') ==
-                            true)
+                        if ((Workflow().isCanShow(
+                                    getStatusLabelTask(task.statusId),
+                                    teskController.task!.ownerId ==
+                                        Get.put(AuthController()).user!.id,
+                                    (teskController.task!.responsibleId ==
+                                        Get.put(AuthController()).user!.id),
+                                    'Canceled') ==
+                                true &&
+                            teskController.task!.isStart != true))
                           ButtonAll(
                             function: () {
                               taskController.updateTaskStatus(

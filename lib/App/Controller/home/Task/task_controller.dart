@@ -47,7 +47,9 @@ class TaskController extends GetxController {
   int canceled = 0;
   int closed = 0;
   int start = 0;
-
+  int ownerRespond = 0;
+  int responsipleRespond = 0;
+  int responsibleColsed = 0;
   state(int status) {
     switch (status) {
       case 1:
@@ -63,13 +65,13 @@ class TaskController extends GetxController {
         start = start + 1;
         break;
       case 3:
-        start = start + 1;
+        ownerRespond = ownerRespond + 1;
         break;
       case 4:
-        start = start + 1;
+        responsipleRespond = responsipleRespond + 1;
         break;
       case 5:
-        start = start + 1;
+        responsibleColsed = responsibleColsed + 1;
         break;
     }
   }
@@ -173,6 +175,7 @@ class TaskController extends GetxController {
         print('statusCode created  task: ${response.statusCode}');
 
         Go.back(Get!.context);
+        onIndexChanged(1);
         showMessage(Get.context,
             title: "Task created successfully", color: Colors.green);
 
@@ -230,7 +233,9 @@ class TaskController extends GetxController {
         canceled = 0;
         closed = 0;
         start = 0;
-
+        ownerRespond = 0;
+        responsipleRespond = 0;
+        responsibleColsed = 0;
         tasks!.forEach((element) {
           state(element.statusId!);
         });

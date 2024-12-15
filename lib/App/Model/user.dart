@@ -92,10 +92,10 @@ class Person {
     required this.firstName,
     required this.lastName,
     this.img,
-    required this.userId,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.user,
+    this.userId,
+    this.createdAt,
+    this.updatedAt,
+    this.user,
   });
 
   // Factory method to create a Person from JSON

@@ -120,15 +120,15 @@ class Task {
   }
 }
 
-class Person {
+class PersonRes {
   final String firstName;
   final String lastName;
   final String? img;
 
-  Person({required this.firstName, required this.lastName, this.img});
+  PersonRes({required this.firstName, required this.lastName, this.img});
 
-  factory Person.fromJson(Map<String, dynamic> json) {
-    return Person(
+  factory PersonRes.fromJson(Map<String, dynamic> json) {
+    return PersonRes(
       firstName: json['firstName'],
       lastName: json['lastName'],
       img: json['img'],

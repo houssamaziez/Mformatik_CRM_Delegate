@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DateControllerCreate extends GetxController {
-  var selectedDate = ''; // Observable string for the selected date
+  var selectedDate = ""; // Observable string for the selected date
 
   void pickDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -17,8 +17,14 @@ class DateControllerCreate extends GetxController {
     }
   }
 
+  initDate(DateTime? initialDate) {
+    selectedDate = initialDate!.toLocal().toString().split(' ')[0];
+    print(selectedDate);
+    update();
+  }
+
   void clearDate() {
-    selectedDate = '';
+    selectedDate = "";
     update();
   }
 }

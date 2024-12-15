@@ -173,15 +173,15 @@ class ControllerPerson extends GetxController {
     update();
   }
 
-  selectPersont(tag, Person person) {
+  selectPersont(tag, Person person, {isback = true}) {
     if (tag == "Responsable") {
       responsable = person;
       update();
-      Go.back(Get.context);
+      if (isback) Go.back(Get.context);
     } else {
       observator = person;
       update();
-      Go.back(Get.context);
+      if (isback) Go.back(Get.context);
     }
   }
 

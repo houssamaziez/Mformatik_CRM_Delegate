@@ -85,14 +85,14 @@ class _TaskListScreenState extends State<TaskListScreen> {
         ? Scaffold(
             appBar: AppBar(
               actions: [
-                IconButton(
-                  icon: const Icon(Icons.filter_list),
-                  onPressed: () {
-                    showDateRangeDialog(context);
-                  },
-                ),
+                // IconButton(
+                //   icon: const Icon(Icons.filter_list),
+                //   onPressed: () {
+                //     showDateRangeDialog(context);
+                //   },
+                // ),
               ],
-              title: Text("All Missions".tr),
+              title: Text("All Task".tr),
               centerTitle: true,
             ),
             backgroundColor: ColorsApp.white,
