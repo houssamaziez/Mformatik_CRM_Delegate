@@ -7,6 +7,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../../../Controller/home/Task/task_controller.dart';
+import '../../../../../../Service/save_file.dart';
 
 class ShowPDFs extends StatefulWidget {
   const ShowPDFs({
@@ -152,7 +153,7 @@ class _ShowPDFsState extends State<ShowPDFs> {
                                   '${widget.taskId}-${widget.taskItemId}-${widget.listitem[index].id}'))
                             IconButton(
                                 onPressed: () async {
-                                  await taskController.saveFile(
+                                  await saveFile(
                                       widget.listitem[index].baytes!,
                                       extractFileName(
                                         widget.listitem[index].name,

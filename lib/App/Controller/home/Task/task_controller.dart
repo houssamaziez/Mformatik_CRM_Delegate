@@ -9,11 +9,13 @@ import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'dart:convert';
+// ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../Model/mission.dart';
 import '../../../Model/task_models/task_respones.dart';
+import '../../../Service/permission_handler/storage.dart';
 import '../../../Util/app_exceptions/response_handler.dart';
 import '../../../Util/extention/file.dart';
 import '../../../View/widgets/showsnack.dart';
@@ -24,6 +26,9 @@ final Map<String, Map<String, dynamic>> fileCache = {};
 class TaskController extends GetxController {
   List<Task>? tasks = [];
   Task? task;
+  List<File>? files;
+  bool voicedownloadLoading = false;
+  String? pahtFile;
   List<Mission>? missionsfilter = [];
   bool isLoading = false;
   bool isLoadingCreate = false;
@@ -54,7 +59,6 @@ class TaskController extends GetxController {
       case 7:
         canceled = canceled + 1;
         break;
-
       case 2:
         start = start + 1;
         break;
@@ -166,6 +170,7 @@ class TaskController extends GetxController {
         String responseBody = await response.stream.bytesToString();
         var decodedResponse = jsonDecode(responseBody);
         print('Task created successfully: $decodedResponse');
+        print('statusCode created  task: ${response.statusCode}');
 
         Go.back(Get!.context);
         showMessage(Get.context,
@@ -184,18 +189,6 @@ class TaskController extends GetxController {
     } finally {
       isLoadingCreate = false;
       update();
-    }
-  }
-
-  Future<void> _addFilesFromList(http.MultipartRequest request,
-      String fieldName, List<String> filePaths) async {
-    for (var filePath in filePaths) {
-      if (filePath.isNotEmpty && File(filePath).existsSync()) {
-        request.files
-            .add(await http.MultipartFile.fromPath(fieldName, filePath));
-      } else {
-        print('File for $fieldName not found or path is empty: $filePath');
-      }
     }
   }
 
@@ -247,73 +240,6 @@ class TaskController extends GetxController {
       showMessage(context, title: 'Connection problem'.tr);
     } finally {
       isLoading = false;
-      update();
-    }
-  }
-
-  // Fetch all missions
-  Future<void> getAllTaskstats(context) async {
-    final uri = Uri.parse('${Endpoint.apiTask}').replace(
-      queryParameters: {
-        'offset': offset.toString(), // Add offset
-        'limit': limit.toString(), // Add limit
-        'attributes[]': ['id', 'firstName', 'lastName'],
-      },
-    );
-
-    try {
-      final response = await http.get(
-        uri,
-        headers: {"x-auth-token": token.read("token").toString()},
-      ).timeout(const Duration(seconds: 50));
-      print(response.body);
-      final responseData = ResponseHandler.processResponse(response);
-      if (response.statusCode == 200) {
-        tasks = TaskResponse.fromJson(responseData).rows;
-        update();
-
-        tasklength = MissionResponse.fromJson(responseData).count;
-        update();
-
-        tasks!.forEach((element) {
-          state(element.statusId!);
-        });
-        update();
-      }
-    } catch (e) {
-      showMessage(context, title: 'Connection problem'.tr);
-    } finally {
-      isLoading = false;
-      update();
-    }
-  }
-
-  bool changestatus = false;
-  Future<void> changeStatuseMission(int id, int missionId) async {
-    try {
-      changestatus = true;
-      update();
-
-      final response = await http.put(
-        Uri.parse(Endpoint.apiChangeStatus + "/${id.toString()}"),
-        headers: {
-          'x-auth-token': token.read("token").toString(),
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          "missions": [missionId]
-        }),
-      );
-      if (response.statusCode == 200) {
-        await getTaskById(Get.context, missionId, isLoding: true);
-      }
-    } catch (e) {
-      showMessage(
-        Get.context,
-        title: "Failed to load Mission Status".tr,
-      );
-    } finally {
-      changestatus = false;
       update();
     }
   }
@@ -374,9 +300,6 @@ class TaskController extends GetxController {
     update();
   }
 
-  List<File>? files;
-  bool voicedownloadLoading = false;
-  String? pahtFile;
   Future downloadfile({
     required String taskId,
     required String taskItemId,
@@ -387,7 +310,7 @@ class TaskController extends GetxController {
       update();
 
       final url = Uri.parse(
-          'http://192.168.2.102:5500/api/v1/tasks/$taskId/items/$taskItemId/attachments/$attachmentId');
+          '${Endpoint.apiTask}/$taskId/items/$taskItemId/attachments/$attachmentId');
 
       // Send the GET request to download the file
       final response = await http.get(
@@ -396,26 +319,16 @@ class TaskController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        // Extract content type from headers
         final contentType = response.headers['content-type'];
         if (contentType != null) {
           print('Content-Type: $contentType');
 
           if (imgFileTypes.any((type) => contentType.contains(type))) {
             ListImage.add(response.bodyBytes);
-            print("The file is an image.");
-          } else if (voiceFileTypes.any((type) => contentType.contains(type))) {
-            print("The file is a voice file.");
-          } else if (videoFileTypes.any((type) => contentType.contains(type))) {
-            print("The file is a video.");
           } else if (pdfFileTypes.any((type) => contentType.contains(type))) {
             ListPDF.add(response.bodyBytes);
-            print("The file is a PDF.");
           } else if (excelFileTypes.any((type) => contentType.contains(type))) {
             ListExcel.add(response.bodyBytes);
-            print("The file is an Excel document.");
-          } else {
-            print("Unknown file type.");
           }
         } else {
           print("Content-Type header is missing.");
@@ -431,8 +344,8 @@ class TaskController extends GetxController {
     }
   }
 
-  int totalBytes = 0; // Variable to track the total downloaded size
-  int downloadselect = 0; // Variable to track the total downloaded size
+  int totalBytes = 0;
+  int downloadselect = 0;
 
 // Cache to store downloaded files and timestamps
   Future<Uint8List> downloadFileStream(
@@ -485,13 +398,8 @@ class TaskController extends GetxController {
           'data': Uint8List.fromList(bytes),
           'timestamp': DateTime.now(),
         };
+        await requestStoragePermissions();
 
-        // Request storage permissions before saving the file
-        await _requestStoragePermissions();
-
-        // Save the file to the Downloads folder
-
-        print("Download complete. Total size: $totalBytes bytes");
         return Uint8List.fromList(bytes);
       } else {
         print("Failed to download file. Status code: ${request.statusCode}");
@@ -507,50 +415,6 @@ class TaskController extends GetxController {
 
     // Return an empty Uint8List in case of failure
     return Uint8List(0);
-  }
-
-  Future<void> _requestStoragePermissions() async {
-    // Requesting the necessary permission for Android
-    if (Platform.isAndroid) {
-      PermissionStatus status = await Permission.storage.request();
-      if (!status.isGranted) {
-        // If permission is not granted, you can show a message or handle it
-        print("Storage permission not granted.");
-      }
-    }
-  }
-
-  Future<void> saveFile(Uint8List fileBytes, String name, String ext) async {
-    try {
-      // Get the directory where you want to save the file
-      final directory =
-          await getExternalStorageDirectory(); // Get external storage directory
-      if (directory == null) {
-        print("Directory not found!");
-        return;
-      }
-
-      // Define initial directory path (you can set it to any desired folder)
-      final dirInstance = Directory(directory.path);
-      final fileName =
-          "$name-${DateTime.now().millisecondsSinceEpoch}.$ext"; // Modify as needed
-
-      // Show the file picker to save the file
-      final result = await FilePicker.platform.saveFile(
-        bytes: fileBytes,
-        type: FileType.any, // Set the file type
-        initialDirectory: dirInstance.path, // Directory to start file picker
-        fileName: fileName, // Name of the file
-      );
-
-      if (result != null) {
-        print("File saved at: $result");
-      } else {
-        print("No file was saved.");
-      }
-    } catch (e) {
-      print("Error saving file: $e");
-    }
   }
 
   DateTime? getDownloadTimestamp({

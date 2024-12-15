@@ -1,25 +1,19 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:image/image.dart' as img; // For image compression
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/Task/task_controller.dart';
-import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/persons/screen_list_persons.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
-import 'package:vibration/vibration.dart';
 // import 'package:voice_message_package/voice_message_package.dart';
 
 import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/home/Person/controller_person.dart';
 import '../../../../../Controller/widgetsController/date_controller_create.dart';
-import '../../../../../Service/permission_handler/mic_handler.dart';
 import '../../../../../Util/Const/constants.dart';
-import '../task_details/details_task.dart';
 import 'widgets/selectDeadline.dart';
 import 'widgets/select_file.dart';
 import 'widgets/show_list_file.dart';
@@ -178,7 +172,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                     decoration: BoxDecoration(
                       color: Colors.white, // Background color
                       border: Border.all(
-                        color: Theme.of(context).primaryColor, // Border color
+                        color: Colors.grey, // Border color
                         width: 1.0, // Border width
                       ),
                       borderRadius: BorderRadius.circular(8.0),
@@ -262,7 +256,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                     decoration: BoxDecoration(
                       color: Colors.white, // Background color
                       border: Border.all(
-                        color: Theme.of(context).primaryColor, // Border color
+                        color: Colors.grey, // Border color
                         width: 1.0, // Border width
                       ),
                       borderRadius: BorderRadius.circular(8.0),
@@ -332,71 +326,78 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  controller: controllerLabel,
-                  cursorColor: Theme.of(context)
-                      .primaryColor, // Change the cursor color here
-                  style: const TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    hintText: "Label",
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        borderSide:
-                            BorderSide(color: Theme.of(context).primaryColor)),
-                    border: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).primaryColor)),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: controllerLabel,
+                        cursorColor:
+                            Colors.grey, // Change the cursor color here
+                        style: const TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                          hintText: "Label",
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8)),
+                              borderSide: BorderSide(color: Colors.grey)),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor)),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Label is required'.tr;
+                          } else if (value.trim().length < 4) {
+                            // Minimum length check
+                            return 'Label must be at least 4 characters long'
+                                .tr;
+                          }
+                          return null; // No error
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Description",
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        minLines: 5, maxLength: 250, maxLines: 6,
+                        controller: controllerdesc,
+                        cursorColor: Theme.of(context)
+                            .primaryColor, // Change the cursor color here
+                        style: const TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                          hintText: "Description",
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8)),
+                              borderSide: BorderSide(color: Colors.grey)),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor)),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Description is required'.tr;
+                          } else if (value.trim().length < 4) {
+                            // Minimum length check
+                            return 'Description must be at least 4 characters long'
+                                .tr;
+                          }
+                          return null; // No error
+                        },
+                      ),
+                    ],
                   ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Label is required'.tr;
-                    } else if (value.trim().length < 4) {
-                      // Minimum length check
-                      return 'Label must be at least 4 characters long'.tr;
-                    }
-                    return null; // No error
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Description",
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  minLines: 5, maxLength: 250, maxLines: 6,
-                  controller: controllerdesc,
-                  cursorColor: Theme.of(context)
-                      .primaryColor, // Change the cursor color here
-                  style: const TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    hintText: "Description",
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        borderSide:
-                            BorderSide(color: Theme.of(context).primaryColor)),
-                    border: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).primaryColor)),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Description is required'.tr;
-                    } else if (value.trim().length < 4) {
-                      // Minimum length check
-                      return 'Description must be at least 4 characters long'
-                          .tr;
-                    }
-                    return null; // No error
-                  },
                 ),
                 Text(
                   "Deadline",
@@ -438,53 +439,57 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                                   .map((file) => file.path)
                                   .toList();
 
-                              if (_selectedFiles != null) {
-                                _selectedFiles.forEach((action) {
-                                  if (imgFileTypes.any(
-                                      (type) => action.path.contains(type))) {
-                                    listImage.add(action.path.toString());
-                                    print("The file is an image.");
-                                  } else if (pdfFileTypes.any(
-                                      (type) => action.path.contains(type))) {
-                                    listpathipdf.add(action.path.toString());
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
 
-                                    print("The file is a PDF.");
-                                  } else if (excelFileTypes.any(
-                                      (type) => action.path.contains(type))) {
-                                    listExcel.add(action.path.toString());
+                                if (_selectedFiles != null) {
+                                  _selectedFiles.forEach((action) {
+                                    if (imgFileTypes.any(
+                                        (type) => action.path.contains(type))) {
+                                      listImage.add(action.path.toString());
+                                      print("The file is an image.");
+                                    } else if (pdfFileTypes.any(
+                                        (type) => action.path.contains(type))) {
+                                      listpathipdf.add(action.path.toString());
 
-                                    print("The file is an Excel document.");
-                                  } else {
-                                    print("Unknown file type.");
-                                  }
-                                });
-                              } else {
-                                print("Content-Type header is missing.");
+                                      print("The file is a PDF.");
+                                    } else if (excelFileTypes.any(
+                                        (type) => action.path.contains(type))) {
+                                      listExcel.add(action.path.toString());
+
+                                      print("The file is an Excel document.");
+                                    } else {
+                                      print("Unknown file type.");
+                                    }
+                                  });
+                                } else {
+                                  print("Content-Type header is missing.");
+                                }
+
+                                taskController.createTask(
+                                    label: controllerLabel.text,
+                                    responsibleId: Get.put(ControllerPerson())
+                                        .responsable!
+                                        .user!
+                                        .id
+                                        .toString(),
+                                    observerId: Get.put(ControllerPerson())
+                                                .observator !=
+                                            null
+                                        ? Get.put(ControllerPerson())
+                                            .observator!
+                                            .user!
+                                            .id
+                                            .toString()
+                                        : "",
+                                    deadline: Get.put(DateControllerCreate())
+                                            .selectedDate ??
+                                        "",
+                                    excelPaths: listExcel,
+                                    pdfPaths: listpathipdf,
+                                    imgPaths: imagePaths,
+                                    itemDescription: controllerdesc.text);
                               }
-
-                              taskController.createTask(
-                                  label: controllerLabel.text,
-                                  responsibleId: Get.put(ControllerPerson())
-                                      .responsable!
-                                      .user!
-                                      .id
-                                      .toString(),
-                                  observerId:
-                                      Get.put(ControllerPerson()).observator !=
-                                              null
-                                          ? Get.put(ControllerPerson())
-                                              .observator!
-                                              .user!
-                                              .id
-                                              .toString()
-                                          : "",
-                                  deadline: Get.put(DateControllerCreate())
-                                          .selectedDate ??
-                                      "",
-                                  excelPaths: listExcel,
-                                  pdfPaths: listpathipdf,
-                                  imgPaths: imagePaths,
-                                  itemDescription: controllerdesc.text);
                             },
                             title: 'add Task');
                       }),

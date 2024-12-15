@@ -35,7 +35,7 @@ Column selectDeadline(BuildContext context) {
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(color: Colors.blue, width: 1.0),
+                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
