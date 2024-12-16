@@ -33,3 +33,24 @@ String timeDifference(DateTime date) {
     return '${difference.inSeconds} second${difference.inSeconds > 1 ? 's' : ''}';
   }
 }
+
+String timeUntilDeadline(DateTime deadline) {
+  final now = DateTime.now();
+  final difference = deadline.difference(now);
+
+  if (difference.isNegative) {
+    return 'Expired';
+  }
+
+  if (difference.inDays > 365) {
+    return 'Remaining: ${(difference.inDays ~/ 365)} year${(difference.inDays ~/ 365) > 1 ? "s" : ""}';
+  } else if (difference.inDays > 0) {
+    return 'Remaining: ${difference.inDays} day${difference.inDays > 1 ? "s" : ""}';
+  } else if (difference.inHours > 0) {
+    return 'Remaining: ${difference.inHours} hour${difference.inHours > 1 ? "s" : ""}';
+  } else if (difference.inMinutes > 0) {
+    return 'Remaining: ${difference.inMinutes} minute${difference.inMinutes > 1 ? "s" : ""}';
+  } else {
+    return 'Remaining: ${difference.inSeconds} second${difference.inSeconds > 1 ? "s" : ""}';
+  }
+}

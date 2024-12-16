@@ -136,21 +136,17 @@ Padding listLastTasks(BuildContext context) {
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    if (task.isStart != true)
-                                                      Icon(
-                                                        Icons.assignment,
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                        size: 15,
-                                                      ),
-                                                    if (task.isStart == true)
-                                                      Icon(
-                                                        size: 15,
-                                                        Icons.pause_outlined,
-                                                        color: const Color
-                                                            .fromARGB(
-                                                            255, 0, 255, 8),
-                                                      ),
+                                                    Icon(
+                                                      Icons.assignment,
+                                                      color: task.isStart ==
+                                                              true
+                                                          ? const Color
+                                                              .fromARGB(
+                                                              255, 10, 255, 19)
+                                                          : Theme.of(context)
+                                                              .primaryColor,
+                                                      size: 15,
+                                                    ),
                                                     const SizedBox(
                                                       width: 8,
                                                     ),

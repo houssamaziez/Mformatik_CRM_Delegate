@@ -23,11 +23,12 @@ class HistoryTimelineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 80),
         child: Timeline.builder(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
           itemCount: historyList.length,
           itemBuilder: (context, index) {
             final history = historyList[index];
@@ -42,32 +43,34 @@ class HistoryTimelineScreen extends StatelessWidget {
                 if (index != 0)
                   Padding(
                     padding: const EdgeInsets.only(
-                      left: 11,
+                      left: 7,
                     ),
-                    child: Transform.rotate(
-                      angle: 1.6,
-                      child: Text(
-                        timeDifference(historyList[index].createdAt,
-                            historyList[index - 1].createdAt),
-                        style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: getStatusColorTask(
-                                historyList[index - 1].statusId)),
+                    child: Container(
+                      child: Transform.rotate(
+                        angle: 1.2,
+                        child: Text(
+                          timeDifference(historyList[index - 1].createdAt,
+                              historyList[index].createdAt),
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: getStatusColorTask(
+                                  historyList[index - 1].statusId)),
+                        ),
                       ),
                     ),
                   ),
                 TimelineTile(
                   nodeAlign: TimelineNodeAlign.start,
                   contents: Padding(
-                    padding: const EdgeInsets.only(top: 40.0),
-                    child: Card(
-                      margin: const EdgeInsets.symmetric(vertical: 8.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      color: Colors.white,
-                      elevation: 3,
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(
+                            color: Colors.grey,
+                          )),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -168,14 +171,14 @@ String timeDifference(DateTime date1, DateTime date2) {
   final difference = date1.difference(date2);
 
   if (difference.inDays > 365) {
-    return '${(difference.inDays ~/ 365)} Y';
+    return '${(difference.inDays ~/ 365)} yr';
   } else if (difference.inDays > 0) {
-    return '${difference.inDays} D';
+    return '${difference.inDays} day';
   } else if (difference.inHours > 0) {
-    return '${difference.inHours} H';
+    return '${difference.inHours} hr';
   } else if (difference.inMinutes > 0) {
-    return '${difference.inMinutes} M';
+    return '${difference.inMinutes} mnt';
   } else {
-    return '${difference.inSeconds} S';
+    return '${difference.inSeconds} sec';
   }
 }

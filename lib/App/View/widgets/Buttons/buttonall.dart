@@ -20,7 +20,7 @@ class ButtonAll extends StatelessWidget {
   Color color;
   @override
   Widget build(BuildContext context) {
-    color = Theme.of(Get.context!).primaryColor;
+    color = color;
     return InkWell(
       onTap: () {
         if (isloading) {

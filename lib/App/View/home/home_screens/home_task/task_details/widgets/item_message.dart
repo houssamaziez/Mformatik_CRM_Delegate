@@ -66,15 +66,17 @@ class itemMessage extends StatelessWidget {
               // Image.memory(cont.ListImage.first),
 
               Padding(
-                padding: const EdgeInsets.only(right: 20, left: 20),
+                padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(0),
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15),
-                          bottomRight: Radius.circular(15)),
-                      color: Color(0xffeeeef8)),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    border: Border.all(
+                      color: comment.creatorId ==
+                              Get.put(AuthController()).user!.id
+                          ? Theme.of(context).primaryColor.withOpacity(0.5)
+                          : Colors.grey,
+                    ),
+                  ),
                   width: MediaQuery.of(context).size.width,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -84,14 +86,31 @@ class itemMessage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "@" + comment.creatorUsername,
-                                style: TextStyle(
-                                    fontSize: 10,
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.bold),
+                              Row(
+                                children: [
+                                  Text(
+                                    "@" + comment.creatorUsername,
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    timeDifference(DateTime.parse(
+                                        comment.createdAt.toString())),
+                                    style: TextStyle(
+                                      fontSize: 9,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              InteractiveTextScreen(description: comment.desc),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: InteractiveTextScreen(
+                                    description: comment.desc),
+                              ),
                               Row(
                                 children: [
                                   if (imagelanght != 0)
@@ -229,14 +248,6 @@ class itemMessage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                  Spacer(),
-                                  Text(
-                                    timeDifference(DateTime.parse(
-                                        comment.createdAt.toString())),
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                    ),
-                                  ),
                                 ],
                               )
                             ],

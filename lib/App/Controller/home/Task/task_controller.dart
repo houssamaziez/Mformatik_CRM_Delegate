@@ -216,6 +216,15 @@ class TaskController extends GetxController {
     isLoading = true;
     update();
     try {
+      tasks!.clear();
+      news = 0;
+      canceled = 0;
+      closed = 0;
+      start = 0;
+      ownerRespond = 0;
+      responsipleRespond = 0;
+      responsibleColsed = 0;
+      update();
       final response = await http.get(
         uri,
         headers: {"x-auth-token": token.read("token").toString()},
@@ -229,13 +238,6 @@ class TaskController extends GetxController {
         tasklength = MissionResponse.fromJson(responseData).count;
         update();
 
-        news = 0;
-        canceled = 0;
-        closed = 0;
-        start = 0;
-        ownerRespond = 0;
-        responsipleRespond = 0;
-        responsibleColsed = 0;
         tasks!.forEach((element) {
           state(element.statusId!);
         });
@@ -539,6 +541,7 @@ class TaskController extends GetxController {
         print('Success: $responseBody');
       } else {
         getTaskById(Get.context, taskId);
+        showMessage(Get.context, title: "Failed to update task status".tr);
 
         print('Failed: ${response.reasonPhrase}');
       }

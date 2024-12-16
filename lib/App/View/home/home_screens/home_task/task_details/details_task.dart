@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/Task/task_controller.dart';
+import 'package:mformatic_crm_delegate/App/Model/task_models/task.dart';
 import 'package:mformatic_crm_delegate/App/Model/user.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
@@ -20,6 +21,8 @@ import '../../../../../Controller/home/Person/controller_person.dart';
 import '../../../../../Service/AppValidator/AppValidator.dart';
 import '../../../../../Service/Task/task_list_menu_helper.dart';
 import '../../../../../Util/extention/file.dart';
+import '../widgets/floating_action_button_detail_task.dart';
+import '../widgets/infoTask.dart';
 import '../widgets/task_card.dart';
 import 'widgets/buildTaskHeader.dart';
 import 'widgets/returnIconFile.dart';
@@ -167,15 +170,12 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
           GetBuilder<TaskController>(
               init: TaskController(),
               builder: (teskController) {
-                if (teskController.isLoadingProfile ||
-                    teskController.task!.ownerId !=
-                        Get.put(AuthController()).user!.id ||
-                    teskController.task!.statusId == 7 ||
-                    teskController.task!.statusId == 6 ||
-                    teskController.task!.statusId == 5) {
+                if (teskController.isLoadingProfile) {
                   return const Center();
                 }
-                if (teskController.task == null) {
+                if (teskController.task == null ||
+                    teskController.task!.ownerId !=
+                        Get.put(AuthController()).user!.id) {
                   return Center();
                 }
                 final task = teskController.task!;
@@ -248,131 +248,23 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
               children: [
                 filterlistSelectDetails(context),
                 if (teskController.detailsSelect == 0)
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 16.0, left: 16.0, right: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        buildTaskHeader(context, task),
-                        const SizedBox(height: 16),
-                        taskInformation(teskController),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        if (Workflow().isCanShow(
-                                getStatusLabelTask(task.statusId),
-                                teskController.task!.ownerId ==
-                                    Get.put(AuthController()).user!.id,
-                                (teskController.task!.responsibleId ==
-                                    Get.put(AuthController()).user!.id),
-                                "Start") ==
-                            true)
-                          ButtonAll(
-                              color: Theme.of(context).primaryColor,
-                              function: () {
-                                taskController.updateTaskStatus(
-                                  taskId: task.id,
-                                  status: 2,
-                                );
-                              },
-                              title: 'Start'),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        if (Workflow().isCanShow(
-                                getStatusLabelTask(task.statusId),
-                                teskController.task!.ownerId ==
-                                    Get.put(AuthController()).user!.id,
-                                (teskController.task!.responsibleId ==
-                                    Get.put(AuthController()).user!.id),
-                                "Close") ==
-                            true)
-                          ButtonAll(
-                              color: Theme.of(context).primaryColor,
-                              function: () {
-                                taskController.updateTaskStatus(
-                                  taskId: task.id,
-                                  status: 6,
-                                );
-                              },
-                              title: 'Close'),
-                        if (Workflow().isCanShow(
-                                getStatusLabelTask(task.statusId),
-                                teskController.task!.ownerId ==
-                                    Get.put(AuthController()).user!.id,
-                                (teskController.task!.responsibleId ==
-                                    Get.put(AuthController()).user!.id),
-                                'Responsible close') ==
-                            true)
-                          ButtonAll(
-                              color: Theme.of(context).primaryColor,
-                              function: () {
-                                taskController.updateTaskStatus(
-                                  taskId: task.id,
-                                  status: 5,
-                                );
-                              },
-                              title: 'Responsible close'),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        if ((Workflow().isCanShow(
-                                    getStatusLabelTask(task.statusId),
-                                    teskController.task!.ownerId ==
-                                        Get.put(AuthController()).user!.id,
-                                    (teskController.task!.responsibleId ==
-                                        Get.put(AuthController()).user!.id),
-                                    'Canceled') ==
-                                true &&
-                            teskController.task!.isStart != true))
-                          ButtonAll(
-                            function: () {
-                              taskController.updateTaskStatus(
-                                taskId: task.id,
-                                status: 7,
-                              );
-                            },
-                            title: 'Canceled',
-                            color: Colors.red,
-                          ),
-                        if (Workflow().isCanShow(
-                                getStatusLabelTask(task.statusId),
-                                teskController.task!.ownerId ==
-                                    Get.put(AuthController()).user!.id,
-                                (teskController.task!.responsibleId ==
-                                    Get.put(AuthController()).user!.id),
-                                'Revert cancellation') ==
-                            true)
-                          ButtonAll(
-                            function: () {
-                              taskController.revertCancellation(
-                                taskId: task.id,
-                              );
-                            },
-                            title: 'Revert cancellation',
-                            color: Colors.red,
-                          ),
-                      ],
-                    ),
-                  ),
+                  infoTask(context, task, teskController),
                 if (teskController.detailsSelect == 1)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: listItems(
-                      controller: teskController,
-                    ),
+                  listItems(
+                    controller: teskController,
                   ),
                 if (teskController.detailsSelect == 2)
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.95,
-                    child: HistoryTimelineScreen(
-                        historyList: teskController.task!.histories),
-                  )
+                  HistoryTimelineScreen(
+                      historyList: teskController.task!.histories)
               ],
             ).addRefreshIndicator(
                 onRefresh: () =>
                     taskController.getTaskById(context, widget.taskId)),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: teskController.detailsSelect == 0
+                ? floatingActionButtonDetailTask(task, teskController)
+                : SizedBox.shrink(),
           );
         },
       ),
