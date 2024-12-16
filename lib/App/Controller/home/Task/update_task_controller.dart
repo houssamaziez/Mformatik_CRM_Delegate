@@ -40,7 +40,7 @@ class UpdateTaskController extends GetxController {
             "observerId":
                 observerId == 0 ? null.toString() : observerId.toString()
           });
-
+      print(response.body);
       if (response.statusCode == 204) {
         showMessage(Get.context,
             title: 'Task updated successfully'.tr, color: Colors.green);

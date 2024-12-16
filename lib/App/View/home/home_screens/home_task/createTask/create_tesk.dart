@@ -123,6 +123,8 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
     }
   }
 
+  bool _isValid = true;
+
   @override
   void dispose() {
     Get.delete<ControllerPerson>();
@@ -160,6 +162,9 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                 ),
                 InkWell(
                   onTap: () {
+                    setState(() {
+                      _isValid = true;
+                    });
                     Go.to(
                         context,
                         const ScreenListPersons(
@@ -172,7 +177,9 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                     decoration: BoxDecoration(
                       color: Colors.white, // Background color
                       border: Border.all(
-                        color: Colors.grey, // Border color
+                        color: _isValid
+                            ? Colors.grey
+                            : Colors.red, // Dynamic border color
                         width: 1.0, // Border width
                       ),
                       borderRadius: BorderRadius.circular(8.0),
@@ -431,6 +438,16 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                             color: Theme.of(context).primaryColor,
                             isloading: taskController.isLoadingCreate,
                             function: () {
+                              if (Get.put(ControllerPerson())
+                                      .responsable
+                                      .isNull ==
+                                  true) {
+                                setState(() {
+                                  _isValid = false;
+                                });
+                                return;
+                              }
+
                               List<String> listpathipdf = [];
                               List<String> listImage = [];
                               List<String> listExcel = [];

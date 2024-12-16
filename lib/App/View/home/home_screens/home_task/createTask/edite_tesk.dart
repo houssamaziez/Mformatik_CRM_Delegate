@@ -328,11 +328,6 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                         // print(_formKey.currentState!.validate())
                         if (widget.status == 1) {
                           if (_formKey.currentState!.validate()) {
-                            print(widget.taskId);
-                            print(controllerLabel.text);
-                            print(personController.responsable!.id);
-                            print(Get.put(DateControllerCreate()).selectedDate);
-                            print(personController.observator!.id);
                             updateTaskcontroller.updateTask(
                                 taskID: widget.taskId,
                                 label: controllerLabel.text,
