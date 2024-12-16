@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +18,17 @@ class UpdateTaskController extends GetxController {
       required int taskID,
       required String deadline,
       required int observerId}) async {
+    final _body = jsonEncode({
+      if (label.isNotEmpty && label != null && label != "") ...{
+        "label": label.toString()
+      },
+      "deadline": deadline == "" ? null.toString() : deadline.toString(),
+      if (responsibleId != null) ...{"responsibleId": responsibleId.toString()},
+      "observerId": observerId == 0 ? null.toString() : observerId.toString()
+    });
+
+    // print(_body);
+    // return;
     try {
       isLoading = true;
       update();
@@ -29,18 +41,12 @@ class UpdateTaskController extends GetxController {
             '${Endpoint.apiTask}/$taskID',
           ),
           headers: headers,
-          body: {
-            if (label.isNotEmpty && label != null && label != "") ...{
-              "label": label.toString()
-            },
-            "deadline": deadline == "" ? null.toString() : deadline.toString(),
-            if (responsibleId != null) ...{
-              "responsibleId": responsibleId.toString()
-            },
-            "observerId":
-                observerId == 0 ? null.toString() : observerId.toString()
-          });
-      print(response.body);
+          body: _body);
+      if (kDebugMode) {
+        print("___________________________________");
+      }
+      print("___________________________________");
+
       if (response.statusCode == 204) {
         showMessage(Get.context,
             title: 'Task updated successfully'.tr, color: Colors.green);

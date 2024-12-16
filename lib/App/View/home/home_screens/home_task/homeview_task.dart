@@ -73,7 +73,6 @@ class _HomeViewTaskState extends State<HomeViewTask> {
                       ],
                     ),
                   ).addRefreshIndicator(onRefresh: () {
-                    taskController.onIndexChanged(taskController.isAssigned);
                     return taskController.getAllTask(Get.context,
                         observerId:
                             taskController.isAssigned == 2 ? _userId : "",

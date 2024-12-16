@@ -15,9 +15,8 @@ class InteractiveTextScreen extends StatelessWidget {
   }
 
   TextSpan _buildTextSpan(String text, BuildContext context) {
-    final phoneRegExp =
-        RegExp(r'\b(05|06|07)\d{8}\b'); // Matches Algerian phone numbers
-    final urlRegExp = RegExp(r'https?://[^\s]+'); // Matches URLs
+    final phoneRegExp = RegExp(r'\b(05|06|07)(?:\d\s?){8}\b');
+    final urlRegExp = RegExp(r'https?://[^\s]+');
 
     List<InlineSpan> spans = [];
     text.splitMapJoin(
