@@ -79,7 +79,7 @@ class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
 
   @override
   Widget build(BuildContext context) {
-    bool isactive = controllers.user!.isActive;
+    bool isactive = controllers.user!.isActive!;
     return isactive == true
         ? Scaffold(
             appBar: AppBar(

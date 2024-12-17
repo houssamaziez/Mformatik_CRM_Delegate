@@ -55,11 +55,24 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
     if (widget.deadling != null)
       Get.put(DateControllerCreate()).initDate(widget.deadling);
 
-    personController.selectPersont("Responsable", widget.responsible,
+    personController.selectPersont(
+        "Responsable",
+        Person(
+            id: widget.responsible.id,
+            firstName: widget.responsible.firstName,
+            lastName: widget.responsible.lastName,
+            user: widget.responsible.user),
         isback: false);
     if (widget.observer != null) {
-      personController.selectPersont("observator", widget.observer!,
-          isback: false);
+      personController.selectPersont(
+        "observator",
+        Person(
+            id: widget.responsible.id,
+            firstName: widget.observer!.firstName,
+            lastName: widget.observer!.lastName,
+            user: widget.observer!.user),
+        isback: false,
+      );
     }
 
     super.initState();
@@ -325,29 +338,32 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                     return ButtonAll(
                       isloading: updateTaskcontroller.isLoading,
                       function: () {
-                        // print(_formKey.currentState!.validate())
+                        // print(personController.responsable!.user!.id);
+                        // return;
                         if (widget.status == 1) {
                           if (_formKey.currentState!.validate()) {
                             updateTaskcontroller.updateTask(
                                 taskID: widget.taskId,
                                 label: controllerLabel.text,
-                                responsibleId: personController.responsable!.id,
+                                responsibleId:
+                                    personController.responsable!.user!.id,
                                 deadline: Get.put(DateControllerCreate())
                                     .selectedDate,
                                 observerId: personController.observator == null
                                     ? 0
-                                    : personController.observator!.id);
+                                    : personController.observator!.user!.id);
                           }
                         } else {
                           updateTaskcontroller.updateTask(
                               taskID: widget.taskId,
                               label: controllerLabel.text,
-                              responsibleId: personController.responsable!.id,
+                              responsibleId:
+                                  personController.responsable!.user!.id,
                               deadline:
                                   Get.put(DateControllerCreate()).selectedDate,
                               observerId: personController.observator == null
                                   ? 0
-                                  : personController.observator!.id);
+                                  : personController.observator!.user!.id);
                         }
                       },
                       title: "update",

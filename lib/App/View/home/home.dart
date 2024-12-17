@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return GetBuilder<HomeController>(
         init: HomeController(),
         builder: (controller) {
-          bool isactive = controllers.user!.isActive;
+          bool isactive = controllers.user!.isActive!;
           return WillPopScope(
             onWillPop: () async {
               bool shouldExit = await showDialog(

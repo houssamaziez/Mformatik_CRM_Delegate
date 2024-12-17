@@ -185,18 +185,24 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                       final ControllerPerson personController =
                           Get.put(ControllerPerson());
                       Person _responsible = Person(
-                        id: task.responsibleId,
-                        firstName: task.responsible!.person!.firstName!,
-                        lastName: task.responsible!.person!.lastName,
-                        userId: task.responsibleId,
-                      );
+                          id: task.responsibleId,
+                          firstName: task.responsible!.person!.firstName!,
+                          lastName: task.responsible!.person!.lastName,
+                          userId: task.responsibleId,
+                          user: User(
+                            id: task.responsibleId!,
+                            username: task.responsible!.person!.firstName!,
+                          ));
                       if (task.observerId != null) {
                         _observer = Person(
-                          id: task.observerId!,
-                          firstName: task.observer!.person!.firstName!,
-                          lastName: task.observer!.person!.lastName,
-                          userId: task.observerId,
-                        );
+                            id: task.observerId!,
+                            firstName: task.observer!.person!.firstName!,
+                            lastName: task.observer!.person!.lastName,
+                            userId: task.observerId!,
+                            user: User(
+                              id: task.observerId!,
+                              username: task.observer!.person!.firstName!,
+                            ));
                       }
 
                       print(task.label);
