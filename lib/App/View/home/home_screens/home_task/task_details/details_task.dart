@@ -13,6 +13,7 @@ import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/createTask/edite_tesk.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/history/screen_history.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/widgets/listItems.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/Dialog/showExitConfirmationDialog.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../../Controller/home/Person/controller_person.dart';
@@ -177,7 +178,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                 }
                 final task = teskController.task!;
                 return IconButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Person? _observer;
                       final ControllerPerson personController =
                           Get.put(ControllerPerson());
@@ -213,6 +214,35 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                               responsible: _responsible));
                     },
                     icon: Icon(Icons.edit));
+              }),
+          GetBuilder<TaskController>(
+              init: TaskController(),
+              builder: (teskController) {
+                if (teskController.isLoadingProfile) {
+                  return const Center();
+                }
+                if (teskController.task == null ||
+                    teskController.task!.ownerId !=
+                        Get.put(AuthController()).user!.id ||
+                    teskController.task!.statusId != 1) {
+                  return Center();
+                }
+                final task = teskController.task!;
+                return IconButton(
+                    onPressed: () async {
+                      showExitConfirmationDialog(context, onPressed: () async {
+                        await Get.put(TaskController())
+                            .deleteTask(taskId: task.id!);
+                        Get.back();
+                      },
+                          title: "Delete Task",
+                          details:
+                              "Are you sure you want to delete this task?");
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ));
               })
         ],
       ),
@@ -221,7 +251,11 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
           builder: (controller) {
             if (controller.isLoadingProfile ||
                 controller.detailsSelect == 0 ||
-                controller.detailsSelect == 2) {
+                controller.detailsSelect == 2 ||
+                controller.task!.statusId == 7 ||
+                (controller.task!.statusId == 6 &&
+                    controller.task!.ownerId !=
+                        Get.put(AuthController()).user!.id)) {
               return SizedBox.shrink();
             }
             if (controller.task == null) {
@@ -241,7 +275,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
             return const Center(child: spinkit);
           }
           if (teskController.task == null) {
-            return Center(child: Text('Task not found'.tr));
+            return Center(child: Text('error fetching data'.tr));
           }
           final task = teskController.task!;
           return Scaffold(

@@ -67,6 +67,7 @@ const Map<String, String> ar = {
   "Loading name...": "جارٍ تحميل الاسم...",
   "Add \n Mission": "إضافة \n بعثة",
   "Add \n Feedback": "إضافة \n ملاحظات",
+  'error fetching data': 'خطأ في جلب البيانات',
   "Percentage": "النسبة المئوية",
   "With Mission": "مع البعثة",
   "With Out Mission": "بدون  بعثة",

@@ -15,12 +15,16 @@ class InteractiveTextScreen extends StatelessWidget {
   }
 
   TextSpan _buildTextSpan(String text, BuildContext context) {
-    final phoneRegExp = RegExp(r'\b(05|06|07)(?:\d\s?){8}\b');
-    final urlRegExp = RegExp(r'https?://[^\s]+');
+    final phoneRegExp =
+        RegExp(r'\b(05|06|07)(?:\d\s?){8}\b'); // Matches Algerian phone numbers
+    final emailRegExp = RegExp(
+        r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'); // Matches email addresses
+    final urlRegExp = RegExp(r'https?://[^\s]+'); // Matches URLs
 
     List<InlineSpan> spans = [];
     text.splitMapJoin(
-      RegExp('${phoneRegExp.pattern}|${urlRegExp.pattern}'),
+      RegExp(
+          '${phoneRegExp.pattern}|${urlRegExp.pattern}|${emailRegExp.pattern}'),
       onMatch: (Match match) {
         final matchText = match.group(0)!;
         if (phoneRegExp.hasMatch(matchText)) {
@@ -63,9 +67,26 @@ class InteractiveTextScreen extends StatelessWidget {
                     await launchUrl(
                       url,
                     );
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(content: Text('Could not open $matchText')),
-                    // );
+                  }
+                },
+            ),
+          );
+        } else if (emailRegExp.hasMatch(matchText)) {
+          // email
+          spans.add(
+            TextSpan(
+              text: matchText,
+              style: const TextStyle(
+                color: Colors.blue,
+                decoration: TextDecoration.underline,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () async {
+                  final Uri emailUri = Uri(scheme: 'mailto', path: matchText);
+                  if (await canLaunchUrl(emailUri)) {
+                    await launchUrl(emailUri);
+                  } else {
+                    await launchUrl(emailUri);
                   }
                 },
             ),
@@ -80,7 +101,7 @@ class InteractiveTextScreen extends StatelessWidget {
     );
 
     return TextSpan(
-      style: TextStyle(color: Colors.grey[700]),
+      style: TextStyle(color: Colors.grey),
       children: spans,
     );
   }

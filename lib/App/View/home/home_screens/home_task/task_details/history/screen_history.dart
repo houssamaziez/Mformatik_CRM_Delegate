@@ -154,7 +154,7 @@ class HistoryTimelineScreen extends StatelessWidget {
 
 String formatDate(DateTime dateTime) {
   try {
-    return DateFormat(' yyyy-MM-dd HH:mm').format(dateTime);
+    return DateFormat(' yyyy-MM-dd HH:mm').format(dateTime.toLocal());
   } catch (e) {
     return 'Invalid Date'.tr;
   }

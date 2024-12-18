@@ -266,7 +266,8 @@ class TaskController extends GetxController {
       isLoadingProfile = true;
       update();
     }
-
+    task = null;
+    update();
     final uri = Uri.parse('${Endpoint.apiTask}/$taskId');
     print("object");
     try {
@@ -508,6 +509,7 @@ class TaskController extends GetxController {
       if (response.statusCode == 200) {
         getTaskById(Get.context, int.parse(taskId));
       } else {
+        showMessage(Get.context, title: "Failed to create task item".tr);
         print('Error: ${response.reasonPhrase}');
       }
     } catch (e) {
@@ -549,6 +551,46 @@ class TaskController extends GetxController {
         print('Failed: ${response.reasonPhrase}');
       }
     } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  Future<void> deleteTask({
+    required int taskId,
+  }) async {
+    String _userId = Get.put(AuthController()).user!.id.toString();
+
+    var url = Uri.parse('${Endpoint.apiTask}/$taskId');
+    var headers = {
+      'x-auth-token': token.read("token").toString(),
+    };
+
+    var request = http.Request('DELETE', url);
+    request.headers.addAll(headers);
+
+    try {
+      http.StreamedResponse response = await request.send();
+      print(response.statusCode);
+      if (response.statusCode == 204) {
+        Get.back();
+        getAllTask(Get.context,
+            observerId: isAssigned == 2 ? _userId : "",
+            responsibleId: isAssigned == 0 ? _userId : "",
+            ownerId: isAssigned == 1 ? _userId : "");
+        String responseBody = await response.stream.bytesToString();
+        print('Success: $responseBody');
+        showMessage(Get.context, title: "Task deleted successfully".tr);
+      } else {
+        getTaskById(Get.context, taskId);
+        showMessage(Get.context, title: "Failed to update task status".tr);
+        showMessage(Get.context,
+            title: "Failed to update task status".tr, color: Colors.green);
+
+        print('Failed: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      showMessage(Get.context, title: "Failed to update task status".tr);
+
       print('Error: $e');
     }
   }

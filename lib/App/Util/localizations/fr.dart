@@ -321,6 +321,7 @@ const Map<String, String> fr = {
   'Add \n Task': 'Ajouter \n une tâche',
   'Statistics Tasks': 'Statistiques des tâches',
   'Responsible Closed': 'Fermé Responsable',
+  'error fetching data': 'Erreur de récupération des données',
   'Task': 'Tâche',
   'Closed': 'Fermé',
   'ago': 'il y a',
