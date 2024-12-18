@@ -11,9 +11,21 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import '../task_all/task_list_screen.dart';
 import '../task_details/details_task.dart';
 import 'getStatusColor.dart';
-import 'task_card.dart';
 
 Padding listLastTasks(BuildContext context) {
+  Map<int, String> taskStatusEnumString = {
+    1: 'New'.tr,
+    2: 'Start'.tr,
+    3: 'Owner Respond'.tr,
+    4: 'Responsible Respond'.tr,
+    5: 'Responsible close'.tr,
+    6: 'Close'.tr,
+    7: 'Canceled'.tr,
+  };
+  String getStatusLabelTask(int statusId) {
+    return taskStatusEnumString[statusId] ?? 'Unknown Status'.tr;
+  }
+
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(

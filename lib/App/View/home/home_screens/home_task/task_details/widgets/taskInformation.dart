@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../../../Controller/home/Task/task_controller.dart';
 import '../../../../../../Util/Date/formatDate.dart';
-import '../../../home_mission/widgets/getStatusLabel.dart';
 import '../../widgets/getStatusColor.dart';
 import '../../widgets/task_card.dart';
 
 Container taskInformation(TaskController controller) {
+  Map<int, String> taskStatusEnumString = {
+    1: 'New'.tr,
+    2: 'Start'.tr,
+    3: 'Owner Respond'.tr,
+    4: 'Responsible Respond'.tr,
+    5: 'Responsible close'.tr,
+    6: 'Close'.tr,
+    7: 'Canceled'.tr,
+  };
+  String getStatusLabelTask(int statusId) {
+    return taskStatusEnumString[statusId] ?? 'Unknown Status'.tr;
+  }
+
   return Container(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // if (controller.task!.label != null)
-        //   itemPerson(controller,
-        //       imgPath: "product-development.png",
-        //       title: "Label",
-        //       name: controller.task!.label!),
         SizedBox(
           height: 10,
         ),
         if (controller.task!.owner != null)
           itemPerson(controller,
               imgPath: "owner (1).png",
-              title: "Owner",
+              title: "Owner".tr,
               name: controller.task!.owner!.person!.firstName! +
                   " " +
                   controller.task!.owner!.person!.lastName!),
@@ -32,7 +40,7 @@ Container taskInformation(TaskController controller) {
         if (controller.task!.responsible != null)
           itemPerson(controller,
               imgPath: "manager.png",
-              title: "Responsible",
+              title: "Responsible".tr,
               name: controller.task!.responsible!.person!.firstName! +
                   " " +
                   controller.task!.responsible!.person!.lastName!),
@@ -42,7 +50,7 @@ Container taskInformation(TaskController controller) {
         if (controller.task!.observer != null)
           itemPerson(controller,
               imgPath: "political-party (1).png",
-              title: "Observer",
+              title: "Observer".tr,
               name: controller.task!.observer!.person!.firstName! +
                   " " +
                   controller.task!.observer!.person!.lastName!),
@@ -51,11 +59,11 @@ Container taskInformation(TaskController controller) {
         ),
         itemPerson(controller,
             imgPath: "loading.png",
-            title: "Status",
+            title: "Status".tr,
             colorssuptitle2: controller.task!.isStart
                 ? const Color.fromARGB(255, 55, 255, 62)
                 : Colors.grey,
-            name2: controller.task!.isStart ? "Started" : "Not started",
+            name2: controller.task!.isStart ? "Started".tr : "Not started".tr,
             colorBorder: getStatusColorTask(controller.task!.statusId),
             colorssuptitle: getStatusColorTask(controller.task!.statusId),
             name: getStatusLabelTask(controller.task!.statusId)),
@@ -65,7 +73,7 @@ Container taskInformation(TaskController controller) {
         if (controller.task!.deadline != null)
           itemPerson(controller,
               imgPath: "time.png",
-              title: "Deadline",
+              title: "Deadline".tr,
               name2: timeUntilDeadline(controller.task!.deadline!.toLocal()),
               name: formatter.format(controller.task!.deadline!.toLocal())),
         const SizedBox(
@@ -73,9 +81,12 @@ Container taskInformation(TaskController controller) {
         ),
         itemPerson(controller,
             imgPath: "clipboard.png",
-            title: "Create At",
-            name2:
-                timeDifference(controller.task!.createdAt!.toLocal()) + " ago",
+            title: "Create At".tr,
+            name2: (Get.locale?.languageCode == 'en' ? '' : "ago".tr) +
+                " " +
+                timeDifference(controller.task!.createdAt!.toLocal()) +
+                (Get.locale?.languageCode != 'en' ? '' : " " + "ago".tr) +
+                " ",
             name: formatter.format(controller.task!.createdAt!.toLocal())),
       ],
     ),

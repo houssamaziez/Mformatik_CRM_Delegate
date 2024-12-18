@@ -18,17 +18,6 @@ class UpdateTaskController extends GetxController {
       required int taskID,
       required String deadline,
       required int observerId}) async {
-    final _body = jsonEncode({
-      if (label.isNotEmpty && label != null && label != "") ...{
-        "label": label.toString()
-      },
-      "deadline": deadline == "" ? null.toString() : deadline.toString(),
-      if (responsibleId != null) ...{"responsibleId": responsibleId.toString()},
-      "observerId": observerId == 0 ? null.toString() : observerId.toString()
-    });
-
-    // print(_body);
-    // return;
     try {
       isLoading = true;
       update();

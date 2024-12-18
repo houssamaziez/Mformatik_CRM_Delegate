@@ -39,8 +39,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
   double _compressionProgress = 0.0;
   List<File>? _compressedImages = [];
 
-  List<File> _selectedImages = []; // Store selected images
-  List<File> _selectedFiles = []; // Store selected files
+  List<File> _selectedFiles = [];
   bool isCompressImage = false;
 
   void _deleteFile(int index) {
@@ -136,8 +135,8 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
     return GetBuilder<RecordController>(builder: (controllerVoice) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text(
-            "Create Task",
+          title: Text(
+            "Create Task".tr,
             style: TextStyle(color: Colors.white),
           ),
           centerTitle: true,
@@ -152,7 +151,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                   height: 10,
                 ),
                 Text(
-                  "Select Responsable",
+                  "Select Responsable".tr,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
@@ -197,7 +196,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                                   builder: (personController) {
                                     return Text(
                                       personController.responsable == null
-                                          ? "Select Responsable"
+                                          ? "Select Responsable".tr
                                           : personController
                                                   .responsable!.firstName +
                                               " " +
@@ -241,7 +240,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                   height: 10,
                 ),
                 Text(
-                  "Select Observator",
+                  "Select Observator".tr,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
@@ -281,7 +280,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                                   builder: (personController) {
                                     return Text(
                                       personController.observator == null
-                                          ? "Select Observator"
+                                          ? "Select Observator".tr
                                           : personController
                                                   .observator!.firstName +
                                               " " +
@@ -325,7 +324,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                   height: 10,
                 ),
                 Text(
-                  "Label",
+                  "Label".tr,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
@@ -344,7 +343,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                             Colors.grey, // Change the cursor color here
                         style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
-                          hintText: "Label",
+                          hintText: "Label".tr,
                           enabledBorder: OutlineInputBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(8)),
@@ -368,7 +367,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                         height: 10,
                       ),
                       Text(
-                        "Description",
+                        "Description".tr,
                         style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold),
@@ -383,7 +382,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                             .primaryColor, // Change the cursor color here
                         style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
-                          hintText: "Description",
+                          hintText: "Description".tr,
                           enabledBorder: OutlineInputBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(8)),
@@ -407,7 +406,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                   ),
                 ),
                 Text(
-                  "Deadline",
+                  "Deadline".tr,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
@@ -508,7 +507,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                                     itemDescription: controllerdesc.text);
                               }
                             },
-                            title: 'add Task');
+                            title: 'add Task'.tr);
                       }),
                 )
               ],

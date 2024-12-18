@@ -1,8 +1,8 @@
 class Workflow {
   final Map<String, List<String>> responsibleWorkflow = {
     'New': ['Start'],
-    'Owner Respond': ['Responsible close'],
-    'Responsible Respond': ['Responsible close'],
+    'Owner Respond': ['Responsible close', 'Start'],
+    'Responsible Respond': ['Responsible close', 'Start'],
     'Start': ['Responsible close'],
   };
 

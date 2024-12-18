@@ -7,27 +7,21 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/Task/task_controller.dart';
-import 'package:mformatic_crm_delegate/App/Model/task_models/task.dart';
 import 'package:mformatic_crm_delegate/App/Model/user.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/createTask/edite_tesk.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/history/screen_history.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/widgets/listItems.dart';
-import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../../Controller/home/Person/controller_person.dart';
 import '../../../../../Service/AppValidator/AppValidator.dart';
-import '../../../../../Service/Task/task_list_menu_helper.dart';
 import '../../../../../Util/extention/file.dart';
 import '../widgets/floating_action_button_detail_task.dart';
 import '../widgets/infoTask.dart';
-import '../widgets/task_card.dart';
-import 'widgets/buildTaskHeader.dart';
 import 'widgets/returnIconFile.dart';
 import 'widgets/select_screen.dart';
-import 'widgets/taskInformation.dart';
 
 class TaskProfileScreen extends StatefulWidget {
   final int taskId;
@@ -175,7 +169,10 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                 }
                 if (teskController.task == null ||
                     teskController.task!.ownerId !=
-                        Get.put(AuthController()).user!.id) {
+                        Get.put(AuthController()).user!.id ||
+                    teskController.task!.statusId == 5 ||
+                    teskController.task!.statusId == 6 ||
+                    teskController.task!.statusId == 7) {
                   return Center();
                 }
                 final task = teskController.task!;
@@ -205,7 +202,6 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                             ));
                       }
 
-                      print(task.label);
                       Go.to(
                           context,
                           EditeTaskOwner(
@@ -245,7 +241,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
             return const Center(child: spinkit);
           }
           if (teskController.task == null) {
-            return Center(child: Text('Mission not found'.tr));
+            return Center(child: Text('Task not found'.tr));
           }
           final task = teskController.task!;
           return Scaffold(
@@ -305,21 +301,21 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                   SpeedDialChild(
                     child: Icon(Icons.camera_alt, color: Colors.white),
                     backgroundColor: Colors.grey,
-                    label: 'Camera',
+                    label: 'Camera'.tr,
                     labelStyle: TextStyle(fontSize: 16.0),
                     onTap: _takePhoto,
                   ),
                   SpeedDialChild(
                     child: Icon(Icons.photo, color: Colors.white),
                     backgroundColor: Colors.grey,
-                    label: 'Gallery',
+                    label: 'Gallery'.tr,
                     labelStyle: TextStyle(fontSize: 16.0),
                     onTap: _pickImage,
                   ),
                   SpeedDialChild(
                     child: Icon(Icons.attach_file, color: Colors.white),
                     backgroundColor: Colors.grey,
-                    label: 'File',
+                    label: 'File'.tr,
                     labelStyle: TextStyle(fontSize: 16.0),
                     onTap: _pickFile,
                   ),
@@ -331,14 +327,14 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                   child: TextFormField(
                     controller: _controller,
                     decoration: InputDecoration(
-                      hintText: 'Type a message...',
+                      hintText: 'Type a message...'.tr,
                       border: OutlineInputBorder(
                           // borderRadius: BorderRadius.circular(30),
                           ),
                     ),
                     validator: (value) => AppValidator.validate(value, [
                       (v) => AppValidator.validateRequired(v,
-                          fieldName: 'message'),
+                          fieldName: 'message'.tr),
                       (v) => AppValidator.validateLength(v,
                           minLength: 3, maxLength: 30),
                     ]),

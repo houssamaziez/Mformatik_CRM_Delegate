@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart';
 
 import '../../../../../Controller/home/Task/task_controller.dart';
@@ -30,7 +30,7 @@ Padding filterlist(BuildContext context) {
                             : Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Text(
-                      "My Supervised",
+                      "My Supervised".tr,
                       style: TextStyle(
                           fontSize: 12,
                           color: teskController.isAssigned == 2
@@ -51,7 +51,7 @@ Padding filterlist(BuildContext context) {
                             : Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Text(
-                      "My Created",
+                      "My Created".tr,
                       style: TextStyle(
                           fontSize: 12,
                           color: teskController.isAssigned == 1
@@ -72,7 +72,7 @@ Padding filterlist(BuildContext context) {
                             : Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Text(
-                      "My Assigned ",
+                      "My Assigned".tr,
                       style: TextStyle(
                           fontSize: 12,
                           color: teskController.isAssigned == 0

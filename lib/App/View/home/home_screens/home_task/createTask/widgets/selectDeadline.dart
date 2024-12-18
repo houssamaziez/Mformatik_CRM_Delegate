@@ -13,8 +13,8 @@ Column selectDeadline(BuildContext context) {
             return TextField(
               readOnly: true, // Prevent manual typing
               decoration: InputDecoration(
-                labelText: 'Selected Date',
-                hintText: 'Pick a date',
+                labelText: 'Selected Date'.tr,
+                hintText: 'Pick a date'.tr,
                 suffixIcon: IconButton(
                   icon: Icon(
                     dateController.selectedDate.isEmpty

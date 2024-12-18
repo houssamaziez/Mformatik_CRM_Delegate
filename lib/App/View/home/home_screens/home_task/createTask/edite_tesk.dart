@@ -82,8 +82,8 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Edite Task",
+        title: Text(
+          "Edite Task".tr,
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -102,7 +102,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                       height: 10,
                     ),
                     Text(
-                      "Select Responsable",
+                      "Select Responsable".tr,
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.bold),
@@ -142,7 +142,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                                       builder: (personController) {
                                         return Text(
                                           personController.responsable == null
-                                              ? "Select Responsable"
+                                              ? "Select Responsable".tr
                                               : personController
                                                       .responsable!.firstName +
                                                   " " +
@@ -162,23 +162,6 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                                         );
                                       }),
                                 ),
-                                // Spacer(),
-                                // GetBuilder<ControllerPerson>(
-                                //     init: ControllerPerson(),
-                                //     builder: (personController) {
-                                //       return personController.responsable !=
-                                //               null
-                                //           ? IconButton(
-                                //               onPressed: () {
-                                //                 personController
-                                //                     .closePerson("Responsable");
-                                //               },
-                                //               icon: Icon(
-                                //                 Icons.close,
-                                //                 size: 14,
-                                //               ))
-                                //           : SizedBox.shrink();
-                                //     })
                               ],
                             ),
                           ],
@@ -191,7 +174,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                   ],
                 ),
               Text(
-                "Select Observator",
+                "Select Observator".tr,
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold),
@@ -231,7 +214,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                                 builder: (personController) {
                                   return Text(
                                     personController.observator == null
-                                        ? "Select Observator"
+                                        ? "Select Observator".tr
                                         : personController
                                                 .observator!.firstName +
                                             " " +
@@ -275,7 +258,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
               ),
               if (widget.status == 1)
                 Text(
-                  "Label",
+                  "Label".tr,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
@@ -296,7 +279,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                             Colors.grey, // Change the cursor color here
                         style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
-                          hintText: "Label",
+                          hintText: "Label".tr,
                           enabledBorder: OutlineInputBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(8)),
@@ -320,7 +303,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                   ),
                 ),
               Text(
-                "Deadline",
+                "Deadline".tr,
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold),
@@ -338,8 +321,6 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                     return ButtonAll(
                       isloading: updateTaskcontroller.isLoading,
                       function: () {
-                        // print(personController.responsable!.user!.id);
-                        // return;
                         if (widget.status == 1) {
                           if (_formKey.currentState!.validate()) {
                             updateTaskcontroller.updateTask(
@@ -366,7 +347,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                                   : personController.observator!.user!.id);
                         }
                       },
-                      title: "update",
+                      title: "Update".tr,
                       color: Theme.of(context).primaryColor,
                     );
                   })

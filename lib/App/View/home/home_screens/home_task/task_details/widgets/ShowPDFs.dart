@@ -75,7 +75,7 @@ class _ShowPDFsState extends State<ShowPDFs> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PDF Gallery'),
+        title: Text('All files'.tr),
         centerTitle: true,
       ),
       body: GetBuilder<TaskController>(

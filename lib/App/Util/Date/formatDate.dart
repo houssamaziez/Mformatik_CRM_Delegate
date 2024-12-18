@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -22,15 +23,25 @@ String timeDifference(DateTime date) {
   final difference = now.difference(date);
 
   if (difference.inDays > 365) {
-    return '${(difference.inDays ~/ 365)} year${(difference.inDays ~/ 365) > 1 ? 's' : ''}';
+    return '${(difference.inDays ~/ 365)} ' +
+        'year'.tr +
+        (difference.inDays ~/ 365 > 1 ? '' : '');
   } else if (difference.inDays > 0) {
-    return '${difference.inDays} day${difference.inDays > 1 ? 's' : ''}';
+    return '${difference.inDays} ' +
+        'day'.tr +
+        (difference.inDays > 1 ? '' : '');
   } else if (difference.inHours > 0) {
-    return '${difference.inHours} hour${difference.inHours > 1 ? 's' : ''}';
+    return '${difference.inHours} ' +
+        'hour'.tr +
+        (difference.inHours > 1 ? '' : '');
   } else if (difference.inMinutes > 0) {
-    return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''}';
+    return '${difference.inMinutes} ' +
+        'minute'.tr +
+        (difference.inMinutes > 1 ? '' : '');
   } else {
-    return '${difference.inSeconds} second${difference.inSeconds > 1 ? 's' : ''}';
+    return '${difference.inSeconds} ' +
+        'second'.tr +
+        (difference.inSeconds > 1 ? '' : '');
   }
 }
 
@@ -39,18 +50,33 @@ String timeUntilDeadline(DateTime deadline) {
   final difference = deadline.difference(now);
 
   if (difference.isNegative) {
-    return 'Expired';
+    return 'Expired'.tr;
   }
 
   if (difference.inDays > 365) {
-    return 'Remaining: ${(difference.inDays ~/ 365)} year${(difference.inDays ~/ 365) > 1 ? "s" : ""}';
+    return 'Remaining:'.tr +
+        " ${(difference.inDays ~/ 365)} " +
+        'year'.tr +
+        (difference.inDays ~/ 365 > 1 ? '' : '');
   } else if (difference.inDays > 0) {
-    return 'Remaining: ${difference.inDays} day${difference.inDays > 1 ? "s" : ""}';
+    return 'Remaining:'.tr +
+        " ${difference.inDays} " +
+        'day'.tr +
+        (difference.inDays > 1 ? '' : '');
   } else if (difference.inHours > 0) {
-    return 'Remaining: ${difference.inHours} hour${difference.inHours > 1 ? "s" : ""}';
+    return 'Remaining:'.tr +
+        " ${difference.inHours} " +
+        'hour'.tr +
+        (difference.inHours > 1 ? '' : '');
   } else if (difference.inMinutes > 0) {
-    return 'Remaining: ${difference.inMinutes} minute${difference.inMinutes > 1 ? "s" : ""}';
+    return 'Remaining:'.tr +
+        " ${difference.inMinutes} " +
+        'minute'.tr +
+        (difference.inMinutes > 1 ? '' : '');
   } else {
-    return 'Remaining: ${difference.inSeconds} second${difference.inSeconds > 1 ? "s" : ""}';
+    return 'Remaining:'.tr +
+        " ${difference.inSeconds} " +
+        'second'.tr +
+        (difference.inSeconds > 1 ? '' : '');
   }
 }

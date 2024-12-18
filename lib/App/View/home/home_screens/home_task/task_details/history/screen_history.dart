@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:timelines/timelines.dart';
 
 import '../../../../../../Model/task_models/history.dart';
 import '../../widgets/getStatusColor.dart';
 
-const taskStatusEnumString = {
-  1: {'label': 'New', 'icon': Icons.fiber_new},
-  2: {'label': 'Start', 'icon': Icons.play_arrow},
-  3: {'label': 'Owner Respond', 'icon': Icons.person},
-  4: {'label': 'Responsible Respond', 'icon': Icons.handshake},
-  5: {'label': 'Responsible Close', 'icon': Icons.check},
-  6: {'label': 'Close', 'icon': Icons.done},
-  7: {'label': 'Canceled', 'icon': Icons.cancel},
+Map<int, Map<String, dynamic>> taskStatusEnumString = {
+  1: {'label': 'New'.tr, 'icon': Icons.fiber_new},
+  2: {'label': 'Start'.tr, 'icon': Icons.play_arrow},
+  3: {'label': 'Owner Respond'.tr, 'icon': Icons.person},
+  4: {'label': 'Responsible Respond'.tr, 'icon': Icons.handshake},
+  5: {'label': 'Responsible Close'.tr, 'icon': Icons.check},
+  6: {'label': 'Close'.tr, 'icon': Icons.done},
+  7: {'label': 'Canceled'.tr, 'icon': Icons.cancel},
 };
 
 class HistoryTimelineScreen extends StatelessWidget {
@@ -33,7 +34,7 @@ class HistoryTimelineScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             final history = historyList[index];
             final statusInfo = taskStatusEnumString[history.statusId] ??
-                {'label': 'Unknown', 'icon': Icons.help};
+                {'label': 'Unknown'.tr, 'icon': Icons.help};
             final statusText = statusInfo['label'];
             final statusIcon = statusInfo['icon'];
             final statusColor = getStatusColorTask(history.statusId);
@@ -155,7 +156,7 @@ String formatDate(DateTime dateTime) {
   try {
     return DateFormat(' yyyy-MM-dd HH:mm').format(dateTime);
   } catch (e) {
-    return 'Invalid Date';
+    return 'Invalid Date'.tr;
   }
 }
 
@@ -163,7 +164,7 @@ String formatDateWithDay(DateTime dateTime) {
   try {
     return DateFormat('EEEE').format(dateTime);
   } catch (e) {
-    return 'Invalid Date';
+    return 'Invalid Date'.tr;
   }
 }
 
@@ -171,14 +172,14 @@ String timeDifference(DateTime date1, DateTime date2) {
   final difference = date1.difference(date2);
 
   if (difference.inDays > 365) {
-    return '${(difference.inDays ~/ 365)} yr';
+    return '${(difference.inDays ~/ 365)} y';
   } else if (difference.inDays > 0) {
-    return '${difference.inDays} day';
+    return '${difference.inDays} d';
   } else if (difference.inHours > 0) {
-    return '${difference.inHours} hr';
+    return '${difference.inHours} h';
   } else if (difference.inMinutes > 0) {
-    return '${difference.inMinutes} mnt';
+    return '${difference.inMinutes} m';
   } else {
-    return '${difference.inSeconds} sec';
+    return '${difference.inSeconds} s';
   }
 }

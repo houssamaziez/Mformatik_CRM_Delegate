@@ -372,7 +372,7 @@ InkWell newStatus(BuildContext context, TaskController taskController,
     Color getSliderColor(int value)) {
   return InkWell(
     onTap: () {
-      Go.to(context, MissionListScreenByReason(statusId: 1.toString()));
+      // Go.to(context, MissionListScreenByReason(statusId: 1.toString()));
     },
     child: Column(
       children: [
@@ -382,7 +382,7 @@ InkWell newStatus(BuildContext context, TaskController taskController,
               "New".tr + " ( ${taskController.news} )",
               style: const TextStyle(fontSize: 10),
             ),
-            Spacer(),
+            const Spacer(),
             taskController.news == 0
                 ? 0.toString().style()
                 : ((taskController.news * 100) / taskController.tasklength)
@@ -415,7 +415,7 @@ InkWell canceledStatus(BuildContext context, TaskController taskController,
     Color getSliderColor(int value)) {
   return InkWell(
     onTap: () {
-      Go.to(context, MissionListScreenByReason(statusId: 4.toString()));
+      // Go.to(context, MissionListScreenByReason(statusId: 4.toString()));
     },
     child: Column(
       children: [
@@ -425,7 +425,7 @@ InkWell canceledStatus(BuildContext context, TaskController taskController,
               "Canceled".tr + " ( ${taskController.canceled} )",
               style: const TextStyle(fontSize: 10),
             ),
-            Spacer(),
+            const Spacer(),
             taskController.canceled == 0
                 ? 0.toString().style()
                 : ((taskController.canceled * 100) / taskController.tasklength)
@@ -455,7 +455,7 @@ InkWell startStatus(BuildContext context, TaskController taskController,
     Color getSliderColor(int value)) {
   return InkWell(
     onTap: () {
-      Go.to(context, MissionListScreenByReason(statusId: 2.toString()));
+      // Go.to(context, MissionListScreenByReason(statusId: 2.toString()));
     },
     child: Column(
       children: [
@@ -465,7 +465,7 @@ InkWell startStatus(BuildContext context, TaskController taskController,
               "Start".tr + " ( ${taskController.start} )",
               style: const TextStyle(fontSize: 10),
             ),
-            Spacer(),
+            const Spacer(),
             taskController.start == 0
                 ? 0.toString().style()
                 : ((taskController.start * 100) / taskController.tasklength)
@@ -495,7 +495,7 @@ InkWell closeStatus(BuildContext context, TaskController taskController,
     Color getSliderColor(int value)) {
   return InkWell(
     onTap: () {
-      Go.to(context, MissionListScreenByReason(statusId: 3.toString()));
+      // Go.to(context, MissionListScreenByReason(statusId: 3.toString()));
     },
     child: Column(
       children: [
@@ -505,7 +505,7 @@ InkWell closeStatus(BuildContext context, TaskController taskController,
               "Closed".tr + " (  ${taskController.closed} )",
               style: const TextStyle(fontSize: 10),
             ),
-            Spacer(),
+            const Spacer(),
             taskController.closed == 0
                 ? 0.toString().style()
                 : ((taskController.closed * 100) / taskController.tasklength)
@@ -535,7 +535,7 @@ InkWell responsibleColsedStatus(BuildContext context,
     TaskController taskController, Color getSliderColor(int value)) {
   return InkWell(
     onTap: () {
-      Go.to(context, MissionListScreenByReason(statusId: 3.toString()));
+      // Go.to(context, MissionListScreenByReason(statusId: 3.toString()));
     },
     child: Column(
       children: [
@@ -546,7 +546,7 @@ InkWell responsibleColsedStatus(BuildContext context,
                   " ( ${taskController.responsibleColsed} )",
               style: const TextStyle(fontSize: 10),
             ),
-            Spacer(),
+            const Spacer(),
             taskController.responsibleColsed == 0
                 ? 0.toString().style()
                 : ((taskController.responsibleColsed * 100) /
@@ -577,7 +577,7 @@ InkWell responsipleRespondStatus(BuildContext context,
     TaskController taskController, Color getSliderColor(int value)) {
   return InkWell(
     onTap: () {
-      Go.to(context, MissionListScreenByReason(statusId: 3.toString()));
+      // Go.to(context, MissionListScreenByReason(statusId: 3.toString()));
     },
     child: Column(
       children: [
@@ -588,7 +588,7 @@ InkWell responsipleRespondStatus(BuildContext context,
                   " ( ${taskController.responsipleRespond} )",
               style: const TextStyle(fontSize: 10),
             ),
-            Spacer(),
+            const Spacer(),
             taskController.responsipleRespond == 0
                 ? 0.toString().style()
                 : ((taskController.responsipleRespond * 100) /
@@ -619,7 +619,7 @@ InkWell ownerRespondeStatus(BuildContext context, TaskController taskController,
     Color getSliderColor(int value)) {
   return InkWell(
     onTap: () {
-      Go.to(context, MissionListScreenByReason(statusId: 3.toString()));
+      // Go.to(context, MissionListScreenByReason(statusId: 3.toString()));
     },
     child: Column(
       children: [
@@ -629,7 +629,7 @@ InkWell ownerRespondeStatus(BuildContext context, TaskController taskController,
               "Owner Respond".tr + " ( ${taskController.ownerRespond} )",
               style: const TextStyle(fontSize: 10),
             ),
-            Spacer(),
+            const Spacer(),
             taskController.ownerRespond == 0
                 ? 0.toString().style()
                 : ((taskController.ownerRespond * 100) /

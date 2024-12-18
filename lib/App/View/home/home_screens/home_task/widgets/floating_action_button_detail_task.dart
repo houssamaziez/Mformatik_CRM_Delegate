@@ -10,19 +10,33 @@ import 'task_card.dart';
 
 SizedBox floatingActionButtonDetailTask(
     Task task, TaskController teskController) {
+  Map<int, String> taskStatusEnumString = {
+    1: 'New'.tr,
+    2: 'Start'.tr,
+    3: 'Owner Respond'.tr,
+    4: 'Responsible Respond'.tr,
+    5: 'Responsible close'.tr,
+    6: 'Close'.tr,
+    7: 'Canceled'.tr,
+  };
+  String getStatusLabelTask(int statusId) {
+    return taskStatusEnumString[statusId] ?? 'Unknown Status'.tr;
+  }
+
   return SizedBox(
     width: 190,
     child: Column(
       children: [
         Spacer(),
         if (Workflow().isCanShow(
-                getStatusLabelTask(task.statusId),
-                teskController.task!.ownerId ==
-                    Get.put(AuthController()).user!.id,
-                (teskController.task!.responsibleId ==
-                    Get.put(AuthController()).user!.id),
-                "Start") ==
-            true)
+                    getStatusLabelTask(task.statusId),
+                    teskController.task!.ownerId ==
+                        Get.put(AuthController()).user!.id,
+                    (teskController.task!.responsibleId ==
+                        Get.put(AuthController()).user!.id),
+                    "Start") ==
+                true &&
+            teskController.task!.isStart != true)
           ButtonAll(
               color: Colors.green,
               function: () {
@@ -31,7 +45,7 @@ SizedBox floatingActionButtonDetailTask(
                   status: 2,
                 );
               },
-              title: 'Start'),
+              title: 'Start'.tr),
         SizedBox(
           height: 10,
         ),
@@ -51,7 +65,7 @@ SizedBox floatingActionButtonDetailTask(
                   status: 6,
                 );
               },
-              title: 'Close'),
+              title: 'Close'.tr),
         if (Workflow().isCanShow(
                 getStatusLabelTask(task.statusId),
                 teskController.task!.ownerId ==
@@ -68,7 +82,7 @@ SizedBox floatingActionButtonDetailTask(
                   status: 5,
                 );
               },
-              title: 'Responsible close'),
+              title: 'Responsible close'.tr),
         SizedBox(
           height: 10,
         ),
@@ -88,7 +102,7 @@ SizedBox floatingActionButtonDetailTask(
                 status: 7,
               );
             },
-            title: 'Canceled',
+            title: 'Canceled'.tr,
             color: Colors.red,
           ),
         if (Workflow().isCanShow(
@@ -105,7 +119,7 @@ SizedBox floatingActionButtonDetailTask(
                 taskId: task.id,
               );
             },
-            title: 'Revert cancellation',
+            title: 'Revert cancellation'.tr,
             color: Colors.red,
           ),
       ],

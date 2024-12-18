@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/extension_widgets.dart';
 
 import '../../../../../../Controller/home/Task/task_controller.dart';
@@ -30,7 +30,7 @@ Padding filterlistSelectDetails(BuildContext context) {
                             : Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Text(
-                      "Information",
+                      "Information".tr,
                       style: TextStyle(
                           fontSize: 12,
                           color: teskController.detailsSelect == 0
@@ -51,7 +51,7 @@ Padding filterlistSelectDetails(BuildContext context) {
                             : Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Text(
-                      "Discussion",
+                      "Discussion".tr,
                       style: TextStyle(
                           fontSize: 12,
                           color: teskController.detailsSelect == 1
@@ -72,7 +72,7 @@ Padding filterlistSelectDetails(BuildContext context) {
                             : Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Text(
-                      "Histories",
+                      "Histories".tr,
                       style: TextStyle(
                           fontSize: 12,
                           color: teskController.detailsSelect == 2

@@ -50,7 +50,7 @@ class _ShowImagesState extends State<ShowImages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Image Gallery'),
+        title: Text('Image Gallery'.tr),
         centerTitle: true,
       ),
       body: GetBuilder<TaskController>(

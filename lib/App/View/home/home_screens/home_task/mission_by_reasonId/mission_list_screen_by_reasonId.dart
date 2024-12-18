@@ -79,6 +79,19 @@ class _MissionListScreenByReasonState extends State<MissionListScreenByReason> {
 
   @override
   Widget build(BuildContext context) {
+    Map<int, String> taskStatusEnumString = {
+      1: 'New'.tr,
+      2: 'Start'.tr,
+      3: 'Owner Respond'.tr,
+      4: 'Responsible Respond'.tr,
+      5: 'Responsible close'.tr,
+      6: 'Close'.tr,
+      7: 'Canceled'.tr,
+    };
+    String getStatusLabelTask(int statusId) {
+      return taskStatusEnumString[statusId] ?? 'Unknown Status'.tr;
+    }
+
     bool isactive = controllers.user!.isActive!;
     return isactive == true
         ? Scaffold(

@@ -8,8 +8,6 @@ import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'dart:convert';
-// ignore: depend_on_referenced_packages
-
 import '../../../Model/mission.dart';
 import '../../../Model/task_models/task_respones.dart';
 import '../../../Service/permission_handler/storage.dart';
@@ -174,14 +172,14 @@ class TaskController extends GetxController {
         Go.back(Get!.context);
         onIndexChanged(1);
         showMessage(Get.context,
-            title: "Task created successfully", color: Colors.green);
+            title: "Task created successfully".tr, color: Colors.green);
 
         getAllTask(Get.context,
             observerId: isAssigned == 2 ? _userId : "",
             responsibleId: isAssigned == 0 ? _userId : "",
             ownerId: isAssigned == 1 ? _userId : "");
       } else {
-        showMessage(Get.context, title: "Failed to create task");
+        showMessage(Get.context, title: "Failed to create task".tr);
         throw Exception('Failed to create task: ${response.reasonPhrase}');
       }
     } catch (e) {
@@ -201,8 +199,8 @@ class TaskController extends GetxController {
   }) async {
     final uri = Uri.parse('${Endpoint.apiTask}').replace(
       queryParameters: {
-        'offset': offset.toString(), // Add offset
-        'limit': limit.toString(), // Add limit
+        // 'offset': offset.toString(), // Add offset
+        // 'limit': limit.toString(), // Add limit
 
         if (responsibleId != "") ...{'responsibleId': responsibleId},
         if (observerId != "") ...{'observerId': observerId},
@@ -283,7 +281,7 @@ class TaskController extends GetxController {
         task = Task.fromJson(responseData);
         update();
       } else {
-        showMessage(context, title: 'Error fetching mission data'.tr);
+        showMessage(context, title: 'Error fetching Task data'.tr);
       }
     } catch (e) {
       showMessage(context, title: 'Connection problem'.tr);
@@ -441,7 +439,6 @@ class TaskController extends GetxController {
     final String cacheKey = '$taskId-$taskItemId-$attachmentId';
     return fileCache[cacheKey]?['timestamp'] as DateTime?;
   }
-  // Get the download timestamp for a specific file
 
 // Helper function to get the file type based on file extension
   String? _getFileType(String filePath) {
@@ -461,9 +458,9 @@ class TaskController extends GetxController {
   Future<void> createItems({
     required String desc,
     required String taskId,
-    List<String>? imgPaths, // Optional
-    List<String>? excelPaths, // Optional
-    List<String>? pdfPaths, // Optional
+    List<String>? imgPaths,
+    List<String>? excelPaths,
+    List<String>? pdfPaths,
   }) async {
     issend = true;
     update();
@@ -503,9 +500,6 @@ class TaskController extends GetxController {
       }
 
       request.headers.addAll(headers);
-
-      // return;
-      // Send the request
 
       http.StreamedResponse response = await request.send();
       print(response.statusCode);
