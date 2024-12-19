@@ -20,13 +20,13 @@ buttonnavigationbar(context) {
                 child: _buildNavItem(context, 1, Icons.feed_outlined,
                     'Feedbacks'.tr, controller),
               ),
-              Expanded(
-                child: _buildNavItem(
-                    context, 2, Icons.assignment, 'Task'.tr, controller),
-              ),
+              // Expanded(
+              //   child: _buildNavItem(
+              //       context, 2, Icons.assignment, 'Task'.tr, controller),
+              // ),
               Expanded(
                   child: _buildNavItem(
-                      context, 3, Icons.person, 'Profile'.tr, controller)),
+                      context, 2, Icons.person, 'Profile'.tr, controller)),
             ],
           ),
         );
