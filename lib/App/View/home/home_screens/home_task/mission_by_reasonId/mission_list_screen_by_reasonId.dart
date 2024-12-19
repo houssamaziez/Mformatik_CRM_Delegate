@@ -7,9 +7,9 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../../Controller/auth/auth_controller.dart';
 import '../../../../../Controller/home/annex_controller.dart';
-import '../../../../../Controller/home/missions_controllerAll.dart';
+import '../../../../../Controller/home/mission/missions_controllerAll.dart';
 import '../../../../widgets/bolck_screen.dart';
-import '../widgets/mission_card.dart';
+import '../widgets/task_card.dart';
 import 'Widgets/show_date_range_dialog_reason.dart';
 
 DateTime? startDateMissionByReason;
@@ -79,7 +79,20 @@ class _MissionListScreenByReasonState extends State<MissionListScreenByReason> {
 
   @override
   Widget build(BuildContext context) {
-    bool isactive = controllers.user!.isActive;
+    Map<int, String> taskStatusEnumString = {
+      1: 'New'.tr,
+      2: 'Start'.tr,
+      3: 'Owner Respond'.tr,
+      4: 'Responsible Respond'.tr,
+      5: 'Responsible close'.tr,
+      6: 'Close'.tr,
+      7: 'Canceled'.tr,
+    };
+    String getStatusLabelTask(int statusId) {
+      return taskStatusEnumString[statusId] ?? 'Unknown Status'.tr;
+    }
+
+    bool isactive = controllers.user!.isActive!;
     return isactive == true
         ? Scaffold(
             appBar: AppBar(
@@ -94,7 +107,8 @@ class _MissionListScreenByReasonState extends State<MissionListScreenByReason> {
                   },
                 ),
               ],
-              title: Text("${getStatusLabel(int.parse(widget.statusId))}".tr),
+              title:
+                  Text("${getStatusLabelTask(int.parse(widget.statusId))}".tr),
               centerTitle: true,
             ),
             backgroundColor: ColorsApp.white,
@@ -137,10 +151,10 @@ class _MissionListScreenByReasonState extends State<MissionListScreenByReason> {
                               return Center(child: spinkit);
                             } else {
                               final mission = controller.missions![index];
-                              return MissionCard(
-                                mission: mission,
-                                index: index,
-                              );
+                              // return TaskCard(
+                              //   task: mission,
+                              //   index: index,
+                              // );
                             }
                           },
                         ).addRefreshIndicator(

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,15 +8,11 @@ import 'package:mformatic_crm_delegate/App/Controller/widgetsController/expandab
 import 'package:mformatic_crm_delegate/App/Util/Style/Style/style_text.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
-import 'package:vibration/vibration.dart';
-// import 'package:voice_message_package/voice_message_package.dart';
 import '../../../../../Controller/RecordController.dart';
 import '../../../../../Controller/widgetsController/date_controller.dart';
 import '../../../../../Service/AppValidator/AppValidator.dart';
 import '../../../../../Service/Location/get_location.dart';
-import '../../../../../Service/permission_handler/mic_handler.dart';
 import '../../../../../Util/Date/formatDate.dart';
-import '../../../../Voice/screen_voice.dart';
 import '../../../../widgets/Date/date_picker.dart';
 import '../../../../widgets/Dialog/showExitConfirmationDialog.dart';
 import '../widgets/reason_selector_feedback.dart';
@@ -113,10 +108,6 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
   }
 
   final RecordController recordController = Get.put(RecordController());
-
-  // VoiceController? controlledVoiceMessageViewMy;
-  bool _animate = false;
-  bool _iShowVocal = false;
 
   @override
   void dispose() {

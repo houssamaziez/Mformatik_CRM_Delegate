@@ -260,6 +260,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                 init: FeedbackController(),
                 builder: (xontrolllerFeedback) {
                   return ButtonAll(
+                    color: Theme.of(context).primaryColor,
                     function: _handleUpdateFeedback,
                     title: 'Update Feedback'.tr,
                     isloading: xontrolllerFeedback.isLoadingadd,
@@ -269,6 +270,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                 init: FeedbackController(),
                 builder: (xontrolllerFeedback) {
                   return ButtonAll(
+                    color: Theme.of(context).primaryColor,
                     function: () {},
                     title: 'Update Feedback'.tr,
                   );

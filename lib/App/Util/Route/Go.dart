@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Go {
   // Navigate to a new screen
-  static Future<void> to(BuildContext context, Widget screen) async {
+  static Future<void> to(context, Widget screen) async {
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => screen),

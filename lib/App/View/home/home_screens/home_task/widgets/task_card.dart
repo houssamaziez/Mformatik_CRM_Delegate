@@ -1,26 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:mformatic_crm_delegate/App/Model/task_models/task.dart';
 import 'package:mformatic_crm_delegate/App/Util/Date/formatDate.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/Style/stylecontainer.dart';
-import 'package:mformatic_crm_delegate/App/Util/extension/extension_padding.dart';
 
-import '../../../../../Model/mission.dart';
-import '../mission_details/profile_task.dart';
+import '../task_details/details_task.dart';
+import 'getStatusColor.dart';
 
-class MissionCard extends StatelessWidget {
-  final Mission mission;
-  const MissionCard({Key? key, required this.mission, required this.index})
+class TaskCard extends StatelessWidget {
+  final Task task;
+  const TaskCard({Key? key, required this.task, required this.index})
       : super(key: key);
   final int index;
 
   @override
   Widget build(BuildContext context) {
+    Map<int, String> taskStatusEnumString = {
+      1: 'New'.tr,
+      2: 'Start'.tr,
+      3: 'Owner Respond'.tr,
+      4: 'Responsible Respond'.tr,
+      5: 'Responsible close'.tr,
+      6: 'Close'.tr,
+      7: 'Canceled'.tr,
+    };
+    String getStatusLabelTask(int statusId) {
+      return taskStatusEnumString[statusId] ?? 'Unknown Status'.tr;
+    }
+
     return InkWell(
       onTap: () {
         Go.to(
           context,
-          TaskProfileScreen(missionId: mission.id),
+          TaskProfileScreen(taskId: task.id),
         );
       },
       child: Padding(
@@ -38,7 +51,7 @@ class MissionCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "${(index + 1)}- " + mission.label!,
+                            "${(index + 1)}- " + task.label!,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -46,22 +59,20 @@ class MissionCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          Spacer(),
+                          if (task.isStart == true)
+                            Icon(
+                              Icons.flag_circle_outlined,
+                              size: 18,
+                              color: const Color.fromARGB(255, 22, 255, 29),
+                            ),
                         ],
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 8),
-                          if (mission.desc != null && mission.desc!.isNotEmpty)
-                            Text(
-                              mission.desc!,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          const SizedBox(height: 12),
+
                           Row(
                             children: [
                               Icon(Icons.person,
@@ -69,8 +80,7 @@ class MissionCard extends StatelessWidget {
                                   size: 18),
                               const SizedBox(width: 4),
                               Text(
-                                'Created by:'.tr +
-                                    " ${mission.creatorUsername}",
+                                'Created by:'.tr + " ${task.ownerUsername}",
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
@@ -83,15 +93,15 @@ class MissionCard extends StatelessWidget {
                           Row(
                             children: [
                               Icon(Icons.circle,
-                                  color: _getStatusColor(mission.statusId!),
+                                  color: getStatusColorTask(task.statusId!),
                                   size: 14),
                               const SizedBox(width: 4),
                               Text(
-                                'Status:'.tr +
-                                    " ${getStatusLabel(mission.statusId!)}",
+                                'Status'.tr +
+                                    " : ${getStatusLabelTask(task.statusId!)}",
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: _getStatusColor(mission.statusId!),
+                                  color: getStatusColorTask(task.statusId!),
                                 ),
                               ),
                             ],
@@ -104,7 +114,8 @@ class MissionCard extends StatelessWidget {
                                   color: Colors.black, size: 18),
                               const SizedBox(width: 4),
                               Text(
-                                "Client: ${mission.client!.fullName}",
+                                "Responsible:".tr +
+                                    " ${task.responsibleUsername}",
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
@@ -121,7 +132,8 @@ class MissionCard extends StatelessWidget {
                                   size: 18),
                               const SizedBox(width: 4),
                               Text(
-                                "Date: ${formatDate(mission.createdAt.toString())}",
+                                "Date".tr +
+                                    ": ${formatDate(task.createdAt.toString())}",
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
@@ -138,7 +150,7 @@ class MissionCard extends StatelessWidget {
                               const SizedBox(width: 4),
                               Text(
                                 "Updated Date :".tr +
-                                    "${formatDate(mission.updatedAt.toString())}",
+                                    "${formatDate(task.updatedAt.toString())}",
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 37, 37, 37),
                                   fontSize: 13,
@@ -158,52 +170,7 @@ class MissionCard extends StatelessWidget {
       ),
     );
   }
-
-  // Helper method to get card background color based on isSuccessful
-  Color _getCardColor(bool? isSuccessful) {
-    if (isSuccessful == true) {
-      return const Color.fromARGB(255, 196, 196, 196); // Color for Successful
-    } else if (isSuccessful == false) {
-      return Colors.orange; // Color for Pending
-    }
-    return const Color.fromARGB(255, 196, 196, 196); // Color for Unknown
-  }
-
-  // Helper method to get color based on statusId
-  Color _getStatusColor(int statusId) {
-    switch (statusId) {
-      case 1:
-        return Colors.blue; // Color for Created
-      case 2:
-        return Colors.orange; // Color for In Progress
-      case 3:
-        return Colors.green; // Color for Completed
-      case 4:
-        return Colors.red; // Color for Canceled
-      default:
-        return Colors.grey; // Color for Unknown status
-    }
-  }
-
-  // Helper method to format the date
-  String _formatDate(String date) {
-    DateTime parsedDate = DateTime.parse(date);
-    return '${parsedDate.day}/${parsedDate.month}/${parsedDate.year}';
-  }
 }
 
-// Helper method to get status label based on statusId
-String getStatusLabel(int statusId) {
-  switch (statusId) {
-    case 1:
-      return 'New';
-    case 2:
-      return 'In Progress';
-    case 3:
-      return 'Completed';
-    case 4:
-      return 'Canceled';
-    default:
-      return 'Unknown Status';
-  }
-}
+// Enum-like map for task statuses
+

@@ -97,6 +97,7 @@ class _ModifyPasswordState extends State<ModifyPassword> {
                 init: ProfileUserController(),
                 builder: (passwordUpdateController) {
                   return ButtonAll(
+                    color: Theme.of(context).primaryColor,
                     function: () {
                       if (_formKey.currentState!.validate()) {
                         passwordUpdateController.updatePassword(

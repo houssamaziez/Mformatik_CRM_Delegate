@@ -6,6 +6,11 @@ const spinkit = SpinKitSpinningLines(
   color: Color(0xff1073BA),
   size: 50.0,
 );
+
+const spinkit30 = SpinKitSpinningLines(
+  color: Color(0xff1073BA),
+  size: 30.0,
+);
 const spinkitwhite = SpinKitSpinningLines(
   color: Colors.white,
   size: 50.0,

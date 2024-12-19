@@ -47,6 +47,8 @@ class AuthController extends GetxController {
           await spalshscreenfirst.write('key', true);
 
           Go.clearAndTo(context, HomeScreen());
+          passwordcontroller.clear();
+          namecontroller.clear();
         } else {
           showMessage(context, title: "You are not allowed to enter.".tr);
         }

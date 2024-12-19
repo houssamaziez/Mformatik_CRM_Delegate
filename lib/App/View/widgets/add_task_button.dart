@@ -36,7 +36,7 @@ class AddTaskbutton extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        "Add \n Mission".tr,
+                        "Add \n Task".tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,

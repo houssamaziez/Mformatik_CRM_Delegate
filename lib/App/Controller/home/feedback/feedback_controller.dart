@@ -16,7 +16,7 @@ import '../../../RouteEndPoint/EndPoint.dart';
 import '../../../Service/Location/get_location.dart';
 import '../../auth/auth_controller.dart';
 import '../../widgetsController/expandable_controller.dart';
-import '../missions_controller.dart';
+import '../mission/missions_controller.dart';
 
 class FeedbackController extends GetxController {
   RxList<FeedbackMission> feedbacks = <FeedbackMission>[].obs;
