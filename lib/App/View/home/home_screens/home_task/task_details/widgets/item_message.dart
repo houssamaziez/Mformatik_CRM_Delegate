@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:interactive_text_plus/interactive_text.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/Task/task_controller.dart';
-import 'package:mformatic_crm_delegate/App/Util/Lanch_url/select_text.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/widgets/ShowPDFs.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_task/task_details/widgets/showimage.dart';

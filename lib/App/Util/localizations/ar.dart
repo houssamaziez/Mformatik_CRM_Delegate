@@ -319,4 +319,5 @@ const Map<String, String> ar = {
   'Failed to create task': 'فشل في إنشاء المهمة',
   'Error updating task': 'خطأ في تحديث المهمة',
   'Task updated successfully': 'تم تحديث المهمة بنجاح',
+  'Date': 'تاريخ',
 };

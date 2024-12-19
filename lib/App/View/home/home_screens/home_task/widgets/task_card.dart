@@ -62,8 +62,9 @@ class TaskCard extends StatelessWidget {
                           Spacer(),
                           if (task.isStart == true)
                             Icon(
-                              Icons.pause_outlined,
-                              color: const Color.fromARGB(255, 0, 255, 8),
+                              Icons.flag_circle_outlined,
+                              size: 18,
+                              color: const Color.fromARGB(255, 22, 255, 29),
                             ),
                         ],
                       ),
@@ -96,8 +97,8 @@ class TaskCard extends StatelessWidget {
                                   size: 14),
                               const SizedBox(width: 4),
                               Text(
-                                'Status:'.tr +
-                                    " ${getStatusLabelTask(task.statusId!)}",
+                                'Status'.tr +
+                                    " : ${getStatusLabelTask(task.statusId!)}",
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: getStatusColorTask(task.statusId!),
