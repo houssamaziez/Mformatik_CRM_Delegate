@@ -47,13 +47,13 @@ editeProfile(context) {
                             Text(
                               controller.person!.firstName == null
                                   ? 'Fetching data...'.tr
-                                  : controller.user!.username!.toString(),
+                                  : controller.person!.firstName!.toString(),
                               style:
                                   const TextStyle(fontWeight: FontWeight.w600),
                             ),
                             " ".style(),
                             Text(
-                              controller.user!.username == null
+                              controller.person!.lastName == null
                                   ? 'Fetching data...'.tr
                                   : controller.person!.lastName.toString(),
                               style:

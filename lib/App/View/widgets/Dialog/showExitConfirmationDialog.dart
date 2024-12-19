@@ -52,6 +52,7 @@ Future<bool> showExitConfirmationDialog(
             Container(
               width: 90,
               child: ButtonAll(
+                  color: Theme.of(context).primaryColor,
                   function: () {
                     onPressed!();
                   },

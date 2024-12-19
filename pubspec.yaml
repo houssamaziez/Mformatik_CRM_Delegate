@@ -65,8 +65,19 @@ dependencies:
   sizer: ^3.0.4
   avatar_glow: ^3.0.1
   vibration: ^2.0.1
+  syncfusion_flutter_pdfviewer: ^27.2.5
+  excel: ^4.0.6
+  open_file: ^3.5.10
+  file_picker: ^8.1.4
+  flutter_speed_dial: ^7.0.0
+  timelines_plus: ^1.0.4
+  timelines: ^0.1.0
+  interactive_text_plus: ^1.1.5
   # flutter_sound: ^9.6.0
   # ffmpeg_kit_flutter: ^6.0.3
+  # interactive_text:
+  #   git:
+  #     url: https://github.com/houssamaziez/interactive_text.git
    
 
 flutter_icons:

@@ -67,6 +67,7 @@ class SuggestionsScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ButtonAll(
+                color: Theme.of(context).primaryColor,
                 function: () {},
                 title: "Send Your Suggestion".tr,
               ),

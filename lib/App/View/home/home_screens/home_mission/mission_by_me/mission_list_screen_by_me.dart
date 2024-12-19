@@ -7,7 +7,7 @@ import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
 import '../../../../../Controller/auth/auth_controller.dart';
 import '../../../../../Controller/home/annex_controller.dart';
-import '../../../../../Controller/home/missions_controllerAll.dart';
+import '../../../../../Controller/home/mission/missions_controllerAll.dart';
 import '../../../../widgets/bolck_screen.dart';
 import '../widgets/mission_card.dart';
 import 'widgets/show_date_range_dialog_by_me.dart';
@@ -79,7 +79,7 @@ class _MissionListScreenByMeState extends State<MissionListScreenByMe> {
 
   @override
   Widget build(BuildContext context) {
-    bool isactive = controllers.user!.isActive;
+    bool isactive = controllers.user!.isActive!;
     return isactive == true
         ? Scaffold(
             appBar: AppBar(

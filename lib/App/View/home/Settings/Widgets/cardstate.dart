@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/auth/auth_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/annex_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/mission/missions_controller.dart';
 
 import '../../../../Controller/home/feedback/feedback_controller.dart';
 import '../../../../Util/Style/stylecontainer.dart';

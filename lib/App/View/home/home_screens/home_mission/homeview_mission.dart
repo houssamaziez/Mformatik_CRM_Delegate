@@ -22,14 +22,14 @@ import '../../Widgets/homeMenuSelectScreens.dart';
 import '../../Widgets/homeMenu_select.dart';
 import 'widgets/list_last_mission.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomeMission extends StatefulWidget {
+  const HomeMission({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomeMission> createState() => _HomeMissionState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeMissionState extends State<HomeMission> {
   late ScrollController scrollController;
   var homeController = Get.put(HomeController());
   @override
@@ -54,13 +54,13 @@ class _HomeState extends State<Home> {
     List<HomeMenuSelect> _listiconhomemeneu = [
       HomeMenuSelect(
           title: "My Mission".tr,
-          icon: "job-description.png",
+          icon: "surveyor.png",
           function: (context) {
             Go.to(context, const MissionListScreenByMe());
           }),
       HomeMenuSelect(
         title: "All Missions".tr,
-        icon: 'daily-task.png',
+        icon: 'checklist.png',
         function: (context) {
           Go.to(context, MissionListScreen());
         },

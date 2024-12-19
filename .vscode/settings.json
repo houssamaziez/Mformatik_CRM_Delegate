@@ -11,7 +11,13 @@
         "feedback Profile",
         "mission details ",
         "Auth",
-        "language_screen"
+        "language_screen",
+        "task",
+        "task details",
+        "task Home ",
+        "task model",
+        "controller",
+        "task update "
     ],
     "cSpell.words": [
         "Commencer",

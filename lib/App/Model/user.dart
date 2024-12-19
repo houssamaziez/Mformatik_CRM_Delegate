@@ -1,24 +1,24 @@
 class User {
   final int id;
   final String username;
-  final bool isActive;
-  final int roleId;
+  final bool? isActive;
+  final int? roleId;
   final int? companyId;
   final int? annexId;
-  final String createdAt;
-  final String updatedAt;
+  final String? createdAt;
+  final String? updatedAt;
   final Person? person;
 
   User({
     required this.id,
     required this.username,
-    required this.isActive,
-    required this.roleId,
+    this.isActive,
+    this.roleId,
     this.companyId,
     this.annexId,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.person,
+    this.createdAt,
+    this.updatedAt,
+    this.person,
   });
 
   // Factory method to create a User from JSON
@@ -92,10 +92,10 @@ class Person {
     required this.firstName,
     required this.lastName,
     this.img,
-    required this.userId,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.user,
+    this.userId,
+    this.createdAt,
+    this.updatedAt,
+    this.user,
   });
 
   // Factory method to create a Person from JSON

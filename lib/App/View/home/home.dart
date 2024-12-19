@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/home_controller.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/missions_controller.dart';
+import 'package:mformatic_crm_delegate/App/Controller/home/mission/missions_controller.dart';
 
 import '../../Controller/auth/auth_controller.dart';
 import '../../Controller/home/annex_controller.dart';
@@ -11,6 +11,7 @@ import '../widgets/bolck_screen.dart';
 import 'Widgets/appbar_home.dart';
 import 'home_screens/home_feedback/homeview_feedback.dart';
 import 'home_screens/home_mission/homeview_mission.dart';
+import 'home_screens/home_task/homeview_task.dart';
 import 'home_screens/profileUser/profile_user_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,11 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final List<Widget> _screen = [
-    Home(),
+    const HomeMission(),
     HomeFeedback(),
-
-    ProfileUserScreen(),
-    // HomeViewTask(),
+    const HomeViewTask(),
+    const ProfileUserScreen(),
   ];
   final MissionsController controller = Get.put(MissionsController());
 
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return GetBuilder<HomeController>(
         init: HomeController(),
         builder: (controller) {
-          bool isactive = controllers.user!.isActive;
+          bool isactive = controllers.user!.isActive!;
           return WillPopScope(
             onWillPop: () async {
               bool shouldExit = await showDialog(

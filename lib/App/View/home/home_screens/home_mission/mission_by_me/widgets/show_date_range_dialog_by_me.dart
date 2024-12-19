@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../../../Controller/auth/auth_controller.dart';
 import '../../../../../../Controller/home/company_controller.dart';
-import '../../../../../../Controller/home/missions_controllerAll.dart';
+import '../../../../../../Controller/home/mission/missions_controllerAll.dart';
 import '../mission_list_screen_by_me.dart';
 
 void showDateRangeDialogByMe(BuildContext context) {
