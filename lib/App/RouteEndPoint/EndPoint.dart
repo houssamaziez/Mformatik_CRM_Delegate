@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Endpoint {
   static String url = dotenv.get('urlHost');
+  static String WEBSOCKET_URL = dotenv.get('WEBSOCKET_URL');
   static String apiLogin = '$url/v1/auth';
   static String apIme = '$url/v1/persons/me';
   static String apiMissions = '$url/v1/missions';

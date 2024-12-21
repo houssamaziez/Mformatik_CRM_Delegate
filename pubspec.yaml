@@ -72,7 +72,10 @@ dependencies:
   flutter_speed_dial: ^7.0.0
   timelines_plus: ^1.0.4
   timelines: ^0.1.0
-  interactive_text_plus: ^1.1.5
+  interactive_text_plus: ^1.1.7
+  web_socket_channel: ^2.2.0
+  flutter_local_notifications: ^18.0.1
+  flutter_background_service: ^5.0.10 
   # flutter_sound: ^9.6.0
   # ffmpeg_kit_flutter: ^6.0.3
   # interactive_text:
