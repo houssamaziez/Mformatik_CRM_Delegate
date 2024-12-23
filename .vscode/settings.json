@@ -17,7 +17,8 @@
         "task Home ",
         "task model",
         "controller",
-        "task update "
+        "task update ",
+        "notification background "
     ],
     "cSpell.words": [
         "Commencer",

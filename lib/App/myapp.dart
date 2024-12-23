@@ -7,11 +7,6 @@ import 'package:mformatic_crm_delegate/App/View/splashScreen/splash_screen.dart'
 import 'Util/Theme/theme_light.dart';
 import 'Util/localizations/localizations.dart';
 
-void main() async {
-  await GetStorage.init(); // Initialize GetStorage
-  runApp(const MyApp());
-}
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override

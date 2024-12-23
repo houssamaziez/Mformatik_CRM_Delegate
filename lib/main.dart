@@ -4,32 +4,47 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:mformatic_crm_delegate/App/myapp.dart';
-import 'package:web_socket_channel/io.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'dart:convert';
+
+import 'App/myapp.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize the background service with the correct onStart function signature
-  FlutterBackgroundService().configure(
-    androidConfiguration: AndroidConfiguration(
-      onStart:
-          onServiceStarted, // onStart expects a function that takes ServiceInstance as argument
-      autoStart: true, isForegroundMode: true,
-    ),
-    iosConfiguration: IosConfiguration(
-      onForeground:
-          onServiceStarted, // onForeground also expects the same function signature
-    ),
-  );
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
+  await FlutterBackgroundService().configure(
+    androidConfiguration: AndroidConfiguration(
+        foregroundServiceNotificationId: 1,
+        initialNotificationContent: 'Running in the background',
+        initialNotificationTitle: 'CRI Reporting',
+        onStart: onServiceStarted,
+        autoStartOnBoot: true,
+        autoStart: true,
+        isForegroundMode: true,
+        foregroundServiceTypes: [
+          AndroidForegroundType.dataSync,
+        ]),
+    iosConfiguration: IosConfiguration(
+      onForeground: onServiceStarted,
+    ),
+  );
+
   runApp(const MyApp());
 }
 
 @pragma('vm:entry-point')
 void onServiceStarted(ServiceInstance service) async {
+  if (service is AndroidServiceInstance) {
+    service.on('setAsForeground').listen((event) {
+      service.setAsForegroundService();
+    });
+
+    service.on('stopService').listen((event) {
+      service.stopSelf();
+    });
+  }
   // Initialize notifications
   FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -38,29 +53,37 @@ void onServiceStarted(ServiceInstance service) async {
       InitializationSettings(android: androidSettings);
   await notificationsPlugin.initialize(initializationSettings);
 
-  // Start WebSocket in the background
-  connectWebSocket(notificationsPlugin);
+  // Start Socket.IO connection in the background
+  connectSocketIO(notificationsPlugin);
 }
 
-void onBackground() {
-  // Handle background operation here
-  print("Service is running in the background");
-}
+void connectSocketIO(FlutterLocalNotificationsPlugin notificationsPlugin) {
+  // Connect to the Socket.IO server
+  final socket = IO.io(
+    'http://192.168.2.207:8080', // Replace with your server URL
+    IO.OptionBuilder()
+        .setTransports(['websocket']) // Use WebSocket transport
+        .enableAutoConnect()
+        .setQuery({'token': '123456789'}) // Send token as query parameter
+        .build(),
+  );
 
-void connectWebSocket(FlutterLocalNotificationsPlugin notificationsPlugin) {
-  final channel = IOWebSocketChannel.connect(
-      'ws://192.168.2.207:8080/?token=123456789'); // Replace with your WebSocket URL
+  // Listen for connection
+  socket.onConnect((_) {
+    debugPrint("Socket.IO connected");
+  });
 
-  channel.stream.listen((message) async {
+  // Listen for incoming messages
+  socket.on('message', (data) async {
     final decodedMessage =
-        message is List<int> ? utf8.decode(message) : message.toString();
-    print("Received WebSocket message: $decodedMessage");
+        data is List<int> ? utf8.decode(data) : data.toString();
+    debugPrint("Received Socket.IO message: $decodedMessage");
 
     // Show local notification
     const androidDetails = AndroidNotificationDetails(
-      'background_websocket_channel',
-      'WebSocket Notifications',
-      channelDescription: 'Notifications for WebSocket messages',
+      'background_socketio_channel',
+      'Socket.IO Notifications',
+      channelDescription: 'Notifications for Socket.IO messages',
       importance: Importance.high,
       priority: Priority.high,
     );
@@ -68,9 +91,19 @@ void connectWebSocket(FlutterLocalNotificationsPlugin notificationsPlugin) {
     const notificationDetails = NotificationDetails(android: androidDetails);
     await notificationsPlugin.show(
       DateTime.now().millisecondsSinceEpoch ~/ 1000,
-      'New WebSocket Message',
+      'New Socket.IO Message',
       decodedMessage,
       notificationDetails,
     );
+  });
+
+  // Listen for connection errors
+  socket.onConnectError((error) {
+    debugPrint("Socket.IO connection error: $error");
+  });
+
+  // Listen for disconnection
+  socket.onDisconnect((_) {
+    debugPrint("Socket.IO disconnected");
   });
 }

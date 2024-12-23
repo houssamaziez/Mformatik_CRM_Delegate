@@ -5,9 +5,12 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_..." />
+
 
     <application
         android:usesCleartextTraffic="true"
@@ -33,6 +36,31 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+<receiver
+    android:name="me.carda.awesome_notifications.notifications.services.BackgroundServiceReceiver"
+    android:enabled="true"
+    android:exported="false"
+    android:label="BootReceiver"
+    android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+</receiver>
+ 
+<!-- 
+<receiver
+    android:name="com.transistorsoft.flutter_background_fetch.HeadlessReceiver"
+    android:enabled="true"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.RESTART" />
+    </intent-filter>
+</receiver> -->
+
+
 
         <meta-data
             android:name="flutterEmbedding"
@@ -41,7 +69,7 @@
         <!-- Add this service for background tasks -->
         <service
             android:name="id.flutter.flutter_background_service.BackgroundService"
-            android:foregroundServiceType="location" /> <!-- specify the service type, e.g., location, media playback, etc. -->
+            android:foregroundServiceType="dataSync" /> <!-- specify the service type, e.g., location, media playback, etc. -->
     </application>
 
     <queries>

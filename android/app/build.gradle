@@ -48,14 +48,12 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             // signingConfig = signingConfigs.debug
             
-             signingConfig = signingConfigs.debug
+             signingConfig = signingConfigs.release
         }
     }
     dependencies {
         // OkHttp Dependency
-        implementation "com.squareup.okhttp3:okhttp:4.9.0"
-        implementation "org.java-websocket:Java-WebSocket:1.5.2"
-
+    implementation "androidx.core:core-ktx:1.9.0"
 
         // Other dependencies can be added here
     }
