@@ -1,43 +1,47 @@
-class BadRequestException implements Exception {
+
+
+class TemplateException implements Exception {
   String? message;
-  BadRequestException({
-    String? message,
-  });
+  String? code;
+  TemplateException({this.message, this.code}) : super();
   @override
   String toString() {
-    return "$runtimeType($message)";
+    // if (code != null) {
+    //   return serverErrorTranslator(code!, langCubit.appLang);
+    // } else {
+    return "$message";
+    //}
   }
 }
 
-class FetchDataException implements Exception {
-  String? message;
-  FetchDataException({
-    this.message,
-  });
-  @override
-  String toString() {
-    return "$runtimeType($message)";
-  }
+class FeedBackPositionUndefinedException extends TemplateException {
+  FeedBackPositionUndefinedException({String? message, String? code}) : super(message: message, code: code);
 }
 
-class UnAuthorizedException implements Exception {
-  String? message;
-  UnAuthorizedException({
-    String? message,
-  });
-  @override
-  String toString() {
-    return "$runtimeType($message)";
-  }
+class ReachSearchLimitException extends TemplateException {
+  ReachSearchLimitException({String? message, String? code}) : super(message: message, code: code);
 }
 
-class NotFoundException implements Exception {
-  String? message;
-  NotFoundException({
-    String? message,
-  });
-  @override
-  String toString() {
-    return "$runtimeType($message)";
-  }
+class BadRequestException extends TemplateException {
+  BadRequestException({String? message, String? code}) : super(message: message, code: code);
+}
+
+class AccountNotActiveException extends TemplateException {
+  AccountNotActiveException({String? message, String? code}) : super(message: message, code: code);
+}
+
+class FetchDataException extends TemplateException {
+  FetchDataException({String? message, String? code}) : super(message: message, code: code);
+}
+
+class UnAuthorizedException extends TemplateException {
+  UnAuthorizedException({String? message, String? code}) : super(message: message, code: code);
+}
+
+class UnAuthenticatedException extends TemplateException {
+  UnAuthenticatedException({String? message, String? code}) : super(message: message, code: code);
+}
+
+class NotFoundException extends TemplateException {
+  NotFoundException({String? message, String? code}) : super(message: message, code: code);
 }

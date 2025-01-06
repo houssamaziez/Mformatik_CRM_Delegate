@@ -9,30 +9,31 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'dart:convert';
 
 import 'App/Controller/auth/auth_controller.dart';
+import 'App/Service/notification_handler.dart';
 import 'App/myapp.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
-  print(token.read("token"));
-
-  await FlutterBackgroundService().configure(
-    androidConfiguration: AndroidConfiguration(
-        foregroundServiceNotificationId: 1,
-        initialNotificationContent: 'Running in the background',
-        initialNotificationTitle: 'CRI Reporting',
-        onStart: onServiceStarted,
-        autoStartOnBoot: true,
-        autoStart: true,
-        isForegroundMode: true,
-        foregroundServiceTypes: [
-          AndroidForegroundType.dataSync,
-        ]),
-    iosConfiguration: IosConfiguration(
-      onForeground: onServiceStarted,
-    ),
-  );
+ 
+  await CriNotificationService.initializeService(isBackground: false);
+  // await FlutterBackgroundService().configure(
+  //   androidConfiguration: AndroidConfiguration(
+  //       foregroundServiceNotificationId: 1,
+  //       initialNotificationContent: 'Running in the background',
+  //       initialNotificationTitle: 'CRI Reporting',
+  //       onStart: onServiceStarted,
+  //       autoStartOnBoot: true,
+  //       autoStart: true,
+  //       isForegroundMode: true,
+  //       foregroundServiceTypes: [
+  //         AndroidForegroundType.dataSync,
+  //       ]),
+  //   iosConfiguration: IosConfiguration(
+  //     onForeground: onServiceStarted,
+  //   ),
+  // );
 
   runApp(const MyApp());
 }
@@ -69,7 +70,7 @@ void connectSocketIO(FlutterLocalNotificationsPlugin notificationsPlugin) {
         .enableAutoConnect()
         .setTransports(['websocket']).setAuth({
       'token':
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwidXNlcm5hbWUiOiJ0ZXN0RGVsZWdhdGUiLCJpc0FjdGl2ZSI6dHJ1ZSwicm9sZUlkIjo0LCJhbm5leElkIjpudWxsLCJjb21wYW55SWQiOm51bGwsInBlcnNvbiI6eyJpZCI6NCwiZmlyc3ROYW1lIjoiaG91c3NhbSAgZWRkaW5lICIsImxhc3ROYW1lIjoiYXppZXoiLCJlbWFpbCI6bnVsbCwicGhvbmUiOm51bGwsInBob25lMDIiOm51bGwsImFkZHJlc3MiOm51bGwsImdlbmRlciI6bnVsbCwiaW1nIjpudWxsLCJ1c2VySWQiOjksImNyZWF0ZWRBdCI6IjIwMjQtMTItMDJUMDg6MzU6NDAuMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjQtMTItMTBUMTQ6NTY6MjQuMDAwWiJ9LCJpYXQiOjE3MzYwNzUzNzB9.pL9u71J5DXYlHy5WV5CoqSnMS1eJDsmfc-UvEqxbSbk",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwidXNlcm5hbWUiOiJ0ZXN0RGVsZWdhdGUiLCJpc0FjdGl2ZSI6dHJ1ZSwicm9sZUlkIjo0LCJhbm5leElkIjpudWxsLCJjb21wYW55SWQiOm51bGwsInBlcnNvbiI6eyJpZCI6NCwiZmlyc3ROYW1lIjoiaG91c3NhbSAgZWRkaW5lICIsImxhc3ROYW1lIjoiYXppZXoiLCJlbWFpbCI6bnVsbCwicGhvbmUiOm51bGwsInBob25lMDIiOm51bGwsImFkZHJlc3MiOm51bGwsImdlbmRlciI6bnVsbCwiaW1nIjpudWxsLCJ1c2VySWQiOjksImNyZWF0ZWRBdCI6IjIwMjQtMTItMDJUMDg6MzU6NDAuMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjQtMTItMTBUMTQ6NTY6MjQuMDAwWiJ9LCJpYXQiOjE3MzYxNzM5OTV9.hSmvNKzDrqpU7wAPUK-cPnr3_GpQnkMJCXAACA-8k2s",
     }).build(),
   );
 
@@ -100,7 +101,7 @@ void connectSocketIO(FlutterLocalNotificationsPlugin notificationsPlugin) {
     await notificationsPlugin.show(
       DateTime.now().millisecondsSinceEpoch ~/ 1000,
       'New Notification',
-      data['title'],
+     "" ,
       notificationDetails,
     );
   });

@@ -10,7 +10,9 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_..." />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
         android:usesCleartextTraffic="true"
@@ -59,17 +61,15 @@
         <action android:name="android.intent.action.RESTART" />
     </intent-filter>
 </receiver> -->
-
-
+ <service android:name="id.flutter.flutter_background_service.BackgroundService" android:foregroundServiceType="dataSync" />
+  <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver" />
 
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
 
         <!-- Add this service for background tasks -->
-        <service
-            android:name="id.flutter.flutter_background_service.BackgroundService"
-            android:foregroundServiceType="dataSync" /> <!-- specify the service type, e.g., location, media playback, etc. -->
+ 
     </application>
 
     <queries>
