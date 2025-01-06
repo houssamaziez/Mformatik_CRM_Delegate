@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'dart:convert';
 
+import 'App/Controller/auth/auth_controller.dart';
 import 'App/myapp.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
+  print(token.read("token"));
+
   await FlutterBackgroundService().configure(
     androidConfiguration: AndroidConfiguration(
         foregroundServiceNotificationId: 1,
@@ -57,33 +60,38 @@ void onServiceStarted(ServiceInstance service) async {
   connectSocketIO(notificationsPlugin);
 }
 
+
 void connectSocketIO(FlutterLocalNotificationsPlugin notificationsPlugin) {
   // Connect to the Socket.IO server
-  final socket = IO.io(
-    'http://192.168.2.207:8080', // Replace with your server URL
+  var socket = IO.io(
+    'http://192.168.2.88:5000',
     IO.OptionBuilder()
-        .setTransports(['websocket']) // Use WebSocket transport
         .enableAutoConnect()
-        .setQuery({'token': '123456789'}) // Send token as query parameter
-        .build(),
+        .setTransports(['websocket']).setAuth({
+      'token':
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwidXNlcm5hbWUiOiJ0ZXN0RGVsZWdhdGUiLCJpc0FjdGl2ZSI6dHJ1ZSwicm9sZUlkIjo0LCJhbm5leElkIjpudWxsLCJjb21wYW55SWQiOm51bGwsInBlcnNvbiI6eyJpZCI6NCwiZmlyc3ROYW1lIjoiaG91c3NhbSAgZWRkaW5lICIsImxhc3ROYW1lIjoiYXppZXoiLCJlbWFpbCI6bnVsbCwicGhvbmUiOm51bGwsInBob25lMDIiOm51bGwsImFkZHJlc3MiOm51bGwsImdlbmRlciI6bnVsbCwiaW1nIjpudWxsLCJ1c2VySWQiOjksImNyZWF0ZWRBdCI6IjIwMjQtMTItMDJUMDg6MzU6NDAuMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjQtMTItMTBUMTQ6NTY6MjQuMDAwWiJ9LCJpYXQiOjE3MzYwNzUzNzB9.pL9u71J5DXYlHy5WV5CoqSnMS1eJDsmfc-UvEqxbSbk",
+    }).build(),
   );
 
   // Listen for connection
   socket.onConnect((_) {
     debugPrint("Socket.IO connected");
+
+    // Example: Emit an event after connection
+    // socket.emit('join_room', {'room': 'exampleRoom'});
   });
 
-  // Listen for incoming messages
-  socket.on('message', (data) async {
-    final decodedMessage =
-        data is List<int> ? utf8.decode(data) : data.toString();
-    debugPrint("Received Socket.IO message: $decodedMessage");
+  // Listen for incoming notifications
+  socket.on('notification', (data) async {
+    // final decodedMessage =
+    //     data is List<int> ? utf8.decode(data) : data.toString();
+    print("Received notification: $data");
 
     // Show local notification
     const androidDetails = AndroidNotificationDetails(
-      'background_socketio_channel',
+      'socketio_notifications',
       'Socket.IO Notifications',
-      channelDescription: 'Notifications for Socket.IO messages',
+      channelDescription: 'Channel for Socket.IO notifications',
       importance: Importance.high,
       priority: Priority.high,
     );
@@ -91,19 +99,29 @@ void connectSocketIO(FlutterLocalNotificationsPlugin notificationsPlugin) {
     const notificationDetails = NotificationDetails(android: androidDetails);
     await notificationsPlugin.show(
       DateTime.now().millisecondsSinceEpoch ~/ 1000,
-      'New Socket.IO Message',
-      decodedMessage,
+      'New Notification',
+      data['title'],
       notificationDetails,
     );
-  });
-
-  // Listen for connection errors
-  socket.onConnectError((error) {
-    debugPrint("Socket.IO connection error: $error");
   });
 
   // Listen for disconnection
   socket.onDisconnect((_) {
     debugPrint("Socket.IO disconnected");
+    Fluttertoast.showToast(
+      msg: "Disconnected from server",
+      backgroundColor: Colors.orange,
+      textColor: Colors.white,
+    );
+  });
+
+  // Handle connection errors
+  socket.onConnectError((error) {
+    debugPrint("Socket.IO connection error: $error");
+    Fluttertoast.showToast(
+      msg: "Connection error: $error",
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+    );
   });
 }
