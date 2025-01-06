@@ -45,29 +45,29 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
   double _compressionProgress = 0.0;
   List<File>? _compressedImages = [];
   bool isCompressImage = false;
-  Future<File> _compressImage(XFile file) async {
-    setState(() {
-      isCompressImage = true;
-    });
-    final bytes = await file.readAsBytes();
-    final img.Image? image = img.decodeImage(bytes);
+  // Future<File>  (XFile file) async {
+  //   setState(() {
+  //     isCompressImage = true;
+  //   });
+  //   final bytes = await file.readAsBytes();
+  //   final img.Image? image = img.decodeImage(bytes);
 
-    final img.Image resized = img.copyResize(image!, width: 500);
-    final compressedBytes = img.encodeJpg(resized, quality: 85);
+  //   final img.Image resized = img.copyResize(image!, width: 500);
+  //   final compressedBytes = img.encodeJpg(resized, quality: 85);
 
-    final compressedImageFile = File('${file.path}_compressed.jpg');
-    await compressedImageFile.writeAsBytes(compressedBytes);
+  //   final compressedImageFile = File('${file.path}_compressed.jpg');
+  //   await compressedImageFile.writeAsBytes(compressedBytes);
 
-    setState(() {
-      isCompressImage = false;
-    });
-    return compressedImageFile;
-  }
+  //   setState(() {
+  //     isCompressImage = false;
+  //   });
+  //   return compressedImageFile;
+  // }
 
   Future<void> _takePhoto() async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
     if (photo != null) {
-      File compressedImage = await _compressImage(photo);
+      File compressedImage = File(photo.path);
       setState(() {
         _compressedImages!.add(compressedImage);
       });
@@ -78,7 +78,7 @@ class _CreateFeedBackScreenState extends State<CreateFeedBackScreen> {
     final List<XFile>? pickedFiles = await _picker.pickMultiImage();
     if (pickedFiles != null) {
       for (int i = 0; i < pickedFiles.length; i++) {
-        File compressedImage = await _compressImage(pickedFiles[i]);
+        File compressedImage = File(pickedFiles[i].path);
         _compressedImages!.add(compressedImage);
 
         setState(() {

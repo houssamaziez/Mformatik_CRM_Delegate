@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screen = [
     const HomeMission(),
     HomeFeedback(),
-    const HomeViewTask(),
+    // const HomeViewTask(),
     const ProfileUserScreen(),
   ];
   final MissionsController controller = Get.put(MissionsController());
