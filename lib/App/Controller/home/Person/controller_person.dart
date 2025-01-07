@@ -125,6 +125,7 @@ class ControllerPerson extends GetxController {
       Map<String, dynamic> queryParams = {
         'limit': '20', // Set limit to 20
         'attributes[]': ['id', 'firstName', 'lastName'],
+         'isItForAssigne': true.toString(),
       };
 
       // Conditionally add 'fullName' to the queryParams map
