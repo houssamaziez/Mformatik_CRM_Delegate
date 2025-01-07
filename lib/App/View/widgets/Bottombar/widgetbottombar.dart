@@ -7,8 +7,15 @@ buttonnavigationbar(context) {
       init: HomeController(),
       builder: (controller) {
         return Container(
-          height: 65,
+
+          decoration:  BoxDecoration(
           color: Colors.white,
+
+            border:  Border(
+              top: BorderSide( color: Colors.grey, width: 0.5),
+            )
+          ),
+          height: 65,
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
             children: [
@@ -20,13 +27,15 @@ buttonnavigationbar(context) {
                 child: _buildNavItem(context, 1, Icons.feed_outlined,
                     'Feedbacks'.tr, controller),
               ),
-              // Expanded(
-              //   child: _buildNavItem(
-              //       context, 2, Icons.assignment, 'Task'.tr, controller),
-              // ),
+              Expanded(
+                child: _buildNavItem(
+                    context, 2, Icons.assignment, 'Task'.tr, controller),
+              ),
               Expanded(
                   child: _buildNavItem(
-                      context, 2, Icons.person, 'Profile'.tr, controller)),
+                      context, 3, Icons.notifications, 'Notifications'.tr, controller)),       Expanded(
+                  child: _buildNavItem(
+                      context, 3, Icons.person, 'Profile'.tr, controller)),
             ],
           ),
         );
@@ -47,16 +56,16 @@ Widget _buildNavItem(context, int index, IconData icon, String label,
           color: controller.indexBottomBar == index
               ? Theme.of(context).primaryColor
               : Colors.grey,
-          size: 19,
+          size: 24,
         ),
         Text(
           label,
           style: TextStyle(
-              fontSize: 12,
+              fontSize:9,
               color: controller.indexBottomBar == index
                   ? Theme.of(context).primaryColor
                   : Colors.grey,
-              fontWeight: FontWeight.bold),
+              fontWeight: FontWeight.w400),
         ),
       ],
     ),

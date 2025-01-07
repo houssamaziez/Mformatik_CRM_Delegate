@@ -79,6 +79,8 @@ dependencies:
   socket_io_client: ^3.0.2
   logger: ^2.5.0
   audioplayers: ^6.1.0
+  iconsax: ^0.0.8
+  modal_progress_hud_nsn: ^0.5.1
   # flutter_sound: ^9.6.0
   # ffmpeg_kit_flutter: ^6.0.3
   # interactive_text:

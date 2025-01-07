@@ -12,6 +12,7 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
  
@@ -19,12 +20,14 @@ import 'package:socket_io_client/socket_io_client.dart' as web_socket_io;
 
 import '../Controller/auth/auth_controller.dart';
 import '../Model/web_socket_notifcation_model.dart';
+import '../Util/Route/Go.dart';
 import '../Util/global_expcetion_handler.dart';
+import '../View/home/notifications/notifications_screen.dart';
 
  
 
 class CriNotificationService {
-  static const notificationId = 444;
+  static const notificationId = 4423424234;
   static const String channelDescription = 'This channel is used for important notifications';
   static const String channelId = 'high_importance_channel';
   static const String channelName = 'High Importance Notifications';
@@ -258,9 +261,13 @@ class CriNotificationService {
 
         Logger().i(data);
         print('Connected to server');
+
+        Logger().i( 'Connected to server');
+
       });
       socket.onDisconnect((data) {
         print('Disconnected to server');
+
 
         Logger().i(data);
       });
@@ -287,10 +294,12 @@ class CriNotificationService {
   @pragma('vm:entry-point')
   static void notificationResponse(NotificationResponse notificationResponse) {
     if (notificationResponse.payload != null) {
+      Logger( ).i(notificationResponse.payload);
       var payload = notificationResponse.payload;
       if (payload != null) {
         Map<String, dynamic> parsedData = jsonDecode(payload);
-
+  Go.to(Get.context,NotificationScreenAll());
+Logger().i( parsedData);
         // RoutingManager.router.pushNamed(RoutingManager.missionDetailsScreen, extra: int.parse(parsedData['id']));
       }
     }

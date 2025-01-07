@@ -22,4 +22,6 @@ class Endpoint {
   static String apipersonsUpdate = '$url/api/v1/persons/me';
   static String apiPersons = '$url/api/v1/persons';
   static String apiTask = '$url/api/v1/tasks';
+  static String apiNotifications = '$url/api/v1/notifications';
+
 }

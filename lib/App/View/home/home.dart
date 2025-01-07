@@ -4,10 +4,11 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/home_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/mission/missions_controller.dart';
+import 'package:mformatic_crm_delegate/App/View/home/notifications/notifications_screen.dart';
 
+import '../../../main.dart';
 import '../../Controller/auth/auth_controller.dart';
 import '../../Controller/home/annex_controller.dart';
-import '../../Service/websocket/websocket_service.dart';
 import '../widgets/Bottombar/widgetbottombar.dart';
 import '../widgets/bolck_screen.dart';
 import 'Widgets/appbar_home.dart';
@@ -30,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+  initializeNotifications();
     super.initState();
     const androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -56,7 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screen = [
     const HomeMission(),
     HomeFeedback(),
-    // const HomeViewTask(),
+    const HomeViewTask(),
+    NotificationScreenAll(), 
     const ProfileUserScreen(),
   ];
   final MissionsController controller = Get.put(MissionsController());
