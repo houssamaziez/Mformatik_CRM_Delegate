@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:mformatic_crm_delegate/App/Util/convert/convert_bytes.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -20,8 +21,8 @@ class ShowPDFs extends StatefulWidget {
   });
 
   final String extention;
-  final List name;
-  final List<FileModel> listitem;
+  final List<FileModel> name;
+  final List<FileModel>  listitem ;
   final String taskId, taskItemId;
 
   @override
@@ -36,6 +37,7 @@ class _ShowPDFsState extends State<ShowPDFs> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final taskController = Get.put(TaskController());
       taskController.cleanListPDF();
+      taskController.cleanListExcel();
       setState(() {
         islaoding = true;
       });
@@ -46,6 +48,10 @@ class _ShowPDFsState extends State<ShowPDFs> {
     });
   }
 
+dispose() {
+  super.dispose();
+   
+}
   returnimagefile() {
     switch (widget.extention) {
       case "pdf":
@@ -90,26 +96,29 @@ class _ShowPDFsState extends State<ShowPDFs> {
                   padding: const EdgeInsets.all(8.0),
                   child: InkWell(
                     onTap: () async {
-                      widget.listitem[index] =
-                          widget.listitem[index].copyWith(isdownload: true);
+Logger(). i(widget.name[index].name);
+
+                      // return ;
+                      widget.name[index] =
+                          widget.name[index].copyWith(isdownload: true);
                       final Uint8List ff =
                           await taskController.downloadFileStream(
                               isShow: true,
                               taskId: widget.taskId,
                               taskItemId: widget.taskItemId,
-                              attachmentId: widget.listitem[index].id,
+                              attachmentId: widget.name[index].id,
                               index: index,
                               name: extractFileName(
-                                widget.listitem[index].name,
+                                widget.name[index].name,
                               ));
-                      widget.listitem[index] =
-                          widget.listitem[index].copyWith(isdownload: false);
-                      widget.listitem[index] =
-                          widget.listitem[index].copyWith(baytes: ff);
+                      widget.name[index] =
+                          widget.name[index].copyWith(isdownload: false);
+                      widget.name[index] =
+                          widget.name[index].copyWith(baytes: ff);
                       openExcelInDevice(
-                          widget.listitem[index].baytes!,
+                          widget.name[index].baytes!,
                           extractFileName(
-                            widget.listitem[index].name,
+                            widget.name[index].name,
                           ),
                           widget.extention);
                     },
@@ -132,7 +141,7 @@ class _ShowPDFsState extends State<ShowPDFs> {
                                   width: MediaQuery.of(context).size.width / 2,
                                   child: Text(
                                     extractFileName(
-                                      widget.listitem[index].name,
+                                      widget.name[index].name,
                                     ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -147,16 +156,16 @@ class _ShowPDFsState extends State<ShowPDFs> {
                               convertBytes(taskController.totalBytes),
                             ),
                           Spacer(),
-                          if (widget.listitem[index].baytes != null &&
-                                  widget.listitem[index].baytes!.isNotEmpty ||
+                          if (widget.name[index].baytes != null &&
+                                  widget.name[index].baytes!.isNotEmpty ||
                               fileCache.containsKey(
-                                  '${widget.taskId}-${widget.taskItemId}-${widget.listitem[index].id}'))
+                                  '${widget.taskId}-${widget.taskItemId}-${widget.name[index].id}'))
                             IconButton(
                                 onPressed: () async {
                                   await saveFile(
-                                      widget.listitem[index].baytes!,
+                                      widget.name[index].baytes!,
                                       extractFileName(
-                                        widget.listitem[index].name,
+                                        widget.name[index].name,
                                       ),
                                       widget.extention);
                                 },

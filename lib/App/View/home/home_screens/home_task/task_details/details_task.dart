@@ -275,7 +275,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
             return const Center(child: spinkit);
           }
           if (teskController.task == null) {
-            return Center(child: Text('error fetching data'.tr));
+            return Center(child: Text('No task found'.tr));
           }
           final task = teskController.task!;
           return Scaffold(
@@ -370,7 +370,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                       (v) => AppValidator.validateRequired(v,
                           fieldName: 'message'.tr),
                       (v) => AppValidator.validateLength(v,
-                          minLength: 3, maxLength: 30),
+                          minLength: 2, maxLength: 30),
                     ]),
                   ),
                 ),
