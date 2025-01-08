@@ -30,6 +30,7 @@ class ControllerPerson extends GetxController {
             'offset': currentOffset.toString(), // Add offset
             'limit': limit.toString(), // Add limit
             'isItForAssigne': true.toString(),
+                     'excludeMe': true.toString(), 
             'attributes[]': ['id', 'firstName', 'lastName'],
           },
         ),
@@ -81,6 +82,7 @@ class ControllerPerson extends GetxController {
             'limit': limit.toString(),
             'isItForAssigne': true.toString(),
             'attributes[]': ['id', 'firstName', 'lastName'],
+                     'excludeMe': true.toString(), 
           },
         ),
         headers: {"x-auth-token": token.read("token").toString()},
@@ -125,7 +127,9 @@ class ControllerPerson extends GetxController {
       Map<String, dynamic> queryParams = {
         'limit': '20', // Set limit to 20
         'attributes[]': ['id', 'firstName', 'lastName'],
-         'isItForAssigne': true.toString(),
+         'isItForAssigne': true.toString(), 
+         'excludeMe': true.toString(), 
+
       };
 
       // Conditionally add 'fullName' to the queryParams map

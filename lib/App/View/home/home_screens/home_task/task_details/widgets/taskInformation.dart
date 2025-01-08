@@ -63,7 +63,7 @@ Container taskInformation(TaskController controller) {
             colorssuptitle2: controller.task!.isStart
                 ? const Color.fromARGB(255, 55, 255, 62)
                 : Colors.grey,
-            name2: controller.task!.isStart ? "Started".tr : "Not started".tr,
+            // name2:,
             colorBorder: getStatusColorTask(controller.task!.statusId),
             colorssuptitle: getStatusColorTask(controller.task!.statusId),
             name: getStatusLabelTask(controller.task!.statusId)),

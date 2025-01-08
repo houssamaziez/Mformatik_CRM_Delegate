@@ -244,7 +244,7 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                       color: Colors.red,
                     ));
               })
-        ],
+    ,   ],
       ),
       bottomSheet: GetBuilder<TaskController>(
           init: TaskController(),

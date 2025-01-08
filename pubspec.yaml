@@ -73,6 +73,7 @@ dependencies:
   timelines_plus: ^1.0.4
   timelines: ^0.1.0
   interactive_text_plus: ^1.1.5
+  logger: ^2.5.0
   # flutter_sound: ^9.6.0
   # ffmpeg_kit_flutter: ^6.0.3
   # interactive_text:
