@@ -7,5 +7,5 @@ void main() async {
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
   runApp(const MyApp());
-}
+}   
  

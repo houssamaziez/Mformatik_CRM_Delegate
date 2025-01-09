@@ -332,5 +332,5 @@ const Map<String, String> fr = {
   'Failed to create task': 'Échec de la création de la tâche',
   'Error updating task': 'Erreur de mise à jour de la tâche',
   'Task updated successfully': 'Tâche mise à jour avec succès',
-  'No task found ' : 'Aucune tâche trouvée',
+  'No task found' : 'Aucune tâche trouvée',
 };

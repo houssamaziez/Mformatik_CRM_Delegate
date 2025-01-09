@@ -320,5 +320,5 @@ const Map<String, String> ar = {
   'Error updating task': 'خطأ في تحديث المهمة',
   'Task updated successfully': 'تم تحديث المهمة بنجاح',
   'Date': 'تاريخ',
-  'No task found ' : 'لم يتم العثور على مهام',
+  'No task found' : 'لم يتم العثور على مهام',
 };

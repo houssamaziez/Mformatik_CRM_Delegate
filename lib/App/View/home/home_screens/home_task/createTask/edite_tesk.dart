@@ -84,7 +84,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
       appBar: AppBar(
         title: Text(
           "Edite Task".tr,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -98,7 +98,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -136,7 +136,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                             Row(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 10),
+                                  padding: const EdgeInsets.only(left: 10),
                                   child: GetBuilder<ControllerPerson>(
                                       init: ControllerPerson(),
                                       builder: (personController) {
@@ -208,7 +208,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                       Row(
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.only(left: 10),
                             child: GetBuilder<ControllerPerson>(
                                 init: ControllerPerson(),
                                 builder: (personController) {
@@ -231,7 +231,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                                   );
                                 }),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           GetBuilder<ControllerPerson>(
                               init: ControllerPerson(),
                               builder: (personController) {
@@ -241,11 +241,11 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                                           personController
                                               .closePerson("Observator");
                                         },
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.close,
                                           size: 14,
                                         ))
-                                    : SizedBox.shrink();
+                                    : const SizedBox.shrink();
                               })
                         ],
                       ),
@@ -280,9 +280,9 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                         style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                           hintText: "Label".tr,
-                          enabledBorder: OutlineInputBorder(
+                          enabledBorder: const OutlineInputBorder(
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(8)),
+                                  BorderRadius.all(Radius.circular(8)),
                               borderSide: BorderSide(color: Colors.grey)),
                           border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -291,9 +291,9 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'Label is required'.tr;
-                          } else if (value.trim().length < 4) {
+                          } else if (value.trim().length < 2) {
                             // Minimum length check
-                            return 'Label must be at least 4 characters long'
+                            return 'Label must be at least 2 characters long'
                                 .tr;
                           }
                           return null; // No error
@@ -308,7 +308,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               selectDeadline(context),
