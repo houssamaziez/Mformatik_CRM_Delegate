@@ -13,9 +13,8 @@ class Notification {
     );
   }
 }
-
 class NotificationRow {
-  final dynamic id;
+  final dynamic id; // Can be an int or List<int>
   final String title;
   final String entity;
   final int creatorId;
@@ -38,8 +37,19 @@ class NotificationRow {
   });
 
   factory NotificationRow.fromJson(Map<String, dynamic> json) {
+    dynamic parsedId;
+
+    if (json['id'] is int) {
+      parsedId = json['id']; // Single integer
+    } else if (json['id'] is List) {
+      // Check if it's a List of integers
+      parsedId = (json['id'] as List).whereType<int>().toList(); // Ensure it's a List<int>
+    } else {
+      parsedId = 0; // Default value if id is null or invalid
+    }
+
     return NotificationRow(
-      id: json['id'] , // Default to 0 if null
+      id: json['id'],
       title: json['title'] ?? 'Untitled', // Default to 'Untitled' if null
       entity: json['entity'] ?? 'Unknown', // Default to 'Unknown' if null
       creatorId: json['creatorId'] ?? 0, // Default to 0 if null
@@ -108,7 +118,7 @@ class Person {
 }
 
 class NotificationData {
-  final List<int> id;
+  final dynamic id;
   final int? companyId; // Nullable
   final int? annexId;   // Nullable
 
@@ -119,8 +129,18 @@ class NotificationData {
   });
 
   factory NotificationData.fromJson(Map<String, dynamic> json) {
+        dynamic parsedId;
+
+     if (json['id'] is int) {
+      parsedId = json['id']; // Single integer
+    } else if (json['id'] is List) {
+      // Check if it's a List of integers
+      parsedId = (json['id'] as List).whereType<int>().toList(); // Ensure it's a List<int>
+    } else {
+      parsedId = 0; // Default value if id is null or invalid
+    }
     return NotificationData(
-      id: (json['id'] != null ? List<int>.from(json['id']) : []),
+      id:parsedId,
       companyId: json['companyId'],
       annexId: json['annexId'],
     );

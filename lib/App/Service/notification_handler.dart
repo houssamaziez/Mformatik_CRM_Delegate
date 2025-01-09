@@ -19,10 +19,15 @@ import 'package:logger/logger.dart';
 import 'package:socket_io_client/socket_io_client.dart' as web_socket_io;
 
 import '../Controller/auth/auth_controller.dart';
+import '../Controller/home/notification/notification_controller.dart';
 import '../Model/web_socket_notifcation_model.dart';
+import '../RouteEndPoint/EndPoint.dart';
 import '../Util/Route/Go.dart';
 import '../Util/global_expcetion_handler.dart';
 import '../View/home/notifications/notifications_screen.dart';
+
+import 'package:http/http.dart' as http;
+
 
  
 
@@ -272,9 +277,27 @@ class CriNotificationService {
         Logger().i(data);
       });
       socket.on('notification', (data) {
-        print(data);
+        Logger  ().i(data);
+// Go.to(Get.context,NotificationScreenAll());
+ var data2 = data  ;
+     if(data2 is Map) {
+
+        Logger().i( "data is map");
+
+     
+     }
+     else {
+   data.forEach((  value) {
+          _showNotification2("New Mission", "Details" , Random().nextInt(10000000));
+Logger().i( value['id']);
+ editNotificationStatus(notificationId: value['id'], status:2);  
+        });
+        Logger().i( "data is list");
+     }
         if (data['data']['id'] is List) {
           List<int> ids = (data['data']['id'] as List).map<int>((e) => e as int).toList();
+          
+ editNotificationStatus(notificationId: data['data']['id'], status:2);  
           service.invoke('refreshNotificationsCount', {"count": ids.length});
           _showNotificationMultiEntities(WebSocketNotificationModel.fromJson(data));
         } else {
@@ -290,6 +313,45 @@ class CriNotificationService {
       GlobalExceptionHandler.handle(exception: e, exceptionStackTrace: stackTrace);
     }
   }
+
+  @pragma('vm:entry-point')
+
+static Future<void> editNotificationStatus({required int notificationId, required int status}) async {
+    final response = await http.put(Uri.parse('${Endpoint.apiNotifications}/$notificationId/to/$status'), headers:  {
+      'x-auth-token': token.read("token").toString(),
+    });
+    Logger().e(response.body);
+    Logger().e(response.statusCode);
+
+if (response.statusCode == 204) {
+  
+ 
+}
+    // await ResponseHandler.processResponse(response);
+  }
+
+  @pragma('vm:entry-point')
+
+static void _showNotification2(String title, String subtitle , int id) {
+  Logger().i("Displaying notification: $title - $subtitle");
+  
+  // Example using flutter_local_notifications:
+  // Replace this with your actual notification logic
+  flutterLocalNotificationsPlugin.show(
+    id,
+    title, 
+    subtitle, 
+    NotificationDetails(
+      android: AndroidNotificationDetails(
+        'channel_id', // Channel ID
+        'channel_name', // Channel Name
+        importance: Importance.high,
+        priority: Priority.high,
+      ),
+      // iOS: IOSNotificationDetails(),
+    ),
+  );
+}
 
   @pragma('vm:entry-point')
   static void notificationResponse(NotificationResponse notificationResponse) {

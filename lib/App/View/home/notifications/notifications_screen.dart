@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
+import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
+import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import '../../../Controller/home/notification/notification_controller.dart';
 import '../../widgets/showsnack.dart';
+import '../home_screens/home_mission/mission_details/profile_mission.dart';
 import 'widgets/notification_card.dart';
 
 class NotificationScreenAll extends StatefulWidget {
@@ -50,20 +54,39 @@ initState() {
   itemCount: controller. notifications.length,
   itemBuilder: (context, index) {
     final notification = controller.notifications[index];
-    return CardNotification(
+    return CardNotification(status: notification.receiver!.status!,
       title: notification.title,
       createdAt: notification.createdAt,
       subtitle: "Subtitle or additional info here", // Customize this based on your data
       onTap: () {
-        showMessage(
-          context,
-          title: 'Notification Clicked'.tr,
-          // message: notification.title,
-        );
+        dynamic parsedId;
+
+    if (notification.data!.id is int) {
+
+
+      parsedId =notification.data!.id; // Single integer
+    } else if (notification.data!.id is List) {
+      // Check if it's a List of integers
+      parsedId = (notification.data!.id as List).whereType<int>().toList(); // Ensure it's a List<int>
+    } else {
+      parsedId = 0; // Default value if id is null or invalid
+    }
+
+
+    if (parsedId is int) {
+
+      Logger().i('notitificationnidf ${notification .id}');
+      controller.editNotificationStatus(notificationId: notification .id  , status:  3);
+
+      // Go.to(context,  MissionProfileScreen( missionId: notification.data!.id));
+      
+    }
+
+    print( parsedId);
       }, entity:  notification.entity,
     );
   },
-);
+).addRefreshIndicator(onRefresh: () => controller.fetchNotifications());
 
         },
       ),

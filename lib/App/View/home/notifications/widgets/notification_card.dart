@@ -14,6 +14,8 @@ class CardNotification extends StatelessWidget {
   final String createdAt;
   final String subtitle;
   final String entity;
+
+  final int status;
   final VoidCallback onTap;
 
   const CardNotification({
@@ -22,7 +24,7 @@ class CardNotification extends StatelessWidget {
     required this.createdAt,
     required this.subtitle,
     required this.entity,
-    required this.onTap,
+    required this.onTap, required this.status,
   }) : super(key: key);
 
   String getIconForEntity(String entity) {
@@ -43,6 +45,24 @@ class CardNotification extends StatelessWidget {
         return DrawableAssetStrings.missionIcon;
     }
   }
+    Color getColorsForEntity(int entity) {
+    switch (entity) {
+      case 1:
+        return Colors.red;
+
+      case 2:
+        return Colors.green;
+
+      case 3:
+       return Colors.blue;
+
+      case 4:
+    return Colors.orange;
+
+      default:
+        return  Colors.grey;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +71,7 @@ class CardNotification extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Theme.of(context).primaryColor.withOpacity(0.2),
+          color:getColorsForEntity( status ) ,// Theme.of(context).primaryColor.withOpacity(0.2),
         ),
         child: Image.asset(
           getIconForEntity(entity),

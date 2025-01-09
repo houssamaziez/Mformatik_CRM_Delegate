@@ -16,8 +16,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
- 
   await CriNotificationService.initializeService(isBackground: false);
+  initializeNotifications();
  
  
   runApp(const MyApp());
@@ -30,6 +30,7 @@ void main() async {
 
   // Check if the app was launched by a notification and has a payload
   if (launchDetails != null && launchDetails.didNotificationLaunchApp) {
+    Logger().i("Navigating to mission details");
 
     Logger().i(launchDetails.notificationResponse?.payload);
     final payload = launchDetails.notificationResponse?.payload;
@@ -43,6 +44,8 @@ void main() async {
 void onNotificationTappedRedirect(
   Map<String, dynamic> notificationData,
 ) async {
+    Logger().i("Navigating to mission details");
+
   List listItems = notificationData['ids'];
   // debugPrint(listItems.toString());
 
@@ -61,25 +64,25 @@ void onNotificationTappedRedirect(
     }
   } else {
     switch (notificationData['entity']) {
-      case 'mission':
-        // RoutingManager.router.pushNamed(RoutingManager.missionDetailsScreen, extra: listItems[0]);
-
-        Go.to(Get.context,NotificationScreenAll());
-         Logger().i(notificationData['entity']);
-        break;
-
-      case 'task':
-        // RoutingManager.router.pushNamed(RoutingManager.taskDetailsScreen, extra: listItems[0]);
-        // Go.to(Get.context,NotificationScreen());
-
-         Logger().e(notificationData['entity']);
-        break;
-
-      default:
-        // RoutingManager.router.pushNamed(RoutingManager.appLayoutScreen);
-        // Go.to(Get.context,NotificationScreen());
-
-         Logger().e(notificationData['entity']);
+  case 'mission':
+    Logger().i("Navigating to mission details");
+    if (listItems.length > 1) {
+      Logger().e("Multiple missions: ${listItems.join(", ")}");
+    } else {
+WidgetsBinding.instance.addPostFrameCallback((_) {
+  Go.to(Get.context, NotificationScreenAll());
+});
     }
+    break;
+
+  case 'task':
+    Logger().i("Navigating to task details");
+    // Add task-specific navigation here
+    break;
+
+  default:
+    Logger().e("Unknown entity: ${notificationData['entity']}");
+}
+
   }
 }
