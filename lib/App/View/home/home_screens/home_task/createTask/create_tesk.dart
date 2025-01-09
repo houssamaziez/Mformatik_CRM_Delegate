@@ -155,7 +155,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                     Text(
                       "Select Responsable".tr,
                       style: TextStyle(
-                          color: Theme.of(context).primaryColor,
+                          color: Colors.black87,
                           fontWeight: FontWeight.bold),
                     ),
                      Text(
@@ -252,7 +252,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                 Text(
                   "Select Observator".tr,
                   style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                      color:Colors.black87,
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
@@ -338,7 +338,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                     Text(
                       "Label".tr,
                       style: TextStyle(
-                          color: Theme.of(context).primaryColor,
+                        color:Colors.black87,
                           fontWeight: FontWeight.bold),
                     ), Text(
                             "*".tr,
@@ -390,7 +390,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                           Text(
                             "Description".tr,
                             style: TextStyle(
-                                color: Theme.of(context).primaryColor,
+                               color:Colors.black87,
                                 fontWeight: FontWeight.bold),
                           ), Text(
                             "*".tr,
@@ -436,7 +436,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                 Text(
                   "Deadline".tr,
                   style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                  color:Colors.black87,
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(

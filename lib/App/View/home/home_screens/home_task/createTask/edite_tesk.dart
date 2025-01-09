@@ -104,7 +104,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                     Text(
                       "Select Responsable".tr,
                       style: TextStyle(
-                          color: Theme.of(context).primaryColor,
+          color:Colors.black87,
                           fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(
@@ -176,7 +176,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
               Text(
                 "Select Observator".tr,
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                  color:Colors.black87,
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(
@@ -260,7 +260,7 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                 Text(
                   "Label".tr,
                   style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.black87,
                       fontWeight: FontWeight.bold),
                 ),
               if (widget.status == 1)
@@ -302,10 +302,11 @@ class _EditeTaskOwnerState extends State<EditeTaskOwner> {
                     ],
                   ),
                 ),
+                SizedBox(height: 10,), 
               Text(
                 "Deadline".tr,
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                    color: Colors.black87,
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(
