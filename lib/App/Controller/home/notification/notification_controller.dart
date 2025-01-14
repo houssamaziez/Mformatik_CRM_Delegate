@@ -28,12 +28,14 @@ Map<int, String> notificationStatus ={
 bool isLoading = false;
   List<NotificationRow> notifications =  [] ;
 
-  fetchNotifications() async { 
+  fetchNotifications({List<int>?ids  }) async { 
+ 
+ 
 
     try {
        isLoading = true;
        update();
-      var response = await http.get(url  , headers: {
+      var response = await http.get( Uri.parse(Endpoint.apiNotifications)   , headers: {
         "x-auth-token": token.read("token").toString(),
       });
 

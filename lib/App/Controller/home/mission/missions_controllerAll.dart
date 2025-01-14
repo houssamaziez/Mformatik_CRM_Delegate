@@ -29,7 +29,7 @@ class MissionsControllerAll extends GetxController {
   Future<void> getAllMission(context, int companyId,
       {String? startingDate = "",
       String? endingDate = "",
-      String? statusId = "",
+      String? statusId = "",List ?ids, 
       String? creatorId = ""}) async {
     missions!.clear();
     update();
@@ -44,6 +44,8 @@ class MissionsControllerAll extends GetxController {
         if (creatorId!.isNotEmpty || creatorId != "") ...{
           'creatorId': creatorId
         },
+ 
+        if(ids==null || ids != []) ...{'ids[]': ids.toString()},
         if (statusId!.isNotEmpty || statusId != "") ...{'statusId': statusId},
         if (endingDate != "") ...{'endDate': endingDate},
       },

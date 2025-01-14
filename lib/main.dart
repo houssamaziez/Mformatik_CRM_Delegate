@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
-import 'package:mformatic_crm_delegate/App/View/home/Settings/Notification/notificationscreen.dart';
 import 'App/Service/notification_handler.dart';
  import 'App/View/home/notifications/notifications_screen.dart';
 import 'App/myapp.dart';
@@ -18,8 +17,6 @@ void main() async {
   await GetStorage.init();
   await CriNotificationService.initializeService(isBackground: false);
   initializeNotifications();
- 
- 
   runApp(const MyApp());
 }
 

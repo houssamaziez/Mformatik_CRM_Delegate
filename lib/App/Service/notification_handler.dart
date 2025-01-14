@@ -190,9 +190,9 @@ class CriNotificationService {
     flutterLocalNotificationsPlugin.show(
       Random().nextInt(10000000),
       'New ${notificationDetails.entity}',
-      'By : ${notificationDetails.creator.username}',
+      'By : ${notificationDetails.creator!.username}',
       payload:
-          '{"ids": ${notificationDetails.data.ids}, "entity": "${notificationDetails.entity}", "companyId": ${notificationDetails.data.companyId},"annexId": ${notificationDetails.data.annexId}}',
+          '{"ids": ${notificationDetails.data!.ids}, "entity": "${notificationDetails.entity}", "companyId": ${notificationDetails.data!.companyId},"annexId": ${notificationDetails.data!.annexId}}',
       NotificationDetails(
         android: AndroidNotificationDetails(
           oneNotificationChannel.id,
@@ -217,9 +217,9 @@ class CriNotificationService {
     flutterLocalNotificationsPlugin.show(
       Random().nextInt(10000000),
       'New ${notificationDetails.entity}s',
-      'By : ${notificationDetails.creator.username}',
+      'By : ${notificationDetails.creator!.username}',
       payload:
-          '{"ids": ${notificationDetails.data.ids}, "entity": "${notificationDetails.entity}", "companyId": ${notificationDetails.data.companyId},"annexId": ${notificationDetails.data.annexId}}',
+          '{"ids": ${notificationDetails.data!.ids}, "entity": "${notificationDetails.entity}", "companyId": ${notificationDetails.data!.companyId},"annexId": ${notificationDetails.data!.annexId}}',
       NotificationDetails(
         android: AndroidNotificationDetails(
           oneNotificationChannel.id,

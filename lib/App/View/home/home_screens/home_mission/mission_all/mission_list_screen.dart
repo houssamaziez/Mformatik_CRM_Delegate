@@ -17,7 +17,8 @@ String startDateTextMissions = '';
 String endDateTextMissions = '';
 
 class MissionListScreen extends StatefulWidget {
-  const MissionListScreen({Key? key}) : super(key: key);
+  const MissionListScreen({Key? key,   this.ids}) : super(key: key);
+final List?ids;
 
   @override
   State<MissionListScreen> createState() => _MissionListScreenState();
@@ -32,7 +33,19 @@ class _MissionListScreenState extends State<MissionListScreen> {
   @override
   void initState() {
     // controller.getAllMission(context);
-    controller1.getAllMission(
+
+    if (widget.ids != null) {
+         controller1.getAllMission(
+        context,
+        Get.put(CompanyController()).selectCompany == null
+            ? 0
+            : Get.put(CompanyController()).selectCompany!.id,
+        endingDate: endDateTextMissions,
+        startingDate: startDateTextMissions , ids: widget.ids);
+    scrollController = ScrollController();
+    scrollController.addListener(_scrollListener);
+    }else{
+         controller1.getAllMission(
         context,
         Get.put(CompanyController()).selectCompany == null
             ? 0
@@ -41,6 +54,8 @@ class _MissionListScreenState extends State<MissionListScreen> {
         startingDate: startDateTextMissions);
     scrollController = ScrollController();
     scrollController.addListener(_scrollListener);
+    }
+ 
     super.initState();
   }
 
