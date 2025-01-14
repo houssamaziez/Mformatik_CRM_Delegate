@@ -67,7 +67,7 @@ class CardNotification extends StatelessWidget {
               ),
             ),
             title: Text(
-              title,
+              retunTitle(title),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -116,4 +116,36 @@ String getIconForEntity(String entity) {
       default:
         return DrawableAssetStrings.missionIcon;
     }
+  }
+
+
+ String retunTitle(String title){
+
+  //   newMission(id: 'newMission', title: 'has created new mission'),
+  // missionStatusChanged(id: 'missionStatusChange', title: 'has changed mission status'),
+  // newTask(id: 'newTask', title: 'has created new task'),
+  // taskObserver(id: 'assignAsObserver', title: 'has assigned you as task Observer'),
+  // taskResponsible(id: 'assignAsResponsible', title: 'has assigned you as task responsible'),
+  // taskStatusChanged(id: 'taskStatusChange', title: 'has changed task status');
+  
+switch (title) {
+  case "newMission":
+    return "New mission notification";
+  case "missionStatusChange":
+    return "Mission status updated";
+  case "newTask":
+    return "New task created";
+  case "taskObserver":
+  case "assignAsObserver":
+    return "Assigned as task observer";
+  case "taskResponsible":
+  case "assignAsResponsible":
+    return "Assigned as task responsible";
+  case "taskStatusChange":
+    return "Task status updated";
+  default:
+    return "Unknown title";
+}
+
+
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/home_controller.dart';
 
+import '../../../Controller/home/notification/notification_controller.dart';
+
 buttonnavigationbar(context) {
   return GetBuilder<HomeController>(
       init: HomeController(),
@@ -31,11 +33,44 @@ buttonnavigationbar(context) {
                 child: _buildNavItem(
                     context, 2, Icons.assignment, 'Task'.tr, controller),
               ),
-              Expanded(
+             GetBuilder<NotificationController>(
+                        init: NotificationController(),
+                        builder: (notification) {
+                          return Stack(
+                    children: [
+                      Expanded(
+                          child:   _buildNavItem(
+                                  context, 3, Icons.notifications, 'Notifications'.tr, controller)
+                        
+                       ),
+                     notification.notificationcount == 0 ? const SizedBox() : Positioned(
+                             top: 0,
+                             right: 0,
+                             child: Container(
+                               padding: const EdgeInsets.all(2),
+                               decoration: BoxDecoration(
+                                 color: Colors.red,
+                                 borderRadius: BorderRadius.circular(6),
+                               ),
+                               constraints: const BoxConstraints(
+                                 minWidth: 12,
+                                 minHeight: 12,
+                               ),
+                               child: Text(
+                                 '${notification.notificationcount}',
+                                 style: const TextStyle(
+                                   color: Colors.white,
+                                   fontSize: 8,
+                                 ),
+                                 textAlign: TextAlign.center,
+                               ),
+                             )
+                           ),  ],
+                  );
+                }
+              ),       Expanded(
                   child: _buildNavItem(
-                      context, 3, Icons.notifications, 'Notifications'.tr, controller)),       Expanded(
-                  child: _buildNavItem(
-                      context, 3, Icons.person, 'Profile'.tr, controller)),
+                      context, 4, Icons.person, 'Profile'.tr, controller)),
             ],
           ),
         );
@@ -46,6 +81,9 @@ Widget _buildNavItem(context, int index, IconData icon, String label,
     HomeController controller) {
   return InkWell(
     onTap: () {
+      if (index == 3) {
+        Get.put( NotificationController()).clhNotificationsCount();
+      }
       controller.updateindexBottomBar(index);
     },
     child: Column(

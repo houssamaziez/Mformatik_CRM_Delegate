@@ -3,12 +3,11 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
-import '../../../Model/in_app_notification_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../Model/notification.dart';
 import '../../../RouteEndPoint/EndPoint.dart';
-import '../../../Util/app_exceptions/response_handler.dart';
+
 import '../../../View/widgets/showsnack.dart';
 import '../../auth/auth_controller.dart';
  
@@ -24,27 +23,52 @@ Map<int, String> notificationStatus ={
 };
 
 
+ int notificationcount = 0;
 
+refreshNotificationsCount () async {
+notificationcount = notificationcount + 1;
+update();
+}
+
+clhNotificationsCount () async {
+notificationcount =0;
+update();
+}
+
+
+GetCount()async{
+
+  final response = await http.get(Uri.parse('${Endpoint.apiNotifications}/delivered-count'), headers:  {
+      'x-auth-token': token.read("token").toString(),
+    });
+  
+notificationcount = int.parse(response.body) ;
+  update();
+if (response.statusCode == 200) {
+notificationcount = int.parse(response.body) ;
+  update();
+} 
+
+}
 bool isLoading = false;
   List<NotificationRow> notifications =  [] ;
 
-  fetchNotifications({List<int>?ids  }) async { 
- 
+  fetchNotifications({List? ids}) async { 
  
 
     try {
        isLoading = true;
        update();
-      var response = await http.get( Uri.parse(Endpoint.apiNotifications)   , headers: {
+      var response = await http.get(url  , headers: {
         "x-auth-token": token.read("token").toString(),
       });
 
 
-      Logger().i(response.statusCode);  
+       Logger().f(response.statusCode);
       if (response.statusCode == 200) {
        Map<String, dynamic> responseData = json.decode(response.body);
       List<dynamic> rows = responseData['rows'];
-      Logger().i(rows);
+     
       
        // Access the `rows` field from the root JSON
       notifications = rows.map((json) => NotificationRow.fromJson(json)).toList();

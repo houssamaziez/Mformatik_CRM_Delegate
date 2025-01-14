@@ -9,6 +9,8 @@ import 'package:mformatic_crm_delegate/App/View/home/notifications/notifications
 import '../../../main.dart';
 import '../../Controller/auth/auth_controller.dart';
 import '../../Controller/home/annex_controller.dart';
+import '../../Controller/home/notification/notification_controller.dart';
+import '../../Service/notification_handler.dart';
 import '../widgets/Bottombar/widgetbottombar.dart';
 import '../widgets/bolck_screen.dart';
 import 'Widgets/appbar_home.dart';
@@ -17,6 +19,17 @@ import 'home_screens/home_mission/homeview_mission.dart';
 import 'home_screens/home_task/homeview_task.dart';
 import 'home_screens/profileUser/profile_user_screen.dart';
 
+refreshNotificationsRealTimeCount() {
+     Get.put(NotificationController()). GetCount();
+    CriNotificationService.flutterBgInstance
+        .on(
+      'refreshNotificationsCount',
+    )
+        .listen((event) {
+      // playNotificationSound();
+    Get.put(NotificationController()).refreshNotificationsCount();
+    });
+  }
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
   @override
@@ -31,7 +44,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-  initializeNotifications();
+
+  // initializeNotifications();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+     Get.put(NotificationController()).GetCount();
+    });
     super.initState();
     const androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');

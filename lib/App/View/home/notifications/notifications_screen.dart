@@ -5,7 +5,7 @@ import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_all/mission_list_screen.dart';
 import '../../../Controller/home/notification/notification_controller.dart';
-import '../../widgets/showsnack.dart';
+import '../../../Service/notification_handler.dart';
 import '../home_screens/home_mission/mission_details/profile_mission.dart';
 import '../home_screens/home_task/task_details/details_task.dart';
 import 'widgets/notification_card.dart';
@@ -18,20 +18,28 @@ final dynamic   ids;
 }
 
 class _NotificationScreenAllState extends State<NotificationScreenAll> {
-  final NotificationController _notificationController = Get.put(NotificationController());
-initState() {
-  super.initState();
-  if (widget.ids != null) {
-  _notificationController.fetchNotifications(ids:  widget.ids as List<int>);
-    
-  }else{
-  _notificationController.fetchNotifications();
+  @override
+  void initState() {
+    super.initState();
+      playNotificationSound() ;
+
+    // Ensure that fetchNotifications is called after the build phase
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.put(NotificationController()).fetchNotifications().then((value) {
+        print('Notifications fetched successfully!');
+      }).catchError((error) {
+        print('Error fetching notifications: $error');
+      });
+    });
     
   }
-}
+
+
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
+      
       // appBar: AppBar(
       //   title: Text(
       //     'Notifications'.tr,
@@ -40,6 +48,7 @@ initState() {
       //   centerTitle: true,
       // ),
       body: GetBuilder<NotificationController>(
+        init: NotificationController(),
         builder: (controller) {
           if (controller.isLoading) {
             return const Center(
@@ -58,11 +67,12 @@ initState() {
   return   ListView.builder(
   itemCount: controller. notifications.length,
   itemBuilder: (context, index) {
+    
     final notification = controller.notifications[index];
     return CardNotification(status: notification.receiver!.status!,
       title: notification.title,
       createdAt: notification.createdAt,
-      subtitle: "Subtitle or additional info here", // Customize this based on your data
+      subtitle: notification.creator!.username, // Customize this based on your data
       onTap: () {
         dynamic parsedId;
 
@@ -113,3 +123,20 @@ Logger().e(parsedId);
     );
   }
 }
+
+
+
+
+  void playNotificationSound() {
+    CriNotificationService.flutterBgInstance
+        .on(
+      'refreshNotificationsCount',
+    )
+        .listen((event) {
+            Get.put(NotificationController()).refreshNotificationsCount();
+      // playNotificationSound();
+      // notificationCount = notificationCount + (event!['count'] as int);
+
+      // emit(NotificationCountChanged());
+    });
+  }
