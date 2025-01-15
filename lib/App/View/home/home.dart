@@ -4,32 +4,19 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/home_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/mission/missions_controller.dart';
-import 'package:mformatic_crm_delegate/App/View/home/notifications/notifications_screen.dart';
+ 
 
-import '../../../main.dart';
 import '../../Controller/auth/auth_controller.dart';
 import '../../Controller/home/annex_controller.dart';
 import '../../Controller/home/notification/notification_controller.dart';
-import '../../Service/notification_handler.dart';
+ 
+import '../../Util/Const/lists.dart';
 import '../widgets/Bottombar/widgetbottombar.dart';
+import '../widgets/Dialog/showDailog_exit_app.dart';
 import '../widgets/bolck_screen.dart';
 import 'Widgets/appbar_home.dart';
-import 'home_screens/home_feedback/homeview_feedback.dart';
-import 'home_screens/home_mission/homeview_mission.dart';
-import 'home_screens/home_task/homeview_task.dart';
-import 'home_screens/profileUser/profile_user_screen.dart';
+ 
 
-refreshNotificationsRealTimeCount() {
-     Get.put(NotificationController()). GetCount();
-    CriNotificationService.flutterBgInstance
-        .on(
-      'refreshNotificationsCount',
-    )
-        .listen((event) {
-      // playNotificationSound();
-    Get.put(NotificationController()).refreshNotificationsCount();
-    });
-  }
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
   @override
@@ -40,12 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
   final List<Map<String, String>> notifications =
-      []; // List to store notifications with title and body
-
+      [];  
   @override
   void initState() {
-
-  // initializeNotifications();
       WidgetsBinding.instance.addPostFrameCallback((_) {
      Get.put(NotificationController()).GetCount();
     });
@@ -58,27 +42,13 @@ class _HomeScreenState extends State<HomeScreen> {
     notificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (details) {
-        // Handle when a notification is clicked
         if (details.payload != null) {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) =>
-          //         NotificationDetailsScreen(payload: details.payload),
-          //   ),
-          // );
         }
       },
     );
   }
 
-  final List<Widget> _screen = [
-    const HomeMission(),
-    HomeFeedback(),
-    const HomeViewTask(),
-    NotificationScreenAll(), 
-    const ProfileUserScreen(),
-  ];
+  
   final MissionsController controller = Get.put(MissionsController());
 
   AuthController controllers = Get.put(AuthController());
@@ -95,30 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
           bool isactive = controllers.user!.isActive!;
           return WillPopScope(
             onWillPop: () async {
-              bool shouldExit = await showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('Exit App'.tr),
-                    content: Text('Are you sure you want to exit the app?'.tr),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(false); // Do not exit
-                        },
-                        child: Text('No'.tr),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(true); // Exit the app
-                        },
-                        child: Text('Yes'.tr),
-                      ),
-                    ],
-                  );
-                },
-              );
-
+              bool shouldExit = await showDailog_exit_app(context);
               return shouldExit;
             },
             child: Scaffold(
@@ -129,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
               body: isactive == true
                   ? Column(
                       children: [
-                        Expanded(child: _screen[controller.indexBottomBar]),
+                        Expanded(child: screenHome[controller.indexBottomBar]),
                       ],
                     )
                   : const screenBlock(),
@@ -137,4 +84,5 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         });
   }
+
 }

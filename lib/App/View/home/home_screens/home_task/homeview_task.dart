@@ -7,8 +7,9 @@ import '../../../../Controller/home/company_controller.dart';
 import '../../../../Controller/home/home_controller.dart';
 import '../../../../Controller/home/Task/task_controller.dart';
 import '../../../widgets/add_task_button.dart';
-import '../../Widgets/status_button.dart';
+import '../../Widgets/status_button/status_button.dart';
 import '../../Widgets/getSliderColor.dart';
+import '../../Widgets/status_button/widgets/statuseTaskButton.dart';
 import 'widgets/filter_list.dart';
 import 'widgets/list_last_task.dart';
 
