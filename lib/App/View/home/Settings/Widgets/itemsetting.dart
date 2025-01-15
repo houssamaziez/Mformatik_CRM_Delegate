@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../Controller/home/setting_controller.dart';
 import '../../../../Util/Route/Go.dart';
 import '../AboutTheApplication/aboutTheApplication.dart';
 import '../Addedaccounts/addedaccounts.dart';
@@ -46,12 +47,12 @@ Padding carditemsetting(context) {
           //     function: () {
           //       // Go.to(context, AddedAccounts());
           //     }),
-          // itemsetting(
-          //     titile: listtitemsetting[1]["title"].toString(),
-          //     image: listtitemsetting[1]["Image"].toString(),
-          //     function: () {
-          //       Go.to(context, const NotificationScreen());
-          //     }),
+          itemsetting(isNotification: true,
+              titile: listtitemsetting[0]["title"].toString(),
+              image: listtitemsetting[0]["Image"].toString(),
+              function: () {
+                // Go.to(context, const NotificationScreen());
+              }),
           itemsetting(
               titile: listtitemsetting[3]["title"].toString().tr,
               image: listtitemsetting[3]["Image"].toString(),
@@ -79,6 +80,8 @@ Padding carditemsetting(context) {
 InkWell itemsetting(
     {required String titile,
     required String image,
+
+    bool isNotification = false,
     required Function function}) {
   return InkWell(
     onTap: () {
@@ -90,7 +93,21 @@ InkWell itemsetting(
         height: 24,
         width: 24,
       ),
-      trailing: Icon(
+      trailing:isNotification ?  GetBuilder<SettingController>(
+        init: SettingController(),
+        builder: (settingController) {
+          return InkWell(
+            onTap: () => settingController.changeindex(  ),
+            child: Image.asset(
+                 settingController. index 
+                      ? "assets/icons/Rectangleact.png"
+                      : "assets/icons/Rectangledes.png",
+                  height: 20,
+                  width: 42,
+                ),
+          );
+        }
+      ) : Icon(
         Icons.arrow_forward_ios,
         size: 17,
       ),

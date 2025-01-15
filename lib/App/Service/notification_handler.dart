@@ -19,7 +19,6 @@ import 'package:logger/logger.dart';
 import 'package:socket_io_client/socket_io_client.dart' as web_socket_io;
 
 import '../Controller/auth/auth_controller.dart';
-import '../Controller/home/notification/notification_controller.dart';
 import '../Model/web_socket_notifcation_model.dart';
 import '../RouteEndPoint/EndPoint.dart';
 import '../Util/Route/Go.dart';
@@ -34,7 +33,7 @@ import '../myapp.dart';
  
 
 class CriNotificationService {
-  static const notificationId = 4423424234;
+  static const notificationId2 = 442;
   static const String channelDescription = 'This channel is used for important notifications';
   static const String channelId = 'high_importance_channel';
   static const String channelName = 'High Importance Notifications';
@@ -70,13 +69,8 @@ class CriNotificationService {
 
   static   String? storedLanguage = storage.read<String>('selected_language');
 
-  static AndroidConfiguration androidBackgroundConfig = AndroidConfiguration(
-      onStart: onStart,
-      autoStart: true,
-      isForegroundMode: false,initialNotificationContent:  "Notification Service is running in the background",
-      autoStartOnBoot: true, initialNotificationTitle:  "Notification Service is running in the background",
-      foregroundServiceNotificationId: notificationId,
-      foregroundServiceTypes: [AndroidForegroundType.dataSync]);
+ 
+ 
 
  
 
@@ -104,7 +98,7 @@ class CriNotificationService {
       autoStart: true,
       isForegroundMode: true,initialNotificationContent:"You are ready to receive the missions".tr,
       autoStartOnBoot: true, initialNotificationTitle:  "Connected".tr,
-      foregroundServiceNotificationId: notificationId,
+      foregroundServiceNotificationId: notificationId2,
       foregroundServiceTypes: [AndroidForegroundType.dataSync], 
       ),
         iosConfiguration: iosConfig,
@@ -125,26 +119,7 @@ class CriNotificationService {
     DartPluginRegistrant.ensureInitialized();
     if (service is AndroidServiceInstance) {
       if (await service.isForegroundService()) {
-        flutterLocalNotificationsPlugin.show(
-          notificationId,
-          'Nofitication service',
-          'running...',
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              serviceNotificationChannel.id,
-              'MY FOREGROUND SERVICE',
-              icon: notificationIcon,
-              ongoing: true,
-              priority: Priority.low,
-              actions: [
-                const AndroidNotificationAction(
-                  'cancele',
-                  'cancele',
-                ),
-              ],
-            ),
-          ),
-        );
+    
       }
 
       getNotifications(service);
@@ -299,7 +274,7 @@ Logger().i( value['id']);
         });
         Logger().i( "data is list");
      }
-        if (data['data']['id'] is List) {
+        if (data['data'][0]['id'] is List) {
           List<int> ids = (data['data']['id'] as List).map<int>((e) => e as int).toList();
           
  editNotificationStatus(notificationId: data['data']['id'], status:2);  

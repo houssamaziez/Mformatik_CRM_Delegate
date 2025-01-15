@@ -10,6 +10,7 @@ import 'Widgets/buttons.dart';
 import 'Widgets/cardstate.dart';
 import 'Widgets/edite.dart';
 import 'Widgets/itemsetting.dart';
+    String appVersion = '';
 
 class ScreenSetting extends StatelessWidget {
   ScreenSetting({super.key});

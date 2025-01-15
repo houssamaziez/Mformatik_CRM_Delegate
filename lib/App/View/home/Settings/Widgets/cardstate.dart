@@ -7,6 +7,7 @@ import 'package:mformatic_crm_delegate/App/Controller/home/mission/missions_cont
 
 import '../../../../Controller/home/feedback/feedback_controller.dart';
 import '../../../../Util/Style/stylecontainer.dart';
+import '../screenSetting.dart';
 
 List<Map<String, String>> listt = [
   {
@@ -97,8 +98,8 @@ Padding liststate() {
                   image: "assets/icons/connecting.png".toString());
             }),
         cardstate(
-            title: "Version.".tr.toString(),
-            suptitle: listt[0]["suptitle"].toString(),
+            title: "Version".tr.toString(),
+            suptitle: appVersion.toString(),
             image: listt[0]["Image"].toString()),
         GetBuilder<AuthController>(
             init: AuthController(),
