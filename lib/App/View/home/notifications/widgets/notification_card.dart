@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../Util/Date/formatDate.dart';
+
 // Assuming DrawableAssetStrings is a class that holds your asset paths for icons.
 class DrawableAssetStrings {
   static const String missionIcon = 'assets/icons/target.png';
@@ -54,7 +56,7 @@ class CardNotification extends StatelessWidget {
         Container(color: getColorsForEntity( status ),
           child: ListTile(
             leading: Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color:getColorsForEntity( status ) ,// Theme.of(context).primaryColor.withOpacity(0.2),
@@ -70,28 +72,28 @@ class CardNotification extends StatelessWidget {
               retunTitle(title),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 14,
               ),
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Created at: $createdAt'.tr,
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  '@$subtitle '.tr+ retunSupTitle(title),
+                  style: const TextStyle(fontSize: 11, color: Colors.grey),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: const TextStyle(fontSize: 14),
-                ),
+                 
               ],
             ),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-              color: Theme.of(context).primaryColor,
-            ),
+            trailing:Column(
+              children: [
+                Text(
+                timeDifference(DateTime.parse(createdAt)),
+                  style: const TextStyle(fontSize: 11, color: Colors.grey),
+                ),
+              
+      ]),
             onTap: onTap,
           ),
         ),
@@ -120,14 +122,6 @@ String getIconForEntity(String entity) {
 
 
  String retunTitle(String title){
-
-  //   newMission(id: 'newMission', title: 'has created new mission'),
-  // missionStatusChanged(id: 'missionStatusChange', title: 'has changed mission status'),
-  // newTask(id: 'newTask', title: 'has created new task'),
-  // taskObserver(id: 'assignAsObserver', title: 'has assigned you as task Observer'),
-  // taskResponsible(id: 'assignAsResponsible', title: 'has assigned you as task responsible'),
-  // taskStatusChanged(id: 'taskStatusChange', title: 'has changed task status');
-  
 switch (title) {
   case "newMission":
     return "New mission notification";
@@ -136,9 +130,11 @@ switch (title) {
   case "newTask":
     return "New task created";
   case "taskObserver":
+  return "Assigned as task observer";
   case "assignAsObserver":
     return "Assigned as task observer";
   case "taskResponsible":
+  return "Assigned as task responsible";
   case "assignAsResponsible":
     return "Assigned as task responsible";
   case "taskStatusChange":
@@ -146,6 +142,28 @@ switch (title) {
   default:
     return "Unknown title";
 }
-
-
   }
+
+
+String retunSupTitle(String title) {
+  switch (title) {
+    case "newMission":
+      return " has created a new mission for you. Check it out now!";
+    case "missionStatusChange":
+      return "The status of a mission has been updated. Please review it.";
+    case "newTask":
+      return " has created a new task for you. Check it out now!";
+    case "taskObserver":
+      return "You have been assigned as an observer for a task.";
+    case "assignAsObserver":
+      return "You are now assigned as an observer for this task.";
+    case "taskResponsible":
+      return "You have been marked as responsible for a task.";
+    case "assignAsResponsible":
+      return "You are now assigned as the responsible person for this task.";
+    case "taskStatusChange":
+      return "The status of a task has been changed. Please check it.";
+    default:
+      return "Unknown title.";
+  }
+}
