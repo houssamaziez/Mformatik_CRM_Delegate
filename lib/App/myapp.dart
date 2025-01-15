@@ -7,11 +7,12 @@ import 'package:mformatic_crm_delegate/App/View/splashScreen/splash_screen.dart'
 import 'Util/Theme/theme_light.dart';
 import 'Util/localizations/localizations.dart';
 
+    final GetStorage storage = GetStorage();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    final GetStorage storage = GetStorage();
     String? storedLanguage = storage.read<String>('selected_language');
     Locale initialLocale =
         storedLanguage != null ? Locale(storedLanguage) : const Locale('en');

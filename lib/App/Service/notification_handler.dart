@@ -28,6 +28,8 @@ import '../View/home/notifications/notifications_screen.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../myapp.dart';
+
 
  
 
@@ -66,21 +68,17 @@ class CriNotificationService {
     importance: Importance.max,
   );
 
+  static   String? storedLanguage = storage.read<String>('selected_language');
+
   static AndroidConfiguration androidBackgroundConfig = AndroidConfiguration(
       onStart: onStart,
       autoStart: true,
-      isForegroundMode: false,
-      autoStartOnBoot: true,
+      isForegroundMode: false,initialNotificationContent:  "Notification Service is running in the background",
+      autoStartOnBoot: true, initialNotificationTitle:  "Notification Service is running in the background",
       foregroundServiceNotificationId: notificationId,
       foregroundServiceTypes: [AndroidForegroundType.dataSync]);
 
-  static AndroidConfiguration androidForgroundConfig = AndroidConfiguration(
-      onStart: onStart,
-      autoStart: true,
-      isForegroundMode: true,
-      autoStartOnBoot: true,
-      foregroundServiceNotificationId: notificationId,
-      foregroundServiceTypes: [AndroidForegroundType.dataSync]);
+ 
 
   static IosConfiguration iosConfig = IosConfiguration();
 
@@ -101,7 +99,14 @@ class CriNotificationService {
           ?.createNotificationChannel(oneNotificationChannel);
 
       await flutterBgInstance.configure(
-        androidConfiguration: isBackground ? androidBackgroundConfig : androidForgroundConfig,
+        androidConfiguration:  AndroidConfiguration(
+      onStart: onStart,
+      autoStart: true,
+      isForegroundMode: true,initialNotificationContent:"You are ready to receive the missions".tr,
+      autoStartOnBoot: true, initialNotificationTitle:  "Connected".tr,
+      foregroundServiceNotificationId: notificationId,
+      foregroundServiceTypes: [AndroidForegroundType.dataSync], 
+      ),
         iosConfiguration: iosConfig,
       );
 
@@ -371,31 +376,4 @@ Logger().i( parsedData);
     }
   }
 }
-
-void makeServiceForeground() async {
-  try {
-    final service = FlutterBackgroundService();
-    var isRunning = await service.isRunning();
-    if (isRunning) {
-      service.invoke(
-        "makeItForeground",
-      );
-    }
-  } catch (error) {
-    rethrow;
-  }
-}
-
-void makeServiceBackground() async {
-  try {
-    final service = FlutterBackgroundService();
-    var isRunning = await service.isRunning();
-    if (isRunning) {
-      service.invoke(
-        "makeItBackground",
-      );
-    }
-  } catch (error) {
-    rethrow;
-  }
-}
+ 

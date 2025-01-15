@@ -320,4 +320,6 @@ const Map<String, String> ar = {
   'Error updating task': 'خطأ في تحديث المهمة',
   'Task updated successfully': 'تم تحديث المهمة بنجاح',
   'Date': 'تاريخ',
+  "You are ready to receive the missions" : "انت جاهز لإستقبال المهام", 
+  "Connected" : "متصل",
 };

@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
+
+import '../../../Service/notification_handler.dart';
+import '../../../myapp.dart';
 
 class LanguageScreen extends StatefulWidget {
   const LanguageScreen({Key? key}) : super(key: key);
@@ -11,7 +16,6 @@ class LanguageScreen extends StatefulWidget {
 }
 
 class _LanguageScreenState extends State<LanguageScreen> {
-  final GetStorage _storage = GetStorage();
   late String _selectedLanguage;
 
   // Supported languages with associated images
@@ -28,20 +32,31 @@ class _LanguageScreenState extends State<LanguageScreen> {
   }
 
   void _loadSelectedLanguage() {
-    final storedLanguage = _storage.read<String>('selected_language');
+    final storedLanguage = storage.read<String>('selected_language');
     setState(() {
       _selectedLanguage = storedLanguage ?? 'en';
       Get.updateLocale(Locale(_selectedLanguage));
     });
   }
 
-  void _onLanguageSelected(String language) {
+  void _onLanguageSelected(String language)async {
     setState(() {
       _selectedLanguage = language;
     });
     Get.updateLocale(Locale(language)); // Update the locale immediately
-    _storage.write(
+    storage.write(
         'selected_language', language); // Save the language selection
+   CriNotificationService. flutterBgInstance.invoke( 'stopService');
+
+//  await CriNotificationService.initializeService( isBackground: false , );
+
+    CriNotificationService.flutterBgInstance.invoke('stopService');
+                await Future.delayed(Duration(seconds: 2));
+                await CriNotificationService.initializeService(isBackground: false);
+                setState(() {});
+
+                
+
   }
 
   @override
