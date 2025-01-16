@@ -1,79 +1,39 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:math';
-
 import 'dart:ui';
- 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
- 
+import 'package:mformatic_crm_delegate/App/Service/ws_notification/const.dart';
 import 'package:socket_io_client/socket_io_client.dart' as web_socket_io;
-
-import '../Controller/auth/auth_controller.dart';
-import '../Model/web_socket_notifcation_model.dart';
-import '../RouteEndPoint/EndPoint.dart';
-import '../Util/Route/Go.dart';
-import '../Util/global_expcetion_handler.dart';
-import '../View/home/notifications/notifications_screen.dart';
+import '../../Controller/auth/auth_controller.dart';
+import '../../Model/web_socket_notifcation_model.dart';
+import '../../RouteEndPoint/EndPoint.dart';
+import '../../Util/global_expcetion_handler.dart';
 
 import 'package:http/http.dart' as http;
 
-import '../myapp.dart';
-
-
- 
-
-class CriNotificationService {
-  static const notificationId2 = 442;
-  static const String channelDescription = 'This channel is used for important notifications';
-  static const String channelId = 'high_importance_channel';
-  static const String channelName = 'High Importance Notifications';
-
-  static final FlutterBackgroundService flutterBgInstance = FlutterBackgroundService();
-  static const String notificationIcon = '@mipmap/ic_launcher';
+import '../../myapp.dart'; 
+class CriNotificationService {  static final FlutterBackgroundService flutterBgInstance = FlutterBackgroundService();
 
   static final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin()
     ..initialize(
       const InitializationSettings(
         android: AndroidInitializationSettings(
-          notificationIcon,
+        ConstWsNotification.  notificationIcon,
         ),
       ),
-      onDidReceiveNotificationResponse: notificationResponse,
-      onDidReceiveBackgroundNotificationResponse: notificationResponse,
+      onDidReceiveNotificationResponse:ConstWsNotification. notificationResponse,
+      onDidReceiveBackgroundNotificationResponse:ConstWsNotification. notificationResponse,
     );
-
-  static const oneNotificationChannel = AndroidNotificationChannel(
-    channelId,
-    channelName,
-    description: '$channelDescription.',
-    importance: Importance.max,
-    playSound: true,
-    showBadge: true,
-  );
-  static const serviceNotificationChannel = AndroidNotificationChannel(
-    '${channelId}1',
-    '${channelName}1',
-    description: '${channelDescription}1.',
-    importance: Importance.max,
-  );
-
-  static   String? storedLanguage = storage.read<String>('selected_language');
-
  
- 
-
- 
-
+  static   String? storedLanguage = storage.read<String>('selected_language'); 
   static IosConfiguration iosConfig = IosConfiguration();
 
   @pragma('vm:entry-point')
@@ -86,11 +46,11 @@ class CriNotificationService {
 
       flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(serviceNotificationChannel);
+          ?.createNotificationChannel(ConstWsNotification.serviceNotificationChannel);
 
       flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(oneNotificationChannel);
+          ?.createNotificationChannel(ConstWsNotification.oneNotificationChannel);
 
       await flutterBgInstance.configure(
         androidConfiguration:  AndroidConfiguration(
@@ -98,7 +58,7 @@ class CriNotificationService {
       autoStart: true,
       isForegroundMode: true,initialNotificationContent:"You are ready to receive the missions".tr,
       autoStartOnBoot: true, initialNotificationTitle:  "Connected".tr,
-      foregroundServiceNotificationId: notificationId2,
+      foregroundServiceNotificationId:ConstWsNotification. notificationId2,
       foregroundServiceTypes: [AndroidForegroundType.dataSync], 
       ),
         iosConfiguration: iosConfig,
@@ -108,12 +68,7 @@ class CriNotificationService {
     }
   }
 
-  @pragma('vm:entry-point')
-  Future<bool> onIosBackground() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    return true;
-  }
-
+ 
   @pragma('vm:entry-point')
   static Future<void> onStart(ServiceInstance service) async {
     DartPluginRegistrant.ensureInitialized();
@@ -121,17 +76,13 @@ class CriNotificationService {
       if (await service.isForegroundService()) {
     
       }
-
-      getNotifications(service);
-
+      initWS(service);
       service.on('setAsBackground').listen((event) {
         service.setAsBackgroundService();
       });
-
       service.on('stopService').listen((event) {
         service.stopSelf();
       });
-
       service.on('setAsForeground').listen((event) async {
         const MethodChannel channel = MethodChannel(
           'id.flutter/background_service_android_bg',
@@ -142,28 +93,14 @@ class CriNotificationService {
         });
       });
     }
-
-    // service.on('makeItBackground').listen((
-    //   event,
-    // ) async {
-    //   service.setAsBackgroundService();
-    // });
+ 
   }
 
   @pragma('vm:entry-point')
   static stopService() async {
     flutterBgInstance.invoke('stopService');
   }
-
-  @pragma('vm:entry-point')
-  static p1() async {
-    flutterBgInstance.invoke('setAsBackground');
-  }
-
-  @pragma('vm:entry-point')
-  static p2() async {
-    flutterBgInstance.invoke('setAsForeground');
-  }
+ 
 
   @pragma('vm:entry-point')
   static void _showNotification(WebSocketNotificationModel notificationDetails) {
@@ -175,9 +112,9 @@ class CriNotificationService {
           '{"ids": ${notificationDetails.data!.ids}, "entity": "${notificationDetails.entity}", "companyId": ${notificationDetails.data!.companyId},"annexId": ${notificationDetails.data!.annexId}}',
       NotificationDetails(
         android: AndroidNotificationDetails(
-          oneNotificationChannel.id,
-          oneNotificationChannel.name,
-          channelDescription: oneNotificationChannel.description,
+        ConstWsNotification.  oneNotificationChannel.id,
+         ConstWsNotification. oneNotificationChannel.name,
+          channelDescription:ConstWsNotification. oneNotificationChannel.description,
           importance: Importance.high,
           priority: Priority.max,
           color: Colors.deepOrange,
@@ -186,7 +123,7 @@ class CriNotificationService {
 
           //  sound: const RawResourceAndroidNotificationSound(notificationSound),
           // playSound: true,
-          icon: notificationIcon,
+          icon:ConstWsNotification. notificationIcon,
         ),
       ),
     );
@@ -202,9 +139,9 @@ class CriNotificationService {
           '{"ids": ${notificationDetails.data!.ids}, "entity": "${notificationDetails.entity}", "companyId": ${notificationDetails.data!.companyId},"annexId": ${notificationDetails.data!.annexId}}',
       NotificationDetails(
         android: AndroidNotificationDetails(
-          oneNotificationChannel.id,
-          oneNotificationChannel.name,
-          channelDescription: oneNotificationChannel.description,
+        ConstWsNotification.  oneNotificationChannel.id,
+        ConstWsNotification.  oneNotificationChannel.name,
+          channelDescription:ConstWsNotification. oneNotificationChannel.description,
           importance: Importance.high,
           priority: Priority.max,
           color: Colors.deepOrange,
@@ -213,26 +150,20 @@ class CriNotificationService {
 
           //  sound: const RawResourceAndroidNotificationSound(notificationSound),
           // playSound: true,
-          icon: notificationIcon,
+          icon:ConstWsNotification. notificationIcon,
         ),
       ),
     );
   }
+ 
 
   @pragma('vm:entry-point')
-  static Future<void> setServiceToBackground(AndroidServiceInstance service) async {
-    await service.setAsBackgroundService();
-  }
-
-  @pragma('vm:entry-point')
-  static Future<void> getNotifications(AndroidServiceInstance service) async {
+  static Future<void> initWS(AndroidServiceInstance service) async {
       await GetStorage.init();
       await dotenv.load(fileName: ".env");
     try {
       // debugPrint("i'm inside download fucntion");
      String WEBSOCKET_URL = dotenv.get('urlHost');
-      // await EnvHelper.loadAppEnvFile();
-      String webSocketUrl = WEBSOCKET_URL;
       var socket = web_socket_io.io(
         WEBSOCKET_URL,
         web_socket_io.OptionBuilder()
@@ -274,10 +205,10 @@ Logger().i( value['id']);
         });
         Logger().i( "data is list");
      }
-        if (data['data'][0]['id'] is List) {
+        if (data['data']['id'] is List) {
           List<int> ids = (data['data']['id'] as List).map<int>((e) => e as int).toList();
           
- editNotificationStatus(notificationId: data['data']['id'], status:2);  
+ editNotificationStatus(notificationId: data['data']['id'].first, status:2);  
           service.invoke('refreshNotificationsCount', {"count": ids.length});
           _showNotificationMultiEntities(WebSocketNotificationModel.fromJson(data));
         } else {
@@ -333,22 +264,6 @@ static void _showNotification2(String title, String subtitle , int id) {
   );
 }
 
-  @pragma('vm:entry-point')
-  static void notificationResponse(NotificationResponse notificationResponse) {
-    if (notificationResponse.payload != null) {
-      Logger( ).i(notificationResponse.payload);
-      var payload = notificationResponse.payload;
-      if (payload != null) {
-        Map<String, dynamic> parsedData = jsonDecode(payload);
-  Go.to(Get.context,NotificationScreenAll());
-Logger().i( parsedData);
-        // RoutingManager.router.pushNamed(RoutingManager.missionDetailsScreen, extra: int.parse(parsedData['id']));
-      }
-    }
-    switch (notificationResponse.actionId) {
-      case 'cancele':
-        stopService();
-    }
+
   }
-}
  

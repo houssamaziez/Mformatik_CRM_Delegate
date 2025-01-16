@@ -1,6 +1,6 @@
 import 'package:get/state_manager.dart';
 
-import '../../Service/notification_handler.dart';
+import '../../Service/ws_notification/notification_handler.dart';
 import '../../myapp.dart';
 
 class SettingController  extends GetxController{
@@ -31,7 +31,8 @@ changeindex(  ){
 @override
   void onInit() {
 //  changeindex( );
-   
+   index = storage.read<bool> ('isNotification' ) ?? false;
+   update();
 //  changeindex(false);
     super.onInit();
   }

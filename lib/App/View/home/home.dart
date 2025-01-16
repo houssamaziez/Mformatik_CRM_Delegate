@@ -15,6 +15,7 @@ import '../widgets/Bottombar/widgetbottombar.dart';
 import '../widgets/Dialog/showDailog_exit_app.dart';
 import '../widgets/bolck_screen.dart';
 import 'Widgets/appbar_home.dart';
+import 'notifications/notifications_screen.dart';
  
 
 class HomeScreen extends StatefulWidget {
@@ -32,6 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
      Get.put(NotificationController()).GetCount();
+      playNotificationSound();
+
     });
     super.initState();
     const androidSettings =

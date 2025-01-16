@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/Buttons/buttonall.dart';
 
-import '../../../Service/notification_handler.dart';
+import '../../../Service/ws_notification/notification_handler.dart';
 import '../../../myapp.dart';
 
 class LanguageScreen extends StatefulWidget {

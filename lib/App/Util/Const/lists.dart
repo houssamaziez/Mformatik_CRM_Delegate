@@ -10,6 +10,6 @@ final List<Widget> screenHome = [
     const HomeMission(),
     HomeFeedback(),
     const HomeViewTask(),
-    NotificationScreenAll(), 
+    NotificationScreenAll(ishome: true,), 
     const ProfileUserScreen(),
   ];

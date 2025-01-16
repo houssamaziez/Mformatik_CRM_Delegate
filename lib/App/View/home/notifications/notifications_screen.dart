@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
@@ -5,14 +6,16 @@ import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
 import 'package:mformatic_crm_delegate/App/Util/extension/refresh.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_all/mission_list_screen.dart';
 import '../../../Controller/home/notification/notification_controller.dart';
-import '../../../Service/notification_handler.dart';
+import '../../../Service/web_socket.dart';
+import '../../../Service/ws_notification/notification_handler.dart';
+import '../../../myapp.dart';
 import '../home_screens/home_mission/mission_details/profile_mission.dart';
 import '../home_screens/home_task/task_details/details_task.dart';
 import 'widgets/notification_card.dart';
 
 class NotificationScreenAll extends StatefulWidget {
-  NotificationScreenAll({Key? key, this.ids}) : super(key: key);
-final dynamic   ids;
+  NotificationScreenAll({Key? key,  this.ishome  =false}) : super(key: key);
+final bool   ishome;
   @override
   State<NotificationScreenAll> createState() => _NotificationScreenAllState();
 }
@@ -21,7 +24,6 @@ class _NotificationScreenAllState extends State<NotificationScreenAll> {
   @override
   void initState() {
     super.initState();
-      playNotificationSound() ;
 
     // Ensure that fetchNotifications is called after the build phase
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -31,7 +33,6 @@ class _NotificationScreenAllState extends State<NotificationScreenAll> {
         print('Error fetching notifications: $error');
       });
     });
-    
   }
 
 
@@ -40,13 +41,13 @@ class _NotificationScreenAllState extends State<NotificationScreenAll> {
     
     return Scaffold(
       
-      // appBar: AppBar(
-      //   title: Text(
-      //     'Notifications'.tr,
-      //     style: const TextStyle(fontWeight: FontWeight.bold),
-      //   ),
-      //   centerTitle: true,
-      // ),
+      appBar:widget. ishome ? null : AppBar(
+        title: Text(
+          'Notifications'.tr,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+      ),
       body: GetBuilder<NotificationController>(
         init: NotificationController(),
         builder: (controller) {
@@ -127,16 +128,22 @@ Logger().e(parsedId);
 
 
 
+
   void playNotificationSound() {
-    CriNotificationService.flutterBgInstance
+
+    if (storage.read<bool> ('isNotification' ) == true) {
+          CriNotificationService.flutterBgInstance
         .on(
       'refreshNotificationsCount',
     )
         .listen((event) {
             Get.put(NotificationController()).refreshNotificationsCount();
-      // playNotificationSound();
-      // notificationCount = notificationCount + (event!['count'] as int);
-
-      // emit(NotificationCountChanged());
+            Get.put(NotificationController()).fetchNotifications();
+    
     });
+    } else {
+     initWS( );
+    }
+
   }
+ 

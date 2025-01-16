@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../../Controller/home/notification/notification_controller.dart';
-import '../../../Service/notification_handler.dart';
+import '../../../Service/ws_notification/notification_handler.dart';
 
 refreshNotificationsRealTimeCount() {
      Get.put(NotificationController()). GetCount();
