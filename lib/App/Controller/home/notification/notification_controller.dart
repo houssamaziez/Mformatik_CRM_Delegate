@@ -32,9 +32,11 @@ Map<int, String> notificationStatus ={
 
 refreshNotificationsCount (Map<String, dynamic>? event) async {
 WebSocketNotificationModel notificationDetails =  WebSocketNotificationModel.fromJson(event!);
-  if (storage.read<bool> ('isNotification' ) != true) {
-    notificationcount = notificationcount + 1;
+  notificationcount = notificationcount + 1;
 update();
+
+  if (storage.read<bool> ('isNotification' ) != true) {
+  
  await playSound();
  
     Get.snackbar(

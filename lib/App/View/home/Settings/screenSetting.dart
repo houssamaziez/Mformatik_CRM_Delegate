@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Controller/auth/auth_controller.dart';
+import '../../../Service/ws_notification/notification_handler.dart';
+import '../../../myapp.dart';
 import '../../auth/screen_auth.dart';
 import '../../splashScreen/splash_screen.dart';
 import '../../widgets/Dialog/showExitConfirmationDialog.dart';
@@ -40,6 +42,9 @@ class ScreenSetting extends StatelessWidget {
             buttonsetting(
                 function: () {
                   showExitConfirmationDialog(context, onPressed: () {
+ 
+                     storage.write ('isNotification' ,false);
+        CriNotificationService.flutterBgInstance.invoke('stopService');
                     token.write("token", null);
                     spalshscreenfirst.write('key', false);
                     Get.offAll(ScreenAuth());
@@ -56,7 +61,6 @@ class ScreenSetting extends StatelessWidget {
     );
   }
 }
-
 void cleanAllControllers() {
   Get.deleteAll(force: true);
 }

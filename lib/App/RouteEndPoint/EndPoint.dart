@@ -17,8 +17,7 @@ class Endpoint {
   static String apiChangeStatus = '$url/api/v1/missions/change-status-to';
   static String apiFeedbacksCounts = '$url/api/v1/statistics/feedbacks-counts';
   static String apiMissionCounts = '$url/api/v1/statistics/status-rate';
-  static String apiFssionsShangeStatus =
-      '$url/api/v1/missions/change-status-to';
+  static String apiFssionsShangeStatus ='$url/api/v1/missions/change-status-to';
   static String apipersonsUpdate = '$url/api/v1/persons/me';
   static String apiPersons = '$url/api/v1/persons';
   static String apiTask = '$url/api/v1/tasks';

@@ -11,10 +11,7 @@ void main() async {
   var f=storage.read<bool> ('isNotification' ); 
   if (storage.read<bool> ('isNotification' ) == null) {
     storage.write('isNotification', false);
- }
-  // await CriNotificationService.initializeService(isBackground: false);
-
-appVersion = await getAppVersion();
+ }appVersion = await getAppVersion();
   // initializeNotifications(); 
   runApp(const MyApp());
 }

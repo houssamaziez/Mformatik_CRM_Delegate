@@ -41,13 +41,7 @@ class _NotificationScreenAllState extends State<NotificationScreenAll> {
   @override
   Widget build(BuildContext context) {
     
-    return Scaffold(floatingActionButton: FloatingActionButton(
-      backgroundColor: Theme.of(context).primaryColor,onPressed: () {
-        playSound();
-      },
-     
-    ),
-      
+    return Scaffold(
       appBar:widget. ishome ? null : AppBar(
         title: Text(
           'Notifications'.tr,
@@ -146,7 +140,7 @@ Logger().e(parsedId);
         .listen((event) async{
 
             Get.put(NotificationController()).refreshNotificationsCount(event);
-            Get.put(NotificationController()).fetchNotifications();
+            // Get.put(NotificationController()).fetchNotifications();
     });
     } else {
      initWS( );

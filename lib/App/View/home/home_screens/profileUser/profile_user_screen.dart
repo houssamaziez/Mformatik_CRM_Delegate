@@ -7,7 +7,9 @@ import 'package:mformatic_crm_delegate/App/View/widgets/Containers/container_blu
 import 'package:mformatic_crm_delegate/App/View/widgets/Dialog/showExitConfirmationDialog.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/flutter_spinkit.dart';
 
+import '../../../../Service/ws_notification/notification_handler.dart';
 import '../../../../Util/Route/Go.dart';
+import '../../../../myapp.dart';
 import '../../../auth/screen_auth.dart';
 import '../../../splashScreen/splash_screen.dart';
 import '../../Settings/EditeProfile/screenEditeProfile.dart';
@@ -83,9 +85,14 @@ class ProfileUserScreen extends StatelessWidget {
                 buttonsetting(
                     function: () {
                       showExitConfirmationDialog(context, onPressed: () async {
+                        Get.deleteAll();
+                        
+     
                         token.write("token", null);
                         await spalshscreenfirst.write('key', false);
-                        Get.offAll(ScreenAuth());
+                        Get.offAll(() =>ScreenAuth());
+                                        storage.write ('isNotification' ,false);
+        CriNotificationService.flutterBgInstance.invoke('stopService');
                       },
                           details:
                               'Do you really want to log out of the account?'
