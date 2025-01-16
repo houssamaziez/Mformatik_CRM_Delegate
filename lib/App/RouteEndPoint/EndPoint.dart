@@ -11,8 +11,8 @@ class Endpoint {
   static String apiAnnexes = '$url/api/v1/annexes';
   static String apiCompanies = '$url/api/v1/companies';
   static String apiCients = '$url/api/v1/clients';
-  static String apiMissionsReasons = '$url/v1/missions/reasons';
-  static String apiFeedbacksReasons = '$url/v1/feedbacks/feedback-models';
+  static String apiMissionsReasons = '$url/api/v1/missions/reasons';
+  static String apiFeedbacksReasons = '$url/api/v1/feedbacks/feedback-models';
   static String apiFeedbacks = '$url/api/v1/feedbacks';
   static String apiChangeStatus = '$url/api/v1/missions/change-status-to';
   static String apiFeedbacksCounts = '$url/api/v1/statistics/feedbacks-counts';

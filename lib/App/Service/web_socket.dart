@@ -40,7 +40,7 @@ if(data2 is Map) {
      else {
    data.forEach((  value) {
 CriNotificationService. editNotificationStatus(notificationId: value['id'], status:2);  
-            Get.put(NotificationController()).refreshNotificationsCount();
+            Get.put(NotificationController()).refreshNotificationsCount(data);
             Get.put(NotificationController()).fetchNotifications();
         });
    
@@ -49,7 +49,7 @@ CriNotificationService. editNotificationStatus(notificationId: value['id'], stat
           List<int> ids = (data['data']['id'] as List).map<int>((e) => e as int).toList();
           
  CriNotificationService.editNotificationStatus(notificationId: data['data']['id'].first, status:2);  
-             Get.put(NotificationController()).refreshNotificationsCount();
+             Get.put(NotificationController()).refreshNotificationsCount(data);
             Get.put(NotificationController()).fetchNotifications();
         } 
       });

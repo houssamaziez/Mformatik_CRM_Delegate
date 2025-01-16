@@ -13,15 +13,17 @@ changeindex(  ){
       if (value) {
         index = false;
         update();
-        CriNotificationService.flutterBgInstance.invoke('stopService');
          storage.write ('isNotification' ,index);
+
+        CriNotificationService.flutterBgInstance.invoke('stopService');
       }else{
  
    index = true;
         update();
+         storage.write ('isNotification' ,index);
+
           await Future.delayed(Duration(seconds: 2));
         await CriNotificationService.initializeService(isBackground: false);
-         storage.write ('isNotification' ,index);
 
 
       }

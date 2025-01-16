@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 
 import '../../Model/reason_feedback.dart';
@@ -21,6 +22,7 @@ class ReasonsFeedbackController extends GetxController {
         Uri.parse(Endpoint.apiFeedbacksReasons),
         headers: {"x-auth-token": token.read("token").toString()},
       ).timeout(const Duration(seconds: 30));
+      Logger() .i(response.statusCode);
       if (response.statusCode == 200) {
         // Parse the JSON response
         final responseData =

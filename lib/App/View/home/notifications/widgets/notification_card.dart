@@ -101,6 +101,8 @@ class CardNotification extends StatelessWidget {
     );
   }
 }
+
+
 String getIconForEntity(String entity) {
     switch (entity) {
       case "mission":

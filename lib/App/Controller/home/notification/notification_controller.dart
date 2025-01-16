@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:mformatic_crm_delegate/App/View/home/notifications/widgets/notification_card.dart';
 
 import '../../../Model/notification.dart';
+import '../../../Model/web_socket_notifcation_model.dart';
 import '../../../RouteEndPoint/EndPoint.dart';
 
 import '../../../Util/play_sound.dart';
@@ -27,14 +30,18 @@ Map<int, String> notificationStatus ={
 
  int notificationcount = 0;
 
-refreshNotificationsCount () async {
-
+refreshNotificationsCount (Map<String, dynamic>? event) async {
+WebSocketNotificationModel notificationDetails =  WebSocketNotificationModel.fromJson(event!);
   if (storage.read<bool> ('isNotification' ) != true) {
- await playSound();
-    
-  }
-notificationcount = notificationcount + 1;
+    notificationcount = notificationcount + 1;
 update();
+ await playSound();
+ 
+    Get.snackbar(
+      retunTitle(  notificationDetails.title!) ,
+    '@${notificationDetails.creator!.username} '.tr+  retunSupTitle( notificationDetails.title!),);
+  }
+
 }
 
 clhNotificationsCount () async {

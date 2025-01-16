@@ -144,9 +144,8 @@ Logger().e(parsedId);
       'refreshNotificationsCount',
     )
         .listen((event) async{
-   playSound().then((value) => null);
 
-            Get.put(NotificationController()).refreshNotificationsCount();
+            Get.put(NotificationController()).refreshNotificationsCount(event);
             Get.put(NotificationController()).fetchNotifications();
     });
     } else {

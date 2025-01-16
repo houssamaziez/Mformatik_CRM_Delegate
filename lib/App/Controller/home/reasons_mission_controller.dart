@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
 
@@ -20,6 +21,8 @@ class ReasonsMissionController extends GetxController {
         Uri.parse(Endpoint.apiMissionsReasons),
         headers: {"x-auth-token": token.read("token").toString()},
       ).timeout(const Duration(seconds: 30));
+
+       Logger() .i(response.body);
       if (response.statusCode == 200) {
         // Parse the JSON response
         final responseData = ReasonResponse.fromJson(jsonDecode(response.body));

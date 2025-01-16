@@ -11,6 +11,6 @@ refreshNotificationsRealTimeCount() {
     )
         .listen((event) {
       // playNotificationSound();
-    Get.put(NotificationController()).refreshNotificationsCount();
+    Get.put(NotificationController()).refreshNotificationsCount(event);
     });
   }
