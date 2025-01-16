@@ -29,15 +29,14 @@ import 'notification_handler.dart';
    channelName,
     description: '${channelDescription}',
     importance: Importance.max,
-    playSound: true,
-    showBadge: true,
+   playSound: false,    showBadge: true,
   );
 
 
 
     static const serviceNotificationChannel = AndroidNotificationChannel(
     '${channelId}1',
-    '${channelName}1',
+    '${channelName}1',   playSound: false,
     description: '${channelDescription}1.',
     importance: Importance.max,
   );
@@ -115,10 +114,10 @@ CriNotificationService.editNotificationStatus(notificationId: parsedData['ids'] 
           priority: Priority.max,
           color: Colors.deepOrange,
           channelShowBadge: true,
-          enableLights: true,
+          enableLights: true,   playSound: false,
 
           //  sound: const RawResourceAndroidNotificationSound(notificationSound),
-          // playSound: true,
+    // sound: const RawResourceAndroidNotificationSound( 'notification_track'),
           icon:ConstWsNotification. notificationIcon,
         ),
       ),
@@ -142,8 +141,8 @@ CriNotificationService.editNotificationStatus(notificationId: parsedData['ids'] 
           color: Colors.deepOrange,
           channelShowBadge: true,
           enableLights: true,
-
-          //  sound: const RawResourceAndroidNotificationSound(notificationSound),
+   playSound: false,
+          //  sound: const RawResourceAndroidNotificationSound( 'notification_track'),
           // playSound: true,
           icon:ConstWsNotification. notificationIcon,
         ),
@@ -165,7 +164,7 @@ ConstWsNotification.  flutterLocalNotificationsPlugin.show(
         'channel_id', // Channel ID
         'channel_name', // Channel Name
         importance: Importance.high,
-        priority: Priority.high,
+        priority: Priority.high,   playSound: false,
       ),
       // iOS: IOSNotificationDetails(),
     ),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -21,6 +22,7 @@ import 'package:http/http.dart' as http;
 
 import '../../myapp.dart'; 
 class CriNotificationService {  static final FlutterBackgroundService flutterBgInstance = FlutterBackgroundService();
+ static final player = AudioPlayer();
 
   static final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin()
     ..initialize(
@@ -100,10 +102,20 @@ class CriNotificationService {  static final FlutterBackgroundService flutterBgI
   static stopService() async {
     flutterBgInstance.invoke('stopService');
   }
- 
+  @pragma('vm:entry-point')
+
+static playsounNotification() async {
+    try {
+    // Assuming the file is located in the assets folder
+    await player.play(AssetSource('notification_track.wav'));
+  } catch (e) {
+    print('Error playing sound: $e');
+  }
+ }
 
   @pragma('vm:entry-point')
-  static void _showNotification(WebSocketNotificationModel notificationDetails) {
+  static void _showNotification(WebSocketNotificationModel notificationDetails) async{
+   
     flutterLocalNotificationsPlugin.show(
       Random().nextInt(10000000),
       'New ${notificationDetails.entity}',
@@ -120,7 +132,7 @@ class CriNotificationService {  static final FlutterBackgroundService flutterBgI
           color: Colors.deepOrange,
           channelShowBadge: true,
           enableLights: true,
-
+   playSound: false,
           //  sound: const RawResourceAndroidNotificationSound(notificationSound),
           // playSound: true,
           icon:ConstWsNotification. notificationIcon,
@@ -145,7 +157,7 @@ class CriNotificationService {  static final FlutterBackgroundService flutterBgI
           importance: Importance.high,
           priority: Priority.max,
           color: Colors.deepOrange,
-          channelShowBadge: true,
+          channelShowBadge: true,   playSound: false,
           enableLights: true,
 
           //  sound: const RawResourceAndroidNotificationSound(notificationSound),
@@ -164,6 +176,7 @@ class CriNotificationService {  static final FlutterBackgroundService flutterBgI
     try {
       // debugPrint("i'm inside download fucntion");
      String WEBSOCKET_URL = dotenv.get('urlHost');
+      String webSocketUrl = WEBSOCKET_URL;
       var socket = web_socket_io.io(
         WEBSOCKET_URL,
         web_socket_io.OptionBuilder()
@@ -228,6 +241,8 @@ Logger().i( value['id']);
   @pragma('vm:entry-point')
 
 static Future<void> editNotificationStatus({required int notificationId, required int status}) async {
+    playsounNotification();
+
     final response = await http.put(Uri.parse('${Endpoint.apiNotifications}/$notificationId/to/$status'), headers:  {
       'x-auth-token': token.read("token").toString(),
     });
@@ -257,7 +272,7 @@ static void _showNotification2(String title, String subtitle , int id) {
         'channel_id', // Channel ID
         'channel_name', // Channel Name
         importance: Importance.high,
-        priority: Priority.high,
+        priority: Priority.high,   playSound: false,
       ),
       // iOS: IOSNotificationDetails(),
     ),

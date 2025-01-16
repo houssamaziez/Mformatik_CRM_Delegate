@@ -8,7 +8,9 @@ import 'package:http/http.dart' as http;
 import '../../../Model/notification.dart';
 import '../../../RouteEndPoint/EndPoint.dart';
 
+import '../../../Util/play_sound.dart';
 import '../../../View/widgets/showsnack.dart';
+import '../../../myapp.dart';
 import '../../auth/auth_controller.dart';
  
 class NotificationController extends GetxController {
@@ -26,6 +28,11 @@ Map<int, String> notificationStatus ={
  int notificationcount = 0;
 
 refreshNotificationsCount () async {
+
+  if (storage.read<bool> ('isNotification' ) != true) {
+ await playSound();
+    
+  }
 notificationcount = notificationcount + 1;
 update();
 }

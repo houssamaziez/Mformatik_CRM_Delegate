@@ -1,4 +1,5 @@
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
@@ -8,6 +9,7 @@ import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/m
 import '../../../Controller/home/notification/notification_controller.dart';
 import '../../../Service/web_socket.dart';
 import '../../../Service/ws_notification/notification_handler.dart';
+import '../../../Util/play_sound.dart';
 import '../../../myapp.dart';
 import '../home_screens/home_mission/mission_details/profile_mission.dart';
 import '../home_screens/home_task/task_details/details_task.dart';
@@ -39,7 +41,12 @@ class _NotificationScreenAllState extends State<NotificationScreenAll> {
   @override
   Widget build(BuildContext context) {
     
-    return Scaffold(
+    return Scaffold(floatingActionButton: FloatingActionButton(
+      backgroundColor: Theme.of(context).primaryColor,onPressed: () {
+        playSound();
+      },
+     
+    ),
       
       appBar:widget. ishome ? null : AppBar(
         title: Text(
@@ -127,7 +134,7 @@ Logger().e(parsedId);
 
 
 
-
+  final player = AudioPlayer();
 
   void playNotificationSound() {
 
@@ -136,10 +143,11 @@ Logger().e(parsedId);
         .on(
       'refreshNotificationsCount',
     )
-        .listen((event) {
+        .listen((event) async{
+   playSound().then((value) => null);
+
             Get.put(NotificationController()).refreshNotificationsCount();
             Get.put(NotificationController()).fetchNotifications();
-    
     });
     } else {
      initWS( );
