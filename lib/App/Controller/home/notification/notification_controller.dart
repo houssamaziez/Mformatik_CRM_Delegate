@@ -15,79 +15,155 @@ import '../../../Util/play_sound.dart';
 import '../../../View/widgets/showsnack.dart';
 import '../../../myapp.dart';
 import '../../auth/auth_controller.dart';
- 
+
 class NotificationController extends GetxController {
-Uri url = Uri.parse(Endpoint.apiNotifications);
+  Uri url = Uri.parse(Endpoint.apiNotifications);
 
-Map<int, String> notificationStatus ={
+  Map<int, String> notificationStatus = {
+    1: 'unDelivred',
+    2: 'delivered',
+    3: 'seen',
+    4: 'read',
+  };
 
-  1: 'unDelivred',
-  2: 'delivered',
-  3: 'seen',
-  4: 'read',
-};
+  int notificationcount = 0;
 
+  refreshNotificationsCount(Map<String, dynamic>? event) async {
+    WebSocketNotificationModel notificationDetails =
+        WebSocketNotificationModel.fromJson(event!);
+    notificationcount = notificationcount + 1;
+    update();
 
- int notificationcount = 0;
+    if (storage.read<bool>('isNotification') != true) {
+      await playSound();
 
-refreshNotificationsCount (Map<String, dynamic>? event) async {
-WebSocketNotificationModel notificationDetails =  WebSocketNotificationModel.fromJson(event!);
-  notificationcount = notificationcount + 1;
-update();
-
-  if (storage.read<bool> ('isNotification' ) != true) {
-  
- await playSound();
- 
-    Get.snackbar(
-      retunTitle(  notificationDetails.title!) ,
-    '@${notificationDetails.creator!.username} '.tr+  retunSupTitle( notificationDetails.title!),);
+      Get.snackbar(
+        retunTitle(notificationDetails.title!),
+        '@${notificationDetails.creator!.username} '.tr +
+            retunSupTitle(notificationDetails.title!),
+      );
+      editNotificationStatus(
+          notificationId: notificationDetails.id!, status: 2);
+    }
   }
 
-}
+  clhNotificationsCount() async {
+    notificationcount = 0;
+    update();
+  }
 
-clhNotificationsCount () async {
-notificationcount =0;
-update();
-}
+  GetCount() async {
+    final response = await http.get(
+        Uri.parse('${Endpoint.apiNotifications}/delivered-count'),
+        headers: {
+          'x-auth-token': token.read("token").toString(),
+        });
 
+    notificationcount = int.parse(response.body);
+    update();
+    if (response.statusCode == 200) {
+      notificationcount = int.parse(response.body);
+      update();
+    }
+  }
 
-GetCount()async{
+  bool isLoading = false;
+  List<NotificationRow> notifications = [];
 
-  final response = await http.get(Uri.parse('${Endpoint.apiNotifications}/delivered-count'), headers:  {
-      'x-auth-token': token.read("token").toString(),
-    });
-  
-notificationcount = int.parse(response.body) ;
-  update();
-if (response.statusCode == 200) {
-notificationcount = int.parse(response.body) ;
-  update();
-} 
+  // fetchNotifications({List? ids}) async {
+  //   try {
+  //     isLoading = true;
+  //     update();
+  //     var response = await http.get(url, headers: {
+  //       "x-auth-token": token.read("token").toString(),
+  //     });
 
-}
-bool isLoading = false;
-  List<NotificationRow> notifications =  [] ;
+  //     Logger().f(response.statusCode);
+  //     if (response.statusCode == 200) {
+  //       Map<String, dynamic> responseData = json.decode(response.body);
+  //       List<dynamic> rows = responseData['rows'];
 
-  fetchNotifications({List? ids}) async { 
- 
+  //       // Access the `rows` field from the root JSON
+  //       notifications =
+  //           rows.map((json) => NotificationRow.fromJson(json)).toList();
+  //       update();
+  //     } else {
+  //       showMessage(Get.context, title: "Failed to load notifications.".tr);
+  //     }
+  //   } catch (e) {
+  //     Logger().e(e);
+  //     showMessage(Get.context, title: "Failed to load notifications.".tr);
+  //   } finally {
+  //     isLoading = false;
+  //     update();
+  //   }
+  //   Future<void> editNotificationStatus(
+  //       {required int notificationId, required int status}) async {
+  //     final response = await http.put(
+  //         Uri.parse('${Endpoint.apiNotifications}/$notificationId/to/$status'),
+  //         headers: {
+  //           'x-auth-token': token.read("token").toString(),
+  //         });
+  //     Logger().e(response.body);
+  //     Logger().e(response.statusCode);
+  //     if (response.statusCode == 204) {}
+  //     // await ResponseHandler.processResponse(response);
+  //   }
+  // }
+
+  Future<void> editNotificationStatus(
+      {required int notificationId, required int status}) async {
+    final response = await http.put(
+        Uri.parse('${Endpoint.apiNotifications}/$notificationId/to/$status'),
+        headers: {
+          'x-auth-token': token.read("token").toString(),
+        });
+    Logger().e(response.body);
+    Logger().e(response.statusCode);
+
+    if (response.statusCode == 204) {
+      fetchNotifications(isRefresh: true);
+    }
+    // await ResponseHandler.processResponse(response);
+  }
+
+  bool hasMore = true; // To track if more data is available
+  int limit = 10; // Number of notifications per page
+  int offset = 0; // Starting point for pagination
+
+  Future<void> fetchNotifications({bool isRefresh = false}) async {
+    if (isLoading) return; // Prevent duplicate calls while loading
 
     try {
-       isLoading = true;
-       update();
-      var response = await http.get(url  , headers: {
-        "x-auth-token": token.read("token").toString(),
-      });
+      isLoading = true;
+      update();
 
+      if (isRefresh) {
+        // Reset the pagination on refresh
+        offset = 0;
+        hasMore = true;
+        notifications.clear();
+      }
 
-       Logger().f(response.statusCode);
+      var response = await http.get(
+        Uri.parse('${Endpoint.apiNotifications}?limit=$limit&offset=$offset'),
+        headers: {
+          "x-auth-token": token.read("token").toString(),
+        },
+      );
+
+      Logger().f(response.statusCode);
       if (response.statusCode == 200) {
-       Map<String, dynamic> responseData = json.decode(response.body);
-      List<dynamic> rows = responseData['rows'];
-     
-      
-       // Access the `rows` field from the root JSON
-      notifications = rows.map((json) => NotificationRow.fromJson(json)).toList();
+        Map<String, dynamic> responseData = json.decode(response.body);
+        List<dynamic> rows = responseData['rows'];
+
+        // Check if new data is less than limit to determine if there's more data
+        hasMore = rows.length == limit;
+
+        // Append new notifications to the list
+        notifications.addAll(
+            rows.map((json) => NotificationRow.fromJson(json)).toList());
+        offset += limit; // Increment offset for the next page
         update();
       } else {
         showMessage(Get.context, title: "Failed to load notifications.".tr);
@@ -95,41 +171,15 @@ bool isLoading = false;
     } catch (e) {
       Logger().e(e);
       showMessage(Get.context, title: "Failed to load notifications.".tr);
-    } 
-    finally {
+    } finally {
       isLoading = false;
       update();
     }
-   Future<void> editNotificationStatus({required int notificationId, required int status}) async {
-    final response = await http.put(Uri.parse('${Endpoint.apiNotifications}/$notificationId/to/$status'), headers:  {
-      'x-auth-token': token.read("token").toString(),
-    });
-    Logger().e(response.body);
-    Logger().e(response.statusCode);
-if (response.statusCode == 204) {
-  
- 
-}
-    // await ResponseHandler.processResponse(response);
   }
-}
 
-
-
-
-
-
-Future<void> editNotificationStatus({required int notificationId, required int status}) async {
-    final response = await http.put(Uri.parse('${Endpoint.apiNotifications}/$notificationId/to/$status'), headers:  {
-      'x-auth-token': token.read("token").toString(),
-    });
-    Logger().e(response.body);
-    Logger().e(response.statusCode);
-
-if (response.statusCode == 204) {
-  
-  fetchNotifications();
-}
-    // await ResponseHandler.processResponse(response);
+  Future<void> loadMoreNotifications() async {
+    if (hasMore) {
+      await fetchNotifications();
+    }
   }
 }
