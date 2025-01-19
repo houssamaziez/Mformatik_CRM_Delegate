@@ -14,6 +14,11 @@ Column selectDeadline(BuildContext context) {
               readOnly: true, // Prevent manual typing
               decoration: InputDecoration(
                 labelText: 'Selected Date'.tr,
+                labelStyle:  TextStyle(
+                  color: dateController.selectedDate.isEmpty
+                      ? Colors.grey
+                      : Colors.blue,
+                ),
                 hintText: 'Pick a date'.tr,
                 suffixIcon: IconButton(
                   icon: Icon(

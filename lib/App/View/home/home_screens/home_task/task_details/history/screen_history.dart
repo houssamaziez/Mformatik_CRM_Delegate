@@ -86,7 +86,7 @@ class HistoryTimelineScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  statusText.toString(),
+                                  statusText.toString().tr,
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,

@@ -29,7 +29,7 @@ class _HomeViewTaskState extends State<HomeViewTask> {
         observerId: taskController.isAssigned == 2 ? _userId : "",
         responsibleId: taskController.isAssigned == 0 ? _userId : "",
         ownerId: taskController.isAssigned == 1 ? _userId : "");
-    taskController.onIndexChanged(taskController.isAssigned);
+
     super.initState();
   }
 

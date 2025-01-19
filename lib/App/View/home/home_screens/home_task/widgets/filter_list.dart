@@ -28,7 +28,7 @@ Padding filterlist(BuildContext context) {
                         color: teskController.isAssigned != 2
                             ? Colors.white
                             : Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
                     child: Text(
                       "My Supervised".tr,
                       style: TextStyle(
@@ -49,7 +49,7 @@ Padding filterlist(BuildContext context) {
                         color: teskController.isAssigned != 1
                             ? Colors.white
                             : Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
                     child: Text(
                       "My Created".tr,
                       style: TextStyle(
@@ -70,7 +70,7 @@ Padding filterlist(BuildContext context) {
                         color: teskController.isAssigned != 0
                             ? Colors.white
                             : Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
                     child: Text(
                       "My Assigned".tr,
                       style: TextStyle(

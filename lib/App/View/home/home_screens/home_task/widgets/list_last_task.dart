@@ -64,15 +64,20 @@ Padding listLastTasks(BuildContext context) {
                               color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 12)),
-                      Flexible(
-                          flex: 2,
-                          child: "Responsible"
-                              .tr
-                              .style(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12)
-                              .center()),
+                      GetBuilder<TaskController>(
+                        init: TaskController(),
+                        builder: (taskController) {
+                          return Flexible(
+                              flex: 2,
+                              child: ( taskController.isAssigned==0? "Owner"   :"Responsible"
+                                  ).tr
+                                  .style(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12)
+                                  .center());
+                        }
+                      ),
                       Flexible(
                           flex: 2,
                           child: "Status"
@@ -96,9 +101,9 @@ Padding listLastTasks(BuildContext context) {
                 ),
                 GetBuilder<TaskController>(
                     init: TaskController(),
-                    builder: (missionsController) {
-                      return missionsController.isLoading == false
-                          ? missionsController.tasks!.isEmpty
+                    builder: (Controller) {
+                      return Controller.isLoading == false
+                          ? Controller.tasks!.isEmpty
                               ? Padding(
                                   padding: const EdgeInsets.only(bottom: 8.0),
                                   child: Center(
@@ -120,13 +125,13 @@ Padding listLastTasks(BuildContext context) {
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       itemCount:
-                                          missionsController.tasks!.length > 7
+                                          Controller.tasks!.length > 7
                                               ? 6
-                                              : missionsController
+                                              : Controller
                                                   .tasks!.length,
                                       itemBuilder: (context, index) {
                                         final task =
-                                            missionsController.tasks![index];
+                                            Controller.tasks![index];
                                         return Column(
                                           children: [
                                             const SizedBox(
@@ -179,8 +184,9 @@ Padding listLastTasks(BuildContext context) {
                                                         )),
                                                     Flexible(
                                                         flex: 2,
-                                                        child: task
-                                                            .responsibleUsername!
+                                                        child:(Controller.isAssigned!=0? task
+                                                            .responsibleUsername!: task
+                                                            .ownerUsername)
                                                             .style(
                                                                 textAlign:
                                                                     TextAlign
@@ -236,7 +242,7 @@ Padding listLastTasks(BuildContext context) {
                                                 ),
                                               ),
                                             ),
-                                            if (missionsController
+                                            if (Controller
                                                     .tasks!.length >
                                                 1)
                                               Container(

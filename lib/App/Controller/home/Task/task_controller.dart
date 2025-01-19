@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:mformatic_crm_delegate/App/Model/task_models/task.dart';
 import 'package:mformatic_crm_delegate/App/RouteEndPoint/EndPoint.dart';
 import 'package:http/http.dart' as http;
@@ -546,6 +547,8 @@ class TaskController extends GetxController {
         print('Success: $responseBody');
       } else {
         getTaskById(Get.context, taskId);
+
+        Logger().e(response.statusCode);
         showMessage(Get.context, title: "Failed to update task status".tr);
 
         print('Failed: ${response.reasonPhrase}');

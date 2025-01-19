@@ -26,10 +26,10 @@ class itemMessage extends StatelessWidget {
   int imagelanght = 0;
   List imagepath = [];
   int pdflanght = 0;
-  List pdfpath = [];
+  List<FileModel> pdfpath = [];
 
   int exllanght = 0;
-  List exllpath = [];
+  List<FileModel> exllpath = [];
   List<FileModel> listitem = [];
   @override
   Widget build(BuildContext context) {
@@ -42,12 +42,12 @@ class itemMessage extends StatelessWidget {
       if (pdfFileTypes
           .any((type) => action["path"].toString().contains(type))) {
         pdflanght = pdflanght + 1;
-        pdfpath.add(action["path"].toString());
+        pdfpath.add(FileModel(name: action["path"], id: action["id"].toString()));
       }
       if (excelFileTypes
           .any((type) => action["path"].toString().contains(type))) {
         exllanght = exllanght + 1;
-        exllpath.add(action["path"].toString());
+        exllpath.add(FileModel(name: action["path"], id: action["id"].toString()));
       }
       listitem
           .add(FileModel(name: action["path"], id: action["id"].toString()));
@@ -209,7 +209,7 @@ class itemMessage extends StatelessWidget {
                                             ShowPDFs(
                                                 extention: "xlsx",
                                                 name: exllpath,
-                                                listitem: listitem,
+                                                listitem: exllpath,
                                                 taskId: taskId,
                                                 taskItemId:
                                                     comment.id.toString()));

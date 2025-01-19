@@ -16,4 +16,5 @@ void main() async {
   appVersion = await getAppVersion();
   // initializeNotifications();
   runApp(const MyApp());
-}
+}   
+ 

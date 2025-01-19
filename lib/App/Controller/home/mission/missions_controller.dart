@@ -243,8 +243,12 @@ class MissionsController extends GetxController {
           "missions": [missionId]
         }),
       );
+
+      print(response.body);
       if (response.statusCode == 200) {
-        await getMissionById(Get.context, missionId, isLoding: true);
+       WidgetsBinding.instance.addPostFrameCallback((_) {
+    getMissionById( Get.context, missionId);
+    });
         getAllMission(
             Get.context, Get.put(CompanyController()).selectCompany!.id);
         // showMessage(

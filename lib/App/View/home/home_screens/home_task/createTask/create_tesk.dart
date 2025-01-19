@@ -137,7 +137,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
         appBar: AppBar(
           title: Text(
             "Create Task".tr,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
           centerTitle: true,
         ),
@@ -147,14 +147,24 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  "Select Responsable".tr,
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold),
+                Row(
+                  children: [
+                    Text(
+                      "Select Responsable".tr,
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold),
+                    ),
+                     Text(
+                            "*".tr,
+                            style: const TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                  ],
                 ),
                 const SizedBox(
                   height: 10,
@@ -190,7 +200,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                         Row(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               child: GetBuilder<ControllerPerson>(
                                   init: ControllerPerson(),
                                   builder: (personController) {
@@ -214,7 +224,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                                     );
                                   }),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             GetBuilder<ControllerPerson>(
                                 init: ControllerPerson(),
                                 builder: (personController) {
@@ -224,11 +234,11 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                                             personController
                                                 .closePerson("Responsable");
                                           },
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.close,
                                             size: 14,
                                           ))
-                                      : SizedBox.shrink();
+                                      : const SizedBox.shrink();
                                 })
                           ],
                         ),
@@ -242,7 +252,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                 Text(
                   "Select Observator".tr,
                   style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                      color:Colors.black87,
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
@@ -274,7 +284,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                         Row(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               child: GetBuilder<ControllerPerson>(
                                   init: ControllerPerson(),
                                   builder: (personController) {
@@ -298,7 +308,7 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                                     );
                                   }),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             GetBuilder<ControllerPerson>(
                                 init: ControllerPerson(),
                                 builder: (personController) {
@@ -308,11 +318,11 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                                             personController
                                                 .closePerson("Observator");
                                           },
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.close,
                                             size: 14,
                                           ))
-                                      : SizedBox.shrink();
+                                      : const SizedBox.shrink();
                                 })
                           ],
                         ),
@@ -323,11 +333,20 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  "Label".tr,
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold),
+                Row(
+                  children: [
+                    Text(
+                      "Label".tr,
+                      style: TextStyle(
+                        color:Colors.black87,
+                          fontWeight: FontWeight.bold),
+                    ), Text(
+                            "*".tr,
+                            style: const TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                  ],
                 ),
                 const SizedBox(
                   height: 10,
@@ -344,9 +363,9 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                         style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                           hintText: "Label".tr,
-                          enabledBorder: OutlineInputBorder(
+                          enabledBorder: const OutlineInputBorder(
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(8)),
+                                  BorderRadius.all(Radius.circular(8)),
                               borderSide: BorderSide(color: Colors.grey)),
                           border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -355,9 +374,9 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'Label is required'.tr;
-                          } else if (value.trim().length < 4) {
+                          } else if (value.trim().length < 2) {
                             // Minimum length check
-                            return 'Label must be at least 4 characters long'
+                            return 'Label must be at least 2 characters long'
                                 .tr;
                           }
                           return null; // No error
@@ -366,11 +385,20 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Text(
-                        "Description".tr,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Text(
+                            "Description".tr,
+                            style: TextStyle(
+                               color:Colors.black87,
+                                fontWeight: FontWeight.bold),
+                          ), Text(
+                            "*".tr,
+                            style: const TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                       const SizedBox(
                         height: 10,
@@ -383,9 +411,9 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                         style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                           hintText: "Description".tr,
-                          enabledBorder: OutlineInputBorder(
+                          enabledBorder: const OutlineInputBorder(
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(8)),
+                                  BorderRadius.all(Radius.circular(8)),
                               borderSide: BorderSide(color: Colors.grey)),
                           border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -394,9 +422,9 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'Description is required'.tr;
-                          } else if (value.trim().length < 4) {
+                          } else if (value.trim().length < 2) {
                             // Minimum length check
-                            return 'Description must be at least 4 characters long'
+                            return 'Description must be at least 2 characters long'
                                 .tr;
                           }
                           return null; // No error
@@ -408,17 +436,17 @@ class _ScreenCreateTaskState extends State<ScreenCreateTask> {
                 Text(
                   "Deadline".tr,
                   style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                  color:Colors.black87,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 selectDeadline(context),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 SelectFile(_selectImagesFromGallery, _takePhoto, _pickFile),
