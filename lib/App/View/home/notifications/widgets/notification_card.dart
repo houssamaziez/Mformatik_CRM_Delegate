@@ -32,24 +32,23 @@ class CardNotification extends StatelessWidget {
     required this.entity,
     required this.onTap, required this.status, required this.notificationId,
   }) : super(key: key);
-
   
     Color getColorsForEntity(int entity) {
     switch (entity) {
       case 1:
-        return Colors.grey[300]!;
+        return Colors.blue[200]!.withOpacity(0.2);
 
       case 2:
-        return Colors.grey[300]!;
+        return Colors.blue[200]!.withOpacity(0.2);
 
       case 3:
        return Colors.white;
 
       case 4:
-    return Colors.grey[300]!;
+    return Colors.blue[200]!.withOpacity(0.2);
 
       default:
-        return  Colors.grey[300]!;
+        return  Colors.blue[200]!.withOpacity(0.2);
     }
   }
 
