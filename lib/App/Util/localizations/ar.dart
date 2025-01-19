@@ -320,7 +320,34 @@ const Map<String, String> ar = {
   'Error updating task': 'خطأ في تحديث المهمة',
   'Task updated successfully': 'تم تحديث المهمة بنجاح',
   'Date': 'تاريخ',
-  "You are ready to receive the missions" : "انت جاهز لإستقبال المهام", 
-  "Connected" : "متصل",
-    "Do you want to mark the notification as unread?" : "هل تريد تعليق الاشعار كغير مقروء؟",
+  "You are ready to receive the missions": "انت جاهز لإستقبال المهام",
+  "Connected": "متصل",
+  "Do you want to mark the notification as unread?":
+      "هل تريد تعليق الاشعار كغير مقروء؟",
+  "New mission notification": "تنبيه بعثة جديدة",
+  "Mission status updated": "تحديث حالة البعثة",
+  "New task created": "تم انشاء مهمة جديدة",
+  "Assigned as task observer": "تم تعيينك كمراقب المهمة",
+  "Assigned as task responsible": "تم تعيينك كمسؤول المهمة",
+  "Task status updated": "تحديث حالة المهمة",
+  "Unknown title": "عنوان غير معروف",
+  "has created a new mission for you. Check it out now!":
+      "اصبح لديك بعثة جديدة. تفقدها الان!",
+  "The status of a mission has been updated. Please review it.":
+      "تم تحديث حالة البعثة. يرجى مراجعتها.",
+  "has created a new task for you. Check it out now!":
+      "اصبح لديك مهمة جديدة. تفقدها الان!",
+  "You have been assigned as an observer for a task.":
+      "تم تعيينك كمراقب لمهمة.",
+  "You are now assigned as an observer for this task.":
+      "تم تعيينك كمراقب لهذه المهمة.",
+  "You have been marked as responsible for a task.": "تم تعيينك كمسؤول لمهمة.",
+  "You are now assigned as the responsible person for this task.":
+      "تم تعيينك كمسؤول لهذه المهمة.",
+  "The status of a task has been changed. Please check it.":
+      "تم تغيير حالة المهمة. يرجى مراجعتها.",
+  'No notifications found.': 'لم يتم العثور على اشعارات.',
+  'Notifications': 'الاشعارات',
+  "Change Status": "تغيير الحالة",
+  'By : ': 'بواسطة : ',
 };

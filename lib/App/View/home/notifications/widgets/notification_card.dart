@@ -30,10 +30,12 @@ class CardNotification extends StatelessWidget {
     required this.createdAt,
     required this.subtitle,
     required this.entity,
-    required this.onTap, required this.status, required this.notificationId,
+    required this.onTap,
+    required this.status,
+    required this.notificationId,
   }) : super(key: key);
-  
-    Color getColorsForEntity(int entity) {
+
+  Color getColorsForEntity(int entity) {
     switch (entity) {
       case 1:
         return Colors.blue[200]!.withOpacity(0.2);
@@ -42,13 +44,13 @@ class CardNotification extends StatelessWidget {
         return Colors.blue[200]!.withOpacity(0.2);
 
       case 3:
-       return Colors.white;
+        return Colors.white;
 
       case 4:
-    return Colors.blue[200]!.withOpacity(0.2);
+        return Colors.blue[200]!.withOpacity(0.2);
 
       default:
-        return  Colors.blue[200]!.withOpacity(0.2);
+        return Colors.blue[200]!.withOpacity(0.2);
     }
   }
 
@@ -56,13 +58,15 @@ class CardNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(color: getColorsForEntity( status ),
+        Container(
+          color: getColorsForEntity(status),
           child: ListTile(
             leading: Container(
               padding: const EdgeInsets.all(0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color:getColorsForEntity( status ) ,// Theme.of(context).primaryColor.withOpacity(0.2),
+                color: getColorsForEntity(
+                    status), // Theme.of(context).primaryColor.withOpacity(0.2),
               ),
               child: Image.asset(
                 getIconForEntity(entity),
@@ -82,101 +86,102 @@ class CardNotification extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '@$subtitle '.tr+ retunSupTitle(title),
+                  (entity != "mission" ? '@$subtitle '.tr : "") +
+                      retunSupTitle(title),
                   style: const TextStyle(fontSize: 11, color: Colors.grey),
                 ),
                 const SizedBox(height: 4),
-                 
               ],
             ),
-            trailing:Column(
-              children: [
-                Text(
+            trailing: Column(children: [
+              Text(
                 timeDifference(DateTime.parse(createdAt)),
-                  style: const TextStyle(fontSize: 11, color: Colors.grey),
-                ),
-              
-      ]),
-            onTap: onTap,onLongPress: (){
-
-
-            showExitConfirmationDialog(context, onPressed: (){
-
-              Get.put(NotificationController()).editNotificationStatus(notificationId:  notificationId  , status: 4);
-              Go.back(context);
-            }, title:"Change Status", details: "Do you want to mark the notification as unread?");
+                style: const TextStyle(fontSize: 11, color: Colors.grey),
+              ),
+            ]),
+            onTap: onTap,
+            onLongPress: () {
+              showExitConfirmationDialog(context, onPressed: () {
+                Get.put(NotificationController()).editNotificationStatus(
+                    notificationId: notificationId, status: 4);
+                Go.back(context);
+              },
+                  title: "Change Status".tr,
+                  details:
+                      "Do you want to mark the notification as unread?".tr);
             },
           ),
         ),
-      Container(color: const Color.fromARGB(255, 207, 207, 207),height: 1,)],
+        Container(
+          color: const Color.fromARGB(255, 207, 207, 207),
+          height: 1,
+        )
+      ],
     );
   }
 }
 
-
 String getIconForEntity(String entity) {
-    switch (entity) {
-      case "mission":
-        return DrawableAssetStrings.missionIcon;
+  switch (entity) {
+    case "mission":
+      return DrawableAssetStrings.missionIcon;
 
-      case "task":
-        return DrawableAssetStrings.taskIcon;
+    case "task":
+      return DrawableAssetStrings.taskIcon;
 
-      case "decision":
-        return DrawableAssetStrings.decisionIcon;
+    case "decision":
+      return DrawableAssetStrings.decisionIcon;
 
-      case "feedback":
-        return DrawableAssetStrings.feedbackIcon;
+    case "feedback":
+      return DrawableAssetStrings.feedbackIcon;
 
-      default:
-        return DrawableAssetStrings.missionIcon;
-    }
+    default:
+      return DrawableAssetStrings.missionIcon;
   }
-
-
- String retunTitle(String title){
-switch (title) {
-  case "newMission":
-    return "New mission notification";
-  case "missionStatusChange":
-    return "Mission status updated";
-  case "newTask":
-    return "New task created";
-  case "taskObserver":
-  return "Assigned as task observer";
-  case "assignAsObserver":
-    return "Assigned as task observer";
-  case "taskResponsible":
-  return "Assigned as task responsible";
-  case "assignAsResponsible":
-    return "Assigned as task responsible";
-  case "taskStatusChange":
-    return "Task status updated";
-  default:
-    return "Unknown title";
 }
-  }
 
+String retunTitle(String title) {
+  switch (title) {
+    case "newMission":
+      return "New mission notification".tr;
+    case "missionStatusChange":
+      return "Mission status updated".tr;
+    case "newTask":
+      return "New task created".tr;
+    case "taskObserver":
+      return "Assigned as task observer".tr;
+    case "assignAsObserver":
+      return "Assigned as task observer".tr;
+    case "taskResponsible":
+      return "Assigned as task responsible".tr;
+    case "assignAsResponsible":
+      return "Assigned as task responsible";
+    case "taskStatusChange":
+      return "Task status updated".tr;
+    default:
+      return "Unknown title".tr;
+  }
+}
 
 String retunSupTitle(String title) {
   switch (title) {
     case "newMission":
-      return " has created a new mission for you. Check it out now!";
+      return "has created a new mission for you. Check it out now!".tr;
     case "missionStatusChange":
-      return "The status of a mission has been updated. Please review it.";
+      return "The status of a mission has been updated. Please review it.".tr;
     case "newTask":
-      return " has created a new task for you. Check it out now!";
+      return "has created a new task for you. Check it out now!".tr;
     case "taskObserver":
-      return "You have been assigned as an observer for a task.";
+      return "You have been assigned as an observer for a task.".tr;
     case "assignAsObserver":
-      return "You are now assigned as an observer for this task.";
+      return "You are now assigned as an observer for this task.".tr;
     case "taskResponsible":
-      return "You have been marked as responsible for a task.";
+      return "You have been marked as responsible for a task.".tr;
     case "assignAsResponsible":
-      return "You are now assigned as the responsible person for this task.";
+      return "You are now assigned as the responsible person for this task.".tr;
     case "taskStatusChange":
-      return "The status of a task has been changed. Please check it.";
+      return "The status of a task has been changed. Please check it.".tr;
     default:
-      return "Unknown title.";
+      return "Unknown title.".tr;
   }
 }

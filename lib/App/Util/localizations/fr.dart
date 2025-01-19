@@ -332,8 +332,36 @@ const Map<String, String> fr = {
   'Failed to create task': 'Échec de la création de la tâche',
   'Error updating task': 'Erreur de mise à jour de la tâche',
   'Task updated successfully': 'Tâche mise à jour avec succès',
-  "You are ready to receive the missions" : "Vous pouvez maintenant recevoir les missions",
-   "Connected" : "Connecté",
-    
-      "Do you want to mark the notification as unread?" : "Voulez-vous marquer ce notification comme non lu?",
+  "You are ready to receive the missions":
+      "Vous pouvez maintenant recevoir les missions",
+  "Connected": "Connecté",
+  "Do you want to mark the notification as unread?":
+      "Voulez-vous marquer ce notification comme non lu?",
+  "New mission notification": "Nouvelle notification de mission",
+  "Mission status updated": "Statut de la mission mis à jour",
+  "New task created": "Nouvelle tâche crée",
+  "Assigned as task observer": "Assigné comme observateur de tâche",
+  "Assigned as task responsible": "Assigné comme responsable de tâche",
+  "Task status updated": "Statut de la tâche mis à jour",
+  "Unknown title": "Titre inconnu",
+  "has created a new mission for you. Check it out now!":
+      "a créé une nouvelle mission pour vous. Veuillez la consulter maintenant !",
+  "The status of a mission has been updated. Please review it.":
+      "Le statut d’une mission a été mis à jour. Veuillez le consulter.",
+  "has created a new task for you. Check it out now!":
+      "a créé une nouvelle tâche pour vous. Veuillez la consulter maintenant !",
+  "You have been assigned as an observer for a task.":
+      "Vous avez été assigné comme observateur d’une tâche.",
+  "You are now assigned as an observer for this task.":
+      "Vous avez maintenant BEEN assigné comme observateur de cette tâche.",
+  "You have been marked as responsible for a task.":
+      "Vous avez été assigné comme responsable d’une tâche.",
+  "You are now assigned as the responsible person for this task.":
+      "Vous avez maintenant BEEN assigné comme responsable de cette tâche.",
+  "The status of a task has been changed. Please check it.":
+      "Le statut d’une tâche a changé. Veuillez le consulter.",
+  'No notifications found.': 'Aucune notification trouvée.',
+  'Notifications': 'Notifications',
+  "Change Status": "Changer le statut",
+  'By : ': 'Par : ',
 };

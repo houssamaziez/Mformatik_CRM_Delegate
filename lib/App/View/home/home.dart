@@ -4,19 +4,17 @@ import 'package:get/get.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/home_controller.dart';
 import 'package:mformatic_crm_delegate/App/Controller/home/mission/missions_controller.dart';
- 
 
 import '../../Controller/auth/auth_controller.dart';
 import '../../Controller/home/annex_controller.dart';
 import '../../Controller/home/notification/notification_controller.dart';
- 
+
 import '../../Util/Const/lists.dart';
 import '../widgets/Bottombar/widgetbottombar.dart';
 import '../widgets/Dialog/showDailog_exit_app.dart';
 import '../widgets/bolck_screen.dart';
 import 'Widgets/appbar_home.dart';
 import 'notifications/notifications_screen.dart';
- 
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,14 +25,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  final List<Map<String, String>> notifications =
-      [];  
+  final List<Map<String, String>> notifications = [];
   @override
   void initState() {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-     Get.put(NotificationController()).GetCount();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.put(NotificationController()).GetCount();
       playNotificationSound();
-
     });
     super.initState();
     const androidSettings =
@@ -45,13 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
     notificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (details) {
-        if (details.payload != null) {
-        }
+        if (details.payload != null) {}
       },
     );
   }
 
-  
   final MissionsController controller = Get.put(MissionsController());
 
   AuthController controllers = Get.put(AuthController());
@@ -87,5 +81,4 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         });
   }
-
 }

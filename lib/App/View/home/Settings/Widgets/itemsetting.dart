@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../Controller/home/setting_controller.dart';
 import '../../../../Util/Route/Go.dart';
+import '../../../../myapp.dart';
 import '../AboutTheApplication/aboutTheApplication.dart';
 import '../Addedaccounts/addedaccounts.dart';
 import '../Notification/notificationscreen.dart';
@@ -47,7 +48,8 @@ Padding carditemsetting(context) {
           //     function: () {
           //       // Go.to(context, AddedAccounts());
           //     }),
-          itemsetting(isNotification: true,
+          itemsetting(
+              isNotification: true,
               titile: listtitemsetting[0]["title"].toString(),
               image: listtitemsetting[0]["Image"].toString(),
               function: () {
@@ -80,7 +82,6 @@ Padding carditemsetting(context) {
 InkWell itemsetting(
     {required String titile,
     required String image,
-
     bool isNotification = false,
     required Function function}) {
   return InkWell(
@@ -93,24 +94,32 @@ InkWell itemsetting(
         height: 24,
         width: 24,
       ),
-      trailing:isNotification ?  GetBuilder<SettingController>(
-        init: SettingController(),
-        builder: (settingController) {
-          return InkWell(
-            onTap: () => settingController.changeindex(  ),
-            child: Image.asset(
-                 settingController. index 
-                      ? "assets/icons/Rectangleact.png"
-                      : "assets/icons/Rectangledes.png",
-                  height: 20,
-                  width: 42,
-                ),
-          );
-        }
-      ) : Icon(
-        Icons.arrow_forward_ios,
-        size: 17,
-      ),
+      trailing: isNotification
+          ? GetBuilder<SettingController>(
+              init: SettingController(),
+              builder: (settingController) {
+                return InkWell(
+                  onTap: () => settingController.changeindex(),
+                  child: Image.asset(
+                    storage.read(
+                              'selected_language',
+                            ) ==
+                            'ar'
+                        ? (settingController.index
+                            ? "assets/icons/Rectangleact.png"
+                            : "assets/icons/Rectangledes.png")
+                        : (!settingController.index
+                            ? "assets/icons/toggle-button (1).png"
+                            : "assets/icons/toggle-button.png"),
+                    height: 45,
+                    width: 42,
+                  ),
+                );
+              })
+          : Icon(
+              Icons.arrow_forward_ios,
+              size: 17,
+            ),
       title: Text(titile),
     ),
   );
