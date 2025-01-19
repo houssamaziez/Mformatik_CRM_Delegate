@@ -71,10 +71,12 @@ class _NotificationScreenAllState extends State<NotificationScreenAll> {
   itemBuilder: (context, index) {
     
     final notification = controller.notifications[index];
-    return CardNotification(status: notification.receiver!.status!,
+    return CardNotification(status: notification.receiver!.status!,notificationId:  notification.id!,
       title: notification.title,
       createdAt: notification.createdAt,
       subtitle: notification.creator!.username, // Customize this based on your data
+
+    
       onTap: () {
         dynamic parsedId;
 

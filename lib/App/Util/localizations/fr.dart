@@ -334,4 +334,6 @@ const Map<String, String> fr = {
   'Task updated successfully': 'Tâche mise à jour avec succès',
   "You are ready to receive the missions" : "Vous pouvez maintenant recevoir les missions",
    "Connected" : "Connecté",
+    
+      "Do you want to mark the notification as unread?" : "Voulez-vous marquer ce notification comme non lu?",
 };

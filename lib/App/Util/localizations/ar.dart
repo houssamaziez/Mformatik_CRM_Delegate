@@ -322,4 +322,5 @@ const Map<String, String> ar = {
   'Date': 'تاريخ',
   "You are ready to receive the missions" : "انت جاهز لإستقبال المهام", 
   "Connected" : "متصل",
+    "Do you want to mark the notification as unread?" : "هل تريد تعليق الاشعار كغير مقروء؟",
 };

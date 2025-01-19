@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mformatic_crm_delegate/App/View/widgets/Dialog/showExitConfirmationDialog.dart';
 
+import '../../../../Controller/home/notification/notification_controller.dart';
 import '../../../../Util/Date/formatDate.dart';
+import '../../../../Util/Route/Go.dart';
 
 // Assuming DrawableAssetStrings is a class that holds your asset paths for icons.
 class DrawableAssetStrings {
@@ -18,6 +21,7 @@ class CardNotification extends StatelessWidget {
   final String entity;
 
   final int status;
+  final int notificationId;
   final VoidCallback onTap;
 
   const CardNotification({
@@ -26,7 +30,7 @@ class CardNotification extends StatelessWidget {
     required this.createdAt,
     required this.subtitle,
     required this.entity,
-    required this.onTap, required this.status,
+    required this.onTap, required this.status, required this.notificationId,
   }) : super(key: key);
 
   
@@ -94,7 +98,15 @@ class CardNotification extends StatelessWidget {
                 ),
               
       ]),
-            onTap: onTap,
+            onTap: onTap,onLongPress: (){
+
+
+            showExitConfirmationDialog(context, onPressed: (){
+
+              Get.put(NotificationController()).editNotificationStatus(notificationId:  notificationId  , status: 4);
+              Go.back(context);
+            }, title:"Change Status", details: "Do you want to mark the notification as unread?");
+            },
           ),
         ),
       Container(color: const Color.fromARGB(255, 207, 207, 207),height: 1,)],
