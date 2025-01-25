@@ -12,7 +12,8 @@ import 'Widgets/buttons.dart';
 import 'Widgets/cardstate.dart';
 import 'Widgets/edite.dart';
 import 'Widgets/itemsetting.dart';
-    String appVersion = '';
+
+String appVersion = '';
 
 class ScreenSetting extends StatelessWidget {
   ScreenSetting({super.key});
@@ -42,9 +43,8 @@ class ScreenSetting extends StatelessWidget {
             buttonsetting(
                 function: () {
                   showExitConfirmationDialog(context, onPressed: () {
- 
-                     storage.write ('isNotification' ,false);
-        CriNotificationService.flutterBgInstance.invoke('stopService');
+                    // storage.write('isNotification', false);
+                    // CriNotificationService.flutterBgInstance.invoke('stopService');
                     token.write("token", null);
                     spalshscreenfirst.write('key', false);
                     Get.offAll(ScreenAuth());
@@ -61,6 +61,7 @@ class ScreenSetting extends StatelessWidget {
     );
   }
 }
+
 void cleanAllControllers() {
   Get.deleteAll(force: true);
 }

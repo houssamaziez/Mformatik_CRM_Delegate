@@ -34,17 +34,17 @@ class NotificationController extends GetxController {
     notificationcount = notificationcount + 1;
     update();
 
-    if (storage.read<bool>('isNotification') != true) {
-      await playSound();
+    // if (storage.read<bool>('isNotification') != true) {
+    //   await playSound();
 
-      Get.snackbar(
-        retunTitle(notificationDetails.title!),
-        '@${notificationDetails.creator!.username} '.tr +
-            retunSupTitle(notificationDetails.title!),
-      );
-      editNotificationStatus(
-          notificationId: notificationDetails.id!, status: 2);
-    }
+    //   Get.snackbar(
+    //     retunTitle(notificationDetails.title!),
+    //     '@${notificationDetails.creator!.username} '.tr +
+    //         retunSupTitle(notificationDetails.title!),
+    //   );
+    //   editNotificationStatus(
+    //       notificationId: notificationDetails.id!, status: 2);
+    // }
   }
 
   clhNotificationsCount() async {

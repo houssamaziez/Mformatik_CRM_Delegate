@@ -11,16 +11,16 @@ class SettingController extends GetxController {
       if (value) {
         index = false;
         update();
-        storage.write('isNotification', index);
+        // storage.write('isNotification', index);
 
-        CriNotificationService.flutterBgInstance.invoke('stopService');
+        // CriNotificationService.flutterBgInstance.invoke('stopService');
       } else {
         index = true;
         update();
-        storage.write('isNotification', index);
+        // storage.write('isNotification', index);
 
-        await Future.delayed(Duration(seconds: 2));
-        await CriNotificationService.initializeService(isBackground: false);
+        // await Future.delayed(Duration(seconds: 2));
+        // await CriNotificationService.initializeService(isBackground: false);
       }
     });
     update();
@@ -29,7 +29,7 @@ class SettingController extends GetxController {
   @override
   void onInit() {
 //  changeindex( );
-    index = storage.read<bool>('isNotification') ?? false;
+    // index = storage.read<bool>('isNotification') ?? false;
     update();
 //  changeindex(false);
     super.onInit();

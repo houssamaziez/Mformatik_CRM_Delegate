@@ -29,8 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.put(NotificationController()).GetCount();
-      playNotificationSound();
+      // Get.put(NotificationController()).GetCount();
+      // playNotificationSound();
     });
     super.initState();
     const androidSettings =

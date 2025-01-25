@@ -48,13 +48,13 @@ Padding carditemsetting(context) {
           //     function: () {
           //       // Go.to(context, AddedAccounts());
           //     }),
-          itemsetting(
-              isNotification: true,
-              titile: listtitemsetting[0]["title"].toString(),
-              image: listtitemsetting[0]["Image"].toString(),
-              function: () {
-                // Go.to(context, const NotificationScreen());
-              }),
+          // itemsetting(
+          //     isNotification: true,
+          //     titile: listtitemsetting[0]["title"].toString(),
+          //     image: listtitemsetting[0]["Image"].toString(),
+          //     function: () {
+          //       // Go.to(context, const NotificationScreen());
+          //     }),
           itemsetting(
               titile: listtitemsetting[3]["title"].toString().tr,
               image: listtitemsetting[3]["Image"].toString(),

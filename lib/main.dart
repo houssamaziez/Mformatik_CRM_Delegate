@@ -9,12 +9,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
-  var f = storage.read<bool>('isNotification');
-  if (storage.read<bool>('isNotification') == null) {
-    storage.write('isNotification', false);
-  }
+  // var f = storage.read<bool>('isNotification');
+  // if (storage.read<bool>('isNotification') == null) {
+  //   storage.write('isNotification', false);
+  // }
   appVersion = await getAppVersion();
   // initializeNotifications();
   runApp(const MyApp());
-}   
- 
+}
