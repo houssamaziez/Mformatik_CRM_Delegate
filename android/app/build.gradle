@@ -29,8 +29,8 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 24
-        targetSdk = 34 
-        versionCode =40
+        targetSdk = 34
+        versionCode =41
         versionName = flutter.versionName
         multiDexEnabled true
     }
@@ -47,7 +47,6 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             // signingConfig = signingConfigs.debug
-            
              signingConfig = signingConfigs.release
         }
     }
