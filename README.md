@@ -2,7 +2,10 @@
 
 **CRI Reporting** is an innovative application designed to empower delegates to efficiently manage their daily tasks, enhance their productivity, and improve their experience in executing assigned missions. The app features an intuitive user interface that simplifies task organization and tracking while providing tools for streamlined reporting and feedback.
 
----
+## **Screenshots**
+
+![Home Screen](assets/backScreen.png)
+
 
 ## **Technical Details**
 
@@ -62,7 +65,7 @@
   - Related notes.
   - Performance tracking of associated tasks.
 
----
+
 
 ## **Objectives**
 
