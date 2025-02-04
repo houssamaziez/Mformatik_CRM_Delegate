@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
           bool isactive = controllers.user!.isActive!;
           return WillPopScope(
             onWillPop: () async {
-              bool shouldExit = await showDailog_exit_app(context);
+              bool shouldExit = await showDialogExitApp(context);
               return shouldExit;
             },
             child: Scaffold(

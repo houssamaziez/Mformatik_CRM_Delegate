@@ -30,16 +30,12 @@ class ControllerPerson extends GetxController {
             'offset': currentOffset.toString(), // Add offset
             'limit': limit.toString(), // Add limit
             'isItForAssigne': true.toString(),
-                     'excludeMe': true.toString(), 
+            'excludeMe': true.toString(),
             'attributes[]': ['id', 'firstName', 'lastName'],
           },
         ),
         headers: {"x-auth-token": token.read("token").toString()},
       );
-      print("-----------------------------");
-      print(json.decode(response.body));
-      print("-----------------------------");
-
       if (response.statusCode == 200) {
         List<dynamic> responseData = json.decode(response.body);
 
@@ -49,7 +45,6 @@ class ControllerPerson extends GetxController {
           update();
           update();
 
-          // Update the offset for the next request
           offset.value += limit;
         }
       } else {
@@ -82,7 +77,7 @@ class ControllerPerson extends GetxController {
             'limit': limit.toString(),
             'isItForAssigne': true.toString(),
             'attributes[]': ['id', 'firstName', 'lastName'],
-                     'excludeMe': true.toString(), 
+            'excludeMe': true.toString(),
           },
         ),
         headers: {"x-auth-token": token.read("token").toString()},
@@ -128,9 +123,8 @@ class ControllerPerson extends GetxController {
         'limit': '20', // Set limit to 20
         'isItForAssigne': true.toString(),
         'attributes[]': ['id', 'firstName', 'lastName'],
-         'isItForAssigne': true.toString(), 
-         'excludeMe': true.toString(), 
-
+        'isItForAssigne': true.toString(),
+        'excludeMe': true.toString(),
       };
 
       // Conditionally add 'fullName' to the queryParams map

@@ -33,13 +33,10 @@ class TaskController extends GetxController {
   bool isLoadingMore = false;
   int isAssigned = 0;
   int detailsSelect = 0;
-
   int offset = 0;
   int limit = 7;
   int tasklength = 0;
-
   int news = 0;
-
   int canceled = 0;
   int closed = 0;
   int start = 0;
@@ -433,29 +430,7 @@ class TaskController extends GetxController {
     return Uint8List(0);
   }
 
-  DateTime? getDownloadTimestamp({
-    required String taskId,
-    required String taskItemId,
-    required String attachmentId,
-  }) {
-    final String cacheKey = '$taskId-$taskItemId-$attachmentId';
-    return fileCache[cacheKey]?['timestamp'] as DateTime?;
-  }
-
 // Helper function to get the file type based on file extension
-  String? _getFileType(String filePath) {
-    if (filePath.endsWith('.jpg') || filePath.endsWith('.png')) {
-      return 'prImg'; // Image file type
-    } else if (filePath.endsWith('.pdf')) {
-      return 'prPdf'; // PDF file type
-    } else if (filePath.endsWith('.doc') || filePath.endsWith('.docx')) {
-      return 'prDoc'; // Word document file type
-    } else if (filePath.endsWith('.xls') || filePath.endsWith('.xlsx')) {
-      return 'prExcel'; // Excel file type
-    }
-    return null; // Unsupported file type
-  }
-
   bool issend = false;
   Future<void> createItems({
     required String desc,
