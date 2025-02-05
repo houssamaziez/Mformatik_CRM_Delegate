@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -8,7 +6,7 @@ import 'App/Service/get_app_ersion.dart';
 import 'App/Service/ws_notification/notification_handler.dart';
 import 'App/View/home/Settings/screenSetting.dart';
 import 'App/myapp.dart';
-import 'splashScreen/app_loader.dart';
+import 'App/View/splashScreen/splashScreenanimation/app_loader.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

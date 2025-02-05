@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
-import '../App/myapp.dart';
+import '../../../myapp.dart';
 import 'app_data.dart';
 import 'wise_splash_screen.dart';
 
