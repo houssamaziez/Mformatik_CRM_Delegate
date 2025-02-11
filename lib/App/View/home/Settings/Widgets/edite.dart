@@ -24,7 +24,7 @@ editeProfile(context) {
                 child: CachedNetworkImage(
                   imageUrl: person.img == null
                       ? 'https://img.freepik.com/premium-photo/stylish-man-flat-vector-profile-picture-ai-generated_606187-310.jpg'
-                      : '${dotenv.get('urlHost')}/uploads/' + person.img!,
+                      : '${dotenv.get('urlHost')}/api/uploads/' + person.img!,
                   height: 50,
                   width: 50,
                   fit: BoxFit.cover,

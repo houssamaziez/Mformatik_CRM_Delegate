@@ -40,7 +40,8 @@ class ProfileUserScreen extends StatelessWidget {
                       child: CachedNetworkImage(
                         imageUrl: person.img == null
                             ? 'https://img.freepik.com/premium-photo/stylish-man-flat-vector-profile-picture-ai-generated_606187-310.jpg'
-                            : '${dotenv.get('urlHost')}/uploads/' + person.img!,
+                            : '${dotenv.get('urlHost')}/api/uploads/' +
+                                person.img!,
                         height: 90,
                         width: 90,
                         fit: BoxFit.cover,
@@ -86,13 +87,13 @@ class ProfileUserScreen extends StatelessWidget {
                     function: () {
                       showExitConfirmationDialog(context, onPressed: () async {
                         Get.deleteAll();
-                        
-     
+
                         token.write("token", null);
                         await spalshscreenfirst.write('key', false);
-                        Get.offAll(() =>ScreenAuth());
-                                        storage.write ('isNotification' ,false);
-        CriNotificationService.flutterBgInstance.invoke('stopService');
+                        Get.offAll(() => ScreenAuth());
+                        storage.write('isNotification', false);
+                        CriNotificationService.flutterBgInstance
+                            .invoke('stopService');
                       },
                           details:
                               'Do you really want to log out of the account?'
