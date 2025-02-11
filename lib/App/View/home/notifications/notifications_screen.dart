@@ -8,7 +8,6 @@ import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/m
 import '../../../Controller/home/notification/notification_controller.dart';
 import '../../../Service/web_socket.dart';
 import '../../../Service/ws_notification/notification_handler.dart';
-import '../../../Util/play_sound.dart';
 import '../../../myapp.dart';
 import '../../widgets/flutter_spinkit.dart';
 import '../home_screens/home_mission/mission_details/profile_mission.dart';
@@ -114,19 +113,19 @@ class _NotificationScreenAllState extends State<NotificationScreenAll> {
                     if (parsedId is int) {
                       if (notification.entity == "mission") {
                         controller.editNotificationStatus(
-                            notificationId: notification.id, status: 3);
+                            notificationId: notification.id, status: 4);
                         Go.to(
                             context, MissionProfileScreen(missionId: parsedId));
                       }
                       if (notification.entity == "task") {
                         controller.editNotificationStatus(
-                            notificationId: notification.id, status: 3);
+                            notificationId: notification.id, status: 4);
 
                         Go.to(context, TaskProfileScreen(taskId: parsedId));
                       }
                     } else {
                       controller.editNotificationStatus(
-                          notificationId: notification.id, status: 3);
+                          notificationId: notification.id, status: 4);
 
                       if (notification.entity == "mission") {
                         Go.to(context, MissionListScreen(ids: parsedId));
@@ -159,8 +158,10 @@ void playNotificationSound() {
       'refreshNotificationsCount',
     )
         .listen((event) async {
-      Get.put(NotificationController()).refreshNotificationsCount(event);
-      Get.put(NotificationController()).fetchNotifications();
+      if (storage.read<bool>('isNotification') != true) {
+        Get.put(NotificationController()).refreshNotificationsCount(event);
+        Get.put(NotificationController()).fetchNotifications();
+      }
     });
   }
   initWS();

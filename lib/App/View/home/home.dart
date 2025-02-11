@@ -33,17 +33,17 @@ class _HomeScreenState extends State<HomeScreen> {
       // playNotificationSound();
     });
     super.initState();
-    const androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    const initializationSettings =
-        InitializationSettings(android: androidSettings);
+    // const androidSettings =
+    //     AndroidInitializationSettings('@mipmap/ic_launcher');
+    // const initializationSettings =
+    //     InitializationSettings(android: androidSettings);
 
-    notificationsPlugin.initialize(
-      initializationSettings,
-      onDidReceiveNotificationResponse: (details) {
-        if (details.payload != null) {}
-      },
-    );
+    // notificationsPlugin.initialize(
+    //   initializationSettings,
+    //   onDidReceiveNotificationResponse: (details) {
+    //     if (details.payload != null) {}
+    //   },
+    // );
   }
 
   final MissionsController controller = Get.put(MissionsController());
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
           bool isactive = controllers.user!.isActive!;
           return WillPopScope(
             onWillPop: () async {
-              bool shouldExit = await showDailog_exit_app(context);
+              bool shouldExit = await showDialogExitApp(context);
               return shouldExit;
             },
             child: Scaffold(

@@ -1,20 +1,11 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
-import 'package:mformatic_crm_delegate/App/Controller/home/company_controller.dart';
-import 'package:mformatic_crm_delegate/App/Util/Route/Go.dart';
-import 'package:mformatic_crm_delegate/App/View/widgets/showsnack.dart';
+
 import 'dart:convert';
 
 import '../../../Model/feedback.dart';
 import '../../../RouteEndPoint/EndPoint.dart';
-import '../../../Service/Location/get_location.dart';
 import '../../auth/auth_controller.dart';
-import '../../widgetsController/expandable_controller.dart';
-import '../mission/missions_controller.dart';
 
 class FeedbackControllerFilter extends GetxController {
   RxList<FeedbackMission> feedbacks = <FeedbackMission>[].obs;
@@ -66,12 +57,7 @@ class FeedbackControllerFilter extends GetxController {
         headers: {"x-auth-token": token.read("token").toString()},
       );
       offset.value = 10;
-
-      print(
-          "------------------------------------------------------------------------");
       print(json.decode(response.body)['rows']);
-      print(
-          "------------------------------------------------------------------------");
       if (response.statusCode == 200) {
         List<dynamic> responseData = json.decode(response.body)['rows'];
         update();

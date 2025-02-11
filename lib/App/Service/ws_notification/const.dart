@@ -59,20 +59,20 @@ class ConstWsNotification {
       var payload = notificationResponse.payload;
       if (payload != null) {
         Map<String, dynamic> parsedData = jsonDecode(payload);
-        Go.to(Get.context, NotificationScreenAll());
-
-        if (parsedData['ids'] is int) {
+        // Go.to(Get.context, NotificationScreenAll());
+        Logger().i(" notification payload:  ${parsedData}");
+        if (parsedData['ids'][0] is int) {
           if (parsedData['entity'] == "mission") {
             CriNotificationService.editNotificationStatus(
-                notificationId: parsedData['ids'], status: 3);
+                notificationId: parsedData['ids'][0], status: 3);
             Go.to(Get.context,
-                MissionProfileScreen(missionId: parsedData['ids']));
+                MissionProfileScreen(missionId: parsedData['ids'][0]));
           }
           if (parsedData['entity'] == "task") {
             CriNotificationService.editNotificationStatus(
-                notificationId: parsedData['ids'], status: 3);
+                notificationId: parsedData['ids'][0], status: 3);
 
-            Go.to(Get.context, TaskProfileScreen(taskId: parsedData['ids']));
+            Go.to(Get.context, TaskProfileScreen(taskId: parsedData['ids'][0]));
           }
         } else {
           CriNotificationService.editNotificationStatus(

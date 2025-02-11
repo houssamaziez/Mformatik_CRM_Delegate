@@ -54,7 +54,8 @@ Padding listLastMission(BuildContext context) {
                             fontSize: 14)),
                     Flexible(
                         flex: 2,
-                        child: "Creator"
+                        child: "Client"
+                            .tr
                             .tr
                             .style(
                                 color: Theme.of(context).primaryColor,
@@ -152,7 +153,7 @@ Padding listLastMission(BuildContext context) {
                                                   Flexible(
                                                       flex: 2,
                                                       child: mission
-                                                          .creatorUsername!
+                                                          .client.fullName!
                                                           .style(
                                                               textAlign:
                                                                   TextAlign

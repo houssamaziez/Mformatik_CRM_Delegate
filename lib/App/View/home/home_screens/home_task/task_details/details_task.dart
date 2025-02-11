@@ -243,8 +243,8 @@ class _TaskProfileScreenState extends State<TaskProfileScreen> {
                       Icons.delete,
                       color: Colors.red,
                     ));
-              })
-    ,   ],
+              }),
+        ],
       ),
       bottomSheet: GetBuilder<TaskController>(
           init: TaskController(),

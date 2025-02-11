@@ -43,10 +43,10 @@ class CardNotification extends StatelessWidget {
       case 2:
         return Colors.blue[200]!.withOpacity(0.2);
 
-      case 3:
+      case 4:
         return Colors.white;
 
-      case 4:
+      case 3:
         return Colors.blue[200]!.withOpacity(0.2);
 
       default:

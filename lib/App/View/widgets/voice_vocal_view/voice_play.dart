@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:voice_message_package/src/helpers/play_status.dart';
-// import 'package:voice_message_package/src/helpers/utils.dart';
-// import 'package:voice_message_package/src/voice_controller.dart';
-// import 'package:voice_message_package/src/widgets/noises.dart';
-// import 'package:voice_message_package/src/widgets/play_pause_button.dart';
+
+import 'widgets/CustomTrackShape.dart';
 
 class VoiceMessageViewPlay extends StatelessWidget {
   const VoiceMessageViewPlay(
@@ -46,57 +43,26 @@ class VoiceMessageViewPlay extends StatelessWidget {
       this.playPauseButtonLoadingColor = Colors.white})
       : super(key: key);
 
-  /// The controller for the voice message view.
   final controller;
 
-  /// The background color of the voice message view.
   final Color backgroundColor;
 
-  ///
   final Color circlesColor;
 
-  /// The color of the active slider.
   final Color activeSliderColor;
-
-  /// The color of the not active slider.
   final Color? notActiveSliderColor;
-
-  /// The text style of the circles.
   final TextStyle circlesTextStyle;
-
-  /// The text style of the counter.
   final TextStyle counterTextStyle;
-
-  /// The padding between the inner content and the outer container.
   final double innerPadding;
-
-  /// The corner radius of the outer container.
   final double cornerRadius;
-
-  /// The size of the play/pause button.
   final double size;
-
-  /// The refresh icon of the play/pause button.
   final Widget refreshIcon;
-
-  /// The pause icon of the play/pause button.
   final Widget pauseIcon;
-
-  /// The play icon of the play/pause button.
   final Widget playIcon;
-
-  /// The stop downloading icon of the play/pause button.
   final Widget stopDownloadingIcon;
-
-  /// The play Decoration of the play/pause button.
   final Decoration? playPauseButtonDecoration;
-
-  /// The loading Color of the play/pause button.
   final Color playPauseButtonLoadingColor;
-
   @override
-
-  /// Build voice message view.
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final color = circlesColor;
@@ -108,9 +74,7 @@ class VoiceMessageViewPlay extends StatelessWidget {
       ),
       splashColor: Colors.transparent,
     );
-
     return Container(
-      // width: 160 + (controller.noiseCount * .72.w()),
       padding: EdgeInsets.all(innerPadding),
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -122,17 +86,6 @@ class VoiceMessageViewPlay extends StatelessWidget {
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // PlayPauseButton(
-              //   controller: controller,
-              //   color: color,
-              //   loadingColor: playPauseButtonLoadingColor,
-              //   size: size,
-              //   refreshIcon: refreshIcon,
-              //   pauseIcon: pauseIcon,
-              //   playIcon: playIcon,
-              //   stopDownloadingIcon: stopDownloadingIcon,
-              //   buttonDecoration: playPauseButtonDecoration,
-              // ),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(
@@ -172,13 +125,6 @@ class VoiceMessageViewPlay extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            /// noises
-            // Noises(
-            //   rList: controller.randoms!,
-            //   activeSliderColor: activeSliderColor,
-            // ),
-
-            /// slider
             AnimatedBuilder(
               animation: CurvedAnimation(
                 parent: controller.animController,
@@ -241,32 +187,4 @@ class VoiceMessageViewPlay extends StatelessWidget {
           ),
         ),
       );
-}
-
-///
-/// A custom track shape for a slider that is rounded rectangular in shape.
-/// Extends the [RoundedRectSliderTrackShape] class.
-class CustomTrackShape extends RoundedRectSliderTrackShape {
-  @override
-
-  /// Returns the preferred rectangle for the voice message view.
-  ///
-  /// The preferred rectangle is calculated based on the current state and layout
-  /// of the voice message view. It represents the area where the view should be
-  /// displayed on the screen.
-  ///
-  /// Returns a [Rect] object representing the preferred rectangle.
-  Rect getPreferredRect({
-    required RenderBox parentBox,
-    Offset offset = Offset.zero,
-    required SliderThemeData sliderTheme,
-    bool isEnabled = false,
-    bool isDiscrete = false,
-  }) {
-    const double trackHeight = 10;
-    final double trackLeft = offset.dx,
-        trackTop = offset.dy + (parentBox.size.height - trackHeight) / 2;
-    final double trackWidth = parentBox.size.width;
-    return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
-  }
 }
