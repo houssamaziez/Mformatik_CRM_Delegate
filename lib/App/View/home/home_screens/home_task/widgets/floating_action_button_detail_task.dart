@@ -11,13 +11,13 @@ import 'task_card.dart';
 SizedBox floatingActionButtonDetailTask(
     Task task, TaskController teskController) {
   Map<int, String> taskStatusEnumString = {
-    1: 'New'.tr,
-    2: 'Start'.tr,
-    3: 'Owner Respond'.tr,
-    4: 'Responsible Respond'.tr,
-    5: 'Responsible close'.tr,
-    6: 'Close'.tr,
-    7: 'Canceled'.tr,
+    1: 'New',
+    2: 'Start',
+    3: 'Owner Respond',
+    4: 'Responsible Respond',
+    5: 'Responsible close',
+    6: 'Close',
+    7: 'Canceled',
   };
   String getStatusLabelTask(int statusId) {
     return taskStatusEnumString[statusId] ?? 'Unknown Status'.tr;

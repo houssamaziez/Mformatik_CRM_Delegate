@@ -113,19 +113,19 @@ class _NotificationScreenAllState extends State<NotificationScreenAll> {
                     if (parsedId is int) {
                       if (notification.entity == "mission") {
                         controller.editNotificationStatus(
-                            notificationId: notification.id, status: 3);
+                            notificationId: notification.id, status: 4);
                         Go.to(
                             context, MissionProfileScreen(missionId: parsedId));
                       }
                       if (notification.entity == "task") {
                         controller.editNotificationStatus(
-                            notificationId: notification.id, status: 3);
+                            notificationId: notification.id, status: 4);
 
                         Go.to(context, TaskProfileScreen(taskId: parsedId));
                       }
                     } else {
                       controller.editNotificationStatus(
-                          notificationId: notification.id, status: 3);
+                          notificationId: notification.id, status: 4);
 
                       if (notification.entity == "mission") {
                         Go.to(context, MissionListScreen(ids: parsedId));
@@ -158,8 +158,10 @@ void playNotificationSound() {
       'refreshNotificationsCount',
     )
         .listen((event) async {
-      Get.put(NotificationController()).refreshNotificationsCount(event);
-      Get.put(NotificationController()).fetchNotifications();
+      if (storage.read<bool>('isNotification') != true) {
+        Get.put(NotificationController()).refreshNotificationsCount(event);
+        Get.put(NotificationController()).fetchNotifications();
+      }
     });
   }
   initWS();

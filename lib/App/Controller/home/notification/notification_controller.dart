@@ -48,6 +48,8 @@ class NotificationController extends GetxController {
   }
 
   clhNotificationsCount() async {
+    sendNotificationRequest(id: 2);
+    sendNotificationRequest(id: 3);
     notificationcount = 0;
     update();
   }
@@ -174,6 +176,29 @@ class NotificationController extends GetxController {
     } finally {
       isLoading = false;
       update();
+    }
+  }
+
+  Future<void> sendNotificationRequest({required int id}) async {
+    var headers = {
+      'x-auth-token': token.read("token").toString(),
+    };
+
+    final respons =
+        await http.put(Uri.parse('${Endpoint.apiNotifications}/$id'), headers: {
+      'x-auth-token': token.read("token").toString(),
+    }, body: {
+      // "id" : 1 // work
+      "id": "all" // also work
+      //"id" : "all2" // also work
+    } // to ways to send notifecation ids,
+            );
+    print(respons.body);
+
+    if (respons.statusCode == 200) {
+      print(respons.body);
+    } else {
+      print(respons.body);
     }
   }
 

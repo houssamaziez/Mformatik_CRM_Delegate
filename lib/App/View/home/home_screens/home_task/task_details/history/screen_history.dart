@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:timelines/timelines.dart';
+import 'package:timelines_plus/timelines_plus.dart';
 
 import '../../../../../../Model/task_models/history.dart';
 import '../../widgets/getStatusColor.dart';
 
 Map<int, Map<String, dynamic>> taskStatusEnumString = {
-  1: {'label': 'New'.tr, 'icon': Icons.fiber_new},
-  2: {'label': 'Start'.tr, 'icon': Icons.play_arrow},
-  3: {'label': 'Owner Respond'.tr, 'icon': Icons.person},
-  4: {'label': 'Responsible Respond'.tr, 'icon': Icons.handshake},
-  5: {'label': 'Responsible Close'.tr, 'icon': Icons.check},
-  6: {'label': 'Close'.tr, 'icon': Icons.done},
-  7: {'label': 'Canceled'.tr, 'icon': Icons.cancel},
+  1: {'label': 'New', 'icon': Icons.fiber_new},
+  2: {'label': 'Start', 'icon': Icons.play_arrow},
+  3: {'label': 'Owner Respond', 'icon': Icons.person},
+  4: {'label': 'Responsible Respond', 'icon': Icons.handshake},
+  5: {'label': 'Responsible Close', 'icon': Icons.check},
+  6: {'label': 'Close', 'icon': Icons.done},
+  7: {'label': 'Canceled', 'icon': Icons.cancel},
 };
 
 class HistoryTimelineScreen extends StatelessWidget {
