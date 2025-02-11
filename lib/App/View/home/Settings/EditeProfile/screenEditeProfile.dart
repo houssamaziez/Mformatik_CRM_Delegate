@@ -94,7 +94,7 @@ class _ScreenEditeProfileState extends State<ScreenEditeProfile> {
     final defaultImage =
         'https://img.freepik.com/premium-photo/stylish-man-flat-vector-profile-picture-ai-generated_606187-310.jpg';
     final imageUrl = imgUrl != null
-        ? '${dotenv.get('urlHost')}/uploads/$imgUrl'
+        ? '${dotenv.get('urlHost')}/api/uploads/$imgUrl'
         : defaultImage;
 
     return ClipRRect(

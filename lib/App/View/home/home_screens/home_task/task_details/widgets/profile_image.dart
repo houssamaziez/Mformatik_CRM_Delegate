@@ -12,7 +12,7 @@ CachedNetworkImage imageMessage(Item comment) {
   return CachedNetworkImage(
     imageUrl: Get.put(AuthController()).person!.img == null
         ? imageProfile
-        : '${dotenv.get('urlHost')}/uploads/' +
+        : '${dotenv.get('urlHost')}/api/uploads/' +
             Get.put(AuthController()).person!.img.toString(),
     height: 20,
     width: 20,
