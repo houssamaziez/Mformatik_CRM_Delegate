@@ -47,13 +47,13 @@ class _LanguageScreenState extends State<LanguageScreen> {
     storage.write('selected_language', language); // Save the language selection
 
 //  await CriNotificationService.initializeService( isBackground: false , );
-    if (storage.read('isNotification') == true) {
-      //  CriNotificationService. flutterBgInstance.invoke( 'stopService');
-      CriNotificationService.flutterBgInstance.invoke('stopService');
-      await Future.delayed(Duration(seconds: 2));
-      await CriNotificationService.initializeService(isBackground: false);
-      setState(() {});
-    }
+    // if (storage.read('isNotification') == true) {
+    //   //  CriNotificationService. flutterBgInstance.invoke( 'stopService');
+    //   CriNotificationService.flutterBgInstance.invoke('stopService');
+    //   await Future.delayed(Duration(seconds: 2));
+    //   await CriNotificationService.initializeService(isBackground: false);
+    //   setState(() {});
+    // }
   }
 
   @override

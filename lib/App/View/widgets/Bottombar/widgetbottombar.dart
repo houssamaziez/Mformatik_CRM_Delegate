@@ -34,13 +34,13 @@ buttonnavigationbar(context) {
                 child: buildNavItem(
                     context, 2, Icons.assignment, 'Task'.tr, controller),
               ),
-              GetBuilder<NotificationController>(
-                  init: NotificationController(),
-                  builder: (notification) {
-                    return Expanded(
-                        child: buildNavItem(context, 3, Icons.notifications,
-                            'Notifications'.tr, controller));
-                  }),
+              // GetBuilder<NotificationController>(
+              //     init: NotificationController(),
+              //     builder: (notification) {
+              //       return Expanded(
+              //           child: buildNavItem(context, 3, Icons.notifications,
+              //               'Notifications'.tr, controller));
+              //     }),
               Expanded(
                   child: buildNavItem(
                       context, 4, Icons.person, 'Profile'.tr, controller)),

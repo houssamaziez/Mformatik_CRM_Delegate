@@ -12,17 +12,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
-  var f = storage.read<bool>('isNotification');
-  if (storage.read<bool>('isNotification') == null) {
-    storage.write('isNotification', false);
-  }
+  // var f = storage.read<bool>('isNotification');
+  // if (storage.read<bool>('isNotification') == null) {
+  //   storage.write('isNotification', false);
+  // }
 
-  if (storage.read<bool>('isNotification') == true) {
-    await Future.delayed(Duration(seconds: 2));
-    await CriNotificationService.initializeService(isBackground: false);
-  } else {
-    CriNotificationService.flutterBgInstance.invoke('stopService');
-  }
+  // if (storage.read<bool>('isNotification') == true) {
+  //   await Future.delayed(Duration(seconds: 2));
+  //   await CriNotificationService.initializeService(isBackground: false);
+  // } else {
+  //   CriNotificationService.flutterBgInstance.invoke('stopService');
+  // }
   appVersion = await getAppVersion();
 
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
