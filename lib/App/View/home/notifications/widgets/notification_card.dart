@@ -103,7 +103,7 @@ class CardNotification extends StatelessWidget {
             onLongPress: () {
               showExitConfirmationDialog(context, onPressed: () {
                 Get.put(NotificationController()).editNotificationStatus(
-                    notificationId: notificationId, status: 4);
+                    notificationId: notificationId, status: 3);
                 Get.put(NotificationController())
                     .fetchNotifications(isRefresh: true);
                 Go.back(context);

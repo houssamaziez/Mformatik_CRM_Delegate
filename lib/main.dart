@@ -18,7 +18,7 @@ void main() async {
   }
 
   if (storage.read<bool>('isNotification') == true) {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     await CriNotificationService.initializeService(isBackground: false);
   } else {
     CriNotificationService.flutterBgInstance.invoke('stopService');
