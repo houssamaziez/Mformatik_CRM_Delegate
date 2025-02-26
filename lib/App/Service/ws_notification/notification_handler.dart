@@ -122,76 +122,8 @@ class CriNotificationService {
   }
 
   @pragma('vm:entry-point')
-  static String returnTitle(String title) {
-    // Retrieve the selected language from storage
-    String? selectedLanguage = storage.read<String>('selected_language');
-
-    switch (title) {
-      case "newMission":
-        return "New mission notification".tr;
-
-      case "missionStatusChange":
-        if (selectedLanguage == 'en') {
-          return "Mission status updated".tr;
-        } else if (selectedLanguage == 'fr') {
-          return "Statut de la mission mis à jour".tr;
-        } else {
-          return "تحديث حالة البعثة".tr;
-        }
-
-      case "newTask":
-        if (selectedLanguage == 'en') {
-          return "New task created".tr;
-        } else if (selectedLanguage == 'fr') {
-          return "Nouvelle tâche créée".tr;
-        } else {
-          return "تم إنشاء مهمة جديدة".tr;
-        }
-
-      case "taskObserver":
-      case "assignAsObserver":
-        if (selectedLanguage == 'en') {
-          return "Assigned as task observer".tr;
-        } else if (selectedLanguage == 'fr') {
-          return "Assigné comme observateur de tâche".tr;
-        } else {
-          return "تم تعيينك كمراقب مهمة".tr;
-        }
-
-      case "taskResponsible":
-      case "assignAsResponsible":
-        if (selectedLanguage == 'en') {
-          return "Assigned as task responsible".tr;
-        } else if (selectedLanguage == 'fr') {
-          return "Assigné comme responsable de tâche".tr;
-        } else {
-          return "تم تعيينك كمسؤول عن المهمة".tr;
-        }
-
-      case "taskStatusChange":
-        if (selectedLanguage == 'en') {
-          return "Task status updated".tr;
-        } else if (selectedLanguage == 'fr') {
-          return "Statut de la tâche mis à jour".tr;
-        } else {
-          return "تم تحديث حالة المهمة".tr;
-        }
-
-      default:
-        if (selectedLanguage == 'en') {
-          return "New mission notification".tr;
-        } else if (selectedLanguage == 'fr') {
-          return "Nouvelle notification de mission".tr;
-        } else {
-          return "إشعار مهمة جديدة".tr;
-        }
-    }
-  }
-
-  @pragma('vm:entry-point')
   static void _showNotification(
       WebSocketNotificationModel notificationDetails) async {
-    final translatedTitle = "New mission notification".tr;
     final translatedBody = (storage.read<String>('selected_language') == 'en'
             ? 'By : '.tr
             : (storage.read<String>('selected_language') == 'fr'
@@ -264,9 +196,7 @@ class CriNotificationService {
     await GetStorage.init();
     await dotenv.load(fileName: ".env");
     try {
-      // debugPrint("i'm inside download fucntion");
       String WEBSOCKET_URL = dotenv.get('urlHost');
-      String webSocketUrl = WEBSOCKET_URL;
       var socket = web_socket_io.io(
         WEBSOCKET_URL,
         web_socket_io.OptionBuilder()
@@ -287,9 +217,11 @@ class CriNotificationService {
 
         Logger().i(data);
       });
+
+      // ____________________________ Notification Receiving ____________________________
       socket.on('notification', (data) {
         Logger().i(data);
-// Go.to(Get.context,NotificationScreenAll());
+        var countNotificationData = data['count'];
         var data2 = data;
         if (data2 is Map) {
           Logger().i("data is map");
@@ -303,17 +235,59 @@ class CriNotificationService {
                         ? 'Appuyez pour vérifier'.tr
                         : 'اضغط للتحقق')),
                 Random().nextInt(10000000));
-            Logger().i(value['id']);
-            editNotificationStatus(notificationId: value['id'], status: 2);
+            editNotificationStatus();
           });
           Logger().i("data is list");
         }
+        if (countNotificationData != null) {
+          editNotificationStatus();
+
+          if (countNotificationData > 3) {
+            String title;
+            String body = (storage.read<String>('selected_language') == 'en'
+                ? 'Tap to check'.tr
+                : (storage.read<String>('selected_language') == 'fr'
+                    ? 'Appuyez pour vérifier'.tr
+                    : 'اضغط للتحقق'));
+
+            if (storage.read<String>('selected_language') == 'en') {
+              title = "You have $countNotificationData new notifications";
+            } else if (storage.read<String>('selected_language') == 'fr') {
+              title =
+                  "Vous avez $countNotificationData nouvelles notifications";
+            } else {
+              title = "يوجد $countNotificationData إشعارات جديدة";
+            }
+
+            _showNotification2(
+              title.tr,
+              body,
+              Random().nextInt(10000000),
+            );
+          } else {
+            data["rows"].forEach((value) {
+              if (value['data']['id'] is List) {
+                List<int> ids = (value['data']['id'] as List)
+                    .map<int>((e) => e as int)
+                    .toList();
+
+                service
+                    .invoke('refreshNotificationsCount', {"count": ids.length});
+                _showNotificationMultiEntities(
+                    WebSocketNotificationModel.fromJson(value));
+              } else {
+                _showNotification(WebSocketNotificationModel.fromJson(value));
+                service.invoke('refreshNotificationsCount', {"count": 1});
+              }
+            });
+          }
+        }
+        // _______________________ listen to the notification real time _______________________
         if (data['data']['id'] is List) {
           List<int> ids =
               (data['data']['id'] as List).map<int>((e) => e as int).toList();
 
-          editNotificationStatus(
-              notificationId: data['data']['id'].first, status: 2);
+          editNotificationStatus();
           service.invoke('refreshNotificationsCount', {"count": ids.length});
           _showNotificationMultiEntities(
               WebSocketNotificationModel.fromJson(data));
@@ -333,19 +307,18 @@ class CriNotificationService {
   }
 
   @pragma('vm:entry-point')
-  static Future<void> editNotificationStatus(
-      {required int notificationId, required int status}) async {
+  static Future<void> editNotificationStatus() async {
     playsounNotification();
 
-    final response = await http.put(
-        Uri.parse('${Endpoint.apiNotifications}/$notificationId/to/$status'),
-        headers: {
-          'x-auth-token': token.read("token").toString(),
-        });
+    final response =
+        await http.put(Uri.parse('${Endpoint.apiNotifications}/2'), headers: {
+      'x-auth-token': token.read("token").toString(),
+    }, body: {
+      "id": "all" // also work
+    });
     Logger().e(response.body);
     Logger().e(response.statusCode);
 
-    if (response.statusCode == 204) {}
     // await ResponseHandler.processResponse(response);
   }
 
@@ -369,5 +342,72 @@ class CriNotificationService {
         // iOS: IOSNotificationDetails(),
       ),
     );
+  }
+
+  @pragma('vm:entry-point')
+  static String returnTitle(String title) {
+    // Retrieve the selected language from storage
+    String? selectedLanguage = storage.read<String>('selected_language');
+
+    switch (title) {
+      case "newMission":
+        return "New mission notification".tr;
+
+      case "missionStatusChange":
+        if (selectedLanguage == 'en') {
+          return "Mission status updated".tr;
+        } else if (selectedLanguage == 'fr') {
+          return "Statut de la mission mis à jour".tr;
+        } else {
+          return "تحديث حالة البعثة".tr;
+        }
+
+      case "newTask":
+        if (selectedLanguage == 'en') {
+          return "New task created".tr;
+        } else if (selectedLanguage == 'fr') {
+          return "Nouvelle tâche créée".tr;
+        } else {
+          return "تم إنشاء مهمة جديدة".tr;
+        }
+
+      case "taskObserver":
+      case "assignAsObserver":
+        if (selectedLanguage == 'en') {
+          return "Assigned as task observer".tr;
+        } else if (selectedLanguage == 'fr') {
+          return "Assigné comme observateur de tâche".tr;
+        } else {
+          return "تم تعيينك كمراقب مهمة".tr;
+        }
+
+      case "taskResponsible":
+      case "assignAsResponsible":
+        if (selectedLanguage == 'en') {
+          return "Assigned as task responsible".tr;
+        } else if (selectedLanguage == 'fr') {
+          return "Assigné comme responsable de tâche".tr;
+        } else {
+          return "تم تعيينك كمسؤول عن المهمة".tr;
+        }
+
+      case "taskStatusChange":
+        if (selectedLanguage == 'en') {
+          return "Task status updated".tr;
+        } else if (selectedLanguage == 'fr') {
+          return "Statut de la tâche mis à jour".tr;
+        } else {
+          return "تم تحديث حالة المهمة".tr;
+        }
+
+      default:
+        if (selectedLanguage == 'en') {
+          return "New mission notification".tr;
+        } else if (selectedLanguage == 'fr') {
+          return "Nouvelle notification de mission".tr;
+        } else {
+          return "إشعار مهمة جديدة".tr;
+        }
+    }
   }
 }
