@@ -364,4 +364,32 @@ const Map<String, String> fr = {
   'Notifications': 'Notifications',
   "Change Status": "Changer le statut",
   'By : ': 'Par : ',
+  "A new mission has been created for you. Check it out now!":
+      "Une nouvelle mission a été crée pour vous. Veuillez la consulter maintenant !",
+  "A new task has been created for you. Check it out now!":
+      "Une nouvelle tâche a été crée pour vous. Veuillez la consulter maintenant !",
+  "You have been assigned as an observer for this task.":
+      "Vous avez been assigné comme observateur de cette tâche.",
+  "You have been assigned as the responsible person for this task.":
+      "Vous avez been assigné comme responsable de cette tâche.",
+  "A task has been created. Please review it.":
+      "Une tâche a été créée. Veuillez la consulter.",
+  "A task has been started. Stay updated.":
+      "Une tâche a été démarrée. Restez à jour.",
+  "A response has been added to the task. Check it now.":
+      "Une réponse a été ajoutée à la tâche. Vérifiez maintenant.",
+  "The task has been closed. Review the details.":
+      "La tâche a été fermée. Vérifiez les détails.",
+  "The task has been completed and closed.":
+      "La tâche a été terminée et fermée.",
+  "The task has been cancelled.": "La tâche a été annulée.",
+  "The task status has been updated. Please check it.":
+      "Le statut de la tâche a été mis à jour. Veuillez le vérifier.",
+  "Created a task": "Créé une tâche",
+  "Started a task": "Démarré une tâche",
+  "Has responded to a task": "A répondu à une tâche",
+  "Has closed a task": "A fermé une tâche",
+  "Closed a task": "Fermé une tâche",
+  "Cancelled a task": "Annulé une tâche",
+  "Unknown status": "Statut inconnu",
 };

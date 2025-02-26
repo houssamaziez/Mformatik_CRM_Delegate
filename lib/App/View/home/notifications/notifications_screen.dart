@@ -90,9 +90,10 @@ class _NotificationScreenAllState extends State<NotificationScreenAll> {
 
                 final notification = controller.notifications[index];
                 return CardNotification(
-                  status: notification.receiver!.status!,
+                  statusNotification: notification.receiver!.status!,
                   notificationId: notification.id!,
                   title: notification.title,
+                  status: notification.data!.statusId!,
                   createdAt: notification.createdAt,
                   subtitle: notification.creator!.username,
                   onTap: () {

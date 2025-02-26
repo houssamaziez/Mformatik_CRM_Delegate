@@ -38,9 +38,9 @@ class NotificationController extends GetxController {
       await playSound();
 
       Get.snackbar(
-        retunTitle(notificationDetails.title!),
+        retunTitle(notificationDetails.title!, 1),
         '@${notificationDetails.creator!.username} '.tr +
-            retunSupTitle(notificationDetails.title!),
+            retunSupTitle(notificationDetails.title!, 1),
       );
       editNotificationStatus(
           notificationId: notificationDetails.id!, status: 2);
@@ -154,7 +154,7 @@ class NotificationController extends GetxController {
         },
       );
 
-      Logger().f(response.statusCode);
+      Logger().i(response.body);
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = json.decode(response.body);
         List<dynamic> rows = responseData['rows'];
