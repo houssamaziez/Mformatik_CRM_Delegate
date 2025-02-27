@@ -161,7 +161,7 @@ void playNotificationSound() {
         .listen((event) async {
       if (storage.read<bool>('isNotification') != true) {
         Get.put(NotificationController()).refreshNotificationsCount(event);
-        Get.put(NotificationController()).fetchNotifications();
+        Get.put(NotificationController()).fetchNotifications(isRefresh: true);
       }
     });
   }

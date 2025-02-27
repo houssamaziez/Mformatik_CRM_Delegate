@@ -10,6 +10,8 @@ Widget buildNavItem(context, int index, IconData icon, String label,
     onTap: () {
       if (index == 3) {
         Get.put(NotificationController()).clhNotificationsCount();
+        Get.put(NotificationController()).fetchNotifications(isRefresh: true);
+        print('notification');
       }
       controller.updateindexBottomBar(index);
     },
