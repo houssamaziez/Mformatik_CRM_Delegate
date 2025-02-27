@@ -308,7 +308,7 @@ class CriNotificationService {
 
   @pragma('vm:entry-point')
   static Future<void> editNotificationStatus() async {
-    playsounNotification();
+    // playsounNotification();
 
     final response =
         await http.put(Uri.parse('${Endpoint.apiNotifications}/2'), headers: {
