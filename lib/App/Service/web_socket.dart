@@ -38,8 +38,7 @@ Future<void> initWS() async {
         Logger().i("data is map");
       } else {
         data.forEach((value) {
-          CriNotificationService.editNotificationStatus(
-              notificationId: value['id'], status: 2);
+          CriNotificationService.editNotificationStatus();
           Get.put(NotificationController()).refreshNotificationsCount(data);
           Get.put(NotificationController()).fetchNotifications();
         });
@@ -48,13 +47,11 @@ Future<void> initWS() async {
         List<int> ids =
             (data['data']['id'] as List).map<int>((e) => e as int).toList();
 
-        CriNotificationService.editNotificationStatus(
-            notificationId: data['data']['id'].first, status: 2);
+        CriNotificationService.editNotificationStatus();
         Get.put(NotificationController()).refreshNotificationsCount(data);
         Get.put(NotificationController()).fetchNotifications();
       } else {
-        CriNotificationService.editNotificationStatus(
-            notificationId: data['data']['id'], status: 2);
+        CriNotificationService.editNotificationStatus();
         Get.put(NotificationController()).refreshNotificationsCount(data);
         Get.put(NotificationController()).fetchNotifications();
       }

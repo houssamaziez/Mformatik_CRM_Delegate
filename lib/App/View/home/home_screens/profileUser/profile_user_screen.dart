@@ -92,7 +92,8 @@ class ProfileUserScreen extends StatelessWidget {
                         await spalshscreenfirst.write('key', false);
                         Get.offAll(() => ScreenAuth());
                         storage.write('isNotification', false);
-                        // CriNotificationService.flutterBgInstance.invoke('stopService');
+                        CriNotificationService.flutterBgInstance
+                            .invoke('stopService');
                       },
                           details:
                               'Do you really want to log out of the account?'

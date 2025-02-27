@@ -34,17 +34,17 @@ class NotificationController extends GetxController {
     notificationcount = notificationcount + 1;
     update();
 
-    // if (storage.read<bool>('isNotification') != true) {
-    //   await playSound();
+    if (storage.read<bool>('isNotification') != true) {
+      await playSound();
 
-    //   Get.snackbar(
-    //     retunTitle(notificationDetails.title!),
-    //     '@${notificationDetails.creator!.username} '.tr +
-    //         retunSupTitle(notificationDetails.title!),
-    //   );
-    //   editNotificationStatus(
-    //       notificationId: notificationDetails.id!, status: 2);
-    // }
+      Get.snackbar(
+        retunTitle(notificationDetails.title!, 1),
+        '@${notificationDetails.creator!.username} '.tr +
+            retunSupTitle(notificationDetails.title!, 1),
+      );
+      editNotificationStatus(
+          notificationId: notificationDetails.id!, status: 2);
+    }
   }
 
   clhNotificationsCount() async {
@@ -71,47 +71,6 @@ class NotificationController extends GetxController {
 
   bool isLoading = false;
   List<NotificationRow> notifications = [];
-
-  // fetchNotifications({List? ids}) async {
-  //   try {
-  //     isLoading = true;
-  //     update();
-  //     var response = await http.get(url, headers: {
-  //       "x-auth-token": token.read("token").toString(),
-  //     });
-
-  //     Logger().f(response.statusCode);
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> responseData = json.decode(response.body);
-  //       List<dynamic> rows = responseData['rows'];
-
-  //       // Access the `rows` field from the root JSON
-  //       notifications =
-  //           rows.map((json) => NotificationRow.fromJson(json)).toList();
-  //       update();
-  //     } else {
-  //       showMessage(Get.context, title: "Failed to load notifications.".tr);
-  //     }
-  //   } catch (e) {
-  //     Logger().e(e);
-  //     showMessage(Get.context, title: "Failed to load notifications.".tr);
-  //   } finally {
-  //     isLoading = false;
-  //     update();
-  //   }
-  //   Future<void> editNotificationStatus(
-  //       {required int notificationId, required int status}) async {
-  //     final response = await http.put(
-  //         Uri.parse('${Endpoint.apiNotifications}/$notificationId/to/$status'),
-  //         headers: {
-  //           'x-auth-token': token.read("token").toString(),
-  //         });
-  //     Logger().e(response.body);
-  //     Logger().e(response.statusCode);
-  //     if (response.statusCode == 204) {}
-  //     // await ResponseHandler.processResponse(response);
-  //   }
-  // }
 
   Future<void> editNotificationStatus(
       {required int notificationId, required int status}) async {
@@ -154,7 +113,7 @@ class NotificationController extends GetxController {
         },
       );
 
-      Logger().f(response.statusCode);
+      Logger().i(response.body);
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = json.decode(response.body);
         List<dynamic> rows = responseData['rows'];

@@ -7,14 +7,33 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:mformatic_crm_delegate/App/View/home/home_screens/home_mission/mission_details/profile_mission.dart';
 
+import '../../Controller/auth/auth_controller.dart';
+import '../../RouteEndPoint/EndPoint.dart';
 import '../../Util/Route/Go.dart';
 import '../../View/home/home_screens/home_mission/mission_all/mission_list_screen.dart';
 import '../../View/home/home_screens/home_task/task_details/details_task.dart';
 import '../../View/home/notifications/notifications_screen.dart';
 import 'notification_handler.dart';
+import 'package:http/http.dart' as http;
 
 @pragma('vm:entry-point')
 class ConstWsNotification {
+  static Future<void> editNotificationStatus(
+      {required int notificationId, required int status}) async {
+    final response = await http.put(
+        Uri.parse('${Endpoint.apiNotifications}/$notificationId/to/$status'),
+        headers: {
+          'x-auth-token': token.read("token").toString(),
+        },
+        body: {
+          "id": "all" // also work
+        });
+    Logger().e(response.body);
+    Logger().e(response.statusCode);
+
+    // await ResponseHandler.processResponse(response);
+  }
+
   static const notificationId2 = 442;
   static const String channelDescription =
       'This channel is used for important notifications';
@@ -63,20 +82,19 @@ class ConstWsNotification {
         Logger().i(" notification payload:  ${parsedData}");
         if (parsedData['ids'][0] is int) {
           if (parsedData['entity'] == "mission") {
-            CriNotificationService.editNotificationStatus(
+            editNotificationStatus(
                 notificationId: parsedData['ids'][0], status: 3);
             Go.to(Get.context,
                 MissionProfileScreen(missionId: parsedData['ids'][0]));
           }
           if (parsedData['entity'] == "task") {
-            CriNotificationService.editNotificationStatus(
+            editNotificationStatus(
                 notificationId: parsedData['ids'][0], status: 3);
 
             Go.to(Get.context, TaskProfileScreen(taskId: parsedData['ids'][0]));
           }
         } else {
-          CriNotificationService.editNotificationStatus(
-              notificationId: parsedData['ids'], status: 3);
+          editNotificationStatus(notificationId: parsedData['ids'], status: 3);
 
           if (parsedData['entity'] == "mission") {
             Go.to(Get.context, MissionListScreen(ids: parsedData['ids']));

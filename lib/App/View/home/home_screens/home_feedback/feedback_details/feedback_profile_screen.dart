@@ -207,7 +207,10 @@ class _FeedbackDetailScreenState extends State<FeedbackDetailScreen> {
                       builder: (feedbackController) {
                         return Center(
                           child: ElevatedButton.icon(
-                            icon: const Icon(Icons.edit),
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                            ),
                             label: Text('Edit Feedback'.tr),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context).primaryColor,

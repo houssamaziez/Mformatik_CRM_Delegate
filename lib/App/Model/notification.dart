@@ -13,6 +13,7 @@ class Notification {
     );
   }
 }
+
 class NotificationRow {
   final dynamic id; // Can be an int or List<int>
   final String title;
@@ -21,7 +22,7 @@ class NotificationRow {
   final String createdAt;
   final String updatedAt;
   final Receiver? receiver; // Nullable because it might be null
-  final Creator? creator;   // Nullable because it might be null
+  final Creator? creator; // Nullable because it might be null
   final NotificationData? data; // Nullable because it might be null
 
   NotificationRow({
@@ -43,7 +44,9 @@ class NotificationRow {
       parsedId = json['id']; // Single integer
     } else if (json['id'] is List) {
       // Check if it's a List of integers
-      parsedId = (json['id'] as List).whereType<int>().toList(); // Ensure it's a List<int>
+      parsedId = (json['id'] as List)
+          .whereType<int>()
+          .toList(); // Ensure it's a List<int>
     } else {
       parsedId = 0; // Default value if id is null or invalid
     }
@@ -55,15 +58,12 @@ class NotificationRow {
       creatorId: json['creatorId'] ?? 0, // Default to 0 if null
       createdAt: json['createdAt'] ?? '',
       updatedAt: json['updatedAt'] ?? '',
-      receiver: json['receiver'] != null
-          ? Receiver.fromJson(json['receiver'])
-          : null,
-      creator: json['creator'] != null
-          ? Creator.fromJson(json['creator'])
-          : null,
-      data: json['data'] != null
-          ? NotificationData.fromJson(json['data'])
-          : null,
+      receiver:
+          json['receiver'] != null ? Receiver.fromJson(json['receiver']) : null,
+      creator:
+          json['creator'] != null ? Creator.fromJson(json['creator']) : null,
+      data:
+          json['data'] != null ? NotificationData.fromJson(json['data']) : null,
     );
   }
 }
@@ -120,29 +120,33 @@ class Person {
 class NotificationData {
   final dynamic id;
   final int? companyId; // Nullable
-  final int? annexId;   // Nullable
-
+  final int? annexId; // Nullable
+  final int? statusId;
   NotificationData({
     required this.id,
     this.companyId,
     this.annexId,
+    this.statusId,
   });
 
   factory NotificationData.fromJson(Map<String, dynamic> json) {
-        dynamic parsedId;
+    dynamic parsedId;
 
-     if (json['id'] is int) {
+    if (json['id'] is int) {
       parsedId = json['id']; // Single integer
     } else if (json['id'] is List) {
       // Check if it's a List of integers
-      parsedId = (json['id'] as List).whereType<int>().toList(); // Ensure it's a List<int>
+      parsedId = (json['id'] as List)
+          .whereType<int>()
+          .toList(); // Ensure it's a List<int>
     } else {
       parsedId = 0; // Default value if id is null or invalid
     }
     return NotificationData(
-      id:parsedId,
+      id: parsedId,
       companyId: json['companyId'],
       annexId: json['annexId'],
+      statusId: json['statusId'] ?? 0, // Default to 0 if null
     );
   }
 }

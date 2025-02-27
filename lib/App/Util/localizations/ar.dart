@@ -350,4 +350,29 @@ const Map<String, String> ar = {
   'Notifications': 'الاشعارات',
   "Change Status": "تغيير الحالة",
   'By : ': 'بواسطة : ',
+  "A new mission has been created for you. Check it out now!":
+      "تم إنشاء بعثة جديدة لك. تحقق منها الآن!",
+  "A new task has been created for you. Check it out now!":
+      "تم إنشاء مهمة جديدة لك. تحقق منها الآن!",
+  "You have been assigned as an observer for this task.":
+      "تم تعيينك كمراقب لهذه المهمة.",
+  "You have been assigned as the responsible person for this task.":
+      "تم تعيينك كمسؤول لهذه المهمة.",
+  "A task has been created. Please review it.": "تم انشاء مهمة. يرجى مراجعتها.",
+  "A task has been started. Stay updated.": "تم بدء المهمة. يرجى التحديث.",
+  "A response has been added to the task. Check it now.":
+      "تمت اضافة رد على المهمة. تحقق منه الآن.",
+  "The task has been closed. Review the details.":
+      "تم اغلاق المهمة. يرجى مراجعة التفاصيل.",
+  "The task has been completed and closed.": "تم اكتمال المهمة واغلاقها.",
+  "The task has been cancelled.": "تم الغاء المهمة.",
+  "The task status has been updated. Please check it.":
+      "تم تحديث حالة المهمة. يرجى مراجعتها.",
+  "Created a task": "تم انشاء مهمة",
+  "Started a task": "تم بدء المهمة",
+  "Has responded to a task": "تم الرد على المهمة",
+  "Has closed a task": "تم اغلاق المهمة",
+  "Closed a task": "تم اغلاق المهمة",
+  "Cancelled a task": "تم الغاء المهمة",
+  "Unknown status": "حالة غير معروفة"
 };

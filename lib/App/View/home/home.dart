@@ -65,18 +65,21 @@ class _HomeScreenState extends State<HomeScreen> {
               bool shouldExit = await showDialogExitApp(context);
               return shouldExit;
             },
-            child: Scaffold(
-              appBar: appbarHome(
-                context,
+            child: SafeArea(
+              child: Scaffold(
+                appBar: appbarHome(
+                  context,
+                ),
+                bottomNavigationBar: buttonnavigationbar(context),
+                body: isactive == true
+                    ? Column(
+                        children: [
+                          Expanded(
+                              child: screenHome[controller.indexBottomBar]),
+                        ],
+                      )
+                    : const screenBlock(),
               ),
-              bottomNavigationBar: buttonnavigationbar(context),
-              body: isactive == true
-                  ? Column(
-                      children: [
-                        Expanded(child: screenHome[controller.indexBottomBar]),
-                      ],
-                    )
-                  : const screenBlock(),
             ),
           );
         });

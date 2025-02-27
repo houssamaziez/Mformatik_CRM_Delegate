@@ -20,6 +20,7 @@ class CardNotification extends StatelessWidget {
   final String subtitle;
   final String entity;
 
+  final int statusNotification;
   final int status;
   final int notificationId;
   final VoidCallback onTap;
@@ -31,6 +32,7 @@ class CardNotification extends StatelessWidget {
     required this.subtitle,
     required this.entity,
     required this.onTap,
+    required this.statusNotification,
     required this.status,
     required this.notificationId,
   }) : super(key: key);
@@ -59,14 +61,14 @@ class CardNotification extends StatelessWidget {
     return Column(
       children: [
         Container(
-          color: getColorsForEntity(status),
+          color: getColorsForEntity(statusNotification),
           child: ListTile(
             leading: Container(
               padding: const EdgeInsets.all(0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: getColorsForEntity(
-                    status), // Theme.of(context).primaryColor.withOpacity(0.2),
+                    statusNotification), // Theme.of(context).primaryColor.withOpacity(0.2),
               ),
               child: Image.asset(
                 getIconForEntity(entity),
@@ -76,7 +78,7 @@ class CardNotification extends StatelessWidget {
               ),
             ),
             title: Text(
-              retunTitle(title),
+              retunTitle(title, status),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
@@ -87,7 +89,7 @@ class CardNotification extends StatelessWidget {
               children: [
                 Text(
                   (entity != "mission" ? '@$subtitle '.tr : "") +
-                      retunSupTitle(title),
+                      retunSupTitle(title, status),
                   style: const TextStyle(fontSize: 11, color: Colors.grey),
                 ),
                 const SizedBox(height: 4),
@@ -103,7 +105,7 @@ class CardNotification extends StatelessWidget {
             onLongPress: () {
               showExitConfirmationDialog(context, onPressed: () {
                 Get.put(NotificationController()).editNotificationStatus(
-                    notificationId: notificationId, status: 4);
+                    notificationId: notificationId, status: 3);
                 Get.put(NotificationController())
                     .fetchNotifications(isRefresh: true);
                 Go.back(context);
@@ -142,7 +144,7 @@ String getIconForEntity(String entity) {
   }
 }
 
-String retunTitle(String title) {
+String retunTitle(String title, int status) {
   switch (title) {
     case "newMission":
       return "New mission notification".tr;
@@ -151,39 +153,76 @@ String retunTitle(String title) {
     case "newTask":
       return "New task created".tr;
     case "taskObserver":
-      return "Assigned as task observer".tr;
     case "assignAsObserver":
       return "Assigned as task observer".tr;
     case "taskResponsible":
-      return "Assigned as task responsible".tr;
     case "assignAsResponsible":
-      return "Assigned as task responsible";
+      return "Assigned as task responsible".tr;
     case "taskStatusChange":
-      return "Task status updated".tr;
+      return _getTaskStatusMessage(status);
     default:
       return "Unknown title".tr;
   }
 }
 
-String retunSupTitle(String title) {
+String _getTaskStatusMessage(int status) {
+  switch (status) {
+    case 1:
+      return "Created a task".tr;
+    case 2:
+      return "Started a task".tr;
+    case 3:
+    case 4:
+      return "Has responded to a task".tr;
+    case 5:
+      return "Has closed a task".tr;
+    case 6:
+      return "Closed a task".tr;
+    case 7:
+      return "Cancelled a task".tr;
+    default:
+      return "Unknown status".tr;
+  }
+}
+
+String retunSupTitle(String title, int status) {
   switch (title) {
     case "newMission":
-      return "has created a new mission for you. Check it out now!".tr;
+      return "A new mission has been created for you. Check it out now!".tr;
     case "missionStatusChange":
       return "The status of a mission has been updated. Please review it.".tr;
     case "newTask":
-      return "has created a new task for you. Check it out now!".tr;
+      return "A new task has been created for you. Check it out now!".tr;
     case "taskObserver":
-      return "You have been assigned as an observer for a task.".tr;
     case "assignAsObserver":
-      return "You are now assigned as an observer for this task.".tr;
+      return "You have been assigned as an observer for this task.".tr;
     case "taskResponsible":
-      return "You have been marked as responsible for a task.".tr;
     case "assignAsResponsible":
-      return "You are now assigned as the responsible person for this task.".tr;
+      return "You have been assigned as the responsible person for this task."
+          .tr;
     case "taskStatusChange":
-      return "The status of a task has been changed. Please check it.".tr;
+      return _getTaskStatusSupMessage(status);
     default:
       return "Unknown title.".tr;
+  }
+}
+
+String _getTaskStatusSupMessage(int status) {
+  switch (status) {
+    case 1:
+      return "A task has been created. Please review it.".tr;
+    case 2:
+      return "A task has been started. Stay updated.".tr;
+    case 3:
+    case 4:
+      return "A response has been added to the task. Check it now.".tr;
+    case 5:
+      return "The task has been closed. Review the details.".tr;
+    case 6:
+      return "The task has been completed and closed.".tr;
+    case 7:
+      return "The task has been cancelled.".tr;
+    default:
+      return "The task status has been updated. Please check it.".tr;
   }
 }

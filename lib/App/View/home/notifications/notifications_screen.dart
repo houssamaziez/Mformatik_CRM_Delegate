@@ -90,9 +90,10 @@ class _NotificationScreenAllState extends State<NotificationScreenAll> {
 
                 final notification = controller.notifications[index];
                 return CardNotification(
-                  status: notification.receiver!.status!,
+                  statusNotification: notification.receiver!.status!,
                   notificationId: notification.id!,
                   title: notification.title,
+                  status: notification.data!.statusId!,
                   createdAt: notification.createdAt,
                   subtitle: notification.creator!.username,
                   onTap: () {
@@ -160,7 +161,7 @@ void playNotificationSound() {
         .listen((event) async {
       if (storage.read<bool>('isNotification') != true) {
         Get.put(NotificationController()).refreshNotificationsCount(event);
-        Get.put(NotificationController()).fetchNotifications();
+        Get.put(NotificationController()).fetchNotifications(isRefresh: true);
       }
     });
   }
