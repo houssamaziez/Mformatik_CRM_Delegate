@@ -28,3 +28,4 @@
 
 # WebSocket channel
 -keep class org.java-websocket.** { *; }
+-keep class me.carda.awesome_notifications.** { *; }

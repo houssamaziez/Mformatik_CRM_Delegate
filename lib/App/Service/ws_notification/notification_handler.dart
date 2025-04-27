@@ -57,12 +57,6 @@ class CriNotificationService {
           ?.createNotificationChannel(
               ConstWsNotification.serviceNotificationChannel);
 
-      flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(
-              ConstWsNotification.oneNotificationChannel);
-
       await flutterBgInstance.configure(
         androidConfiguration: AndroidConfiguration(
           onStart: onStart,
@@ -85,9 +79,33 @@ class CriNotificationService {
   @pragma('vm:entry-point')
   static Future<void> onStart(ServiceInstance service) async {
     DartPluginRegistrant.ensureInitialized();
+
     if (service is AndroidServiceInstance) {
-      if (await service.isForegroundService()) {}
+      // Create a notification for the foreground service
+      const notificationDetails = NotificationDetails(
+        android: AndroidNotificationDetails(
+          'foreground_channel_id', // Unique channel ID
+          'Foreground Service', // Channel name
+          channelDescription: 'This is the foreground service notification',
+          importance: Importance.high,
+          priority: Priority.high,
+          icon: ConstWsNotification.notificationIcon,
+        ),
+      );
+
+      // Start the service in foreground mode immediately
+      flutterLocalNotificationsPlugin.show(
+        ConstWsNotification.notificationId2, // Notification ID
+        "Service Running", // Notification title
+        "The service is running in the background.", // Notification body
+        notificationDetails,
+      );
+
+      service.setAsForegroundService();
+
+      // Additional service logic
       initWS(service);
+
       service.on('setAsBackground').listen((event) {
         service.setAsBackgroundService();
       });
